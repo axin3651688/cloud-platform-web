@@ -1,42 +1,51 @@
 <template>
-  <a-table
-    :columns="columns"
-    :rowKey="rowKey"
-    :dataSource="data"
-    :pagination="pagination"
-    :loading="loading"
-    @change="handleTableChange">
-    <span slot="action" slot-scope="text, record">
-      <a-dropdown>
-        <a class="ant-dropdown-link" href="#"><a-icon type="align-right" /></a>
-        <a-menu slot="overlay">
-          <a-menu-item>
-            <a href="javascript:;" @click="onUserEdit(record)">编辑</a>
-          </a-menu-item>
-          <a-menu-item>
-            <a href="javascript:;" @click="onUserAuth(record)">授权</a>
-          </a-menu-item>
-          <a-menu-item>
-            <a href="javascript:;" @click="onUserDisable(record)">禁用</a>
-          </a-menu-item>
-          <a-menu-item>
-            <a href="javascript:;" @click="onUserDelete(record)">删除</a>
-          </a-menu-item>
-        </a-menu>
-      </a-dropdown>
-    </span>
-  </a-table>
+  <div>
+    <a-table
+      :columns="columns"
+      :rowKey="rowKey"
+      :dataSource="data"
+      :pagination="pagination"
+      :loading="loading"
+      :rowSelection="rowSelection"
+      @change="handleTableChange">
+      <span slot="action" slot-scope="text, record">
+        <a-dropdown>
+          <a class="ant-dropdown-link" href="#"><a-icon type="align-right" /></a>
+          <a-menu slot="overlay">
+            <a-menu-item>
+              <a href="javascript:;" @click="onUserEdit(record)">编辑</a>
+            </a-menu-item>
+            <a-menu-item>
+              <a href="javascript:;" @click="onUserAuth(record)">授权</a>
+            </a-menu-item>
+            <a-menu-item>
+              <a href="javascript:;" @click="onUserDisable(record)">禁用</a>
+            </a-menu-item>
+            <a-menu-item>
+              <a href="javascript:;" @click="onUserDelete(record)">删除</a>
+            </a-menu-item>
+          </a-menu>
+        </a-dropdown>
+      </span>
+    </a-table>
+    <div>
+      已选择{{ selectedRowKeys.length }} <a @click="batchDeleteUser">删除</a>
+    </div>
+  </div>
+
 </template>
 
 <script>
 import { getPrimaryCompanyPeople } from '@/api/userCompany'
-import { enableUser, deleteUser } from '@/api/user'
+import { getPrimaryDeptPeople } from '@/api/userDept'
+import { enableUser, deleteUser, batchDeleteUser } from '@/api/user'
+import typeUtils from '@/utils/typeUtils'
 export default {
   name: 'CompanyUserTable',
   props: {
     companyId: {
       type: String,
-      default: '0'
+      default: undefined
     },
     deptId: {
       default: undefined
@@ -65,7 +74,7 @@ export default {
           title: '电话号码',
           dataIndex: 'phone'
         },
-        {
+        /* {
           title: '邮箱',
           dataIndex: 'email'
         },
@@ -76,19 +85,19 @@ export default {
         {
           title: '政治面貌',
           dataIndex: 'politicsStatus'
-        },
+        }, */
         {
           title: '现任职位',
           dataIndex: 'presentPost'
         },
-        {
+        /* {
           title: '学历',
           dataIndex: 'qualifications'
         },
         {
           title: '职称',
           dataIndex: 'professionalTitle'
-        },
+        }, */
         {
           title: '操作',
           key: 'action',
@@ -100,9 +109,20 @@ export default {
         defaultCurrent: 0,
         defaultPageSize: 1
       },
+      selectedRowKeys: [],
       loading: false,
       rowKey: 'id',
       enableParam: '1'
+    }
+  },
+  computed: {
+    rowSelection () {
+      const _this = this
+      return {
+        onChange: (selectedRowKeys, selectedRows) => {
+          _this.selectedRowKeys = selectedRowKeys
+        }
+      }
     }
   },
   methods: {
@@ -112,6 +132,7 @@ export default {
       this.pagination = pager
       this.fetch({
         comId: this.companyId,
+        deptId: this.deptId,
         size: pagination.pageSize,
         page: pagination.current - 1
       })
@@ -119,17 +140,37 @@ export default {
     fetch (params = {}) {
       const _this = this
       params.enable = _this.enableParam
-      getPrimaryCompanyPeople(params).then(function (res) {
-        const pagination = { ..._this.pagination }
-        const data = res.data
-        _this.loading = false
-        _this.data = data.content
-        pagination.total = data.totalElements - 0
-        _this.pagination = pagination
-      })
+      if (typeUtils.isString(params.deptId) && params.deptId.length > 0) {
+        getPrimaryDeptPeople(params).then(function (res) {
+          const pagination = { ..._this.pagination }
+          const data = res.data
+          _this.loading = false
+          if (typeUtils.isObject) {
+            _this.data = data.content
+          }
+          pagination.total = data.totalElements - 0
+          _this.pagination = pagination
+        })
+      } else if (typeUtils.isString(params.comId) && params.comId.length > 0) {
+        getPrimaryCompanyPeople(params).then(function (res) {
+          const pagination = { ..._this.pagination }
+          const data = res.data
+          _this.loading = false
+          _this.data = data.content
+          if (typeUtils.isObject(data)) {
+            _this.data = data.content
+          }
+          pagination.total = data.totalElements - 0
+          _this.pagination = pagination
+        })
+      }
     },
     reload () {
-      this.fetch({ comId: this.companyId, deptId: this.deptId, page: this.pagination.current, size: this.pagination.pageSize })
+      this.initPage()
+      this.fetch({ comId: this.companyId, deptId: this.deptId, page: this.pagination.defaultCurrent, size: this.pagination.defaultPageSize })
+    },
+    initPage () {
+      this.pagination.current = this.pagination.defaultCurrent
     },
     onUserEdit (record) {
       this.$emit('editUser', record)
@@ -143,7 +184,7 @@ export default {
         if (res.data.code !== '0') {
           _this.$message.success('禁用成功')
         } else {
-          _this.$message.fail('禁用失败')
+          _this.$message.error('禁用失败')
         }
         _this.reload()
       })
@@ -154,18 +195,40 @@ export default {
         if (res.data.code !== '0') {
           _this.$message.success('删除成功')
         } else {
-          _this.$message.fail('删除失败')
+          _this.$message.error('删除失败')
         }
         _this.reload()
       })
+    },
+    batchDeleteUser () {
+      const _this = this
+      if (_this.selectedRowKeys.length === 0) {
+        _this.$message.warning('请选择需要删除的用户')
+      } else {
+        batchDeleteUser(_this.selectedRowKeys).then(function (res) {
+          if (res.code !== 0) {
+            _this.$message.success('删除成功')
+          } else {
+            _this.$message.error('删除失败')
+          }
+          _this.reload()
+          _this.selectedRowKeys = []
+        })
+      }
     }
   },
   watch: {
     companyId (newVal, oldVal) {
-      this.fetch({ comId: newVal, page: this.pagination.defaultCurrent, size: this.pagination.defaultPageSize })
+      if (typeUtils.isString(newVal) && newVal.length > 0) {
+        this.initPage()
+        this.fetch({ comId: newVal, page: this.pagination.defaultCurrent, size: this.pagination.defaultPageSize })
+      }
     },
     deptId (newVal, oldVal) {
-      this.fetch({ comId: this.companyId, deptId: newVal, page: this.pagination.defaultCurrent, size: this.pagination.defaultPageSize })
+      if (typeUtils.isString(newVal) && newVal.length > 0) {
+        this.initPage()
+        this.fetch({ comId: this.companyId, deptId: newVal, page: this.pagination.defaultCurrent, size: this.pagination.defaultPageSize })
+      }
     }
   },
   created () {

@@ -92,10 +92,10 @@ import AFormItem from 'ant-design-vue/es/form/FormItem'
 import { getAllCompanyTree, getCompanyDeptTree } from '@/api/company'
 import { findAllPost } from '@/api/post'
 import { findAllRole } from '@/api/role'
-import { saveUser } from '@/api/user'
-import { saveUserRole, updateUserRole, findUserRole } from '@/api/userRole'
-import { saveUserCompany, findPrimaryCompany } from '@/api/userCompany'
-import { saveUserDept, findPrimaryDept } from '@/api/userDept'
+import { saveUser, saveUserToSystem, modifyUser, findUserByRule, findSystemUserByPhone } from '@/api/user'
+import { updateUserRole, findUserRole } from '@/api/userRole'
+import { saveUserPrimaryCompany, findPrimaryCompany } from '@/api/userCompany'
+import { saveUserPrimaryDept, findPrimaryDept } from '@/api/userDept'
 
 export default {
   name: 'UserModal',
@@ -110,18 +110,24 @@ export default {
       confirmLoading: false,
       visible: false,
       deptTreeData: [],
-      curDept: undefined,
       comTreeData: [],
       roleData: [],
       curRole: undefined,
       postData: [],
-      curPost: undefined,
+      curOperationId: undefined,
       validatorRules: {
         trueName: { rules: [{ required: true, message: '名称不可为空' }, { max: 20, message: '名称不可以超过20位' }] },
-        phone: { rules: [ { required: true, message: '手机号不可为空' }, { validator: this.validateMobile } ] }, // 异步查询电话号码是否存在
+        phone: {
+          rules: [{ required: true, message: '手机号不可为空' },
+            { validator: this.validateMobile }, { validator: this.validateMobileExist }],
+          validateTrigger: 'blur',
+          validateFirst: true
+        },
         gender: { rules: [{ required: true, message: '性别不可为空!' }] },
         company: { rules: [{ required: true, message: '所属公司不可为空!' }] }
-      }
+      },
+      editMode: false,
+      editId: undefined
     }
   },
   methods: {
@@ -136,34 +142,88 @@ export default {
     },
     handleSubmit () {
       const _this = this
-      _this.form.validateFields((err, values) => {
+      _this.form.validateFields(async (err, values) => {
         if (!err) {
           _this.confirmLoading = true
-          // 保存这个人基本信息
-          values.id = 9
-          saveUser(values).then(function (res) {
-            const result = res.data
-            // 设置了角色，保存这个人角色
-            let promise1, promise2
-            if (result != null && values.role !== undefined) {
-              promise1 = updateUserRole({ userId: result.id }, values.role)
+          if (_this.editMode === false) {
+            // 判断这个人在系统中存在不存在，不存在调用注册接口去注册一下
+            const exist = await _this.askSysTemExist(values.phone)
+            let userId
+            // 云之囊存在就直接去获取，不存在就注册一下
+            if (exist) {
+              // 去获取这个人的信息通过电话
+              const res = await findSystemUserByPhone({ username: values.phone })
+              if (res.userInfo && res.userInfo.id) {
+                userId = res.userInfo.id
+              } else {
+                _this.visible = false
+                _this.confirmLoading = false
+                _this.$message.error('云之囊未获取到用户信息')
+              }
+            } else {
+              // 去注册并返回这个人的信息
+              const userDto = {
+                phone: values.phone,
+                trueName: values.trueName,
+                username: '',
+                password: '',
+                tenantId: ''
+              }
+              const res = await saveUserToSystem(userDto)
+              if (res.data !== undefined) {
+                userId = res.data
+              } else {
+                _this.visible = false
+                _this.confirmLoading = false
+                _this.$message.error('未成功在云智囊注册')
+              }
             }
-            // 保存公司
-            if (result != null && values.company !== undefined) {
-              promise2 = saveUserCompany({ userId: result.id, comId: values.company }).then(function (res) {
-                // 保存部门
-                if (result != null && values.dept !== undefined) {
-                  saveUserDept({ userId: result.id, deptId: values.dept })
+            // 保存这个人基本信息
+            values.id = userId
+          } else {
+            values.id = _this.editId
+          }
+          if (values.id !== undefined) {
+            let userInfo
+            if (_this.editMode === false) {
+              const userInfoRes = await saveUser(values)
+              userInfo = userInfoRes.data
+            } else {
+              userInfo = await modifyUser(values)
+            }
+            if (userInfo !== undefined) {
+              let promise1, promise2
+              if (values.role !== undefined) {
+                // 设置了角色，保存这个人角色
+                promise1 = updateUserRole({ userId: values.id }, values.role)
+                // 保存公司
+                if (values.company !== undefined) {
+                  promise2 = saveUserPrimaryCompany({
+                    userId: values.id,
+                    comId: values.company
+                  }).then(async function (res) {
+                    // 保存部门
+                    if (values.dept !== undefined) {
+                      await saveUserPrimaryDept({ userId: values.id, deptId: values.dept })
+                    }
+                  })
                 }
-              })
+                Promise.all([promise1, promise2]).then(function () {
+                  _this.visible = false
+                  _this.confirmLoading = false
+                  _this.$message.success('保存成功')
+                  _this.$emit('refreshTable')
+                }).catch(function (e) {
+                  _this.$message.error('保存失败')
+                  _this.confirmLoading = false
+                })
+              }
             }
-            Promise.all([promise1, promise2]).then(function () {
-              _this.visible = false
-              _this.confirmLoading = false
-              _this.$message.success('保存成功')
-              _this.$emit('refreshTable')
-            })
-          })
+          } else {
+            // 未获取用户Id
+            _this.$message.error('未获取用户Id')
+            _this.confirmLoading = false
+          }
         }
       })
     },
@@ -172,6 +232,8 @@ export default {
       // 编辑用户走这里相同的莫泰框，逻辑不同
       // 注意这句话要先走
       _this.title = '编辑用户'
+      _this.editMode = true
+      _this.editId = record.id
       _this.visible = true
       // 1. 根据Id获取该用户的所属公司，角色信息，部门信息
       findUserRole({ userId: record.id }).then(function (res) {
@@ -217,6 +279,8 @@ export default {
       this.form.resetFields()
       this.deptTreeData = []
       this.title = '添加用户'
+      this.editMode = false
+      this.editId = undefined
     },
     validateMobile (rule, value, callback) {
       if (!value || new RegExp(/^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/).test(value)) {
@@ -224,6 +288,34 @@ export default {
       } else {
         callback('您的手机号码格式不正确!')
       }
+    },
+    validateMobileExist (rule, value, callback) {
+      const _this = this
+      findUserByRule({ phone: value }).then(function (res) {
+        if (!_this.editMode && res.data.length > 0) {
+          callback('手机号已存在')
+        } else if (_this.editMode && res.data.length > 0) {
+          const data = res.data.filter(function (ele) {
+            return ele.id !== _this.editId
+          })
+          if (data.length < 0) {
+            callback('手机号已存在')
+          } else {
+            callback()
+          }
+        } else {
+          callback()
+        }
+      })
+    },
+    askSysTemExist (phone) {
+      return findSystemUserByPhone({ username: phone }).then(function (res) {
+        if (res.data && res.data.id) {
+          return true
+        } else {
+          return false
+        }
+      })
     }
   },
   watch: {

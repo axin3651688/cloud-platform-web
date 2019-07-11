@@ -28,9 +28,12 @@ export function getAllCompany (parameter) {
 export function getAllCompanyTree () {
   return new Promise(function (resolve, reject) {
     getAllCompany().then(function (res) {
-      const data = res.data
-      const treeData = listToTreeNode({ data })
-      resolve(treeData)
+      if (Array.isArray(res.data)) {
+        const data = res.data
+        const treeData = listToTreeNode({ data })
+        resolve(treeData)
+      }
+      resolve([]);
     })
   })
 }
@@ -55,9 +58,12 @@ export function getCompanyDept (parameter) {
 export function getCompanyDeptTree (parameter) {
   return new Promise(function (resolve, reject) {
     getCompanyDept(parameter).then(function (res) {
-      const data = res.data
-      const treeData = listToTreeNode({ data, rootPid: parameter.comId })
-      resolve(treeData)
+      if (Array.isArray(res.data)) {
+        const data = res.data
+        const treeData = listToTreeNode({ data, rootPid: parameter.comId })
+        resolve(treeData)
+      }
+      resolve([]);
     })
   })
 }

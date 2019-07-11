@@ -58,7 +58,7 @@ service.interceptors.response.use((response) => {
 
 const service2 = axios.create({
   baseURL: '', // api base_url
-  timeout: 6000 // 请求超时时间
+  timeout: 1 // 请求超时时间
 })
 
 service2.interceptors.request.use(config => {
@@ -72,9 +72,11 @@ service2.interceptors.request.use(config => {
 service2.interceptors.response.use((response) => {
   if (response.data.code === 0) {
     notification.error({
-      message: '操作有误，接口报错，请联系开发人员',
+      message: '异常请求',
       description: '接口返回了错误的信息'
     })
+    response.data.data = undefined;
+    return response.data;
   }
   return response.data
 }, err)
@@ -83,6 +85,7 @@ const installer = {
   vm: {},
   install (Vue) {
     Vue.use(VueAxios, service)
+    Vue.use(VueAxios, service2)
   }
 }
 

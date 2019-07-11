@@ -43,9 +43,11 @@ export default {
   },
   data () {
     return {
+      dataList: [],
       expandedKeys: [],
       searchValue: '',
-      autoExpandParent: false
+      autoExpandParent: false,
+      curSelectKey: undefined
     }
   },
   methods: {
@@ -54,25 +56,41 @@ export default {
       this.autoExpandParent = false
     },
     onSelect (selectedKeys, e) {
-      this.curSelectKey = selectedKeys[0]
-      this.setCurComDept(this.curSelectKey)
-      this.curDept = undefined
+      this.$emit('select', selectedKeys)
+    },
+    onChange (e) {
+      const value = e.target.value
+      const expandedKeys = this.dataList.map((item) => {
+        if (item.title.indexOf(value) > -1) {
+          return getParentKey(item.key, this.treeData)
+        }
+        return null
+      }).filter((item, i, self) => item && self.indexOf(item) === i)
+      Object.assign(this, {
+        expandedKeys,
+        searchValue: value,
+        autoExpandParent: true
+      })
+    },
+    generateList (data) {
+      for (let i = 0; i < data.length; i++) {
+        const node = data[i]
+        const key = node.key
+        this.dataList.push({ key: key, title: node.text })
+        if (node.children) {
+          this.generateList(node.children, node.key)
+        }
+      }
     }
   },
-  onChange (e) {
-    const value = e.target.value
-    const expandedKeys = this.dataList.map((item) => {
-      if (item.title.indexOf(value) > -1) {
-        return getParentKey(item.key, this.treeData)
-      }
-      return null
-    }).filter((item, i, self) => item && self.indexOf(item) === i)
-    Object.assign(this, {
-      expandedKeys,
-      searchValue: value,
-      autoExpandParent: true
-    })
+  watch: {
+    treeData: function (newVal) {
+      this.dataList = []
+      debugger
+      this.generateList(this.treeData)
+    }
   }
+
 }
 </script>
 
