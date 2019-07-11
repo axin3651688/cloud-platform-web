@@ -1,13 +1,183 @@
 <template>
-    <h1>绑定账号 BindingAccount</h1>
+    <div>
+      <!-- 路由的头部 -->
+      <div>
+        <a-menu
+          :mode="'horizontal'"
+          :style="{ border: '0', width: device == 'mobile' ? '560px' : 'auto'}"
+          :selectedKeys="selectedKeys"
+          type="inner"
+          @openChange="onOpenChange">
+          <a-menu-item key="/personalSettings/LoggingStatements">
+            <router-link :to="{ name: 'LoggingStatements' }">
+              基本资料
+            </router-link>
+          </a-menu-item>
+          <a-menu-item key="/personalSettings/BindingAccount">
+            <router-link :to="{ name: 'BindingAccount' }">
+              绑定账号
+            </router-link>
+          </a-menu-item>
+          <a-menu-item key="/personalSettings/LogInLog">
+            <router-link :to="{ name: 'LogInLog' }">
+              登陆日志
+            </router-link>
+          </a-menu-item>
+        </a-menu>
+        <route-view></route-view>
+      </div>
+
+      <!-- 路由头部以下内容 -->
+      <div class="total">
+        <div class="wechat">
+          <div class="picture1">
+            <a-icon type="wechat" theme="filled" style="font-size:24px;line-height:40px;padding-left:8px"/>
+          </div>
+          <div class="text">
+            <div class="text1">
+              微信
+            </div>
+            <div class="text2">
+              即刻绑定微信，第三方账号绑定。文字占位符。
+            </div>
+          </div>
+          <div class="btn">
+            <a-button type="primary" @click="clickBang(1)">{{param1}}</a-button>  
+          </div>  
+        </div>
+        <div class="wechat">
+          <div class="picture2">
+            <a-icon type="weibo" style="font-size:24px;line-height:40px;padding-left:8px"/>
+          </div>
+          <div class="text">
+            <div class="text1">
+              微博
+            </div>
+            <div class="text2">
+              即刻绑定微博，第三方账号绑定。文字占位符。
+            </div>
+          </div>
+          <div class="btn">
+            <a-button type="primary" @click="clickBang(2)">{{param2}}</a-button>  
+          </div>  
+        </div>
+      </div>
+    </div>
 </template>
 
 <script>
+import { PageView, RouteView } from '@/layouts'
+import { mixinDevice } from '@/utils/mixin.js'
   export default {
-    name: 'BindingAccount'
+    mixins: [mixinDevice],
+    components: { PageView, RouteView },
+    name: 'BindingAccount',
+    data () {
+      return {
+        openKeys: [],
+        selectedKeys: [],
+        param1:'绑定',
+        param2:'绑定'
+
+      }
+    },
+    created () {
+      this.updateMenu()
+    },
+    methods: {
+      clickBang (val) {
+        if(val == 1){
+          if(this.param1 == '绑定'){
+            this.param1 = '取消绑定'
+          }else{
+            this.param1 = '绑定'
+          }
+        }else{
+          if(this.param2 == '绑定'){
+            this.param2 = '取消绑定'
+          }else{
+            this.param2 = '绑定'
+          }
+        }
+        
+      },
+      onOpenChange (openKeys) {
+        this.openKeys = openKeys
+      },
+      updateMenu () {
+        const routes = this.$route.matched.concat()
+        this.selectedKeys = [routes.pop().path]
+      }
+    },
+    watch: {
+      '$route' (val) {
+        this.updateMenu()
+      }
+    }
   }
 </script>
 
 <style scoped>
-
+.total{
+  border-bottom: 1px solid #ccc;
+  padding-top: 20px;
+}
+.wechat{
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  height: 72px;
+  border-bottom: 1px solid #ccc;
+  padding-top: 20px;
+}
+.picture1{
+  height: 40px;
+  width: 40px;
+  background:rgba(95,227,161,1);
+}
+.picture2{
+  height: 40px;
+  width: 40px;
+  background:#FF8373
+}
+.text{
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  padding-left: 24px;
+}
+.text1{
+  width:32px;
+  font-size:16px;
+  font-family:Microsoft YaHei;
+  font-weight:400;
+  line-height:40px;
+  color:rgba(42,43,47,1);
+  opacity:1;
+}
+.text2{
+  width:1040px;
+  padding-left: 16px;
+  font-size:14px;
+  font-family:Microsoft YaHei;
+  font-weight:400;
+  line-height:40px;
+  color:rgba(42,43,47,1);
+  opacity:0.5;
+}
+.btn{
+  padding-left: 330px;
+  float: right;
+}
+.weibo{
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  height: 72px;
+  border-bottom: 1px solid #ccc;
+  padding-top: 20px;
+}
 </style>
