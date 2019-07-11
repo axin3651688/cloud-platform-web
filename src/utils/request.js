@@ -56,14 +56,41 @@ service.interceptors.response.use((response) => {
   return response.data
 }, err)
 
+const service2 = axios.create({
+  baseURL: '', // api base_url
+  timeout: 1 // 请求超时时间
+})
+
+service2.interceptors.request.use(config => {
+  const token = Vue.ls.get(ACCESS_TOKEN)
+  if (token) {
+    config.headers['Access-Token'] = token // 让每个请求携带自定义 token 请根据实际情况自行修改
+  }
+  return config
+}, err)
+
+service2.interceptors.response.use((response) => {
+  if (response.data.code === 0) {
+    notification.error({
+      message: '异常请求',
+      description: '接口返回了错误的信息'
+    })
+    response.data.data = undefined;
+    return response.data;
+  }
+  return response.data
+}, err)
+
 const installer = {
   vm: {},
   install (Vue) {
     Vue.use(VueAxios, service)
+    Vue.use(VueAxios, service2)
   }
 }
 
 export {
   installer as VueAxios,
-  service as axios
+  service as axios,
+  service2 as axios2
 }

@@ -78,7 +78,6 @@ export const generatorDynamicRouter = () => {
       const routeTree = getRoute(result)
       const routers = generator(routeTree)
       routers.push(notFoundRouter)
-      debugger
       console.log(JSON.stringify(routers))
       resolve(routers)
     }).catch(err => {

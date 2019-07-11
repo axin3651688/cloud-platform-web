@@ -93,7 +93,9 @@ module.exports = {
 
   devServer: {
     // development server port 8000
-    port: 8000,
+    port: 8002,
+    host: '0.0.0.0',
+    disableHostCheck: true,
     proxy: {
       '/api': {
         // target: 'https://mock.ihx.me/mock/5baf3052f7da7e07e04a5116/antd-pro',
@@ -101,6 +103,22 @@ module.exports = {
         target: 'https://www.easy-mock.com/mock/5d1de8af2152d8760870932f/antd-pro',
         ws: false,
         changeOrigin: true
+      },
+      '/org': {
+        target: 'http://192.168.1.145:80',
+        ws: false,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': ''
+        }
+      },
+      '/uc': {
+        target: 'http://192.168.1.145:80',
+        ws: false,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': ''
+        }
       }
     }
   },
