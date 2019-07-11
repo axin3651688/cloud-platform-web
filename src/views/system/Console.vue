@@ -32,9 +32,9 @@
           <div class="body_one_down_right" style="padding-left:500px;padding-top:55px;">
             <p class="body_one_down_right_head" style="color:rgba(42,43,47,1);">当前版本</p>
             <p class="body_one_down_right_head" style="color:rgba(42,43,47,1);">您当前使用的是<span style="color:rgba(77,124,254,1);font-size:22px;">免费版</span></p>
-            <p class="anse">免费版团队人数上限为15人，若有扩容需要，请选择购买</p>
+            <p class="anse">免费版团队人数上限为{{Total}}人，若有扩容需要，请选择购买</p>
             <div>
-              <a-button type="primary">立即购买</a-button>
+              <a-button type="primary" @click="buy">立即购买</a-button>
             </div>
           </div>
         </div>
@@ -147,7 +147,12 @@
            }
          ] 
       }
-    }
+    },
+    methods: {
+      buy(){
+        alert('老板，现金还是刷卡')
+      }
+    },
   }
 </script>
 

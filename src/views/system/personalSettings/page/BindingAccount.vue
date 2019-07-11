@@ -62,22 +62,35 @@
           </div>  
         </div>
       </div>
+      <!-- <div>
+        <big-header :value="title"></big-header>
+      </div> -->
     </div>
 </template>
 
 <script>
+import bigHeader from '../../bigHeader'
 import { PageView, RouteView } from '@/layouts'
 import { mixinDevice } from '@/utils/mixin.js'
   export default {
     mixins: [mixinDevice],
-    components: { PageView, RouteView },
+    components: { 
+      PageView, 
+      RouteView,
+      'big-header': bigHeader},
     name: 'BindingAccount',
     data () {
       return {
         openKeys: [],
         selectedKeys: [],
         param1:'绑定',
-        param2:'绑定'
+        param2:'绑定',
+        title: {
+          one: "管理员",
+          two: "123"
+        }
+        // title: "管理员",
+        // title2:"123"
 
       }
     },
