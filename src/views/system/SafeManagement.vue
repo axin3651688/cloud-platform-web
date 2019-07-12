@@ -125,10 +125,4 @@ const data = [
   margin-bottom: 20px;
 }
 </style>
-<style>
-.anticon svg{
-  height: 18px;
-  width: 18px;
-}
-</style>
 

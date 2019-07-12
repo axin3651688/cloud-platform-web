@@ -180,6 +180,9 @@ import { mixinDevice } from '@/utils/mixin.js'
         // autofocus:true
       }
     },
+    created() {
+      debugger
+    },
     methods: {
       expend(val){
         debugger

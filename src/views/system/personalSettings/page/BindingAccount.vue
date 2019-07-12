@@ -62,22 +62,55 @@
           </div>  
         </div>
       </div>
+      <!-- <div>
+        <big-header :value="title"></big-header>
+      </div> -->
+      <!-- <div>
+        <select-model :selectConfig="optionsConfig"></select-model>
+      </div> -->
+      <!-- <div>
+        <input-model :placeholder='placeholder'></input-model>
+      </div> -->
     </div>
 </template>
 
 <script>
+import inputModel from '../../inputModel'
+import selectModel from '../../selectModel'
+import bigHeader from '../../bigHeader'
 import { PageView, RouteView } from '@/layouts'
 import { mixinDevice } from '@/utils/mixin.js'
   export default {
     mixins: [mixinDevice],
-    components: { PageView, RouteView },
+    components: { 
+      PageView, 
+      RouteView,
+      selectModel,
+      inputModel,
+      bigHeader},
     name: 'BindingAccount',
     data () {
       return {
         openKeys: [],
         selectedKeys: [],
         param1:'绑定',
-        param2:'绑定'
+        param2:'绑定',
+        title: {
+          one: "管理员",
+          two: "123"
+        },
+        optionsConfig:{
+          options:[
+            {
+              value:"fff"
+            },{
+              value:"111"
+            },{
+              value:"222"
+            }
+          ]
+        },
+        placeholder:'请输入要搜索的成员姓名'
 
       }
     },
