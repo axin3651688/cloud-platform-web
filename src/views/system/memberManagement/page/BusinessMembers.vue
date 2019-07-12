@@ -1,22 +1,33 @@
 <template>
-  <a-row :gutter="16">
-    <a-col :md="6" :sm="24">
-      <left-tree :treeData="comTreeData" @select="onSelectLeftTree"></left-tree>
-    </a-col>
-    <a-col :md="18" :sm="24">
-      <div style="background-color: #fff">
-        <div>
-          <tree-select v-if="(!isSingle)" @change="onChangeDept" :value="curSelectDept" :treeData="deptTreeData" :placeholder="'请选择部门'"></tree-select>
-          <a-button type="primary" @click="addUser">添加成员</a-button>
-          <user-modal ref="userModal" @refreshTable="onRefreshTable"></user-modal>
-        </div>
-        <company-user-table ref="companyUserTable" :company-id="curSelectCom" :dept-id="curSelectDept" @editUser="onEditUser"></company-user-table>
+  <div>
+    <a-row :gutter="16">
+      <div v-show="!isOnOrgAuth">
+        <a-col :md="6" :sm="24">
+          <left-tree :treeData="comTreeData" @select="onSelectLeftTree"></left-tree>
+        </a-col>
+        <a-col :md="18" :sm="24">
+          <div style="background-color: #fff">
+            <div>
+              <tree-select v-if="(!isSingle)" @change="onChangeDept" :value="curSelectDept" :treeData="deptTreeData" :placeholder="'请选择部门'"></tree-select>
+              <a-button type="primary" @click="addUser">添加成员</a-button>
+              <user-modal ref="userModal" @refreshTable="onRefreshTable"></user-modal>
+            </div>
+            <company-user-table
+              ref="companyUserTable"
+              :company-id="curSelectCom"
+              :dept-id="curSelectDept"
+              @editUser="onEditUser"
+              @editAuth="onEditAuth"></company-user-table>
+          </div>
+        </a-col>
       </div>
-    </a-col>
-  </a-row>
+    </a-row>
+    <org-auth ref="orgAuth" v-show="isOnOrgAuth" @back="onBack"></org-auth>
+  </div>
 </template>
 
 <script>
+import OrgAuth from './Module/OrgAuth'
 import { getAllCompanyTree, getCompanyDeptTree } from '@/api/company'
 import CompanyUserTable from './Module/CompanyUserTable'
 import LeftTree from './Module/LeftTree'
@@ -25,7 +36,7 @@ import TreeSelect from './Module/TreeSelect'
 
 export default {
   name: 'BusinessMembers',
-  components: { TreeSelect, LeftTree, CompanyUserTable, UserModal, CompanyUserTable },
+  components: { TreeSelect, LeftTree, CompanyUserTable, UserModal, CompanyUserTable, OrgAuth },
   data () {
     return {
       comTreeData: [],
@@ -33,7 +44,8 @@ export default {
       deptTreeData: [],
       curSelectDept: undefined,
       isSingle: false,
-      singleComId: undefined
+      singleComId: undefined,
+      isOnOrgAuth: false
     }
   },
   methods: {
@@ -42,6 +54,9 @@ export default {
         // 单体公司并且选择的是公司
         if (this.singleComId === selectedKeys[0]) {
           this.curSelectCom = selectedKeys[0]
+          this.curSelectDept = undefined
+          // 因为公司不变，子组件监听不到，所以这里再查一下
+          this.$refs.companyUserTable.reloadCom(this.curSelectCom)
         } else {
           // 单体公司并且选择的是部门
           this.curSelectCom = this.singleComId
@@ -72,6 +87,11 @@ export default {
     onEditUser (record) {
       this.$refs.userModal.onEdit(record)
     },
+    onEditAuth (record) {
+      // 表格申请编辑权限
+      this.isOnOrgAuth = true
+      this.$refs.orgAuth.onEditAuth(record.id)
+    },
     // 莫泰框提交申请表格刷新
     onRefreshTable () {
       this.$refs.companyUserTable.reload()
@@ -85,6 +105,9 @@ export default {
       } else {
         return false
       }
+    },
+    onBack () {
+      this.isOnOrgAuth = false
     }
   },
   created () {

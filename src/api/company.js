@@ -63,7 +63,7 @@ export function getCompanyDeptTree (parameter) {
         const treeData = listToTreeNode({ data, rootPid: parameter.comId })
         resolve(treeData)
       }
-      resolve([]);
+      resolve([])
     })
   })
 }

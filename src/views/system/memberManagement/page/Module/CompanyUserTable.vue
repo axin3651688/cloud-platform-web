@@ -169,6 +169,10 @@ export default {
       this.initPage()
       this.fetch({ comId: this.companyId, deptId: this.deptId, page: this.pagination.defaultCurrent, size: this.pagination.defaultPageSize })
     },
+    reloadCom (comId) {
+      this.initPage()
+      this.fetch({ comId: comId, page: this.pagination.defaultCurrent, size: this.pagination.defaultPageSize })
+    },
     initPage () {
       this.pagination.current = this.pagination.defaultCurrent
     },
@@ -176,7 +180,7 @@ export default {
       this.$emit('editUser', record)
     },
     onUserAuth (record) {
-      alert('auth' + record)
+      this.$emit('editAuth', record)
     },
     onUserDisable (record) {
       const _this = this
@@ -220,8 +224,7 @@ export default {
   watch: {
     companyId (newVal, oldVal) {
       if (typeUtils.isString(newVal) && newVal.length > 0) {
-        this.initPage()
-        this.fetch({ comId: newVal, page: this.pagination.defaultCurrent, size: this.pagination.defaultPageSize })
+        this.reloadCom(newVal)
       }
     },
     deptId (newVal, oldVal) {

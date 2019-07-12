@@ -2,8 +2,13 @@
   <div style="background-color: #fff">
     <a-input-search style="margin-bottom: 8px" placeholder="搜索" @change="onChange"/>
     <a-tree
+      :checkable="checkable"
+      :checkStrictly="checkStrictly"
+      :selectedKeys="selectNodes"
+      v-model="checkNodes"
       @expand="onExpand"
       @select="onSelect"
+      @check="onCheck"
       :expandedKeys="expandedKeys"
       :autoExpandParent="autoExpandParent"
       :treeData="treeData">
@@ -39,6 +44,17 @@ export default {
   props: {
     treeData: {
       default: []
+    },
+    checkable: {
+      default: false
+    },
+    checkStrictly: {
+      default: false
+    },
+    checkedKeys: {
+      default: function () {
+        return []
+      }
     }
   },
   data () {
@@ -47,7 +63,9 @@ export default {
       expandedKeys: [],
       searchValue: '',
       autoExpandParent: false,
-      curSelectKey: undefined
+      curSelectKey: undefined,
+      checkNodes: [],
+      selectNodes: []
     }
   },
   methods: {
@@ -56,7 +74,11 @@ export default {
       this.autoExpandParent = false
     },
     onSelect (selectedKeys, e) {
+      this.selectNodes = selectedKeys
       this.$emit('select', selectedKeys)
+    },
+    onCheck (checkeKeys) {
+      this.$emit('check', checkeKeys)
     },
     onChange (e) {
       const value = e.target.value
@@ -81,14 +103,19 @@ export default {
           this.generateList(node.children, node.key)
         }
       }
+    },
+    clearSelectNodes () {
+      this.selectNodes = []
     }
   },
   watch: {
     treeData: function (newVal) {
       this.dataList = []
-      debugger
       this.generateList(this.treeData)
-    }
+    },
+    checkedKeys: function (newVal) {
+      this.checkNodes = newVal
+    },
   }
 
 }
