@@ -8,16 +8,20 @@
         <a-col :md="18" :sm="24">
           <div style="background-color: #fff">
             <div>
-              <tree-select v-if="(!isSingle)" @change="onChangeDept" :value="curSelectDept" :treeData="deptTreeData" :placeholder="'请选择部门'"></tree-select>
+              <tree-select
+                v-if="(!isSingle)"
+                @change="onChangeDept"
+                :value="curSelectDept"
+                :treeData="deptTreeData"
+                :placeholder="'请选择部门'"></tree-select>
               <a-button type="primary" @click="addUser">添加成员</a-button>
-              <user-modal ref="userModal" @refreshTable="onRefreshTable"></user-modal>
             </div>
-            <company-user-table
-              ref="companyUserTable"
+            <user-table
+              ref="userTable"
               :company-id="curSelectCom"
               :dept-id="curSelectDept"
-              @editUser="onEditUser"
-              @editAuth="onEditAuth"></company-user-table>
+              :show-action="true"
+              @editAuth="onEditAuth"></user-table>
           </div>
         </a-col>
       </div>
@@ -29,14 +33,13 @@
 <script>
 import OrgAuth from './Module/OrgAuth'
 import { getAllCompanyTree, getCompanyDeptTree } from '@/api/company'
-import CompanyUserTable from './Module/CompanyUserTable'
+import UserTable from './Module/UserTable'
 import LeftTree from './Module/LeftTree'
-import UserModal from './Module/UserModal'
 import TreeSelect from './Module/TreeSelect'
 
 export default {
   name: 'BusinessMembers',
-  components: { TreeSelect, LeftTree, CompanyUserTable, UserModal, CompanyUserTable, OrgAuth },
+  components: { TreeSelect, LeftTree, UserTable, OrgAuth },
   data () {
     return {
       comTreeData: [],
@@ -56,7 +59,7 @@ export default {
           this.curSelectCom = selectedKeys[0]
           this.curSelectDept = undefined
           // 因为公司不变，子组件监听不到，所以这里再查一下
-          this.$refs.companyUserTable.reloadCom(this.curSelectCom)
+          this.$refs.userTable.reloadCom(this.curSelectCom)
         } else {
           // 单体公司并且选择的是部门
           this.curSelectCom = this.singleComId
@@ -79,22 +82,14 @@ export default {
         return treeData
       })
     },
-    // 表格申请莫泰框
+    // 添加用户调表中的方法
     addUser () {
-      this.$refs.userModal.visible = true
-    },
-    // 表格申请莫泰框
-    onEditUser (record) {
-      this.$refs.userModal.onEdit(record)
+      this.$refs.userTable.onUserAdd()
     },
     onEditAuth (record) {
       // 表格申请编辑权限
       this.isOnOrgAuth = true
       this.$refs.orgAuth.onEditAuth(record.id)
-    },
-    // 莫泰框提交申请表格刷新
-    onRefreshTable () {
-      this.$refs.companyUserTable.reload()
     },
     // 根据解析后的树数据判断是否是单体公司
     isSingleCom (treeData) {

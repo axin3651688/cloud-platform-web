@@ -28,27 +28,43 @@
         </a-dropdown>
       </span>
     </a-table>
-    <div>
+    <div v-show="showAction">
       已选择{{ selectedRowKeys.length }} <a @click="batchDeleteUser">删除</a>
     </div>
+    <user-modal ref="userModal" @refreshTable="reload"></user-modal>
   </div>
-
 </template>
 
 <script>
 import { getPrimaryCompanyPeople } from '@/api/userCompany'
 import { getPrimaryDeptPeople } from '@/api/userDept'
 import { enableUser, deleteUser, batchDeleteUser } from '@/api/user'
+import { findRoleUser } from '@/api/userRole'
 import typeUtils from '@/utils/typeUtils'
+import UserModal from './UserModal'
 export default {
-  name: 'CompanyUserTable',
+  name: 'UserTable',
+  components: { UserModal },
   props: {
+    // 根据公司查
     companyId: {
       type: String,
       default: undefined
     },
+    // 根据部门查
     deptId: {
+      type: String,
       default: undefined
+    },
+    // 根据角色查
+    roleId: {
+      type: Number,
+      default: undefined
+    },
+    // 是否显示操作按钮
+    showAction: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -109,9 +125,11 @@ export default {
         defaultCurrent: 0,
         defaultPageSize: 1
       },
+      // 被选择的
       selectedRowKeys: [],
       loading: false,
       rowKey: 'id',
+      // 查的是启用还是禁用的. '1' 启用 '0' 禁用
       enableParam: '1'
     }
   },
@@ -133,42 +151,42 @@ export default {
       this.fetch({
         comId: this.companyId,
         deptId: this.deptId,
+        roleId: this.roleId,
         size: pagination.pageSize,
         page: pagination.current - 1
       })
     },
-    fetch (params = {}) {
+    async fetch (params = {}) {
       const _this = this
       params.enable = _this.enableParam
-      if (typeUtils.isString(params.deptId) && params.deptId.length > 0) {
-        getPrimaryDeptPeople(params).then(function (res) {
-          const pagination = { ..._this.pagination }
-          const data = res.data
-          _this.loading = false
-          if (typeUtils.isObject) {
-            _this.data = data.content
-          }
-          pagination.total = data.totalElements - 0
-          _this.pagination = pagination
-        })
-      } else if (typeUtils.isString(params.comId) && params.comId.length > 0) {
-        getPrimaryCompanyPeople(params).then(function (res) {
-          const pagination = { ..._this.pagination }
-          const data = res.data
-          _this.loading = false
-          _this.data = data.content
-          if (typeUtils.isObject(data)) {
-            _this.data = data.content
-          }
-          pagination.total = data.totalElements - 0
-          _this.pagination = pagination
-        })
+      let userData = []
+      if (typeUtils.isNotBlank(params.deptId)) {
+        const res = await getPrimaryDeptPeople(params)
+        userData = res.data
+      } else if (typeUtils.isNotBlank(params.comId)) {
+        const res = await getPrimaryCompanyPeople(params)
+        userData = res.data
+      } else if (params.roleId >= 0) {
+        const res = await findRoleUser(params)
+        userData = res.data
       }
+      const pagination = { ..._this.pagination }
+      _this.loading = false
+      if (typeUtils.isObject(userData)) {
+        _this.data = userData.content
+      }
+      pagination.total = userData.totalElements - 0
+      _this.pagination = pagination
     },
     reload () {
       this.initPage()
-      this.fetch({ comId: this.companyId, deptId: this.deptId, page: this.pagination.defaultCurrent, size: this.pagination.defaultPageSize })
+      this.fetch({ comId: this.companyId,
+        deptId: this.deptId,
+        roleId: this.roleId,
+        page: this.pagination.defaultCurrent,
+        size: this.pagination.defaultPageSize })
     },
+    // 写这个是因为左边树又有部门又有公司，判断不了公司有没有变化，重新选择公司，部门是不会清除的，还是回会去查部门数据
     reloadCom (comId) {
       this.initPage()
       this.fetch({ comId: comId, page: this.pagination.defaultCurrent, size: this.pagination.defaultPageSize })
@@ -176,9 +194,13 @@ export default {
     initPage () {
       this.pagination.current = this.pagination.defaultCurrent
     },
-    onUserEdit (record) {
-      this.$emit('editUser', record)
+    onUserAdd () {
+      this.$refs.userModal.visible = true
     },
+    onUserEdit (record) {
+      this.$refs.userModal.onEdit(record)
+    },
+    // 这里不做权限管理交给父组件做吧
     onUserAuth (record) {
       this.$emit('editAuth', record)
     },
@@ -223,20 +245,33 @@ export default {
   },
   watch: {
     companyId (newVal, oldVal) {
-      if (typeUtils.isString(newVal) && newVal.length > 0) {
+      if (typeUtils.isNotBlank(newVal)) {
         this.reloadCom(newVal)
       }
     },
     deptId (newVal, oldVal) {
-      if (typeUtils.isString(newVal) && newVal.length > 0) {
+      if (typeUtils.isNotBlank(newVal)) {
         this.initPage()
-        this.fetch({ comId: this.companyId, deptId: newVal, page: this.pagination.defaultCurrent, size: this.pagination.defaultPageSize })
+        this.fetch({ comId: this.companyId,
+          deptId: newVal,
+          page: this.pagination.defaultCurrent,
+          size: this.pagination.defaultPageSize })
+      }
+    },
+    roleId (newVal) {
+      if (newVal >= 0) {
+        this.initPage()
+        this.fetch({ roleId: newVal,
+          page: this.pagination.defaultCurrent,
+          size: this.pagination.defaultPageSize })
       }
     }
   },
   created () {
-    const _this = this
-    _this.fetch({ comId: _this.companyId, page: _this.pagination.defaultCurrent, size: _this.pagination.defaultPageSize })
+    /* Action在最后一列 */
+    if (!this.showAction) {
+      this.columns.pop()
+    }
   }
 }
 </script>
