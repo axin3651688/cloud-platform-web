@@ -1,31 +1,5 @@
 <template>
     <div class="loginLog">
-      <!-- 路由的头部 -->
-      <div>
-        <a-menu
-          :mode="'horizontal'"
-          :style="{ border: '0', width: device == 'mobile' ? '560px' : 'auto'}"
-          :selectedKeys="selectedKeys"
-          type="inner"
-          @openChange="onOpenChange">
-          <a-menu-item key="/personalSettings/LoggingStatements">
-            <router-link :to="{ name: 'LoggingStatements' }">
-              基本资料
-            </router-link>
-          </a-menu-item>
-          <a-menu-item key="/personalSettings/BindingAccount">
-            <router-link :to="{ name: 'BindingAccount' }">
-              绑定账号
-            </router-link>
-          </a-menu-item>
-          <a-menu-item key="/personalSettings/LogInLog">
-            <router-link :to="{ name: 'LogInLog' }">
-              登陆日志
-            </router-link>
-          </a-menu-item>
-        </a-menu>
-        <route-view></route-view>
-      </div>
       <!-- 路由头部以下内容 -->
       <div class="search">
         <a-input-search
@@ -45,8 +19,6 @@
 </template>
 
 <script>
-import { PageView, RouteView } from '@/layouts'
-import { mixinDevice } from '@/utils/mixin.js'
 const columns = [
   {
     title: '序号',
@@ -122,8 +94,6 @@ const columns = [
     address:'合肥'
   },];
   export default {
-    mixins: [mixinDevice],
-    components: { PageView, RouteView },
     name: 'LogInLog',
     data() {
       return {
@@ -136,18 +106,6 @@ const columns = [
     methods: {
       onSearch (value) {
         console.log(value)
-      },
-      onOpenChange (openKeys) {
-        this.openKeys = openKeys
-      },
-      updateMenu () {
-        const routes = this.$route.matched.concat()
-        this.selectedKeys = [routes.pop().path]
-      }
-    },
-    watch: {
-      '$route' (val) {
-        this.updateMenu()
       }
     }
   }

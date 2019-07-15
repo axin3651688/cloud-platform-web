@@ -1,32 +1,6 @@
 <template>
   <div class="main">
     <div class="loginInfo">
-      <!-- 路由的头部 -->
-      <div>
-        <a-menu
-          :mode="'horizontal'"
-          :style="{ border: '0', width: device == 'mobile' ? '560px' : 'auto'}"
-          :selectedKeys="selectedKeys"
-          type="inner"
-          @openChange="onOpenChange">
-          <a-menu-item key="/personalSettings/LoggingStatements">
-            <router-link :to="{ name: 'LoggingStatements' }">
-              基本资料
-            </router-link>
-          </a-menu-item>
-          <a-menu-item key="/personalSettings/BindingAccount">
-            <router-link :to="{ name: 'BindingAccount' }">
-              绑定账号
-            </router-link>
-          </a-menu-item>
-          <a-menu-item key="/personalSettings/LogInLog">
-            <router-link :to="{ name: 'LogInLog' }">
-              登陆日志
-            </router-link>
-          </a-menu-item>
-        </a-menu>
-        <route-view></route-view>
-      </div>
       <!-- 头像 -->
       <div class="total">
         <div class="modle">
@@ -147,16 +121,10 @@
 </template>
 
 <script>
-import { PageView, RouteView } from '@/layouts'
-import { mixinDevice } from '@/utils/mixin.js'
   export default {
     name: 'LoggingStatements',
-    mixins: [mixinDevice],
-    components: { PageView, RouteView },
     data() {
       return {
-        openKeys: [],
-        selectedKeys: [],
         isOut1:false,
         isOut2:false,
         isOut3:false,
@@ -179,11 +147,7 @@ import { mixinDevice } from '@/utils/mixin.js'
             {min: 1, max: 32, message: '支持汉字、字母、数值任意组合，限32个字符', trigger: 'blur'}
           ]
         }
-        // autofocus:true
       }
-    },
-    created() {
-      debugger
     },
     methods: {
       expend(val){
@@ -224,21 +188,6 @@ import { mixinDevice } from '@/utils/mixin.js'
         }
         
         
-      },
-      onOpenChange (openKeys) {
-      this.openKeys = openKeys
-      },
-      updateMenu () {
-        const routes = this.$route.matched.concat()
-        this.selectedKeys = [routes.pop().path]
-      },
-      edit(){
-        // this.autofocus = false;
-      }
-    },
-    watch: {
-      '$route' (val) {
-        this.updateMenu()
       }
     }
   }

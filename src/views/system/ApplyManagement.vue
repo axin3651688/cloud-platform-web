@@ -1,4 +1,5 @@
 <template>
+<!-- 应用管理 -->
   <div class="applyModle">
     <div class="model" 
       v-for="(item,index) of list"
