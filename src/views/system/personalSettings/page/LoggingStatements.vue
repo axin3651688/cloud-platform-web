@@ -1,4 +1,5 @@
 <template>
+  <div class="main">
     <div class="loginInfo">
       <!-- 路由的头部 -->
       <div>
@@ -142,6 +143,7 @@
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -243,6 +245,15 @@ import { mixinDevice } from '@/utils/mixin.js'
 </script>
 
 <style scoped>
+.main{
+  overflow: auto;
+}
+.loginInfo{
+  height: 800px;
+  width: 1599px;
+  MARGIN-RIGHT: auto;
+  MARGIN-LEFT: auto;
+}
 .total{
   border-bottom: 1px solid #ccc;
   padding-top: 20px;

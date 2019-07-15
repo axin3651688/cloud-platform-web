@@ -1,5 +1,6 @@
 <template>
-    <div>
+  <div class="main">
+    <div class="main1">
       <!-- 路由的头部 -->
       <div>
         <a-menu
@@ -72,12 +73,13 @@
         <input-model :placeholder='placeholder'></input-model>
       </div> -->
     </div>
+  </div>
 </template>
 
 <script>
-import inputModel from '../../inputModel'
-import selectModel from '../../selectModel'
-import bigHeader from '../../bigHeader'
+import inputModel from '../../../../../src/components/system/InputModel'
+import selectModel from '../../../../../src/components/system/SelectModel'
+import bigHeader from '../../../../../src/components/system/BigHeader'
 import { PageView, RouteView } from '@/layouts'
 import { mixinDevice } from '@/utils/mixin.js'
   export default {
@@ -151,6 +153,15 @@ import { mixinDevice } from '@/utils/mixin.js'
 </script>
 
 <style scoped>
+.main{
+  overflow: auto;
+}
+.main1{
+  height: 800px;
+  width: 1599px;
+  MARGIN-RIGHT: auto;
+  MARGIN-LEFT: auto;
+}
 .total{
   border-bottom: 1px solid #ccc;
   padding-top: 20px;
