@@ -1,6 +1,7 @@
 <template>
     <!-- <h1>控制台 Console</h1> -->
-    <div>
+  <div class="main">
+    <div class="main1">
       <div class="body_one" style="height:280px;">
         <div class="body_one_head">
           <a-icon class="lanyuan"/>
@@ -78,6 +79,7 @@
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -231,6 +233,15 @@
   border:1px solid rgba(0,0,0,0.10196078431372549);
   opacity:1;
   border-radius:2px;
+}
+.main1{
+  height: 800px;
+  width: 1599px;
+  MARGIN-RIGHT: auto;
+  MARGIN-LEFT: auto;
+}
+.main{
+  overflow:auto;
 }
 </style>
 

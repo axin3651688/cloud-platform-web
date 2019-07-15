@@ -1,32 +1,6 @@
 <template>
-    <div>
-      <!-- 路由的头部 -->
-      <div>
-        <a-menu
-          :mode="'horizontal'"
-          :style="{ border: '0', width: device == 'mobile' ? '560px' : 'auto'}"
-          :selectedKeys="selectedKeys"
-          type="inner"
-          @openChange="onOpenChange">
-          <a-menu-item key="/personalSettings/LoggingStatements">
-            <router-link :to="{ name: 'LoggingStatements' }">
-              基本资料
-            </router-link>
-          </a-menu-item>
-          <a-menu-item key="/personalSettings/BindingAccount">
-            <router-link :to="{ name: 'BindingAccount' }">
-              绑定账号
-            </router-link>
-          </a-menu-item>
-          <a-menu-item key="/personalSettings/LogInLog">
-            <router-link :to="{ name: 'LogInLog' }">
-              登陆日志
-            </router-link>
-          </a-menu-item>
-        </a-menu>
-        <route-view></route-view>
-      </div>
-
+  <div class="main">
+    <div class="main1">
       <!-- 路由头部以下内容 -->
       <div class="total">
         <div class="wechat">
@@ -72,27 +46,21 @@
         <input-model :placeholder='placeholder'></input-model>
       </div> -->
     </div>
+  </div>
 </template>
 
 <script>
-import inputModel from '../../inputModel'
-import selectModel from '../../selectModel'
-import bigHeader from '../../bigHeader'
-import { PageView, RouteView } from '@/layouts'
-import { mixinDevice } from '@/utils/mixin.js'
+import inputModel from '../../../../../src/components/system/InputModel'
+import selectModel from '../../../../../src/components/system/SelectModel'
+import bigHeader from '../../../../../src/components/system/BigHeader'
   export default {
-    mixins: [mixinDevice],
     components: { 
-      PageView, 
-      RouteView,
       selectModel,
       inputModel,
       bigHeader},
     name: 'BindingAccount',
     data () {
       return {
-        openKeys: [],
-        selectedKeys: [],
         param1:'绑定',
         param2:'绑定',
         title: {
@@ -114,9 +82,6 @@ import { mixinDevice } from '@/utils/mixin.js'
 
       }
     },
-    created () {
-      this.updateMenu()
-    },
     methods: {
       clickBang (val) {
         if(val == 1){
@@ -133,24 +98,21 @@ import { mixinDevice } from '@/utils/mixin.js'
           }
         }
         
-      },
-      onOpenChange (openKeys) {
-        this.openKeys = openKeys
-      },
-      updateMenu () {
-        const routes = this.$route.matched.concat()
-        this.selectedKeys = [routes.pop().path]
-      }
-    },
-    watch: {
-      '$route' (val) {
-        this.updateMenu()
       }
     }
   }
 </script>
 
 <style scoped>
+.main{
+  overflow: auto;
+}
+.main1{
+  height: 800px;
+  width: 1599px;
+  MARGIN-RIGHT: auto;
+  MARGIN-LEFT: auto;
+}
 .total{
   border-bottom: 1px solid #ccc;
   padding-top: 20px;

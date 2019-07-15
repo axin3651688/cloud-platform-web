@@ -24,11 +24,22 @@
     <a-col :md="10" :sm="24">
       <a-card title="授权公司">
       </a-card>
+      <div class="aaa">
+        <a-row>
+          <a-col :span="6">col-6</a-col>
+          <a-col :span="6">col-6</a-col>
+          <a-col :span="6">col-6</a-col>
+          <a-col :span="6">col-6</a-col>
+        </a-row>
+      </div>
       <a-card title="授权部门">
       </a-card>
+      <div class="aaa">
+
+      </div>
+      <a-button @click="onSubmit" class="btn">保存</a-button>
+      <a-button @click="onBack" class="btn">返回</a-button>
     </a-col>
-    <a-button @click="onSubmit">保存</a-button>
-    <a-button @click="onBack">返回</a-button>
   </a-row>
 </template>
 <script>
@@ -164,4 +175,13 @@ export default {
       }
     }
   }
+.aaa{
+  height: 300px;
+  border: 1px solid #ccc;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.btn{
+  float: right;
+}
 </style>
