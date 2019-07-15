@@ -2,11 +2,11 @@ import { axios2 } from '@/utils/request'
 
 const api = {
   saveUserPrimaryDept: '/org/base_service/user_dept/update_user_primary_dept',
-  findPrimaryDept: '/org/base_service/user_dept/find_primary_dept_by_user',
-  findPrimaryDeptStaff: '/org/base_service/user_dept/find_users_by_primary_dept_and_user_info',
-  findDeptByUser: '/org/base_service/user_dept/find_dept_by_user',
   updateUserDept: '/org/base_service/user_dept/update_user_dept',
   updateUserCompanyDept: '/org/base_service/user_dept/update_user_company_dept',
+  findPrimaryDept: '/org/base_service/user_dept/find_primary_dept_by_user',
+  findPrimaryDeptStaff: '/org/base_service/user_dept/find_users_by_primary_dept_and_user_info',
+  findDeptByUser: '/org/base_service/user_dept/find_dept_by_user'
 }
 
 /**

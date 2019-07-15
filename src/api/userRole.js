@@ -2,8 +2,9 @@ import { axios2 } from '@/utils/request'
 
 const api = {
   saveUserRole: '/org/base_service/user_role/save_user_role',
-  updateUserRole: '/org/base_service/user_role//update_user_role',
-  findUserRole: '/org/base_service/user_role//find_user_role'
+  updateUserRole: '/org/base_service/user_role/update_user_role',
+  findUserRole: '/org/base_service/user_role/find_user_role',
+  findRoleUser: '/org/base_service/user_role/find_user_by_role_and_user_info'
 }
 
 /**
@@ -44,5 +45,18 @@ export function findUserRole (parameter) {
   return axios2({
     url: api.findUserRole + '/' + parameter.userId,
     method: 'get'
+  })
+}
+
+/**
+ * 根据角色去查询用户
+ * @param parameter
+ * @returns {*}
+ */
+export function findRoleUser (parameter) {
+  return axios2({
+    url: api.findRoleUser,
+    method: 'get',
+    params: parameter
   })
 }

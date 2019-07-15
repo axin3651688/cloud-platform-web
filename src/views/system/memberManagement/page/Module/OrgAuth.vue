@@ -2,6 +2,7 @@
   <a-row :gutter="16">
     <a-col :md="7" :sm="24">
       <left-tree
+        class="custom"
         ref="comTree"
         :tree-data="comTreeData"
         :checkable="true"
@@ -12,6 +13,7 @@
     </a-col>
     <a-col :md="7" :sm="24">
       <left-tree
+        class="custom"
         ref="deptTree"
         :tree-data="deptTreeData"
         :checkable="true"
@@ -165,7 +167,14 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+  .custom {
+    /deep/ li[role='treeitem'] {
+      .ant-tree-node-content-wrapper {
+        width: calc(100% - 44px);
+      }
+    }
+  }
 .aaa{
   height: 300px;
   border: 1px solid #ccc;
