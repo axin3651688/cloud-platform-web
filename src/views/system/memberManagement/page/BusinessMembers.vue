@@ -14,19 +14,38 @@
                 :value="curSelectDept"
                 :treeData="deptTreeData"
                 :placeholder="'请选择部门'"></tree-select>
-              <a-button type="primary" @click="addUser">添加成员</a-button>
+              <a-button type="primary" @click="onUserAdd">添加成员</a-button>
             </div>
             <user-table
               ref="userTable"
               :company-id="curSelectCom"
               :dept-id="curSelectDept"
               :show-action="true"
-              @editAuth="onEditAuth"></user-table>
+              @rowSelect="onRowSelect">
+              <template slot="dropdown" slot-scope="item">
+                <a-menu-item>
+                  <a href="javascript:;" @click="onUserEdit(item.record)">编辑</a>
+                </a-menu-item>
+                <a-menu-item>
+                  <a href="javascript:;" @click="onUserAuth(item.record)">授权</a>
+                </a-menu-item>
+                <a-menu-item>
+                  <a href="javascript:;" @click="onUserDisable(item.record)">禁用</a>
+                </a-menu-item>
+                <a-menu-item>
+                  <a href="javascript:;" @click="onUserDelete(item.record)">删除</a>
+                </a-menu-item>
+              </template>
+            </user-table>
+            <div>
+              已选择{{ selectedRowKeys.length }} <a @click="batchDeleteUser">删除</a>
+            </div>
           </div>
         </a-col>
       </div>
     </a-row>
     <org-auth ref="orgAuth" v-show="isOnOrgAuth" @back="onBack"></org-auth>
+    <user-modal ref="userModal" @refreshTable="reloadTable"></user-modal>
   </div>
 </template>
 
@@ -36,10 +55,12 @@ import { getAllCompanyTree, getCompanyDeptTree } from '@/api/company'
 import UserTable from './Module/UserTable'
 import LeftTree from './Module/LeftTree'
 import TreeSelect from './Module/TreeSelect'
+import { enableUser, deleteUser, batchDeleteUser } from '@/api/user'
+import UserModal from './Module/UserModal'
 
 export default {
   name: 'BusinessMembers',
-  components: { TreeSelect, LeftTree, UserTable, OrgAuth },
+  components: { UserModal, TreeSelect, LeftTree, UserTable, OrgAuth },
   data () {
     return {
       comTreeData: [],
@@ -48,7 +69,8 @@ export default {
       curSelectDept: undefined,
       isSingle: false,
       singleComId: undefined,
-      isOnOrgAuth: false
+      isOnOrgAuth: false,
+      selectedRowKeys: []
     }
   },
   methods: {
@@ -82,14 +104,42 @@ export default {
         return treeData
       })
     },
-    // 添加用户调表中的方法
-    addUser () {
-      this.$refs.userTable.onUserAdd()
+    onUserAdd () {
+      this.$refs.userModal.visible = true
     },
-    onEditAuth (record) {
+    onUserEdit (record) {
+      this.$refs.userModal.onEdit(record)
+    },
+    // 这里不做权限管理交给父组件做吧
+    onUserAuth (record) {
       // 表格申请编辑权限
       this.isOnOrgAuth = true
       this.$refs.orgAuth.onEditAuth(record.id)
+    },
+    onUserDisable (record) {
+      const _this = this
+      enableUser({ enable: '0' }, [record.id]).then(function (res) {
+        if (res.data.code !== '0') {
+          _this.$message.success('禁用成功')
+        } else {
+          _this.$message.error('禁用失败')
+        }
+        _this.reloadTable()
+      })
+    },
+    reloadTable () {
+      this.$refs.userTable.reload()
+    },
+    onUserDelete (record) {
+      const _this = this
+      deleteUser({ userId: record.id }).then(function (res) {
+        if (res.data.code !== '0') {
+          _this.$message.success('删除成功')
+        } else {
+          _this.$message.error('删除失败')
+        }
+        _this.reloadTable()
+      })
     },
     // 根据解析后的树数据判断是否是单体公司
     isSingleCom (treeData) {
@@ -103,6 +153,25 @@ export default {
     },
     onBack () {
       this.isOnOrgAuth = false
+    },
+    batchDeleteUser () {
+      const _this = this
+      if (_this.selectedRowKeys.length === 0) {
+        _this.$message.warning('请选择需要删除的用户')
+      } else {
+        batchDeleteUser(_this.selectedRowKeys).then(function (res) {
+          if (res.code !== 0) {
+            _this.$message.success('删除成功')
+          } else {
+            _this.$message.error('删除失败')
+          }
+          _this.reloadTable()
+          _this.selectedRowKeys = []
+        })
+      }
+    },
+    onRowSelect (selectedRowKeys, selectedRows) {
+      this.selectedRowKeys = selectedRowKeys
     }
   },
   created () {
