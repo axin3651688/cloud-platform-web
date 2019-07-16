@@ -87,6 +87,12 @@ export default {
     showMenu: {
       type: Boolean,
       default: false
+    },
+    selectKeys: {
+      type: Array,
+      default: function () {
+        return []
+      }
     }
   },
   data () {
@@ -110,8 +116,8 @@ export default {
       this.$emit('select', selectedKeys)
     },
     // check事件反馈给父组件
-    onCheck (checkeKeys) {
-      this.$emit('check', checkeKeys)
+    onCheck (checkedKeys) {
+      this.$emit('check', checkedKeys)
     },
     // 搜索
     onChange (e) {
@@ -157,6 +163,9 @@ export default {
     // 父子节点check数据不同步，用watch监听解决了。。。
     checkedKeys: function (newVal) {
       this.checkNodes = newVal
+    },
+    selectKeys: function (newVal) {
+      this.selectNodes = newVal
     }
   }
 

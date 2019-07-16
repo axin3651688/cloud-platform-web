@@ -8,7 +8,7 @@
  * @param rootPid  根节点
  * @returns {Array}   树形结构数据
  */
-export function listToTreeNode ({ data, id = 'id', pid = 'pid', leaf = 'leaf', text = 'text', rootPid = '0' }) {
+export function listToTreeNode ({ data, id = 'id', pid = 'pid', leaf = 'leaf', text = 'text', rootPid = '0', key = 'id' }) {
   if (!Array.isArray(data)) {
     throw Error('请传入正确的数组')
   }
@@ -18,7 +18,7 @@ export function listToTreeNode ({ data, id = 'id', pid = 'pid', leaf = 'leaf', t
   const treeNodes = data.map(ele => {
     const treeNode = {}
     Object.assign(treeNode, ele)
-    treeNode.key = ele[id]
+    treeNode.key = ele[key]
     treeNode.isLeaf = ele[leaf] != '0'
     treeNode.title = ele.text
     treeNode.id = ele[id]
