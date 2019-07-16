@@ -50,9 +50,9 @@
 </template>
 
 <script>
-import inputModel from '../../../../../src/components/system/InputModel'
-import selectModel from '../../../../../src/components/system/SelectModel'
-import bigHeader from '../../../../../src/components/system/BigHeader'
+import inputModel from '@/components/system/InputModel'
+import selectModel from '@/components/system/SelectModel'
+import bigHeader from '@/components/system/BigHeader'
   export default {
     components: { 
       selectModel,
