@@ -1,15 +1,15 @@
 import { axios2 } from '@/utils/request'
 
 const api = {
-  addUser: '/org/base_service/user/save_user',
-  addUserToSystem: '/uc/user/save',
-  modifyUser: '/org/base_service/user/update_user_by_field',
-  enableParam: '/org/base_service/user/update_user_enable',
-  deleteUser: '/org/base_service/user/delete_user',
-  batchDeleteUser: '/org/base_service/user/delete_users',
-  findUserCount: '/org/base_service/user/find_user_count',
-  findSystemUserByPhone: '/uc/user/find_user_phone',
-  findUsers: '/org/base_service/user/find_users'
+    addUser: '/org/base_service/user/save_user',
+    addUserToSystem: '/uc/user/save',
+    modifyUser: '/org/base_service/user/update_user_by_field',
+    enableParam: '/org/base_service/user/update_user_enable',
+    deleteUser: '/org/base_service/user/delete_user',
+    batchDeleteUser: '/org/base_service/user/delete_users',
+    findUserCount: '/org/base_service/user/find_user_count',
+    findSystemUserByPhone: '/uc/user/find_user_phone',
+    findUsers: '/org/base_service/user/find_users'
 }
 
 /**
@@ -17,12 +17,12 @@ const api = {
  * @param parameter
  * @returns {*}
  */
-export function saveUser (parameter) {
-  return axios2({
-    url: api.addUser,
-    method: 'post',
-    data: parameter
-  })
+export function saveUser(parameter) {
+    return axios2({
+        url: api.addUser,
+        method: 'post',
+        params: parameter
+    })
 }
 
 /**
@@ -30,12 +30,12 @@ export function saveUser (parameter) {
  * @param parameter
  * @returns {*}
  */
-export function saveUserToSystem (parameter) {
-  return axios2({
-    url: api.addUserToSystem,
-    method: 'post',
-    data: parameter
-  })
+export function saveUserToSystem(parameter) {
+    return axios2({
+        url: api.addUserToSystem,
+        method: 'post',
+        data: parameter
+    })
 }
 
 /**
@@ -43,12 +43,12 @@ export function saveUserToSystem (parameter) {
  * @param parameter
  * @returns {*}
  */
-export function modifyUser (parameter) {
-  return axios2({
-    url: api.modifyUser,
-    method: 'put',
-    params: parameter
-  })
+export function modifyUser(parameter) {
+    return axios2({
+        url: api.modifyUser,
+        method: 'put',
+        params: parameter
+    })
 }
 
 /**
@@ -56,13 +56,13 @@ export function modifyUser (parameter) {
  * @param parameter
  * @returns {*}
  */
-export function enableUser (parameter, data) {
-  return axios2({
-    url: api.enableParam,
-    method: 'put',
-    params: parameter,
-    data: data
-  })
+export function enableUser(parameter, data) {
+    return axios2({
+        url: api.enableParam,
+        method: 'put',
+        params: parameter,
+        data: data
+    })
 }
 
 /**
@@ -70,12 +70,12 @@ export function enableUser (parameter, data) {
  * @param parameter
  * @returns {*}
  */
-export function deleteUser (parameter) {
-  return axios2({
-    url: api.deleteUser,
-    method: 'delete',
-    params: parameter
-  })
+export function deleteUser(parameter) {
+    return axios2({
+        url: api.deleteUser,
+        method: 'delete',
+        params: parameter
+    })
 }
 
 /**
@@ -83,12 +83,12 @@ export function deleteUser (parameter) {
  * @param parameter
  * @returns {*}
  */
-export function batchDeleteUser (parameter) {
-  return axios2({
-    url: api.batchDeleteUser,
-    method: 'delete',
-    data: parameter
-  })
+export function batchDeleteUser(parameter) {
+    return axios2({
+        url: api.batchDeleteUser,
+        method: 'delete',
+        data: parameter
+    })
 }
 
 /**
@@ -96,12 +96,12 @@ export function batchDeleteUser (parameter) {
  * @param parameter
  * @returns {*}
  */
-export function findUserCount (parameter) {
-  return axios2({
-    url: api.findUserCount,
-    method: 'get',
-    params: parameter
-  })
+export function findUserCount(parameter) {
+    return axios2({
+        url: api.findUserCount,
+        method: 'get',
+        params: parameter
+    })
 }
 
 /**
@@ -109,22 +109,22 @@ export function findUserCount (parameter) {
  * @param parameter
  * @returns {*}
  */
-export function findUserByRule (parameter) {
-  return axios2({
-    url: api.findUsers,
-    method: 'get',
-    params: parameter
-  })
+export function findUserByRule(parameter) {
+    return axios2({
+        url: api.findUsers,
+        method: 'get',
+        params: parameter
+    })
 }
 /**
  * 通过手机号查询系统用户
  * @param {phone}
  * @returns {*}
  */
-export function findSystemUserByPhone (parameter) {
-  return axios2({
-    url: api.findSystemUserByPhone,
-    method: 'get',
-    params: parameter
-  })
+export function findSystemUserByPhone(parameter) {
+    return axios2({
+        url: api.findSystemUserByPhone,
+        method: 'get',
+        params: parameter
+    })
 }
