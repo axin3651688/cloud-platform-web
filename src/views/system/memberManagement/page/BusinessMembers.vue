@@ -14,7 +14,7 @@
                 :value="curSelectDept"
                 :treeData="deptTreeData"
                 :placeholder="'请选择部门'"></tree-select>
-              <a-button type="primary" @click="onUserAdd">添加成员</a-button>
+              <a-button type="primary" @click="onUserAdd" v-action:addUser >添加成员</a-button>
             </div>
             <user-table
               ref="userTable"

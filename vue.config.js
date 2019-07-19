@@ -127,6 +127,14 @@ module.exports = {
         /* pathRewrite: {
           '^/api': ''
         } */
+      },
+      '/uaa': {
+        target: 'http://192.168.1.145:80',
+        ws: false,
+        changeOrigin: true,
+        /* pathRewrite: {
+          '^/api': ''
+        } */
       }
     }
   },

@@ -1,6 +1,7 @@
-import { axios } from '@/utils/request'
+import { axios2 } from '@/utils/request'
 // eslint-disable-next-line
 import { UserLayout, BasicLayout, RouteView, BlankLayout, PageView } from '@/layouts'
+import store from '@/store'
 
 // 前端路由表
 const constantRouterComponents = {
@@ -48,21 +49,6 @@ const notFoundRouter = {
 }
 
 /**
- * 获取后端路由信息的 axios API
- * @returns {Promise}
- */
-export const getRouterByUser = () => {
-  return axios({
-    url: '/user/dynamic-menu',
-    method: 'get'
-    /* headers: {
-      'Access-Token': 'xxx'
-    }
-    */
-  })
-}
-
-/**
  * 获取路由菜单信息
  *
  * 1. 调用 getRouterByUser() 访问后端接口获得路由结构数组
@@ -70,20 +56,24 @@ export const getRouterByUser = () => {
  * 2. 调用
  * @returns {Promise<any>}
  */
-export const generatorDynamicRouter = () => {
+export const generatorDynamicRouter = (data) => {
   return new Promise((resolve, reject) => {
-    // ajax
-    getRouterByUser().then(res => {
-      const result = res.data
-      const routeTree = getRoute(result)
-      const routers = generator(routeTree)
-      routers.push(notFoundRouter)
-      console.log(JSON.stringify(routers))
-      resolve(routers)
-    }).catch(err => {
-      reject(err)
-    })
+    const resources = store.getters.resources
+    transferToMenuResource(resources)
+    const routeTree = getRoute(resources)
+    const routers = generator(routeTree)
+    routers.push(notFoundRouter)
+    console.log(JSON.stringify(routers))
+    resolve(routers)
   })
+}
+
+function transferToMenuResource (resources) {
+  console.log('空方法')
+  return resources.filter(function (ele) {
+    return ele.type == 1
+  })
+  // 找到所有菜单节点的子节点中的权限节点，将该权限节点设置到
 }
 
 /**
@@ -101,32 +91,11 @@ function getRoute (list) {
     redirect: '/Console',
     children: []
   }
+  // 0为数据库菜单资源默认顶级父节点
   const tree = list2Tree(list, '0')
-  const routerTree = setRouteProperties(tree);
+  const routerTree = setRouteProperties(tree)
   rootRouter.children = routerTree
   return [rootRouter]
-}
-
-/**
- * 更改菜单树为路由树的属性
- * @param tree
- * @returns {Array}
- */
-function setRouteProperties (tree) {
-  const routerTree = [];
-  tree.forEach(function (ele) {
-    const node = {
-      title: ele.sname,
-      key: ele.source_id,
-      component: ele.source_id,
-      icon: ele.savatar
-    }
-    if (Array.isArray(ele.children)) {
-      node.children = setRouteProperties(ele.children)
-    }
-    routerTree.push(node);
-  })
-  return routerTree;
 }
 
 /**
@@ -137,11 +106,11 @@ function setRouteProperties (tree) {
  * @returns {Array}
  */
 function list2Tree (list, pCode) {
-  const arr = [];
+  const arr = []
   list.forEach(function (ele) {
-    if (ele.spcode === pCode) {
-      if (ele.nleaf === 0) {
-        ele.children = list2Tree(list, ele.scode)
+    if (ele.pcode == pCode) {
+      if (ele.leaf == 0) {
+        ele.children = list2Tree(list, ele.code)
         arr.push(ele)
       } else {
         arr.push(ele)
@@ -149,6 +118,28 @@ function list2Tree (list, pCode) {
     }
   })
   return arr
+}
+
+/**
+ * 更改菜单树为路由树的属性
+ * @param tree
+ * @returns {Array}
+ */
+function setRouteProperties (tree) {
+  const routerTree = []
+  tree.forEach(function (ele) {
+    const node = {
+      title: ele.text,
+      key: ele.component,
+      component: ele.component,
+      icon: ele.pcAvatar
+    }
+    if (Array.isArray(ele.children)) {
+      node.children = setRouteProperties(ele.children)
+    }
+    routerTree.push(node)
+  })
+  return routerTree
 }
 
 /**

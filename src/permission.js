@@ -13,22 +13,18 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 const whiteList = ['login', 'register', 'registerResult'] // no redirect whitelist
 
 router.beforeEach((to, from, next) => {
-  NProgress.start() // start progress bar
+  NProgress.start()
   to.meta && (typeof to.meta.title !== 'undefined' && setDocumentTitle(`${to.meta.title} - ${domTitle}`))
   if (Vue.ls.get(ACCESS_TOKEN)) {
-    /* has token */
     if (to.path === '/user/login') {
       next({ path: '/Console' })
       NProgress.done()
     } else {
-      if (store.getters.roles.length === 0) {
-        // store.dispatch('GetInfo')
-         // .then(res => {
-        const roles = 'admin';
-        store.commit('SET_ROLES', [roles])
-         //   const roles = res.result && res.result.role
+      if (store.getters.resources.length === 0) {
+        store.dispatch('GetInfo')
+          .then(res => {
             // 调用 vuex 的 从后端获取用户的路由菜单，动态添加可访问路由表
-            store.dispatch('GenerateRoutes', { roles }).then(() => {
+            store.dispatch('GenerateRoutes', { id: res.data.id }).then(() => {
               // 把已获取到的路由菜单加入到路由表中
               router.addRoutes(store.getters.addRouters)
               const redirect = decodeURIComponent(from.query.redirect || to.path)
@@ -40,8 +36,7 @@ router.beforeEach((to, from, next) => {
                 next({ path: redirect })
               }
             })
-         // })
-          .catch(() => {
+          }).catch(() => {
             notification.error({
               message: '错误',
               description: '请求用户信息失败，请重试'
@@ -56,7 +51,7 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     if (whiteList.includes(to.name)) {
-      // 在免登录白名单，直接进入
+      // TODO 在免登录白名单，直接进入
       next()
     } else {
       next({ path: '/user/login', query: { redirect: to.fullPath } })

@@ -188,9 +188,18 @@ export default {
         if (!err) {
           console.log('login form', values)
           const loginParams = { ...values }
-          delete loginParams.username
-          loginParams[!state.loginType ? 'email' : 'username'] = values.username
-          loginParams.password = md5(values.password)
+          // delete loginParams.username
+          // loginParams[!state.loginType ? 'email' : 'username'] = values.username
+          // loginParams.password = md5(values.password)
+          loginParams['client_id'] = 'browser'
+          loginParams['grant_type'] = 'password'
+          if (customActiveKey === 'tab1') {
+            loginParams['auth_type'] = ''
+          } else {
+            loginParams['auth_type'] = 'sms'
+            loginParams['username'] = loginParams['mobile']
+            loginParams['password'] = loginParams['captcha']
+          }
           Login(loginParams)
             .then((res) => this.loginSuccess(res))
             .catch(err => this.requestFailed(err))
@@ -225,7 +234,7 @@ export default {
             setTimeout(hide, 2500)
             this.$notification['success']({
               message: '提示',
-              description: '验证码获取成功，您的验证码为：' + res.result.captcha,
+              description: '验证码获取成功，您的验证码为：' + '8888'/* res.result.captcha */,
               duration: 8
             })
           }).catch(err => {
@@ -248,10 +257,7 @@ export default {
       })
     },
     loginSuccess (res) {
-      console.log(res)
-      debugger
       this.$router.push({ name: 'Console' })
-      // 延迟 1 秒显示欢迎信息
       setTimeout(() => {
         this.$notification.success({
           message: '欢迎',

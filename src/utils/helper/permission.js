@@ -20,13 +20,17 @@ function plugin (Vue) {
       get () {
         const _this = this
         return (permissions) => {
-          const [permission, action] = permissions.split('.')
-          const permissionList = _this.$store.getters.roles.permissions
-          return permissionList.find((val) => {
+          // 2019年7月19日15:25:29 START
+          const resourceCodes = _this.$store.getters.resourceCode
+          return resourceCodes.indexOf(permissions) > -1
+          // 2019年7月19日15:25:34 END
+          /* const [permission, action] = permissions.split('.')
+          const permissionList = _this.$store.getters.roles.permissions */
+          /* return permissionList.find((val) => {
             return val.permissionId === permission
           }).actionList.findIndex((val) => {
             return val === action
-          }) > -1
+          }) > -1 */
         }
       }
     }
