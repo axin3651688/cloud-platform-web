@@ -8,7 +8,7 @@
 
 <script>
 export default {
-    name:'bigHeader',
+    name:'BigHeader',
     data() {
         return {
            title:this.value 
@@ -24,14 +24,14 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .bigTitle{
     height:30px;
     font-size:22px;
     font-family:Microsoft YaHei;
     font-weight:400;
-    line-height:16px;
-    color:rgba(42,43,47,1);
+    /* line-height:16px; */
+    /* color:rgba(42,43,47,1); */
     opacity:1;
     padding-left: 16px;
 }
@@ -41,7 +41,7 @@ export default {
     font-family:Microsoft YaHei;
     font-weight:400;
     line-height:16px;
-    color:rgba(42,43,47,1);
+    /* color:rgba(42,43,47,1); */
     opacity:0.5;
     padding-left: 8px;
 }

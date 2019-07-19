@@ -228,6 +228,7 @@ export default {
       })
     },
     onEdit (record) {
+      debugger
       const _this = this
       // 编辑用户走这里相同的莫泰框，逻辑不同
       // 注意这句话要先走
