@@ -18,7 +18,6 @@ router.beforeEach((to, from, next) => {
   if (Vue.ls.get(ACCESS_TOKEN)) {
     /* has token */
     if (to.path === '/user/login') {
-      debugger
       next({ path: '/Console' })
       NProgress.done()
     } else {

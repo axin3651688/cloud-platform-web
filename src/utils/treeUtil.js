@@ -33,6 +33,18 @@ export function listToTreeNode ({ data, id = 'id', pid = 'pid', leaf = 'leaf', t
   return getChildTree(treeNodes, rootPid)
 }
 
+export function delSelfAndChildren (tree, id, idSign = 'id') {
+  debugger
+  tree.forEach(function (ele, index) {
+    if (ele[idSign] === id) {
+      tree.splice(index, 1)
+    }
+    if (Array.isArray(ele.children)) {
+      delSelfAndChildren(ele.children, id, idSign)
+    }
+  })
+}
+
 function getChildTree (data, pid) {
   const tree = []
   data.forEach(function (ele) {

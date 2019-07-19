@@ -108,17 +108,25 @@ module.exports = {
         target: 'http://192.168.1.145:80',
         ws: false,
         changeOrigin: true,
-        pathRewrite: {
+        /* pathRewrite: {
           '^/api': ''
-        }
+        } */
       },
       '/uc': {
         target: 'http://192.168.1.145:80',
         ws: false,
         changeOrigin: true,
-        pathRewrite: {
+        /* pathRewrite: {
           '^/api': ''
-        }
+        } */
+      },
+      '/common': {
+        target: 'http://192.168.1.145:80',
+        ws: false,
+        changeOrigin: true,
+        /* pathRewrite: {
+          '^/api': ''
+        } */
       }
     }
   },

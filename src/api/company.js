@@ -3,10 +3,53 @@ import { listToTreeNode } from '../utils/treeUtil'
 
 const api = {
   findAllCompany: '/org/base_service/company/find_all_company',
-  findDeptByCompany: '/org/base_service/dept/find_dept_by_field'
+  findDeptByCompany: '/org/base_service/dept/find_dept_by_field',
+  saveCompany: '/org/base_service/company/save_company',
+  updateCompany: '/org/base_service/company/update_company_by_field',
+  updateCompanyStructure: '/org/base_service/company/update_company_structure',
+  deleteCompany: '/org/base_service/company/delete_company'
 }
 
 export default api
+
+/**
+ * 保存公司
+ * @param parameter
+ * @returns {*}
+ */
+export function saveCompany (parameter) {
+  return axios2({
+    url: api.saveCompany,
+    method: 'post',
+    params: parameter
+  })
+}
+
+/**
+ * 更新公司
+ * @param parameter
+ * @returns {*}
+ */
+export function updateCompany (parameter) {
+  return axios2({
+    url: api.updateCompany,
+    method: 'put',
+    params: parameter
+  })
+}
+
+/**
+ * 更新公司
+ * @param parameter
+ * @returns {*}
+ */
+export function updateCompanyStructure (parameter) {
+  return axios2({
+    url: api.updateCompanyStructure,
+    method: 'put',
+    params: parameter
+  })
+}
 
 /**
  * 获取所有公司信息
@@ -33,7 +76,7 @@ export function getAllCompanyTree () {
         const treeData = listToTreeNode({ data })
         resolve(treeData)
       }
-      resolve([]);
+      resolve([])
     })
   })
 }
@@ -65,5 +108,16 @@ export function getCompanyDeptTree (parameter) {
       }
       resolve([])
     })
+  })
+}
+
+/**
+ * 获取某公司的部门
+ * @param parameter
+ */
+export function deleteCompany (parameter) {
+  return axios2({
+    url: api.deleteCompany + '/' + parameter.id,
+    method: 'delete',
   })
 }
