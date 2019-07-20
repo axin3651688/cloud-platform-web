@@ -83,10 +83,8 @@ const minxinModal = {
         okType: 'danger',
         cancelText: '取消',
         onOk () {
-          console.log('Ok')
         },
         onCancel () {
-          console.log('Cancel')
         }
       }, param))
     }

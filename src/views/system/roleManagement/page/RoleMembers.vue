@@ -43,6 +43,7 @@
 
 <script>
 import { deleteRole, getAllRoleTree } from '@/api/role'
+import { deleteUserRole } from '@/api/userRole'
 import RoleModal from '../page/Module/RoleModal'
 import BigHeader from '@/components/system/BigHeader'
 import LeftTree from '../../memberManagement/page/Module/LeftTree'
@@ -87,6 +88,7 @@ export default {
           deleteRole({ roleId: record.key }).then(function (res) {
             if (res.code === 200) {
               _this.$message.success('删除成功')
+              _this.renderTree()
             } else {
               _this.$message.error('删除失败')
             }
@@ -95,8 +97,21 @@ export default {
       })
     },
     // 移除成员的操作
-    remove () {
-
+    remove (record) {
+      const _this = this
+      this.confirm({
+        title: '确认要移除' + record.trueName + '吗',
+        onOk: function () {
+          deleteUserRole({ roleId: _this.curRoleId }, [record.id]).then(function (res) {
+            if (res.code === 200) {
+              _this.$message.success('删除成功')
+              _this.$refs.userTable.reload()
+            } else {
+              _this.$message.error('删除失败')
+            }
+          })
+        }
+      })
     },
     onAdd (e) {
       // 1. 打开添加莫泰框

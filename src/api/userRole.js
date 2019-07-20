@@ -4,7 +4,8 @@ const api = {
   saveUserRole: '/org/base_service/user_role/save_user_role',
   updateUserRole: '/org/base_service/user_role/update_user_role',
   findUserRole: '/org/base_service/user_role/find_user_role',
-  findRoleUser: '/org/base_service/user_role/find_user_by_role_and_user_info'
+  findRoleUser: '/org/base_service/user_role/find_user_by_role_and_user_info',
+  deleteRoleUser: '/org/base_service/user_role/delete_role_user'
 }
 
 /**
@@ -58,5 +59,14 @@ export function findRoleUser (parameter) {
     url: api.findRoleUser,
     method: 'get',
     params: parameter
+  })
+}
+
+export function deleteUserRole (parameter, data) {
+  return axios2({
+    url: api.deleteRoleUser,
+    method: 'delete',
+    params: parameter,
+    data: data
   })
 }
