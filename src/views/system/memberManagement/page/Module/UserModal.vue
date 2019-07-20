@@ -299,7 +299,7 @@ export default {
           const data = res.data.filter(function (ele) {
             return ele.id !== _this.editId
           })
-          if (data.length < 0) {
+          if (data.length > 0) {
             callback('手机号已存在')
           } else {
             callback()

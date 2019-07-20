@@ -17,24 +17,26 @@
       </a-col>
       <!--右边表，封装一下-->
       <a-col :md="18" :sm="24" class="rightTable">
-        <div class="rightHeader">
-          <big-header :value="title"></big-header>
-          <a-button type="primary" icon="usergroup-add" class="btn3">添加成员</a-button>
+        <div style="background-color: #fff">
+          <div class="rightHeader">
+            <big-header :value="title"></big-header>
+            <a-button type="primary" icon="usergroup-add" class="btn3">添加成员</a-button>
+          </div>
+          <!-- <span class="anse" v-if="pid=0">+  如需更换企业所有者,请到【企业设置】页面,点击【转让企业】来更换所有者,设置完成后信息目动同步。<a-button type="primary" style="font-size:12px;">跳转至转让企业</a-button></span> -->
+          <user-table
+            ref="userTable"
+            :roleId="curRoleId"
+            :show-action="true"
+            class="utable">
+            <template slot="dropdown" slot-scope="item">
+              <a-menu-item>
+                <a href="javascript:;" @click="remove(item.record)">移除</a>
+              </a-menu-item>
+            </template>
+          </user-table>
         </div>
-        <!-- <span class="anse" v-if="pid=0">+  如需更换企业所有者,请到【企业设置】页面,点击【转让企业】来更换所有者,设置完成后信息目动同步。<a-button type="primary" style="font-size:12px;">跳转至转让企业</a-button></span> -->
-        <user-table
-          ref="userTable"
-          :roleId="curRoleId"
-          :show-action="true"
-          class="utable">
-          <template slot="dropdown" slot-scope="item">
-            <a-menu-item>
-              <a href="javascript:;" @click="remove(item.record)">移除</a>
-            </a-menu-item>
-          </template>
-        </user-table>
       </a-col>
-      <role-modal ref="roleModal"></role-modal>
+      <role-modal ref="roleModal" @back="renderTree"></role-modal>
     </a-row>
   </div>
 </template>
@@ -116,7 +118,8 @@ export default {
 </script>
 
 <style scoped>
-.left{
+  /*zj下面有很大问题注释了*/
+/*.left{
   margin-top: 10px;
 }
 .leftTree{
@@ -156,5 +159,5 @@ export default {
 .btn3{
   margin-left: 500px;
   margin-top: 10px;
-}
+}*/
 </style>
