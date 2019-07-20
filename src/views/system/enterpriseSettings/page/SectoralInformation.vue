@@ -42,6 +42,7 @@ import SectoralAddModal from './Module/SectoralAddModal'
 import SectoralStructureModal from './Module/SectoralStructureModal'
 import SectoralSortModal from './Module/SectoralSortModal'
 import typeUtil from '@/utils/typeUtils'
+import { minxinModal } from '@/utils/mixin.js'
 export default {
   name: 'SectoralInformation',
   components: { SectoralSortModal, SectoralStructureModal, SectoralAddModal, SectoralTable, LeftTree },
@@ -54,6 +55,7 @@ export default {
       selectCom: ''
     }
   },
+  mixins: [minxinModal],
   methods: {
     onCompanySelect: function (selectKeys) {
       this.selectCom = selectKeys[0]
@@ -84,13 +86,20 @@ export default {
       this.$refs.sectoralSortModal.onEdit(record)
     },
     delDepart: async function (record) {
-      const res = await deleteDept({ id: record.id })
-      if (res.code === 200) {
-        this.$message.success('删除成功')
-      } else {
-        this.$message.error('删除失败')
-      }
-      this.back()
+      const _this = this
+      this.confirm({
+        title: '确认删除' + record.text + '部门吗',
+        content: '如果有下属部门，下属部门也会一并删除',
+        onOk: async function () {
+          const res = await deleteDept({ id: record.id })
+          if (res.code === 200) {
+            _this.$message.success('删除成功')
+          } else {
+            _this.$message.error('删除失败')
+          }
+          this.back()
+        }
+      })
     },
     back: function () {
       this.$refs.deptTable.loadData()

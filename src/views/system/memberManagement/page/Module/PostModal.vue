@@ -10,10 +10,16 @@
       :form="form"
       :layout="formLayout">
       <a-form-item
-        label="排序"
+        label="名称"
         :label-col="labelCol"
         :wrapper-col="wrapperCol">
         <a-input placeholder="请输入职位名称" v-decorator="[ 'text', validatorRules.name]"/>
+      </a-form-item>
+      <a-form-item
+        label="描述"
+        :label-col="labelCol"
+        :wrapper-col="wrapperCol">
+        <a-textarea placeholder="请输入职位描述"  v-decorator="[ 'desc', validatorRules.desc]" :rows="4"></a-textarea>
       </a-form-item>
       <a-form-item
         label="排序"
@@ -40,7 +46,8 @@ export default {
       confirmLoading: false,
       model: {},
       validatorRules: {
-        text: { rules: [{ required: true, message: '职位名称不可为空' }, { max: 500, message: '职位名称不可以超过200位' }] }
+        text: { rules: [{ required: true, message: '职位名称不可为空' }, { max: 500, message: '职位名称不可以超过20位' }] },
+        desc: { rules: [{ max: 500, message: '职位描述不可以超过500位' }] }
       }
     }
   },
@@ -66,6 +73,7 @@ export default {
       this.model = record
       this.$nextTick(() => {
         _this.form.setFieldsValue({ 'text': record.text })
+        _this.form.setFieldsValue({ 'desc': record.desc })
         _this.form.setFieldsValue({ 'sort': record.sort })
       })
     },

@@ -73,4 +73,24 @@ const AppDeviceEnquire = {
   }
 }
 
-export { mixin, AppDeviceEnquire, mixinDevice }
+const minxinModal = {
+  methods: {
+    confirm: function (param) {
+      this.$confirm(Object.assign({
+        title: '确定删除?',
+        content: '',
+        okText: '确认',
+        okType: 'danger',
+        cancelText: '取消',
+        onOk () {
+          console.log('Ok')
+        },
+        onCancel () {
+          console.log('Cancel')
+        }
+      }, param))
+    }
+  }
+}
+
+export { mixin, AppDeviceEnquire, mixinDevice, minxinModal }

@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div class="page_content">
     <a-row :gutter="16">
       <div v-show="!isOnOrgAuth">
-        <a-col :md="6" :sm="24">
+        <a-col :md="6" :sm="24" >
           <left-tree :treeData="comTreeData" @select="onSelectLeftTree"></left-tree>
         </a-col>
-        <a-col :md="18" :sm="24">
+        <a-col :md="18" :sm="24" class="page_full">
           <div style="background-color: #fff">
             <div>
               <tree-select
@@ -14,7 +14,7 @@
                 :value="curSelectDept"
                 :treeData="deptTreeData"
                 :placeholder="'请选择部门'"></tree-select>
-              <a-button type="primary" @click="onUserAdd" v-action:addUser >添加成员</a-button>
+              <a-button type="primary" @click="onUserAdd">添加成员</a-button>
             </div>
             <user-table
               ref="userTable"
@@ -57,10 +57,11 @@ import LeftTree from './Module/LeftTree'
 import TreeSelect from './Module/TreeSelect'
 import { enableUser, deleteUser, batchDeleteUser } from '@/api/user'
 import UserModal from './Module/UserModal'
-
+import { minxinModal } from '@/utils/mixin.js'
 export default {
   name: 'BusinessMembers',
   components: { UserModal, TreeSelect, LeftTree, UserTable, OrgAuth },
+  mixins: [minxinModal],
   data () {
     return {
       comTreeData: [],
@@ -75,6 +76,11 @@ export default {
   },
   methods: {
     onSelectLeftTree (selectedKeys, e) {
+      if (selectedKeys.length <= 0) {
+        this.curSelectCom = undefined
+        this.curSelectDept = undefined
+        return
+      }
       if (this.isSingle) {
         // 单体公司并且选择的是公司
         if (this.singleComId === selectedKeys[0]) {
@@ -118,13 +124,18 @@ export default {
     },
     onUserDisable (record) {
       const _this = this
-      enableUser({ enable: '0' }, [record.id]).then(function (res) {
-        if (res.data.code !== '0') {
-          _this.$message.success('禁用成功')
-        } else {
-          _this.$message.error('禁用失败')
+      this.confirm({
+        title: '确认禁用' + record.trueName + '吗',
+        onOk: function () {
+          enableUser({ enable: '0' }, [record.id]).then(function (res) {
+            if (res.data.code !== '0') {
+              _this.$message.success('禁用成功')
+            } else {
+              _this.$message.error('禁用失败')
+            }
+            _this.reloadTable()
+          })
         }
-        _this.reloadTable()
       })
     },
     reloadTable () {
@@ -132,13 +143,19 @@ export default {
     },
     onUserDelete (record) {
       const _this = this
-      deleteUser({ userId: record.id }).then(function (res) {
-        if (res.data.code !== '0') {
-          _this.$message.success('删除成功')
-        } else {
-          _this.$message.error('删除失败')
+      this.confirm({
+        title: '确认删除' + record.trueName + '吗',
+        content: '删除将不可恢复',
+        onOk: function () {
+          deleteUser({ userId: record.id }).then(function (res) {
+            if (res.data.code !== '0') {
+              _this.$message.success('删除成功')
+            } else {
+              _this.$message.error('删除失败')
+            }
+            _this.reloadTable()
+          })
         }
-        _this.reloadTable()
       })
     },
     // 根据解析后的树数据判断是否是单体公司
@@ -159,14 +176,20 @@ export default {
       if (_this.selectedRowKeys.length === 0) {
         _this.$message.warning('请选择需要删除的用户')
       } else {
-        batchDeleteUser(_this.selectedRowKeys).then(function (res) {
-          if (res.code !== 0) {
-            _this.$message.success('删除成功')
-          } else {
-            _this.$message.error('删除失败')
+        this.confirm({
+          title: '确认删除选中的数据吗',
+          content: '删除将不可恢复',
+          onOk: function () {
+            batchDeleteUser(_this.selectedRowKeys).then(function (res) {
+              if (res.code !== 0) {
+                _this.$message.success('删除成功')
+              } else {
+                _this.$message.error('删除失败')
+              }
+              _this.reloadTable()
+              _this.selectedRowKeys = []
+            })
           }
-          _this.reloadTable()
-          _this.selectedRowKeys = []
         })
       }
     },

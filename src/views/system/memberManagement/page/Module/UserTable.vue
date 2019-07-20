@@ -26,6 +26,7 @@
 </template>
 
 <script>
+// 遇到表格请使用封装后的表格组件，这里是因为当时没有封装这样写的
 import { getPrimaryCompanyPeople } from '@/api/userCompany'
 import { getPrimaryDeptPeople } from '@/api/userDept'
 import { findRoleUser } from '@/api/userRole'
@@ -52,6 +53,11 @@ export default {
     showAction: {
       type: Boolean,
       default: false
+    },
+    // 判断启用禁用  查的是启用还是禁用的. '1' 启用 '0' 禁用
+    enableParam: {
+      type: String,
+      default: '1'
     }
   },
   data () {
@@ -77,6 +83,11 @@ export default {
           title: '电话号码',
           dataIndex: 'phone'
         },
+
+        {
+          title: '现任职位',
+          dataIndex: 'presentPost'
+        },
         /* {
           title: '邮箱',
           dataIndex: 'email'
@@ -89,10 +100,6 @@ export default {
           title: '政治面貌',
           dataIndex: 'politicsStatus'
         }, */
-        {
-          title: '现任职位',
-          dataIndex: 'presentPost'
-        },
         /* {
           title: '学历',
           dataIndex: 'qualifications'
@@ -110,14 +117,14 @@ export default {
       data: [],
       pagination: {
         defaultCurrent: 0,
-        defaultPageSize: 1
+        defaultPageSize: 10,
+        showSizeChanger: true,
+        pageSizeOptions: ['10', '20', '30', '40']
       },
       // 被选择的
       selectedRowKeys: [],
       loading: false,
-      rowKey: 'id',
-      // 查的是启用还是禁用的. '1' 启用 '0' 禁用
-      enableParam: '1'
+      rowKey: 'id'
     }
   },
   computed: {
@@ -187,6 +194,8 @@ export default {
     companyId (newVal, oldVal) {
       if (typeUtils.isNotBlank(newVal)) {
         this.reloadCom(newVal)
+      } else {
+        this.data = []
       }
     },
     deptId (newVal, oldVal) {
@@ -196,6 +205,8 @@ export default {
           deptId: newVal,
           page: this.pagination.defaultCurrent,
           size: this.pagination.defaultPageSize })
+      } else {
+        this.data = []
       }
     },
     roleId (newVal) {
@@ -204,6 +215,8 @@ export default {
         this.fetch({ roleId: newVal,
           page: this.pagination.defaultCurrent,
           size: this.pagination.defaultPageSize })
+      } else {
+        this.data = []
       }
     }
   },

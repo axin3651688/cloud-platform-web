@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="tab_menu">
     <a-menu
       :mode="'horizontal'"
       :style="{ border: '0', width: device == 'mobile' ? '560px' : 'auto'}"

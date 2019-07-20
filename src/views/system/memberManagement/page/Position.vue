@@ -28,17 +28,22 @@
 import { findPostByFiledAndPage, deletePost } from '@/api/post'
 import { STable } from '@/components'
 import PostModal from './Module/PostModal'
+import { minxinModal } from '@/utils/mixin.js'
 export default {
   name: 'Position',
   components: {
     PostModal,
     STable
   },
+  mixins: [minxinModal],
   data () {
     return {
       columns: [{
         title: '职位名称',
         dataIndex: 'text'
+      },{
+        title: '职位描述',
+        dataIndex: 'desc'
       }, {
         title: '操作',
         key: 'action',
@@ -64,13 +69,18 @@ export default {
     },
     onPostDelete: function (record) {
       const _this = this
-      deletePost({ id: record.id }).then(function (res) {
-        if (res.code === 200) {
-          _this.$message.success('删除成功')
-        } else {
-          _this.$message.error('删除失败')
+      this.confirm({
+        title: '确认删除' + record.text + '吗',
+        onOk: function () {
+          deletePost({ id: record.id }).then(function (res) {
+            if (res.code === 200) {
+              _this.$message.success('删除成功')
+            } else {
+              _this.$message.error('删除失败')
+            }
+            _this.refresh()
+          })
         }
-        _this.refresh()
       })
     }
   }

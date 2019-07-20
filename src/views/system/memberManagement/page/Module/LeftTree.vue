@@ -1,5 +1,5 @@
 <template>
-  <div style="background-color: #fff">
+  <div class="page_content_bg">
     <!--搜索框-->
     <a-input-search style="margin-bottom: 8px" placeholder="搜索" @change="onChange"/>
     <a-tree

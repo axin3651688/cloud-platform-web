@@ -40,10 +40,16 @@
               <a-button type="primary" @click="onEnterpriseOther" v-show="showBtn">修改</a-button>
             </a-col >
           </system-collapse>
-          <system-collapse :title="'刪除公司'" :subtitle="'可以选择刪除当前企业,刪除后企业所有数据都将刪除,并且无法撤销,请谨慎操作。'">
+          <system-collapse v-show="!selectGroupCompany" :title="'刪除公司'" :subtitle="'可以选择刪除当前企业,刪除后企业所有数据都将刪除,并且无法撤销,请谨慎操作。'">
             <company-info-list></company-info-list>
             <a-col :md="2" :sm="6">
               <a-button type="primary" @click="onDelete" v-show="showBtn">删除</a-button>
+            </a-col >
+          </system-collapse>
+          <system-collapse v-show="selectGroupCompany" :title="'转让公司'" :subtitle="'可以选择转让当前企业,无法撤销,请谨慎操作。'">
+            <company-info-list></company-info-list>
+            <a-col :md="2" :sm="6">
+              <a-button type="primary" v-show="showBtn">转让</a-button>
             </a-col >
           </system-collapse>
         </div>
@@ -69,6 +75,7 @@ import EnterpriseAttributeModal from './Module/EnterpriseAttributeModal'
 import EnterpriseLevelModal from './Module/EnterpriseLevelModal'
 import EnterpriseOtherModal from './Module/EnterpriseOtherModal'
 import CompanySaveForm from './Module/CompanySaveForm'
+import { minxinModal } from '@/utils/mixin.js'
 
 export default {
   name: 'CompanyInformation',
@@ -91,9 +98,11 @@ export default {
         scale: {},
         industries: {},
         character: {}
-      }
+      },
+      selectGroupCompany: false
     }
   },
+  mixins: [minxinModal],
   computed: {
     showBtn: function () {
       if (this.curSelectComId !== undefined) {
@@ -105,8 +114,13 @@ export default {
   methods: {
     onCompanySelect: function (selectKeys) {
       this.onAdd = false
+      this.selectGroupCompany = false
       if (selectKeys.length > 0) {
         this.curSelectComId = selectKeys[0]
+        const treeNode = this.getTreeNode(this.comTreeData, this.curSelectComId)
+        if (treeNode.pid === '0') {
+          this.selectGroupCompany = true
+        }
       } else {
         this.curSelectComId = undefined
       }
@@ -153,13 +167,19 @@ export default {
     },
     onDelete: function () {
       const _this = this
-      deleteCompany({ id: this.curSelectComId }).then(function (res) {
-        if (res.code === 200) {
-          _this.$message.success('删除成功')
-        } else {
-          _this.$message.error('删除失败')
+      this.confirm({
+        title: '确认删除该公司吗',
+        content: '如果有下属公司，下属公司也会一并删除',
+        onOk: function () {
+          deleteCompany({ id: this.curSelectComId }).then(function (res) {
+            if (res.code === 200) {
+              _this.$message.success('删除成功')
+            } else {
+              _this.$message.error('删除失败')
+            }
+            _this.reloadCompany()
+          })
         }
-        _this.reloadCompany()
       })
     },
     reloadCompany: function () {
