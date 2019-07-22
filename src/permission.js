@@ -51,10 +51,11 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     if (whiteList.includes(to.name)) {
-      // TODO 在免登录白名单，直接进入
+      // 在免登录白名单，直接进入
       next()
     } else {
-      next({ path: '/user/login', query: { redirect: to.fullPath } })
+      // hotfix 2019年7月22日11:07:59 方强 这里的fullPath有问题的，如果两次登陆的菜单不同会出现404，但无法记住刚刚退出时的界面，每次进入都是默认界面
+      next({ path: '/user/login'/*, query: { redirect: to.fullPath } */ })
       NProgress.done() // if current page is login will not trigger afterEach hook, so manually handle it
     }
   }

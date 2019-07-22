@@ -75,8 +75,8 @@ service2.interceptors.response.use((response) => {
       message: '异常请求',
       description: '接口返回了错误的信息'
     })
-    response.data.data = undefined;
-    return response.data;
+    response.data.data = undefined
+    return response.data
   }
   return response.data
 }, err)

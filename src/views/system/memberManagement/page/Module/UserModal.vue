@@ -152,9 +152,9 @@ export default {
             // 云之囊存在就直接去获取，不存在就注册一下
             if (exist) {
               // 去获取这个人的信息通过电话
-              const res = await findSystemUserByPhone({ username: values.phone })
-              if (res.userInfo && res.userInfo.id) {
-                userId = res.userInfo.id
+              const res = await findSystemUserByPhone({ phone: values.phone })
+              if (res.data && res.data.id) {
+                userId = res.data.id
               } else {
                 _this.visible = false
                 _this.confirmLoading = false
@@ -165,7 +165,7 @@ export default {
               const userDto = {
                 phone: values.phone,
                 trueName: values.trueName,
-                username: '',
+                username: values.phone,
                 password: '',
                 tenantId: ''
               }
@@ -181,6 +181,7 @@ export default {
             // 保存这个人基本信息
             values.id = userId
           } else {
+            // 修改时直接赋Id
             values.id = _this.editId
           }
           if (values.id !== undefined) {
@@ -193,31 +194,30 @@ export default {
             }
             if (userInfo !== undefined) {
               let promise1, promise2
-              if (values.role !== undefined) {
+              if (Array.isArray(values.role) && values.role.length > 0) {
                 // 设置了角色，保存这个人角色
                 promise1 = updateUserRole({ userId: values.id }, values.role)
-                // 保存公司
-                if (values.company !== undefined) {
-                  promise2 = saveUserPrimaryCompany({
-                    userId: values.id,
-                    comId: values.company
-                  }).then(async function (res) {
-                    // 保存部门
-                    if (values.dept !== undefined) {
-                      await saveUserPrimaryDept({ userId: values.id, deptId: values.dept })
-                    }
-                  })
-                }
-                Promise.all([promise1, promise2]).then(function () {
-                  _this.visible = false
-                  _this.confirmLoading = false
-                  _this.$message.success('保存成功')
-                  _this.$emit('refreshTable')
-                }).catch(function (e) {
-                  _this.$message.error('保存失败')
-                  _this.confirmLoading = false
+              }
+              if (values.company !== undefined) {
+                promise2 = saveUserPrimaryCompany({
+                  userId: values.id,
+                  comId: values.company
+                }).then(async function (res) {
+                  // 保存部门
+                  if (values.dept !== undefined) {
+                    await saveUserPrimaryDept({ userId: values.id, deptId: values.dept })
+                  }
                 })
               }
+              Promise.all([promise1, promise2]).then(function () {
+                _this.visible = false
+                _this.confirmLoading = false
+                _this.$message.success('保存成功')
+                _this.$emit('refreshTable')
+              }).catch(function (e) {
+                _this.$message.error('保存失败')
+                _this.confirmLoading = false
+              })
             }
           } else {
             // 未获取用户Id
@@ -310,7 +310,7 @@ export default {
       })
     },
     askSysTemExist (phone) {
-      return findSystemUserByPhone({ username: phone }).then(function (res) {
+      return findSystemUserByPhone({ phone: phone }).then(function (res) {
         if (res.data && res.data.id) {
           return true
         } else {
