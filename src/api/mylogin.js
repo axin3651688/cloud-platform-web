@@ -1,10 +1,11 @@
 import { axios2 } from '@/utils/request'
 
 const api = {
-  login: '/uaa/oauth/token',
-  loginOut: '/uaa/oauth/token',
-  currentUser: '/org/base_service/user/find_current',
-  userResource: '/org/base_service/user_resource/find_user_resource_code'
+    login: '/uaa/oauth/token',
+    loginOut: '/uaa/oauth/token',
+    currentUser: '/org/base_service/user/find_current',
+    userResource: '/org/base_service/user_resource/find_user_resource_code',
+    getLicense: '/org/base_service/tenancy/license'
 }
 
 /**
@@ -12,12 +13,12 @@ const api = {
  * @param parameter
  * @returns {*}
  */
-export function login (parameter) {
-  return axios2({
-    url: api.login,
-    method: 'post',
-    params: parameter
-  })
+export function login(parameter) {
+    return axios2({
+        url: api.login,
+        method: 'post',
+        params: parameter
+    })
 }
 
 /**
@@ -25,23 +26,23 @@ export function login (parameter) {
  * @param parameter
  * @returns {*}
  */
-export function logout (parameter) {
-  return axios2({
-    url: api.loginOut,
-    method: 'delete',
-    params: parameter
-  })
+export function logout(parameter) {
+    return axios2({
+        url: api.loginOut,
+        method: 'delete',
+        params: parameter
+    })
 }
 
 /**
  * 得到你用户信息
  * @returns {*}
  */
-export function getUserInfo () {
-  return axios2({
-    url: api.currentUser,
-    method: 'get'
-  })
+export function getUserInfo() {
+    return axios2({
+        url: api.currentUser,
+        method: 'get'
+    })
 }
 
 /**
@@ -49,11 +50,11 @@ export function getUserInfo () {
  * @param parameter
  * @returns {*}
  */
-export function getUserResource (parameter) {
-  return axios2({
-    url: api.userResource + '/' + parameter.userId,
-    method: 'get'
-  })
+export function getUserResource(parameter) {
+    return axios2({
+        url: api.userResource + '/' + parameter.userId,
+        method: 'get'
+    })
 }
 
 /**
@@ -61,8 +62,19 @@ export function getUserResource (parameter) {
  * @returns {Promise}
  */
 export const getUserAllResource = (parameter) => {
-  return axios2({
-    url: '/org/base_service/user_resource/find_user_all_resource/' + parameter.id,
-    method: 'get'
-  })
+    return axios2({
+        url: '/org/base_service/user_resource/find_user_all_resource/' + parameter.id,
+        method: 'get'
+    })
+}
+
+/**
+ * 得到租户牌照信息
+ * @returns {*}
+ */
+export function getLicense() {
+    return axios2({
+        url: api.getLicense,
+        method: 'get'
+    })
 }

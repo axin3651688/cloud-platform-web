@@ -5,7 +5,7 @@
       <div class="body_one" style="height:280px;">
         <div class="body_one_head">
           <a-icon class="lanyuan"/>
-          成员姓名
+          {{userName}}
           <span class="anse">欢迎使用，您现在所在的是经邦企业系统管理后台。</span>
         </div>
         <div class="body_one_down">
@@ -32,7 +32,7 @@
           </div>
           <div class="body_one_down_right" style="padding-left:500px;padding-top:55px;">
             <p class="body_one_down_right_head" style="color:rgba(42,43,47,1);">当前版本</p>
-            <p class="body_one_down_right_head" style="color:rgba(42,43,47,1);">您当前使用的是<span style="color:rgba(77,124,254,1);font-size:22px;">免费版</span></p>
+            <p class="body_one_down_right_head" style="color:rgba(42,43,47,1);">您当前使用的是<span style="color:rgba(77,124,254,1);font-size:22px;">{{VerName}}</span></p>
             <p class="anse">免费版团队人数上限为{{Total}}人，若有扩容需要，请选择购买</p>
             <div>
               <a-button type="primary" @click="buy">立即购买</a-button>
@@ -83,11 +83,14 @@
 </template>
 
 <script>
+import { getUserInfo , getLicense } from '@/api/mylogin'
   export default {
     name: 'Console',
     data() {
       return {
-         Total:15,
+         Total:'',
+         userName:'',
+         VerName:'',
          yiyongTotal:9, 
          shengyu:6,
          list:[
@@ -150,10 +153,43 @@
          ] 
       }
     },
+    created() {
+      this.getUser_Info();
+      this.get_License();
+    },
     methods: {
       buy(){
         alert('老板，现金还是刷卡')
+      },
+      //查询当前的用户信息
+      getUser_Info(){
+        let me = this ;
+        getUserInfo().then(function (res) {
+            debugger
+            // const _this = this
+            if (res.code === 200) {
+              me.$message.success('查询成功')
+              me.userName = res.data.trueName
+            } else {
+              me.$message.error('查询失败')
+            }
+        })
+      },
+      get_License(){
+        let me = this ;
+        getLicense().then(function (res) {
+            debugger
+            // const _this = this
+            if (res.code === 200) {
+              me.$message.success('查询成功')
+              me.Total = res.data.maxUser;
+              me.VerName = res.data.name
+            } else {
+              me.$message.error('查询失败')
+            }
+        })
       }
+      
     },
   }
 </script>
