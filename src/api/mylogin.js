@@ -1,10 +1,17 @@
-import { axios2 } from '@/utils/request'
+import {
+  axios2
+} from '@/utils/request'
 
 const api = {
   login: '/uaa/oauth/token',
   loginOut: '/uaa/oauth/token',
   currentUser: '/org/base_service/user/find_current',
-  userResource: '/org/base_service/user_resource/find_user_resource_code'
+  userResource: '/org/base_service/user_resource/find_user_resource_code',
+  getLicense: '/org/base_service/tenancy/license',
+  findUserCount: '/org/base_service/user/find_user_count',
+  getCurApp: '/org/base_service/tenancy/app',
+  disableApp: '/org/base_service/tenancy/disable_app',
+  getDisableAppId: '/org/base_service/tenancy/disableAppId'
 }
 
 /**
@@ -64,5 +71,62 @@ export const getUserAllResource = (parameter) => {
   return axios2({
     url: '/org/base_service/user_resource/find_user_all_resource/' + parameter.id,
     method: 'get'
+  })
+}
+
+/**
+ * 得到租户牌照信息
+ * @returns {*}
+ */
+export function getLicense () {
+  return axios2({
+    url: api.getLicense,
+    method: 'get'
+  })
+}
+
+/**
+ * 得到租户数量
+ * @returns {*}
+ */
+export function findUserCount () {
+  return axios2({
+    url: api.findUserCount,
+    method: 'get'
+  })
+}
+
+/**
+ * 得到应用管理的总数量
+ * @returns {*}
+ */
+export function getCurApp () {
+  return axios2({
+    url: api.getCurApp,
+    method: 'get'
+  })
+}
+
+/**
+ * 获取被禁用的数量
+ * @param {*} parameter
+ */
+export function getDisableAppId () {
+  return axios2({
+    url: api.getDisableAppId,
+    method: 'get'
+  })
+}
+
+/**
+ * 授权与否
+ * @param parameter
+ * @returns {*}
+ */
+export function disableApp (data) {
+  return axios2({
+    url: api.disableApp,
+    method: 'put',
+    data: data
   })
 }
