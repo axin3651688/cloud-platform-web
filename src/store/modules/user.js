@@ -77,6 +77,7 @@ const user = {
             })
             commit('SET_RESOURCE', res.data)
             commit('SET_RESOURCE_CODE', components)
+            resolve(response)
           } else {
             reject(new Error('getInfo: roles must be a non-null array !'))
           }
@@ -98,7 +99,6 @@ const user = {
           }
           commit('SET_NAME', { name: result.name, welcome: welcome() })
           commit('SET_AVATAR', result.avatar) */
-          resolve(response)
         }).catch(error => {
           reject(error)
         })

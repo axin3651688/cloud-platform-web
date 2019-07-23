@@ -67,6 +67,7 @@
 import LeftTree from '../../memberManagement/page/Module/LeftTree'
 import { getAllCompanyTree, deleteCompany } from '@/api/company'
 import { findAllPlace, findAllIndustry, findDictByCode } from '@/api/common'
+import { queryByField } from '@/api/customForm'
 import SystemCollapse from './Module/SystemCollapse'
 import CompanyInfoList from './Module/CompanyInfoList'
 import typeUtils from '@/utils/typeUtils'
@@ -99,7 +100,8 @@ export default {
         industries: {},
         character: {}
       },
-      selectGroupCompany: false
+      selectGroupCompany: false,
+      customField: []
     }
   },
   mixins: [minxinModal],
@@ -148,6 +150,7 @@ export default {
     },
     onFormClose: function () {
       this.reloadCompany()
+      this.refreshField()
       this.onAdd = false
     },
     onModalClose: function () {
@@ -266,6 +269,15 @@ export default {
       if (!typeUtils.isObject(comInfo)) {
         return []
       }
+      // 额外JSON信息转换后放入
+      const customField = []
+      if (typeUtils.isNotBlank(comInfo.customField) && typeUtils.isObject(JSON.parse(comInfo.customField))) {
+        const customFieldObj = JSON.parse(comInfo.customField)
+        debugger
+        this.customField.forEach(function (ele) {
+          customField.push({ key: ele.value, text: customFieldObj[ele.value] })
+        })
+      }
       return [
         {
           key: '企业编码',
@@ -278,7 +290,8 @@ export default {
         {
           key: '信息编码',
           text: comInfo.srcId3
-        }
+        },
+        ...customField
       ]
     },
     dictCodeToText: function (str, dict) {
@@ -304,6 +317,14 @@ export default {
         })
       }
       return obj
+    },
+    refreshField: function () {
+      const _this = this
+      return queryByField({ code: 'com' }).then(function (res) {
+        if (res.code === 200) {
+          _this.customField = res.data
+        }
+      })
     }
   },
   created () {
@@ -321,6 +342,7 @@ export default {
     findDictByCode({ code: 2 }).then(function (res) {
       _this.dict.character = _this.treeToMap(res.data)
     })
+    this.refreshField()
   }
 }
 </script>
