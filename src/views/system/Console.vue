@@ -15,11 +15,11 @@
                 <p class="body_one_down_left_head" style="color:rgba(42,43,47,1);">账号剩余</p>
                 <p>
                   <a-icon class="lanzheng" style="height:16px;width:16px;background:rgba(77,124,254,1);"/>
-                  剩余可用账户{{Total}}个
+                  剩余可用账户{{shengyu}}个
                 </p>
                 <p>
                   <a-icon class="huizheng" style="height:16px;width:16px;background:rgba(163,160,251,1);"/>
-                  已开通使用数{{yiyongTotal}}个
+                  已开通使用数{{alreadyUseNum}}个
                 </p>
                 <p>
                   <a-icon class="zheng" style="height:16px;width:16px;border:2px solid rgba(177,179,183,1);opacity:0.3;"/>
@@ -27,7 +27,7 @@
                 </p>
               </div>
               <div class="body_one_down_left_head_down_right" style="padding-top:35px;">
-                <a-progress type="circle" :percent="40" :format="() => '剩余可用6个'"/>
+                <a-progress type="circle" :percent="this.rate" :format="() => ` 剩余可用${shengyu}个`"/>
               </div>
           </div>
           <div class="body_one_down_right" style="padding-left:500px;padding-top:55px;">
@@ -43,7 +43,7 @@
       <div class="body_two" style="height:320px;">
         <div class="body_one_down_left">
           <div>
-            <p class="body_two_head_left" style="font-size:22px;">应用管理<span class="anse" style="font-size:14px;">&nbsp;&nbsp;&nbsp;&nbsp;企业已启用了N个应用</span></p>
+            <p class="body_two_head_left" style="font-size:22px;">应用管理<span class="anse" style="font-size:14px;">&nbsp;&nbsp;&nbsp;&nbsp;企业已启用了{{applyCount}}个应用</span></p>
           </div>
           <div class="body_two_head_right" style="padding-left:1250px;">
             <a-button type="primary">+ 开启应用</a-button>
@@ -54,11 +54,12 @@
               v-for="(item,index) of list"
               :key="index">
               <div class="model_one">
-                {{item.img}}  
+                <!-- {{item.img}}   -->
+                图片暂无
               </div>  
               <div class="model_two">
-                <p>{{item.title}}</p>
-                  {{item.contain}}
+                <p>{{item.name}}</p>
+                  {{item.note}}
               </div>
           </div>
         </div>
@@ -83,52 +84,56 @@
 </template>
 
 <script>
-import { getUserInfo , getLicense } from '@/api/mylogin'
+import { getUserInfo , getLicense ,findUserCount ,getCurApp ,getDisableAppId} from '@/api/mylogin'
   export default {
     name: 'Console',
     data() {
       return {
-         Total:'',
-         userName:'',
-         VerName:'',
-         yiyongTotal:9, 
-         shengyu:6,
-         list:[
-           {
-            img:'图1',
-            title:'项目',
-            contain:'管理团队成员的工作，跟踪任务进展已开启' 
-           },
-           {
-            img:'图2',
-            title:'项目',
-            contain:'管理团队成员的工作，跟踪任务进展已开启' 
-           },
-           {
-            img:'图3',
-            title:'项目',
-            contain:'管理团队成员的工作，跟踪任务进展已开启' 
-           },
-           {
-            img:'图4',
-            title:'项目',
-            contain:'管理团队成员的工作，跟踪任务进展已开启' 
-           },
-           {
-            img:'图5',
-            title:'项目',
-            contain:'管理团队成员的工作，跟踪任务进展已开启' 
-           },
-           {
-            img:'图6',
-            title:'项目',
-            contain:'管理团队成员的工作，跟踪任务进展已开启' 
-           },{
-            img:'图7',
-            title:'项目',
-            contain:'管理团队成员的工作，跟踪任务进展已开启' 
-           }
+         Total:0,//账户总数
+         alreadyUseNum:0, //已使用数量
+         userName:'',//当前用户的name
+         VerName:'',//版本name(免费/旗舰)
+        //  applyName:'',//应用管理
+        //  applyText:'',//应用中的文本
+         applyTotalCount:0,//应用的总数
+         disableAppleCount:0,//被禁用的数量
+         list:[//应用管理中的项目
+          //  {
+          //   img:'图1',
+          //   title:'项目',
+          //   contain:'管理团队成员的工作，跟踪任务进展已开启' 
+          //  },
+          //  {
+          //   img:'图2',
+          //   title:'项目',
+          //   contain:'管理团队成员的工作，跟踪任务进展已开启' 
+          //  },
+          //  {
+          //   img:'图3',
+          //   title:'项目',
+          //   contain:'管理团队成员的工作，跟踪任务进展已开启' 
+          //  },
+          //  {
+          //   img:'图4',
+          //   title:'项目',
+          //   contain:'管理团队成员的工作，跟踪任务进展已开启' 
+          //  },
+          //  {
+          //   img:'图5',
+          //   title:'项目',
+          //   contain:'管理团队成员的工作，跟踪任务进展已开启' 
+          //  },
+          //  {
+          //   img:'图6',
+          //   title:'项目',
+          //   contain:'管理团队成员的工作，跟踪任务进展已开启' 
+          //  },{
+          //   img:'图7',
+          //   title:'项目',
+          //   contain:'管理团队成员的工作，跟踪任务进展已开启' 
+          //  }
          ],
+         //控制台最底部的内容数组
          footList:[
            {
              img:'图1',
@@ -156,6 +161,25 @@ import { getUserInfo , getLicense } from '@/api/mylogin'
     created() {
       this.getUser_Info();
       this.get_License();
+      this.find_User_Count();
+      this.get_Cur_App();
+      this.get_Disable_App_Id();
+    },
+    computed: {
+      //剩余账户数量
+      shengyu: function () {
+        return this.Total - this.alreadyUseNum
+      },
+      //已用账户数量占总账户数的比例
+      rate: function(){
+        return this.alreadyUseNum/this.Total
+      },
+      //企业已启用的应用数量
+      applyCount:function(){
+        return this.applyTotalCount-this.disableAppleCount
+      }
+
+
     },
     methods: {
       buy(){
@@ -165,8 +189,7 @@ import { getUserInfo , getLicense } from '@/api/mylogin'
       getUser_Info(){
         let me = this ;
         getUserInfo().then(function (res) {
-            debugger
-            // const _this = this
+            // debugger
             if (res.code === 200) {
               me.$message.success('查询成功')
               me.userName = res.data.trueName
@@ -175,15 +198,60 @@ import { getUserInfo , getLicense } from '@/api/mylogin'
             }
         })
       },
+      //获取租户的牌照信息
       get_License(){
         let me = this ;
         getLicense().then(function (res) {
-            debugger
-            // const _this = this
+            // debugger
             if (res.code === 200) {
               me.$message.success('查询成功')
               me.Total = res.data.maxUser;
               me.VerName = res.data.name
+            } else {
+              me.$message.error('查询失败')
+            }
+        })
+      },
+      //获取已使用的租户数量
+      find_User_Count(){
+        let me = this ;
+        findUserCount().then(function (res) {
+            // debugger
+            if (res.code === 200) {
+              me.$message.success('查询成功')
+              me.alreadyUseNum = res.data;
+            } else {
+              me.$message.error('查询失败')
+            }
+        })
+      },
+      //获取租户的应用管理
+      get_Cur_App(){
+        let me = this ;
+        getCurApp().then(function (res) {
+            debugger
+            if (res.code === 200) {
+              me.$message.success('查询成功')
+              me.list = res.data;
+              // me.list.forEach(item => {
+              //   me.applyName = item.name;
+              //   me.applyText = item.note;
+              // });
+              me.applyTotalCount = res.data.length;
+            } else {
+              me.$message.error('查询失败')
+            }
+        })
+      },
+      //获取租户的应用管理被禁用的数量
+      get_Disable_App_Id(){
+        let me = this ;
+        getDisableAppId().then(function (res) {
+            // debugger
+            if (res.code === 200) {
+              me.$message.success('查询成功')
+              me.list = res.data;
+              me.disableAppleCount = res.data.length;
             } else {
               me.$message.error('查询失败')
             }
