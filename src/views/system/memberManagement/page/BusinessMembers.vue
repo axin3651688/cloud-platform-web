@@ -78,6 +78,7 @@ export default {
     onSelectLeftTree (selectedKeys, e) {
       if (selectedKeys.length <= 0) {
         this.curSelectCom = undefined
+        this.deptTreeData = []
         this.curSelectDept = undefined
         return
       }

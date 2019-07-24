@@ -199,15 +199,11 @@ export default {
       }
     },
     deptId (newVal, oldVal) {
-      if (typeUtils.isNotBlank(newVal)) {
-        this.initPage()
-        this.fetch({ comId: this.companyId,
-          deptId: newVal,
-          page: this.pagination.defaultCurrent,
-          size: this.pagination.defaultPageSize })
-      } else {
-        this.data = []
-      }
+      this.initPage()
+      this.fetch({ comId: this.companyId,
+        deptId: newVal,
+        page: this.pagination.defaultCurrent,
+        size: this.pagination.defaultPageSize })
     },
     roleId (newVal) {
       if (newVal >= 0) {
