@@ -11,8 +11,7 @@ const api = {
   findUserCount: '/org/base_service/user/find_user_count',
   getCurApp: '/org/base_service/tenancy/app',
   disableApp: '/org/base_service/tenancy/disable_app',
-  getDisableAppId: '/org/base_service/tenancy/disableAppId',
-  uploadFile: '/zuul/file/upload'
+  getDisableAppId: '/org/base_service/tenancy/disableAppId'
 }
 
 /**
@@ -128,19 +127,6 @@ export function disableApp (data) {
   return axios2({
     url: api.disableApp,
     method: 'put',
-    data: data
-  })
-}
-
-/**
- * 上传文件
- * @param parameter
- * @returns {*}
- */
-export function uploadFile (data) {
-  return axios2({
-    url: api.uploadFile,
-    method: 'post',
     data: data
   })
 }

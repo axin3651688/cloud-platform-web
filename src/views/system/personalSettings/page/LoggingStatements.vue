@@ -18,24 +18,7 @@
             <a-icon type="edit" style="color:#336CFB;font-size:20px;" @click="edit"/>
           </div>
           <template>
-            <a-upload
-              name="avatar"
-              listType="picture-card"
-              class="avatar-uploader"
-              :showUploadList="false"
-              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-              :beforeUpload="beforeUpload"
-              @change="handleChange"
-            >
-              <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
-              <div v-else>
-                  <a-icon :type="loading ? 'loading' : 'plus'" />
-                  <div class="ant-upload-text">点击上传头像</div>
-              </div>
-            </a-upload>
-            <!-- <a-button type="primary">上传</a-button> -->
-            &nbsp;&nbsp;
-            <a-button>删除</a-button>
+            <system-upload  @success="onUploadSuccess" :url="imgUrl" @del="onDelImg"></system-upload>
           </template>
           <p style="font-size:12px;color:#ccc;">点击上传图片,建议上传22X22,支持svg、png、jpg格式,限制5M内</p>
           <div class="pic" style="width:360px;height:92px;">
@@ -136,18 +119,17 @@
 </template>
 
 <script>
-import { uploadFile} from '@/api/mylogin'
-function getBase64 (img, callback) {
-  const reader = new FileReader()
-  reader.addEventListener('load', () => callback(reader.result))
-  reader.readAsDataURL(img)
-}
+import { getAllCompanyTree, updateCompany, deleteCompany } from '@/api/company'
+import SystemUpload from '../../enterpriseSettings/page/Module/SystemUpload'
+import typeUtils from '@/utils/typeUtils'
+import { minxinModal } from '@/utils/mixin.js'
   export default {
     name: 'LoggingStatements',
+    components: { SystemUpload },
     data() {
       return {
-        loading: false,
-        imageUrl: '',
+        curSelectComId: undefined,
+        imgUrl: '',
         isOut1:false,
         isOut2:false,
         isOut3:false,
@@ -172,6 +154,10 @@ function getBase64 (img, callback) {
         }
       }
     },
+    created() {
+      this.reloadCompany();
+    },
+    mixins: [minxinModal],
     methods: {
       expend(val){
         debugger
@@ -210,30 +196,43 @@ function getBase64 (img, callback) {
           }
         } 
       },
-      handleChange (info) {
-        if (info.file.status === 'uploading') {
-          this.loading = true
-          return
-        }
-        if (info.file.status === 'done') {
-          // Get this url from response in real world.
-          getBase64(info.file.originFileObj, (imageUrl) => {
-            this.imageUrl = imageUrl
-            this.loading = false
+      onDelImg: function () {
+      const _this = this
+      this.confirm({
+        title: '确认删除该图片吗吗',
+        content: '',
+        onOk: function () {
+          updateCompany({ id: _this.curSelectComId, avatar: 0 }).then(function (res) {
+            if (res.code === 200) {
+              _this.$message.success('删除成功')
+              _this.imgUrl = ''
+              _this.reloadCompany()
+            } else {
+              _this.$message.error('删除失败')
+            }
           })
         }
-      },
-      beforeUpload (file) {
-        const isJPG = file.type === 'image/jpeg'
-        if (!isJPG) {
-          this.$message.error('You can only upload JPG file!')
+      })
+    },
+    onUploadSuccess: function (data) {
+      debugger
+      const _this = this
+      updateCompany({ id: this.curSelectComId, avatar: data.id }).then(function (res) {
+        if (res.code === 200) {
+          _this.imgUrl = data.thumbUrl
+          _this.$message.success('上传成功')
+          _this.reloadCompany()
+        } else {
+          _this.$message.error('上传失败')
         }
-        const isLt2M = file.size / 1024 / 1024 < 2
-        if (!isLt2M) {
-          this.$message.error('Image must smaller than 2MB!')
-        }
-        return isJPG && isLt2M
-      }
+      })
+    },
+    reloadCompany: function () {
+      const _this = this
+      getAllCompanyTree().then(function (treeData) {
+        _this.comTreeData = treeData
+      })
+    },
     }
   }
 </script>
@@ -291,20 +290,5 @@ function getBase64 (img, callback) {
 }
 .pwd{
   padding-left: 13px;
-}
-</style>
-<style>
-.avatar-uploader > .ant-upload {
-    width: 128px;
-    height: 128px;
-}
-.ant-upload-select-picture-card i {
-  font-size: 32px;
-  color: #999;
-}
-
-.ant-upload-select-picture-card .ant-upload-text {
-  margin-top: 8px;
-  color: #666;
 }
 </style>

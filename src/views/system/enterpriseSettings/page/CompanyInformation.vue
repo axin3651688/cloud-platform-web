@@ -192,6 +192,7 @@ export default {
       })
     },
     onUploadSuccess: function (data) {
+      debugger
       const _this = this
       updateCompany({ id: this.curSelectComId, avatar: data.id }).then(function (res) {
         if (res.code === 200) {

@@ -15,7 +15,7 @@
         </div>
       </div>
       <div class="modelTwo">
-        <a-switch :defaultChecked="isDefaultChecked" @change='onChange(item.id)'/>
+        <a-switch :defaultChecked="item.isDefaultChecked" @change='onChange(item.id)'/>
       </div>
     </div>
   </div>
@@ -28,34 +28,8 @@ import {getCurApp , disableApp , getDisableAppId} from '@/api/mylogin'
     data(){
       return{
         list1:[],//被禁用的id数组
-        isDefaultChecked:false,
-        list:[
-          // {
-          //   img:'图1',
-          //   title:'项目',
-          //   contain:'管理团队成员的工作，跟踪任务进展已开启'
-          // },
-          // {
-          //   img:'图2',
-          //   title:'项目',
-          //   contain:'管理团队成员的工作，跟踪任务进展已开启'
-          // },
-          // {
-          //   img:'图3',
-          //   title:'项目',
-          //   contain:'管理团队成员的工作，跟踪任务进展已开启'
-          // },
-          // {
-          //   img:'图4',
-          //   title:'项目',
-          //   contain:'管理团队成员的工作，跟踪任务进展已开启'
-          // },
-          // {
-          //   img:'图5',
-          //   title:'项目',
-          //   contain:'管理团队成员的工作，跟踪任务进展已开启'
-          // }
-        ]
+        isDefaultChecked:true,
+        list:[]
       }
     },
     created() {
@@ -73,6 +47,18 @@ import {getCurApp , disableApp , getDisableAppId} from '@/api/mylogin'
             debugger
             if (res.code === 200 && res.data) {
               me.list = res.data;
+              //遍历数组，让被禁用的应用开关显示为关闭
+              me.list1.forEach(obj1 => {
+                me.list.forEach(obj =>{
+                  if(obj1 == obj.id){
+                    // me.isDefaultChecked = false
+                    obj.isDefaultChecked = false;
+                  }else{
+                    // me.isDefaultChecked = true
+                    obj.isDefaultChecked = true;
+                  }
+                })
+              });
               // code: "CISDwWc2eSRyf0BZbJE"
               // id: "1"
               // leaf: 0
@@ -86,14 +72,7 @@ import {getCurApp , disableApp , getDisableAppId} from '@/api/mylogin'
       onChange(id){
         let me = this ;
         disableApp([id]).then(function(res){
-          // debugger
             if (res.code === 200 && res.data) {
-              // code: "CISDwWc2eSRyf0BZbJE"
-              // id: "1"
-              // leaf: 0
-              // name: "系统管理"
-              // note: "系统管理目录"
-              // type: 0
             }
         })
       },
