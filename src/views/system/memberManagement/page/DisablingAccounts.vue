@@ -58,6 +58,12 @@ export default {
   mixins: [minxinModal],
   methods: {
     onSelectLeftTree (selectedKeys, e) {
+      if (selectedKeys.length <= 0) {
+        this.curSelectCom = undefined
+        this.deptTreeData = []
+        this.curSelectDept = undefined
+        return
+      }
       if (this.isSingle) {
         // 单体公司并且选择的是公司
         if (this.singleComId === selectedKeys[0]) {
