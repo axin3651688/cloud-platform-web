@@ -8,13 +8,7 @@
       <a-col :md="18" :sm="24">
         <div v-show="!onAdd">
           <system-collapse :title="'企业形象'" :subtitle="'当前企业的标志。'">
-            <company-info-list></company-info-list>
-            <a-col :md="2" :sm="6">
-              <a-button type="primary" v-show="showBtn">点击上传</a-button>
-            </a-col >
-            <a-col :md="2" :sm="6">
-              <a-button v-show="showBtn">删除</a-button>
-            </a-col>
+            <system-upload v-show="showBtn" @success="onUploadSuccess" :url="imgUrl" @del="onDelImg"></system-upload>
           </system-collapse>
           <system-collapse :title="'企业资料'" :subtitle="'当前企业名称所属地区。'">
             <company-info-list :nodes="curCorporateInformation()"></company-info-list>
@@ -65,8 +59,8 @@
 
 <script>
 import LeftTree from '../../memberManagement/page/Module/LeftTree'
-import { getAllCompanyTree, deleteCompany } from '@/api/company'
-import { findAllPlace, findAllIndustry, findDictByCode } from '@/api/common'
+import { getAllCompanyTree, updateCompany, deleteCompany } from '@/api/company'
+import { findAllPlace, findAllIndustry, findDictByCode, getFile } from '@/api/common'
 import { queryByField } from '@/api/customForm'
 import SystemCollapse from './Module/SystemCollapse'
 import CompanyInfoList from './Module/CompanyInfoList'
@@ -77,10 +71,12 @@ import EnterpriseLevelModal from './Module/EnterpriseLevelModal'
 import EnterpriseOtherModal from './Module/EnterpriseOtherModal'
 import CompanySaveForm from './Module/CompanySaveForm'
 import { minxinModal } from '@/utils/mixin.js'
+import SystemUpload from './Module/SystemUpload'
 
 export default {
   name: 'CompanyInformation',
   components: {
+    SystemUpload,
     CompanySaveForm,
     EnterpriseOtherModal,
     EnterpriseLevelModal,
@@ -101,7 +97,8 @@ export default {
         character: {}
       },
       selectGroupCompany: false,
-      customField: []
+      customField: [],
+      imgUrl: ''
     }
   },
   mixins: [minxinModal],
@@ -115,13 +112,22 @@ export default {
   },
   methods: {
     onCompanySelect: function (selectKeys) {
+      const _this = this
       this.onAdd = false
       this.selectGroupCompany = false
+      _this.imgUrl = ''
       if (selectKeys.length > 0) {
         this.curSelectComId = selectKeys[0]
         const treeNode = this.getTreeNode(this.comTreeData, this.curSelectComId)
         if (treeNode.pid === '0') {
           this.selectGroupCompany = true
+        }
+        if (treeNode.avatar) {
+          getFile({ id: treeNode.avatar }).then(function (res) {
+            if (res.code === 200 && res.data) {
+              _this.imgUrl = res.data.thumbUrl
+            }
+          })
         }
       } else {
         this.curSelectComId = undefined
@@ -181,6 +187,36 @@ export default {
               _this.$message.error('删除失败')
             }
             _this.reloadCompany()
+          })
+        }
+      })
+    },
+    onUploadSuccess: function (data) {
+      const _this = this
+      updateCompany({ id: this.curSelectComId, avatar: data.id }).then(function (res) {
+        if (res.code === 200) {
+          _this.imgUrl = data.thumbUrl
+          _this.$message.success('上传成功')
+          _this.reloadCompany()
+        } else {
+          _this.$message.error('上传失败')
+        }
+      })
+    },
+    onDelImg: function () {
+      const _this = this
+      this.confirm({
+        title: '确认删除该图片吗吗',
+        content: '',
+        onOk: function () {
+          updateCompany({ id: _this.curSelectComId, avatar: 0 }).then(function (res) {
+            if (res.code === 200) {
+              _this.$message.success('删除成功')
+              _this.imgUrl = ''
+              _this.reloadCompany()
+            } else {
+              _this.$message.error('删除失败')
+            }
           })
         }
       })
@@ -273,7 +309,6 @@ export default {
       const customField = []
       if (typeUtils.isNotBlank(comInfo.customField) && typeUtils.isObject(JSON.parse(comInfo.customField))) {
         const customFieldObj = JSON.parse(comInfo.customField)
-        debugger
         this.customField.forEach(function (ele) {
           customField.push({ key: ele.value, text: customFieldObj[ele.value] })
         })
