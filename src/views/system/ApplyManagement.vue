@@ -15,18 +15,20 @@
         </div>
       </div>
       <div class="modelTwo">
-        <a-switch defaultChecked @change='onChange(item.id)'/>
+        <a-switch :defaultChecked="isDefaultChecked" @change='onChange(item.id)'/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import {getCurApp , disableApp} from '@/api/mylogin'
+import {getCurApp , disableApp , getDisableAppId} from '@/api/mylogin'
   export default {
     name: 'ApplyManagement',
     data(){
       return{
+        list1:[],//被禁用的id数组
+        isDefaultChecked:false,
         list:[
           // {
           //   img:'图1',
@@ -58,6 +60,7 @@ import {getCurApp , disableApp} from '@/api/mylogin'
     },
     created() {
       this.get_Cur_App();
+      this.get_Disable_App_Id();
     },
     computed: {
       
@@ -68,8 +71,7 @@ import {getCurApp , disableApp} from '@/api/mylogin'
         let me = this ;
         getCurApp().then(function (res) {
             debugger
-            if (res.code === 200) {
-              me.$message.success('查询成功')
+            if (res.code === 200 && res.data) {
               me.list = res.data;
               // code: "CISDwWc2eSRyf0BZbJE"
               // id: "1"
@@ -77,8 +79,6 @@ import {getCurApp , disableApp} from '@/api/mylogin'
               // name: "系统管理"
               // note: "系统管理目录"
               // type: 0
-            } else {
-              me.$message.error('查询失败')
             }
         })
       },
@@ -86,17 +86,25 @@ import {getCurApp , disableApp} from '@/api/mylogin'
       onChange(id){
         let me = this ;
         disableApp([id]).then(function(res){
-          debugger
-            if (res.code === 200) {
-              me.$message.success('授权成功')
+          // debugger
+            if (res.code === 200 && res.data) {
               // code: "CISDwWc2eSRyf0BZbJE"
               // id: "1"
               // leaf: 0
               // name: "系统管理"
               // note: "系统管理目录"
               // type: 0
-            } else {
-              me.$message.error('授权失败')
+            }
+        })
+      },
+      //获取被禁用的信息[禁用id的数组]，然后根据是否被禁用显示开关按钮
+      get_Disable_App_Id(){
+        let me = this ;
+        getDisableAppId().then(function (res) {
+            debugger
+            if (res.code === 200 && res.data) {
+              //被禁用的id数组
+              me.list1 = res.data;
             }
         })
       }
