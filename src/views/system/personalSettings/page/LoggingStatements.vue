@@ -17,17 +17,15 @@
             &nbsp;
             <a-icon type="edit" style="color:#336CFB;font-size:20px;" @click="edit"/>
           </div>
-          <div>
-            <a-button type="primary">上传</a-button>
-            &nbsp;&nbsp;
-            <a-button>删除</a-button>
-          </div>
+          <template>
+            <system-upload  @success="onUploadSuccess" :url="imgUrl" @del="onDelImg"></system-upload>
+          </template>
           <p style="font-size:12px;color:#ccc;">点击上传图片,建议上传22X22,支持svg、png、jpg格式,限制5M内</p>
           <div class="pic" style="width:360px;height:92px;">
-            <img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1651287656,2337091096&fm=26&gp=0.jpg" 
+            <!-- <img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1651287656,2337091096&fm=26&gp=0.jpg" 
             alt="111" 
             style="height:80px;width:80px;">
-            彭于晏
+            彭于晏 -->
           </div>
         </div>
       </div>
@@ -121,10 +119,17 @@
 </template>
 
 <script>
+import { getAllCompanyTree, updateCompany, deleteCompany } from '@/api/company'
+import SystemUpload from '../../enterpriseSettings/page/Module/SystemUpload'
+import typeUtils from '@/utils/typeUtils'
+import { minxinModal } from '@/utils/mixin.js'
   export default {
     name: 'LoggingStatements',
+    components: { SystemUpload },
     data() {
       return {
+        curSelectComId: undefined,
+        imgUrl: '',
         isOut1:false,
         isOut2:false,
         isOut3:false,
@@ -149,6 +154,10 @@
         }
       }
     },
+    created() {
+      this.reloadCompany();
+    },
+    mixins: [minxinModal],
     methods: {
       expend(val){
         debugger
@@ -185,10 +194,45 @@
             this.isOut4 = false;
             this.param4 = '展开+';
           }
+        } 
+      },
+      onDelImg: function () {
+      const _this = this
+      this.confirm({
+        title: '确认删除该图片吗吗',
+        content: '',
+        onOk: function () {
+          updateCompany({ id: _this.curSelectComId, avatar: 0 }).then(function (res) {
+            if (res.code === 200) {
+              _this.$message.success('删除成功')
+              _this.imgUrl = ''
+              _this.reloadCompany()
+            } else {
+              _this.$message.error('删除失败')
+            }
+          })
         }
-        
-        
-      }
+      })
+    },
+    onUploadSuccess: function (data) {
+      debugger
+      const _this = this
+      updateCompany({ id: this.curSelectComId, avatar: data.id }).then(function (res) {
+        if (res.code === 200) {
+          _this.imgUrl = data.thumbUrl
+          _this.$message.success('上传成功')
+          _this.reloadCompany()
+        } else {
+          _this.$message.error('上传失败')
+        }
+      })
+    },
+    reloadCompany: function () {
+      const _this = this
+      getAllCompanyTree().then(function (treeData) {
+        _this.comTreeData = treeData
+      })
+    },
     }
   }
 </script>

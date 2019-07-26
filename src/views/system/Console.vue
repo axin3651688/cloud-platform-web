@@ -51,7 +51,7 @@
         </div>
         <div class="body_two_down">
           <div class="models" 
-              v-for="(item,index) of list"
+              v-for="(item,index) of newList"
               :key="index">
               <div class="model_one">
                 <!-- {{item.img}}   -->
@@ -89,50 +89,15 @@ import { getUserInfo , getLicense ,findUserCount ,getCurApp ,getDisableAppId} fr
     name: 'Console',
     data() {
       return {
+         newList:[],
          Total:0,//账户总数
          alreadyUseNum:0, //已使用数量
          userName:'',//当前用户的name
          VerName:'',//版本name(免费/旗舰)
-        //  applyName:'',//应用管理
-        //  applyText:'',//应用中的文本
          applyTotalCount:0,//应用的总数
          disableAppleCount:0,//被禁用的数量
-         list:[//应用管理中的项目
-          //  {
-          //   img:'图1',
-          //   title:'项目',
-          //   contain:'管理团队成员的工作，跟踪任务进展已开启' 
-          //  },
-          //  {
-          //   img:'图2',
-          //   title:'项目',
-          //   contain:'管理团队成员的工作，跟踪任务进展已开启' 
-          //  },
-          //  {
-          //   img:'图3',
-          //   title:'项目',
-          //   contain:'管理团队成员的工作，跟踪任务进展已开启' 
-          //  },
-          //  {
-          //   img:'图4',
-          //   title:'项目',
-          //   contain:'管理团队成员的工作，跟踪任务进展已开启' 
-          //  },
-          //  {
-          //   img:'图5',
-          //   title:'项目',
-          //   contain:'管理团队成员的工作，跟踪任务进展已开启' 
-          //  },
-          //  {
-          //   img:'图6',
-          //   title:'项目',
-          //   contain:'管理团队成员的工作，跟踪任务进展已开启' 
-          //  },{
-          //   img:'图7',
-          //   title:'项目',
-          //   contain:'管理团队成员的工作，跟踪任务进展已开启' 
-          //  }
-         ],
+         list:[],//应用的数组
+         list1:[],//被禁用的id数组
          //控制台最底部的内容数组
          footList:[
            {
@@ -190,11 +155,8 @@ import { getUserInfo , getLicense ,findUserCount ,getCurApp ,getDisableAppId} fr
         let me = this ;
         getUserInfo().then(function (res) {
             // debugger
-            if (res.code === 200) {
-              me.$message.success('查询成功')
+            if (res.code === 200 && res.data) {
               me.userName = res.data.trueName
-            } else {
-              me.$message.error('查询失败')
             }
         })
       },
@@ -203,13 +165,10 @@ import { getUserInfo , getLicense ,findUserCount ,getCurApp ,getDisableAppId} fr
         let me = this ;
         getLicense().then(function (res) {
             // debugger
-            if (res.code === 200) {
-              me.$message.success('查询成功')
+            if (res.code === 200 && res.data) {
               me.Total = res.data.maxUser;
               me.VerName = res.data.name
-            } else {
-              me.$message.error('查询失败')
-            }
+            } 
         })
       },
       //获取已使用的租户数量
@@ -217,11 +176,8 @@ import { getUserInfo , getLicense ,findUserCount ,getCurApp ,getDisableAppId} fr
         let me = this ;
         findUserCount().then(function (res) {
             // debugger
-            if (res.code === 200) {
-              me.$message.success('查询成功')
+            if (res.code === 200 && res.data) {
               me.alreadyUseNum = res.data;
-            } else {
-              me.$message.error('查询失败')
             }
         })
       },
@@ -230,31 +186,28 @@ import { getUserInfo , getLicense ,findUserCount ,getCurApp ,getDisableAppId} fr
         let me = this ;
         getCurApp().then(function (res) {
             debugger
-            if (res.code === 200) {
-              me.$message.success('查询成功')
+            if (res.code === 200 && res.data) {
               me.list = res.data;
-              // me.list.forEach(item => {
-              //   me.applyName = item.name;
-              //   me.applyText = item.note;
-              // });
               me.applyTotalCount = res.data.length;
-            } else {
-              me.$message.error('查询失败')
-            }
+              //遍历数组
+              let newList = [];
+              me.list1.forEach(obj1 => {
+                let tempList=me.list.filter(obj=>obj1!==obj.id)
+                newList=[...tempList,...newList]
+              });
+              me.newList=newList
+            } 
         })
       },
-      //获取租户的应用管理被禁用的数量
+      //获取应用管理被禁用的应用
       get_Disable_App_Id(){
         let me = this ;
         getDisableAppId().then(function (res) {
-            // debugger
-            if (res.code === 200) {
-              me.$message.success('查询成功')
-              me.list = res.data;
-              me.disableAppleCount = res.data.length;
-            } else {
-              me.$message.error('查询失败')
-            }
+          debugger
+          if (res.code === 200 && res.data) {
+            me.list1 = res.data;
+            me.disableAppleCount = res.data.length;
+          }
         })
       }
       
