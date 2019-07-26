@@ -30,6 +30,7 @@
 import { getPrimaryCompanyPeople } from '@/api/userCompany'
 import { getPrimaryDeptPeople } from '@/api/userDept'
 import { findRoleUser } from '@/api/userRole'
+import { findAllPost } from '@/api/post'
 import typeUtils from '@/utils/typeUtils'
 export default {
   name: 'UserTable',
@@ -86,7 +87,13 @@ export default {
 
         {
           title: '现任职位',
-          dataIndex: 'presentPost'
+          dataIndex: 'presentPost',
+          customRender: (text, row, index) => {
+            if (row.presentPost) {
+              return row.postText ? row.postText : ''
+            }
+            return ''
+          }
         },
         /* {
           title: '邮箱',
@@ -115,6 +122,11 @@ export default {
         }
       ],
       data: [],
+      postData: () => {
+        return findAllPost().then(res => {
+          return Array.isArray(res.data) ? res.data : []
+        })
+      },
       pagination: {
         defaultCurrent: 0,
         defaultPageSize: 10,
@@ -168,7 +180,7 @@ export default {
       const pagination = { ..._this.pagination }
       _this.loading = false
       if (typeUtils.isObject(userData)) {
-        _this.data = userData.content
+        _this.data = await this.decorateUserData(userData.content)
       }
       pagination.total = userData.totalElements - 0
       _this.pagination = pagination
@@ -188,6 +200,24 @@ export default {
     },
     initPage () {
       this.pagination.current = this.pagination.defaultCurrent
+    },
+    decorateUserData: async function (userData) {
+      if (Array.isArray(userData)) {
+        const result = this.postData()
+        const postObj = {}
+        await result.then(function (postData) {
+          debugger
+          postData.forEach(function (ele) {
+            postObj[ele.id] = ele.text
+          })
+          userData.forEach(function (ele) {
+            if (ele.presentPost) {
+              ele.postText = postObj[ele.presentPost]
+            }
+          })
+        })
+      }
+      return userData
     }
   },
   watch: {
@@ -199,11 +229,13 @@ export default {
       }
     },
     deptId (newVal, oldVal) {
-      this.initPage()
-      this.fetch({ comId: this.companyId,
-        deptId: newVal,
-        page: this.pagination.defaultCurrent,
-        size: this.pagination.defaultPageSize })
+      if (this.companyId) {
+        this.initPage()
+        this.fetch({ comId: this.companyId,
+          deptId: newVal,
+          page: this.pagination.defaultCurrent,
+          size: this.pagination.defaultPageSize })
+      }
     },
     roleId (newVal) {
       if (newVal >= 0) {

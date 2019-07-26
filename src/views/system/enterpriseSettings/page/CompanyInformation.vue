@@ -8,7 +8,7 @@
       <a-col :md="18" :sm="24">
         <div v-show="!onAdd">
           <system-collapse :title="'企业形象'" :subtitle="'当前企业的标志。'">
-            <system-upload v-show="showBtn" @success="onUploadSuccess" :url="imgUrl" @del="onDelImg"></system-upload>
+            <system-upload v-show="showBtn" :showDel="false" @success="onUploadSuccess" :url="imgUrl"></system-upload>
           </system-collapse>
           <system-collapse :title="'企业资料'" :subtitle="'当前企业名称所属地区。'">
             <company-info-list :nodes="curCorporateInformation()"></company-info-list>

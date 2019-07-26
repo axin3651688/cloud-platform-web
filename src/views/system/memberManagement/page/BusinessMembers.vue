@@ -10,10 +10,11 @@
             <div>
               <tree-select
                 v-if="(!isSingle)"
-                @change="onChangeDept"
+                @change="onSelectDept"
                 :value="curSelectDept"
                 :treeData="deptTreeData"
-                :placeholder="'请选择部门'"></tree-select>
+                :placeholder="'请选择部门'">
+              </tree-select>
               <a-button type="primary" @click="onUserAdd">添加成员</a-button>
             </div>
             <user-table
@@ -50,60 +51,93 @@
 </template>
 
 <script>
-import OrgAuth from './Module/OrgAuth'
 import { getAllCompanyTree, getCompanyDeptTree } from '@/api/company'
+import { enableUser, deleteUser, batchDeleteUser } from '@/api/user'
+import OrgAuth from './Module/OrgAuth'
 import UserTable from './Module/UserTable'
 import LeftTree from './Module/LeftTree'
 import TreeSelect from './Module/TreeSelect'
-import { enableUser, deleteUser, batchDeleteUser } from '@/api/user'
 import UserModal from './Module/UserModal'
 import { minxinModal } from '@/utils/mixin.js'
+
 export default {
   name: 'BusinessMembers',
   components: { UserModal, TreeSelect, LeftTree, UserTable, OrgAuth },
   mixins: [minxinModal],
   data () {
     return {
+      // 公司树数据
       comTreeData: [],
-      curSelectCom: '',
+      // 部门树数据
       deptTreeData: [],
+      // 被选中的公司Id
+      curSelectCom: undefined,
+      // 被选中的部门Id
       curSelectDept: undefined,
-      isSingle: false,
-      singleComId: undefined,
+      // 是否是授权界面
       isOnOrgAuth: false,
-      selectedRowKeys: []
+      // 表格中被选中的数据
+      selectedRowKeys: [],
+      // 是否是单体公司
+      isSingle: false,
+      // 单体公司的Id
+      singleComId: undefined
     }
   },
   methods: {
+    /**
+     * 左边树选择触发事件
+     * @param selectedKeys  被选择的树的数组
+     * @param e             事件
+     */
     onSelectLeftTree (selectedKeys, e) {
-      if (selectedKeys.length <= 0) {
-        this.curSelectCom = undefined
-        this.deptTreeData = []
-        this.curSelectDept = undefined
+      if (this.cancelChoose(selectedKeys)) {
+        this.resetSelect()
         return
       }
-      if (this.isSingle) {
-        // 单体公司并且选择的是公司
-        if (this.singleComId === selectedKeys[0]) {
-          this.curSelectCom = selectedKeys[0]
-          this.curSelectDept = undefined
-          // 因为公司不变，子组件监听不到，所以这里再查一下
-          this.$refs.userTable.reloadCom(this.curSelectCom)
-        } else {
-          // 单体公司并且选择的是部门
-          this.curSelectCom = this.singleComId
-          this.curSelectDept = selectedKeys[0]
-        }
-      } else {
-        // 多公司
-        this.curSelectCom = selectedKeys[0]
+      const selectKey = selectedKeys[0]
+      this.curSelectCom = selectKey
+      this.curSelectDept = undefined
+      if (!this.isSingle) {
         this.renderDeptTree(this.curSelectCom)
-        this.curSelectDept = undefined
+        return
+      }
+      // 是单体公司选择的是公司
+      if (this.singleComId === selectKey) {
+        this.$refs.userTable.reloadCom(this.curSelectCom)
+      } else {
+        this.curSelectCom = this.singleComId
+        this.curSelectDept = selectKey
       }
     },
-    onChangeDept (value) {
+    /**
+     * 清空树的选择
+     */
+    resetSelect: function () {
+      this.curSelectCom = undefined
+      this.curSelectDept = undefined
+      this.deptTreeData = []
+    },
+    /**
+     * 根据选中的key判断是否是取消选中操作
+     * @param selectedKeys
+     * @returns {boolean}
+     */
+    cancelChoose: function (selectedKeys) {
+      return selectedKeys.length <= 0
+    },
+    /**
+     * 选择部门下拉框的事件
+     * @param value
+     */
+    onSelectDept (value) {
       this.curSelectDept = value
     },
+    /**
+     * 渲染部门树
+     * @param comId
+     * @returns {*}
+     */
     renderDeptTree (comId) {
       const _this = this
       return getCompanyDeptTree({ comId: comId }).then(function (treeData) {
@@ -112,12 +146,11 @@ export default {
       })
     },
     onUserAdd () {
-      this.$refs.userModal.visible = true
+      this.$refs.userModal.showModal()
     },
     onUserEdit (record) {
       this.$refs.userModal.onEdit(record)
     },
-    // 这里不做权限管理交给父组件做吧
     onUserAuth (record) {
       // 表格申请编辑权限
       this.isOnOrgAuth = true
@@ -139,9 +172,6 @@ export default {
         }
       })
     },
-    reloadTable () {
-      this.$refs.userTable.reload()
-    },
     onUserDelete (record) {
       const _this = this
       this.confirm({
@@ -149,7 +179,7 @@ export default {
         content: '删除将不可恢复',
         onOk: function () {
           deleteUser({ userId: record.id }).then(function (res) {
-            if (res.data.code !== '0') {
+            if (res.data.code === 200) {
               _this.$message.success('删除成功')
             } else {
               _this.$message.error('删除失败')
@@ -159,15 +189,8 @@ export default {
         }
       })
     },
-    // 根据解析后的树数据判断是否是单体公司
-    isSingleCom (treeData) {
-      if (treeData.length === 1) {
-        if (treeData[0].children === undefined) {
-          return true
-        }
-      } else {
-        return false
-      }
+    reloadTable () {
+      this.$refs.userTable.reload()
     },
     onBack () {
       this.isOnOrgAuth = false
@@ -182,7 +205,7 @@ export default {
           content: '删除将不可恢复',
           onOk: function () {
             batchDeleteUser(_this.selectedRowKeys).then(function (res) {
-              if (res.code !== 0) {
+              if (res.code === 200) {
                 _this.$message.success('删除成功')
               } else {
                 _this.$message.error('删除失败')
@@ -196,22 +219,32 @@ export default {
     },
     onRowSelect (selectedRowKeys, selectedRows) {
       this.selectedRowKeys = selectedRowKeys
+    },
+    isSingleCom (treeData) {
+      return treeData.length === 1 && treeData[0].children === undefined
+    },
+    renderSingleCom: function (treeData) {
+      const _this = this
+      const com = treeData[0]
+      _this.renderDeptTree(com.id).then(function (deptTreeData) {
+        com.children = deptTreeData
+        _this.comTreeData = treeData
+        _this.isSingle = true
+        _this.singleComId = com.id
+      })
+    },
+    renderMultiCom: function (treeData) {
+      const _this = this
+      _this.comTreeData = treeData
     }
   },
   created () {
     const _this = this
     getAllCompanyTree().then(function (treeData) {
-      // 单体
       if (_this.isSingleCom(treeData)) {
-        _this.renderDeptTree(treeData[0].id).then(function (deptTreeData) {
-          treeData[0].children = deptTreeData
-          _this.comTreeData = treeData
-          _this.isSingle = true
-          _this.singleComId = treeData[0].id
-        })
+        _this.renderSingleCom(treeData)
       } else {
-        // 多公司
-        _this.comTreeData = treeData
+        _this.renderMultiCom(treeData)
       }
     })
   }

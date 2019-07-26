@@ -4,6 +4,12 @@
       :form="form"
       :layout="formLayout">
       <a-form-item
+        label="企业logo"
+        :label-col="labelCol"
+        :wrapper-col="wrapperCol">
+        <system-upload @success="onUploadSuccess" :url="imgUrl" :show-del="false"></system-upload>
+      </a-form-item>
+      <a-form-item
         label="名称"
         :label-col="labelCol"
         :wrapper-col="wrapperCol">
@@ -15,7 +21,12 @@
         :wrapper-col="wrapperCol">
         <a-input placeholder="企业简称" v-decorator="[ 'text', validatorRules.text]"/>
       </a-form-item>
-
+      <a-form-item
+        label="行业"
+        :label-col="labelCol"
+        :wrapper-col="wrapperCol">
+        <a-cascader :options="options" placeholder="行业" :fieldNames="{ label: 'text', value: 'id', children: 'children' }" changeOnSelect v-decorator="[ 'property4']" />
+      </a-form-item>
       <custom-form-item
         v-for="item in customField"
         :key="item.text"
@@ -40,15 +51,17 @@
 </template>
 
 <script>
-import { saveCompany, updateCompany } from '@/api/company'
-import { save, update, del, queryByField } from '@/api/customForm'
+import { saveCompany } from '@/api/company'
+import { queryByField } from '@/api/customForm'
+import { findAllIndustry } from '@/api/common'
+
 import AddCustomFieldModal from './AddCustomFieldModal'
 import CustomFormItem from './CustomFormItem'
-import typeUtils from '@/utils/typeUtils'
 import DeleteCustomFieldModal from './DeleteCustomFieldModal'
+import SystemUpload from './SystemUpload'
 export default {
   name: 'CompanySaveForm',
-  components: { DeleteCustomFieldModal, CustomFormItem, AddCustomFieldModal },
+  components: { SystemUpload, DeleteCustomFieldModal, CustomFormItem, AddCustomFieldModal },
   props: {
     pid: {
       type: String,
@@ -67,7 +80,9 @@ export default {
       },
       options: [],
       loading: false,
-      customField: []
+      customField: [],
+      imgUrl: '',
+      imgId: 0
     }
   },
   methods: {
@@ -79,6 +94,12 @@ export default {
           const formData = JSON.parse(JSON.stringify(values))
           formData.customField = JSON.stringify(_this.getCustomFiled(formData))
           formData.pid = _this.pid
+          if (_this.imgId !== 0) {
+            formData.avatar = _this.imgId
+          }
+          if (Array.isArray(formData.property4)) {
+            formData.property4 = formData.property4.join(',')
+          }
           saveCompany(formData).then(function (res) {
             if (res.code === 200) {
               _this.$message.success('保存成功')
@@ -92,6 +113,7 @@ export default {
       })
     },
     onBack: function () {
+      this.form.resetFields()
       this.$emit('onBack')
     },
     onClickAddField: function () {
@@ -120,10 +142,27 @@ export default {
           _this.customField = res.data
         }
       })
+    },
+    onUploadSuccess: function (imgData) {
+      if (imgData) {
+        this.imgUrl = imgData.thumbUrl
+        this.imgId = imgData.id
+      }
+    }
+  },
+  watch: {
+    pid: function (newVal) {
+      this.imgUrl = ''
+      this.imgId = 0
+      this.form.resetFields()
     }
   },
   created () {
     this.refreshField()
+    const _this = this
+    findAllIndustry().then(function (res) {
+      _this.options = res.data
+    })
   }
 }
 </script>

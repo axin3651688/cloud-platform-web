@@ -37,6 +37,7 @@ import { getAllCompanyTree, getCompanyDeptTree } from '@/api/company'
 import { updateUserCompany, findCompanyByUser, findPrimaryCompany } from '@/api/userCompany'
 import { updateUserCompanyDept, findUserDept, findPrimaryDept } from '@/api/userDept'
 import ACol from 'ant-design-vue/es/grid/Col'
+import avril from '@/utils/avrcollectionUtil'
 export default {
   name: 'OrgAuth',
   components: { ACol, LeftTree },
@@ -97,7 +98,10 @@ export default {
           const renderDeptIds = res.data.map(function (ele) {
             return ele.id
           })
-          _this.checkDeptKeys = renderDeptIds
+          const deptTreeIds = _this.deptTreeData.map(function (ele) {
+            return ele.id
+          })
+          _this.checkDeptKeys = avril.getIntersectionArr(deptTreeIds, renderDeptIds)
         }
       }
     },
@@ -117,6 +121,7 @@ export default {
           await updateUserCompanyDept({ userId: _this.currentSelectUserId, comId: _this.selectCompany }, _this.checkDeptKeys)
         }
       }
+      this.$message.success('更新成功')
     },
     onBack () {
       this.$refs.comTree.clearSelectNodes()

@@ -47,7 +47,7 @@ const user = {
       return new Promise((resolve, reject) => {
         login(userInfo).then(response => {
           const result = response
-          Vue.ls.set(ACCESS_TOKEN, result['token_type'] + ' ' + result['access_token'], result['expires_in'] * 1000)
+          Vue.ls.set(ACCESS_TOKEN, result['token_type'] + ' ' + result['access_token'])
           commit('SET_TOKEN', result)
           resolve()
         }).catch(error => {
@@ -108,11 +108,11 @@ const user = {
     // 登出
     Logout ({ commit, state }) {
       return new Promise((resolve) => {
-        commit('SET_TOKEN', {})
         commit('SET_ROLES', [])
         commit('SET_RESOURCE', [])
         Vue.ls.remove(ACCESS_TOKEN)
-        logout({ access_token: state.token['access_token'] }).then(() => {
+        logout({ access_token: state.token['access_token'], client_id: 'browser' }).then(() => {
+          commit('SET_TOKEN', {})
           resolve()
         }).catch(() => {
           resolve()

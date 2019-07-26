@@ -30,12 +30,8 @@
           <a-select
             v-decorator="['gender', validatorRules.gender]"
             placeholder="请选择一个性别">
-            <a-select-option value="男">
-              男
-            </a-select-option>
-            <a-select-option value="女">
-              女
-            </a-select-option>
+            <a-select-option value="男">男</a-select-option>
+            <a-select-option value="女">女</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item
@@ -131,7 +127,18 @@ export default {
     }
   },
   methods: {
-    showModal () {
+    async showModal () {
+      const _this = this
+      // 初始化公司数据，角色数据，职位数据
+      await getAllCompanyTree().then(function (treeData) {
+        _this.comTreeData = treeData
+      })
+      await findAllPost().then(function (res) {
+        _this.postData = res.data
+      })
+      await findAllRole().then(function (res) {
+        _this.roleData = res.data
+      })
       this.visible = true
     },
     handleOk (e) {
@@ -227,15 +234,14 @@ export default {
         }
       })
     },
-    onEdit (record) {
-      debugger
+    async onEdit (record) {
       const _this = this
       // 编辑用户走这里相同的莫泰框，逻辑不同
       // 注意这句话要先走
       _this.title = '编辑用户'
       _this.editMode = true
       _this.editId = record.id
-      _this.visible = true
+      await this.showModal()
       // 1. 根据Id获取该用户的所属公司，角色信息，部门信息
       findUserRole({ userId: record.id }).then(function (res) {
         const ids = res.data.map(function (ele) {
@@ -318,24 +324,6 @@ export default {
         }
       })
     }
-  },
-  watch: {
-    visible: function (newVal, oldVal) {
-      if (newVal) this.showModal()
-    }
-  },
-  mounted () {
-    const _this = this
-    // 初始化公司数据，角色数据，职位数据
-    getAllCompanyTree().then(function (treeData) {
-      _this.comTreeData = treeData
-    })
-    findAllPost().then(function (res) {
-      _this.postData = res.data
-    })
-    findAllRole().then(function (res) {
-      _this.roleData = res.data
-    })
   }
 }
 </script>

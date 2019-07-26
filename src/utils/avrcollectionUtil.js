@@ -16,6 +16,24 @@ export default {
       return !contain
     })
   },
+  /**
+   * 求A∩B
+   * @param A
+   * @param B
+   * @returns {*}
+   */
+  getIntersectionArr: function (A, B) {
+    const precondition = Array.isArray(A) && Array.isArray(B)
+    if (!precondition) {
+      throw Error('传数组')
+    }
+    return A.filter(function (a) {
+      const contain = B.some(function (b) {
+        return a === b
+      })
+      return contain
+    })
+  },
   getSumArr: function (A, B) {
     const precondition = Array.isArray(A) && Array.isArray(B)
     if (!precondition) {

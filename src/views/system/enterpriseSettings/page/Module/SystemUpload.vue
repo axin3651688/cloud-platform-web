@@ -13,7 +13,7 @@
         <div class="ant-upload-text">点击上传</div>
       </div>
     </a-upload>
-    <a-button type="default" @click="onDel">删除</a-button>
+    <a-button type="default" @click="onDel" v-show="showDel">删除</a-button>
   </div>
 </template>
 
@@ -25,6 +25,10 @@ export default {
     url: {
       type: String,
       default: ''
+    },
+    showDel: {
+      type: Boolean,
+      default: true
     }
   },
   data () {

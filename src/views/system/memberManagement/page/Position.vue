@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <a-button @click="onPostAdd" type="primary">添加职位</a-button>
+    <a-button @click="onAdd" type="primary">添加职位</a-button>
     <s-table
       ref="table"
       size="default"
@@ -12,8 +12,8 @@
           <a-menu slot="overlay">
             <slot name="dropdown" :record="record">
               <a-menu-item>
-                <a href="javascript:;" @click="onPostEdit(record)">编辑</a>
-                <a href="javascript:;" @click="onPostDelete(record)">删除</a>
+                <a href="javascript:;" @click="onEdit(record)">编辑</a>
+                <a href="javascript:;" @click="onDelete(record)">删除</a>
               </a-menu-item>
             </slot>
           </a-menu>
@@ -41,7 +41,7 @@ export default {
       columns: [{
         title: '职位名称',
         dataIndex: 'text'
-      },{
+      }, {
         title: '职位描述',
         dataIndex: 'desc'
       }, {
@@ -61,13 +61,13 @@ export default {
     refresh: function (reload = false) {
       this.$refs.table.refresh(reload)
     },
-    onPostAdd: function () {
+    onAdd: function () {
       this.$refs.postModal.showModal()
     },
-    onPostEdit: function (record) {
+    onEdit: function (record) {
       this.$refs.postModal.onEdit(record)
     },
-    onPostDelete: function (record) {
+    onDelete: function (record) {
       const _this = this
       this.confirm({
         title: '确认删除' + record.text + '吗',

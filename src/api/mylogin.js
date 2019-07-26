@@ -1,9 +1,11 @@
 import {
   axios2
 } from '@/utils/request'
+import store from '@/store'
 
 const api = {
   login: '/uaa/oauth/token',
+  refreshToken: 'uaa/oauth/token',
   loginOut: '/uaa/oauth/token',
   currentUser: '/org/base_service/user/find_current',
   userResource: '/org/base_service/user_resource/find_user_resource_code',
@@ -11,7 +13,7 @@ const api = {
   findUserCount: '/org/base_service/user/find_user_count',
   getCurApp: '/org/base_service/tenancy/app',
   disableApp: '/org/base_service/tenancy/disable_app',
-  getDisableAppId: '/org/base_service/tenancy/disableAppId'
+  getDisableAppId: '/org/base_service/tenancy/disableAppId',
 }
 
 /**
@@ -37,6 +39,18 @@ export function logout (parameter) {
     url: api.loginOut,
     method: 'delete',
     params: parameter
+  })
+}
+
+export function refreshToken () {
+  const params = {}
+  params.grant_type = 'refresh_token'
+  params.client_id = 'browser'
+  params.refresh_token = store.getters.token.refresh_token;
+  return axios2({
+    url: api.refresh,
+    method: 'post',
+    params: params
   })
 }
 

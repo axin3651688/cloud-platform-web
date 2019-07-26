@@ -57,31 +57,46 @@ export default {
   },
   mixins: [minxinModal],
   methods: {
+    /**
+     * 左边树选择触发事件
+     * @param selectedKeys  被选择的树的数组
+     * @param e             事件
+     */
     onSelectLeftTree (selectedKeys, e) {
-      if (selectedKeys.length <= 0) {
-        this.curSelectCom = undefined
-        this.deptTreeData = []
-        this.curSelectDept = undefined
+      if (this.cancelChoose(selectedKeys)) {
+        this.resetSelect()
         return
       }
-      if (this.isSingle) {
-        // 单体公司并且选择的是公司
-        if (this.singleComId === selectedKeys[0]) {
-          this.curSelectCom = selectedKeys[0]
-          this.curSelectDept = undefined
-          // 因为公司不变，子组件监听不到，所以这里再查一下
-          this.$refs.userTable.reloadCom(this.curSelectCom)
-        } else {
-          // 单体公司并且选择的是部门
-          this.curSelectCom = this.singleComId
-          this.curSelectDept = selectedKeys[0]
-        }
-      } else {
-        // 多公司
-        this.curSelectCom = selectedKeys[0]
+      const selectKey = selectedKeys[0]
+      this.curSelectCom = selectKey
+      this.curSelectDept = undefined
+      if (!this.isSingle) {
         this.renderDeptTree(this.curSelectCom)
-        this.curSelectDept = undefined
+        return
       }
+      // 是单体公司选择的是公司
+      if (this.singleComId === selectKey) {
+        this.$refs.userTable.reloadCom(this.curSelectCom)
+      } else {
+        this.curSelectCom = this.singleComId
+        this.curSelectDept = selectKey
+      }
+    },
+    /**
+     * 清空树的选择
+     */
+    resetSelect: function () {
+      this.curSelectCom = undefined
+      this.curSelectDept = undefined
+      this.deptTreeData = []
+    },
+    /**
+     * 根据选中的key判断是否是取消选中操作
+     * @param selectedKeys
+     * @returns {boolean}
+     */
+    cancelChoose: function (selectedKeys) {
+      return selectedKeys.length <= 0
     },
     onChangeDept (value) {
       this.curSelectDept = value
@@ -95,7 +110,6 @@ export default {
     },
     onUserEnable (record) {
       const _this = this
-
       this.confirm({
         title: '确认启用' + record.trueName + '吗',
         okType: 'info',
@@ -111,34 +125,34 @@ export default {
         }
       })
     },
-    // 根据解析后的树数据判断是否是单体公司
-    isSingleCom (treeData) {
-      if (treeData.length === 1) {
-        if (treeData[0].children === undefined) {
-          return true
-        }
-      } else {
-        return false
-      }
-    },
     reloadTable () {
       this.$refs.userTable.reload()
+    },
+    isSingleCom (treeData) {
+      return treeData.length === 1 && treeData[0].children === undefined
+    },
+    renderSingleCom: function (treeData) {
+      const _this = this
+      const com = treeData[0]
+      _this.renderDeptTree(com.id).then(function (deptTreeData) {
+        com.children = deptTreeData
+        _this.comTreeData = treeData
+        _this.isSingle = true
+        _this.singleComId = com.id
+      })
+    },
+    renderMultiCom: function (treeData) {
+      const _this = this
+      _this.comTreeData = treeData
     }
   },
   created () {
     const _this = this
     getAllCompanyTree().then(function (treeData) {
-      // 单体
       if (_this.isSingleCom(treeData)) {
-        _this.renderDeptTree(treeData[0].id).then(function (deptTreeData) {
-          treeData[0].children = deptTreeData
-          _this.comTreeData = treeData
-          _this.isSingle = true
-          _this.singleComId = treeData[0].id
-        })
+        _this.renderSingleCom(treeData)
       } else {
-        // 多公司
-        _this.comTreeData = treeData
+        _this.renderMultiCom(treeData)
       }
     })
   }
