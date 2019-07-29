@@ -67,38 +67,29 @@ const user = {
         getUserInfo().then(async response => {
           const user = response.data
           if (user) {
+            if (user.enable == '0') {
+              throw new Error('用户已被禁用')
+            }
             commit('SET_INFO', user)
             commit('SET_NAME', { name: user.trueName, welcome: welcome() })
             commit('SET_AVATAR', user.avatar)
             // 查询用户所有权限塞进去
             const res = await getUserAllResource({ id: user.id })
+            if (res.code !== 200) {
+              throw new Error('获取资源信息失败!')
+            }
             const components = res.data.map(function (ele) {
               return ele.component
             })
+            if (res.data.length === 0) {
+              throw new Error('资源信息为空!')
+            }
             commit('SET_RESOURCE', res.data)
             commit('SET_RESOURCE_CODE', components)
             resolve(response)
           } else {
-            reject(new Error('getInfo: roles must be a non-null array !'))
+            throw new Error('未获取到用户信息!')
           }
-          /// 不要了，下面是原来的代码
-          /* if (result.role && result.role.permissions.length > 0) {
-            const role = result.role
-            role.permissions = result.role.permissions
-            role.permissions.map(per => {
-              if (per.actionEntitySet != null && per.actionEntitySet.length > 0) {
-                const action = per.actionEntitySet.map(action => { return action.action })
-                per.actionList = action
-              }
-            })
-            role.permissionList = role.permissions.map(permission => { return permission.permissionId })
-            commit('SET_ROLES', result.role)
-            commit('SET_INFO', result)
-          } else {
-            reject(new Error('getInfo: roles must be a non-null array !'))
-          }
-          commit('SET_NAME', { name: result.name, welcome: welcome() })
-          commit('SET_AVATAR', result.avatar) */
         }).catch(error => {
           reject(error)
         })

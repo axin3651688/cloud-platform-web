@@ -59,8 +59,8 @@ const notFoundRouter = {
 export const generatorDynamicRouter = (data) => {
   return new Promise((resolve, reject) => {
     const resources = store.getters.resources
-    transferToMenuResource(resources)
-    const routeTree = getRoute(resources)
+    const sysResource = transferToMenuResource(resources)
+    const routeTree = getRoute(sysResource)
     const routers = generator(routeTree)
     routers.push(notFoundRouter)
     console.log(JSON.stringify(routers))
@@ -69,9 +69,8 @@ export const generatorDynamicRouter = (data) => {
 }
 
 function transferToMenuResource (resources) {
-  console.log('空方法')
   return resources.filter(function (ele) {
-    return ele.type == 1
+    return ele.type == 1 && ele.component
   })
   // 找到所有菜单节点的子节点中的权限节点，将该权限节点设置到
 }

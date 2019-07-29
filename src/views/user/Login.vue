@@ -180,17 +180,12 @@ export default {
         customActiveKey,
         Login
       } = this
-
       state.loginBtn = true
-
       const validateFieldsKey = customActiveKey === 'tab1' ? ['username', 'password'] : ['mobile', 'captcha']
       validateFields(validateFieldsKey, { force: true }, (err, values) => {
         if (!err) {
-          console.log('login form', values)
+          // 这里根据Tab页的不同提交不同的登陆类型
           const loginParams = { ...values }
-          // delete loginParams.username
-          // loginParams[!state.loginType ? 'email' : 'username'] = values.username
-          // loginParams.password = md5(values.password)
           loginParams['client_id'] = 'browser'
           loginParams['grant_type'] = 'password'
           if (customActiveKey === 'tab1') {
@@ -256,14 +251,16 @@ export default {
         this.stepCaptchaVisible = false
       })
     },
-    loginSuccess (res) {
+    async loginSuccess (res) {
       this.$router.push({ name: 'Console' })
-      setTimeout(() => {
+      // TODO 可能要检查一下是否是本系统中未禁用的用户，然后再进Console路由
+      // await this.checkSysUser(loginParams['mobile'])
+      /* setTimeout(() => {
         this.$notification.success({
           message: '欢迎',
           description: `${timeFix()}，欢迎回来`
         })
-      }, 1000)
+      }, 1000) */
     },
     requestFailed (err) {
       this.$notification['error']({

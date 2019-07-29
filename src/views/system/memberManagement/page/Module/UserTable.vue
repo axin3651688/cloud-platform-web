@@ -203,18 +203,15 @@ export default {
     },
     decorateUserData: async function (userData) {
       if (Array.isArray(userData)) {
-        const result = this.postData()
+        const postData = await this.postData()
         const postObj = {}
-        await result.then(function (postData) {
-          debugger
-          postData.forEach(function (ele) {
-            postObj[ele.id] = ele.text
-          })
-          userData.forEach(function (ele) {
-            if (ele.presentPost) {
-              ele.postText = postObj[ele.presentPost]
-            }
-          })
+        postData.forEach(function (ele) {
+          postObj[ele.id] = ele.text
+        })
+        userData.forEach(function (ele) {
+          if (ele.presentPost) {
+            ele.postText = postObj[ele.presentPost]
+          }
         })
       }
       return userData
