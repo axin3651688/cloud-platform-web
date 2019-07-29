@@ -70,7 +70,7 @@ export const generatorDynamicRouter = (data) => {
 
 function transferToMenuResource (resources) {
   return resources.filter(function (ele) {
-    return ele.type == 1 && ele.component
+    return ele.type == 1 && ele.sys == '1'
   })
   // 找到所有菜单节点的子节点中的权限节点，将该权限节点设置到
 }

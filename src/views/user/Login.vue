@@ -253,7 +253,6 @@ export default {
     },
     async loginSuccess (res) {
       this.$router.push({ name: 'Console' })
-      // TODO 可能要检查一下是否是本系统中未禁用的用户，然后再进Console路由
       // await this.checkSysUser(loginParams['mobile'])
       /* setTimeout(() => {
         this.$notification.success({
