@@ -6,12 +6,12 @@
         <left-tree :treeData="roleTreeData" :show-menu="true" @select="onRoleSelect" class="leftTree">
           <!--插槽，插入需要的列表-->
           <template slot="menu" slot-scope="item">
-            <a-menu-item key="1" @click="onRoleEdit(item.data)"><a-icon type="edit"/>修改</a-menu-item>
-            <a-menu-item key="2" @click="onDelete(item.data)"><a-icon type="delete"/>删除</a-menu-item>
+            <a-menu-item key="1" @click="onRoleEdit(item.data)" v-action:editRole><a-icon type="edit"/>修改</a-menu-item>
+            <a-menu-item key="2" @click="onDelete(item.data)" v-action:delRole><a-icon type="delete"/>删除</a-menu-item>
           </template>
         </left-tree>
         <div class="btn">
-          <a-button type="primary" icon="plus" @click="onAdd" class="btn1">添加角色</a-button>&nbsp;&nbsp;
+          <a-button type="primary" icon="plus" @click="onAdd" class="btn1" v-action:addRole>添加角色</a-button>&nbsp;&nbsp;
           <!-- <a-button type="primary" icon="plus" class="btn2">角色分组</a-button> -->
         </div>
       </a-col>
@@ -20,7 +20,7 @@
         <div style="background-color: #fff">
           <div class="rightHeader">
             <big-header :value="title"></big-header>
-            <a-button type="primary" icon="usergroup-add" class="btn3">添加成员</a-button>
+            <a-button type="primary" icon="usergroup-add" class="btn3" v-action:addRoleUser>添加成员</a-button>
           </div>
           <!-- <span class="anse" v-if="pid=0">+  如需更换企业所有者,请到【企业设置】页面,点击【转让企业】来更换所有者,设置完成后信息目动同步。<a-button type="primary" style="font-size:12px;">跳转至转让企业</a-button></span> -->
           <user-table

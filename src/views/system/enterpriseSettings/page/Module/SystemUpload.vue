@@ -57,7 +57,7 @@ export default {
     beforeUpload (file) {
       const isLt5M = file.size / 1024 / 1024 < 5
       if (!isLt5M) {
-        this.$message.error('Image must smaller than 2MB!')
+        this.$message.error('Image must smaller than 5MB!')
       }
       return isLt5M
     },

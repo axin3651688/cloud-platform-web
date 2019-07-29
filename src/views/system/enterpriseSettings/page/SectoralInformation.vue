@@ -5,23 +5,23 @@
         <left-tree :treeData="comTreeData" @select="onCompanySelect"></left-tree>
       </a-col>
       <a-col :md="18" :sm="24">
-        <a-button @click="add" type="primary">添加一级部门</a-button>
+        <a-button @click="add" type="primary" v-action:addDept>添加一级部门</a-button>
         <sectoral-table ref="deptTable" style="background-color: #fff" :comId="selectCom">
           <template slot="dropdown" slot-scope="item">
             <a-menu-item>
-              <a href="javascript:;" @click="edit(item.record)">编辑</a>
+              <a href="javascript:;" @click="edit(item.record)" v-action:editDept>编辑</a>
+            </a-menu-item>
+            <a-menu-item v-action:addDept>
+              <a href="javascript:;" @click="addChild(item.record)" v-action:addDept>添加子部门</a>
             </a-menu-item>
             <a-menu-item>
-              <a href="javascript:;" @click="addChild(item.record)">添加子部门</a>
+              <a href="javascript:;" @click="editStructure(item.record)" v-action:editDept>更改级次</a>
             </a-menu-item>
             <a-menu-item>
-              <a href="javascript:;" @click="editStructure(item.record)">更改级次</a>
+              <a href="javascript:;" @click="editSort(item.record)" v-action:editDept>更改排序</a>
             </a-menu-item>
             <a-menu-item>
-              <a href="javascript:;" @click="editSort(item.record)">更改排序</a>
-            </a-menu-item>
-            <a-menu-item>
-              <a href="javascript:;" @click="delDepart(item.record)">删除</a>
+              <a href="javascript:;" @click="delDepart(item.record)" v-action:delDept>删除</a>
             </a-menu-item>
           </template>
         </sectoral-table>

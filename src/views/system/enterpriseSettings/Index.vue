@@ -6,12 +6,12 @@
       :selectedKeys="selectedKeys"
       type="inner"
       @openChange="onOpenChange">
-      <a-menu-item key="/EnterpriseSettings/CompanyInformation">
+      <a-menu-item v-if="$auth('CompanyInformation')" key="/EnterpriseSettings/CompanyInformation">
         <router-link :to="{ name: 'CompanyInformation' }">
           公司信息
         </router-link>
       </a-menu-item>
-      <a-menu-item key="/EnterpriseSettings/SectoralInformation">
+      <a-menu-item v-if="$auth('SectoralInformation')" key="/EnterpriseSettings/SectoralInformation">
         <router-link :to="{ name: 'SectoralInformation' }">
           部门信息
         </router-link>

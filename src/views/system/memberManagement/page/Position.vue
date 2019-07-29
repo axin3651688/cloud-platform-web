@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <a-button @click="onAdd" type="primary">添加职位</a-button>
+    <a-button @click="onAdd" type="primary" v-action:addPosition>添加职位</a-button>
     <s-table
       ref="table"
       size="default"
@@ -11,8 +11,10 @@
           <a class="ant-dropdown-link" href="#"><a-icon type="align-right" /></a>
           <a-menu slot="overlay">
             <slot name="dropdown" :record="record">
-              <a-menu-item>
+              <a-menu-item v-action:editPosition>
                 <a href="javascript:;" @click="onEdit(record)">编辑</a>
+              </a-menu-item>
+              <a-menu-item v-action:delPosition>
                 <a href="javascript:;" @click="onDelete(record)">删除</a>
               </a-menu-item>
             </slot>

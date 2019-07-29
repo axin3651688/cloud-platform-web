@@ -6,22 +6,22 @@
       :selectedKeys="selectedKeys"
       type="inner"
       @openChange="onOpenChange">
-      <a-menu-item key="/RoleManagement/RoleMembers">
+      <a-menu-item v-if="$auth('RoleManagement')" key="/RoleManagement/RoleMembers">
         <router-link :to="{ name: 'RoleManagement' }">
           角色成员
         </router-link>
       </a-menu-item>
-      <a-menu-item key="/RoleManagement/FunctionalPermissions">
+      <a-menu-item v-if="$auth('FunctionalPermissions')" key="/RoleManagement/FunctionalPermissions">
         <router-link :to="{ name: 'FunctionalPermissions' }">
           功能权限
         </router-link>
       </a-menu-item>
-      <a-menu-item key="/RoleManagement/DataScope">
+      <a-menu-item v-if="$auth('DataScope')" key="/RoleManagement/DataScope">
         <router-link :to="{ name: 'DataScope' }">
           数据范围
         </router-link>
       </a-menu-item>
-      <a-menu-item key="/RoleManagement/MenuPermissions">
+      <a-menu-item v-if="$auth('MenuPermissions')" key="/RoleManagement/MenuPermissions">
         <router-link :to="{ name: 'MenuPermissions' }">
           菜单权限
         </router-link>

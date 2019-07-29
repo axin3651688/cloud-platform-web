@@ -6,17 +6,17 @@
       :selectedKeys="selectedKeys"
       type="inner"
       @openChange="onOpenChange">
-      <a-menu-item key="/PersonalSettings/LoggingStatements">
+      <a-menu-item v-if="$auth('LoggingStatements')" key="/PersonalSettings/LoggingStatements">
         <router-link :to="{ name: 'LoggingStatements' }">
           基本资料
         </router-link>
       </a-menu-item>
-      <a-menu-item key="/PersonalSettings/BindingAccount">
+      <a-menu-item v-if="$auth('BindingAccount')" key="/PersonalSettings/BindingAccount">
         <router-link :to="{ name: 'BindingAccount' }">
           绑定账号
         </router-link>
       </a-menu-item>
-      <a-menu-item key="/PersonalSettings/LogInLog">
+      <a-menu-item v-if="$auth('LogInLog')" key="/PersonalSettings/LogInLog">
         <router-link :to="{ name: 'LogInLog' }">
           登陆日志
         </router-link>

@@ -6,22 +6,22 @@
       :selectedKeys="selectedKeys"
       type="inner"
       @openChange="onOpenChange">
-      <a-menu-item key="/MemberManagement/BusinessMembers">
+      <a-menu-item v-if="$auth('BusinessMembers')" key="/MemberManagement/BusinessMembers">
         <router-link :to="{ name: 'BusinessMembers' }">
           企业成员
         </router-link>
       </a-menu-item>
-      <a-menu-item key="/MemberManagement/Position">
+      <a-menu-item v-if="$auth('Position')" key="/MemberManagement/Position">
         <router-link :to="{ name: 'Position' }">
           职位
         </router-link>
       </a-menu-item>
-      <a-menu-item key="/MemberManagement/Robot">
+      <a-menu-item v-if="$auth('Robot')" key="/MemberManagement/Robot">
         <router-link :to="{ name: 'Robot' }">
           机器人
         </router-link>
       </a-menu-item>
-      <a-menu-item key="/MemberManagement/DisablingAccounts">
+      <a-menu-item v-if="$auth('DisablingAccounts')" key="/MemberManagement/DisablingAccounts">
         <router-link :to="{ name: 'DisablingAccounts' }">
           禁用账号
         </router-link>

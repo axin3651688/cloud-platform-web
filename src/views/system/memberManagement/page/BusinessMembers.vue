@@ -15,7 +15,7 @@
                 :treeData="deptTreeData"
                 :placeholder="'请选择部门'">
               </tree-select>
-              <a-button type="primary" @click="onUserAdd">添加成员</a-button>
+              <a-button type="primary" @click="onUserAdd" v-action:addUser>添加成员</a-button>
             </div>
             <user-table
               ref="userTable"
@@ -24,22 +24,22 @@
               :show-action="true"
               @rowSelect="onRowSelect">
               <template slot="dropdown" slot-scope="item">
-                <a-menu-item>
+                <a-menu-item v-action:editUser>
                   <a href="javascript:;" @click="onUserEdit(item.record)">编辑</a>
                 </a-menu-item>
-                <a-menu-item>
+                <a-menu-item v-action:editUser>
                   <a href="javascript:;" @click="onUserAuth(item.record)">授权</a>
                 </a-menu-item>
-                <a-menu-item>
+                <a-menu-item v-action:disableUser>
                   <a href="javascript:;" @click="onUserDisable(item.record)">禁用</a>
                 </a-menu-item>
-                <a-menu-item>
+                <a-menu-item v-action:delUser>
                   <a href="javascript:;" @click="onUserDelete(item.record)">删除</a>
                 </a-menu-item>
               </template>
             </user-table>
             <div>
-              已选择{{ selectedRowKeys.length }} <a @click="batchDeleteUser">删除</a>
+              已选择{{ selectedRowKeys.length }} <a @click="batchDeleteUser" v-action:delUser>删除</a>
             </div>
           </div>
         </a-col>
