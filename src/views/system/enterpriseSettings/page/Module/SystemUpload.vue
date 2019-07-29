@@ -6,7 +6,9 @@
       :showUploadList="false"
       listType="picture-card"
       class="avatar-uploader"
-      :customRequest="customRequest">
+      :customRequest="customRequest"
+      :disabled="disable"
+      >
       <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
       <div v-else>
         <a-icon :type="loading ? 'loading' : 'plus'" />
@@ -29,6 +31,10 @@ export default {
     showDel: {
       type: Boolean,
       default: true
+    },
+    disable: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -55,11 +61,16 @@ export default {
       })
     },
     beforeUpload (file) {
+      const fileType = ['image/jpeg', 'image/png', 'image/bmp']
+      const isImg = fileType.indexOf(file.type) > -1
+      if (!isImg) {
+        this.$message.error('只能上传jpec、png、bmp图片！')
+      }
       const isLt5M = file.size / 1024 / 1024 < 5
       if (!isLt5M) {
-        this.$message.error('Image must smaller than 5MB!')
+        this.$message.error('图片不能超过5MB！')
       }
-      return isLt5M
+      return isLt5M && isImg
     },
     onDel () {
       this.$emit('del')

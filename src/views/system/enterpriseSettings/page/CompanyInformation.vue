@@ -8,7 +8,13 @@
       <a-col :md="18" :sm="24">
         <div v-show="!onAdd">
           <system-collapse :title="'企业形象'" :subtitle="'当前企业的标志。'">
-            <system-upload v-show="showBtn" :showDel="false" @success="onUploadSuccess" :url="imgUrl"></system-upload>
+            <system-upload
+              v-show="showBtn"
+              :showDel="true"
+              @success="onUploadSuccess"
+              :url="imgUrl"
+              :disable="disableUpload"
+              @del="onDelImg"></system-upload>
           </system-collapse>
           <system-collapse :title="'企业资料'" :subtitle="'当前企业名称所属地区。'">
             <company-info-list :nodes="curCorporateInformation()"></company-info-list>
@@ -98,7 +104,8 @@ export default {
       },
       selectGroupCompany: false,
       customField: [],
-      imgUrl: ''
+      imgUrl: '',
+      disableUpload: false
     }
   },
   mixins: [minxinModal],
@@ -361,6 +368,12 @@ export default {
           _this.customField = res.data
         }
       })
+    },
+    disOrEnableUpload: function () {
+      const codes = this.$store.getters.resourceCode
+      if (codes.indexOf('editCompany') < 0) {
+        this.disableUpload = true
+      }
     }
   },
   created () {
@@ -379,6 +392,7 @@ export default {
       _this.dict.character = _this.treeToMap(res.data)
     })
     this.refreshField()
+    this.disOrEnableUpload()
   }
 }
 </script>
