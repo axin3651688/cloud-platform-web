@@ -126,6 +126,11 @@ module.exports = {
         target: 'http://192.168.1.145:80',
         ws: false,
         changeOrigin: true
+      },
+      '/tc': {
+        target: 'http://192.168.1.145:80',
+        ws: false,
+        changeOrigin: true
       }
     }
   },

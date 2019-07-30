@@ -92,6 +92,8 @@ import { saveUser, saveUserToSystem, modifyUser, findUserByRule, findSystemUserB
 import { updateUserRole, findUserRole } from '@/api/userRole'
 import { saveUserPrimaryCompany, findPrimaryCompany } from '@/api/userCompany'
 import { saveUserPrimaryDept, findPrimaryDept } from '@/api/userDept'
+import { getTenancy } from '@/api/mylogin'
+import { saveTenancyMember } from '@/api/tenacy/tenacyMember'
 
 export default {
   name: 'UserModal',
@@ -151,85 +153,81 @@ export default {
       const _this = this
       _this.form.validateFields(async (err, values) => {
         if (!err) {
-          _this.confirmLoading = true
-          if (_this.editMode === false) {
-            // 判断这个人在系统中存在不存在，不存在调用注册接口去注册一下
-            const exist = await _this.askSysTemExist(values.phone)
-            let userId
-            // 云之囊存在就直接去获取，不存在就注册一下
-            if (exist) {
-              // 去获取这个人的信息通过电话
-              const res = await findSystemUserByPhone({ phone: values.phone })
-              if (res.data && res.data.id) {
-                userId = res.data.id
-              } else {
-                _this.visible = false
-                _this.confirmLoading = false
-                _this.$message.error('云之囊未获取到用户信息')
-              }
-            } else {
-              // 去注册并返回这个人的信息
-              const userDto = {
-                phone: values.phone,
-                trueName: values.trueName,
-                username: values.phone,
-                password: '',
-                tenantId: ''
-              }
-              const res = await saveUserToSystem(userDto)
-              if (res.data !== undefined) {
-                userId = res.data
-              } else {
-                _this.visible = false
-                _this.confirmLoading = false
-                _this.$message.error('未成功在云智囊注册')
-              }
-            }
-            // 保存这个人基本信息
-            values.id = userId
-          } else {
-            // 修改时直接赋Id
-            values.id = _this.editId
-          }
-          if (values.id !== undefined) {
+          try {
+            _this.confirmLoading = true
             let userInfo
-            if (_this.editMode === false) {
-              const userInfoRes = await saveUser(values)
-              userInfo = userInfoRes.data
-            } else {
-              userInfo = await modifyUser(values)
+            const tenancy = await getTenancy()
+            const tenancyExist = tenancy.data && tenancy.data.id
+            if (!tenancyExist) {
+              throw new Error('未获取到当前租户Id')
             }
-            if (userInfo !== undefined) {
-              let promise1, promise2
-              if (Array.isArray(values.role) && values.role.length > 0) {
-                // 设置了角色，保存这个人角色
-                promise1 = updateUserRole({ userId: values.id }, values.role)
+            if (_this.editMode) {
+              values.id = _this.editId
+              const userRes = await modifyUser(values)
+              if (userRes.code !== 200) {
+                throw new Error('修改用户信息失败')
               }
-              if (values.company !== undefined) {
-                promise2 = saveUserPrimaryCompany({
-                  userId: values.id,
-                  comId: values.company
-                }).then(async function (res) {
-                  // 保存部门
-                  if (values.dept !== undefined) {
-                    await saveUserPrimaryDept({ userId: values.id, deptId: values.dept })
-                  }
-                })
+            } else {
+              const resUser = await findSystemUserByPhone({ phone: values.phone })
+              const sysExist = resUser.data && resUser.data.id
+              if (sysExist) {
+                values.id = resUser.data.id
+              } else {
+                // 去注册并返回这个人的信息
+                const userDto = {
+                  phone: values.phone,
+                  trueName: values.trueName,
+                  username: values.phone,
+                  password: '1',
+                  tenantId: tenancy.data.id
+                }
+                const res = await saveUserToSystem(userDto)
+                if (res.data === undefined) {
+                  throw new Error('未成功在云智囊注册')
+                }
+                values.id = res.data
               }
-              Promise.all([promise1, promise2]).then(function () {
-                _this.visible = false
-                _this.confirmLoading = false
-                _this.$message.success('保存成功')
-                _this.$emit('refreshTable')
-              }).catch(function (e) {
-                _this.$message.error('保存失败')
-                _this.confirmLoading = false
+              const userRes = await saveUser(values)
+              userInfo = userRes.data
+              if (userInfo === undefined) {
+                throw new Error('未发现该用户信息')
+              }
+              const res = await saveTenancyMember({ tenancyId: tenancy.data.id, userId: userInfo.id })
+              if (res.code !== 200) {
+                throw new Error('添加租户成员失败')
+              }
+            }
+            let promise1, promise2
+            if (Array.isArray(values.role) && values.role.length > 0) {
+              // 设置了角色，保存这个人角色
+              promise1 = updateUserRole({ userId: values.id }, values.role)
+            }
+            if (values.company !== undefined) {
+              promise2 = saveUserPrimaryCompany({
+                userId: values.id,
+                comId: values.company
+              }).then(async function (res) {
+                if (values.dept !== undefined) {
+                  await saveUserPrimaryDept({ userId: values.id, deptId: values.dept })
+                }
+                return res
               })
             }
-          } else {
-            // 未获取用户Id
-            _this.$message.error('未获取用户Id')
+            const res = await Promise.all([promise1, promise2])
+            res.forEach((item, index) => {
+              if (item.code !== 200) {
+                const text = index === 1 ? '角色' : '公司'
+                _this.$message.error(text + '保存失败')
+              }
+            })
+            _this.visible = false
             _this.confirmLoading = false
+            _this.$message.success('保存成功')
+            _this.$emit('refreshTable')
+          } catch (e) {
+            _this.confirmLoading = false
+            _this.$message.error(e.message)
+            throw new Error(e)
           }
         }
       })
@@ -293,6 +291,7 @@ export default {
       if (!value || new RegExp(/^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/).test(value)) {
         callback()
       } else {
+        // eslint-disable-next-line standard/no-callback-literal
         callback('您的手机号码格式不正确!')
       }
     },
@@ -300,12 +299,14 @@ export default {
       const _this = this
       findUserByRule({ phone: value }).then(function (res) {
         if (!_this.editMode && res.data.length > 0) {
+          // eslint-disable-next-line standard/no-callback-literal
           callback('手机号已存在')
         } else if (_this.editMode && res.data.length > 0) {
           const data = res.data.filter(function (ele) {
             return ele.id !== _this.editId
           })
           if (data.length > 0) {
+            // eslint-disable-next-line standard/no-callback-literal
             callback('手机号已存在')
           } else {
             callback()
@@ -315,7 +316,7 @@ export default {
         }
       })
     },
-    askSysTemExist (phone) {
+    askSystemExist (phone) {
       return findSystemUserByPhone({ phone: phone }).then(function (res) {
         if (res.data && res.data.id) {
           return true

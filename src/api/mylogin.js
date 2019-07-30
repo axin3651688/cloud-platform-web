@@ -1,6 +1,4 @@
-import {
-  axios2
-} from '@/utils/request'
+import { axios2 } from '@/utils/request'
 import store from '@/store'
 
 const api = {
@@ -10,6 +8,7 @@ const api = {
   currentUser: '/org/base_service/user/find_current',
   userResource: '/org/base_service/user_resource/find_user_resource_code',
   getLicense: '/org/base_service/tenancy/license',
+  getTenancy: '/org/base_service/tenancy/tenancy',
   findUserCount: '/org/base_service/user/find_user_count',
   getCurApp: '/org/base_service/tenancy/app',
   disableApp: '/org/base_service/tenancy/disable_app',
@@ -42,6 +41,10 @@ export function logout (parameter) {
   })
 }
 
+/**
+ * 更新token
+ * @returns {*}
+ */
 export function refreshToken () {
   const params = {}
   params.grant_type = 'refresh_token'
@@ -84,6 +87,13 @@ export function getUserResource (parameter) {
 export const getUserAllResource = (parameter) => {
   return axios2({
     url: '/org/base_service/user_resource/find_user_all_resource/' + parameter.id,
+    method: 'get'
+  })
+}
+
+export function getTenancy () {
+  return axios2({
+    url: api.getTenancy,
     method: 'get'
   })
 }

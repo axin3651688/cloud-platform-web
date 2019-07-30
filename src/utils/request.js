@@ -85,7 +85,7 @@ service2.interceptors.request.use(config => {
 }, err)
 
 service2.interceptors.response.use((response) => {
-  if (response.data.code === 0) {
+  if (response.data.code !== 200) {
     notification.error({
       message: '异常请求',
       description: '接口返回了错误的信息'
