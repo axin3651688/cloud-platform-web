@@ -20,7 +20,7 @@
         <div style="background-color: #fff">
           <div class="rightHeader">
             <big-header :value="title"></big-header>
-            <a-button type="primary" icon="usergroup-add" class="btn3" v-action:addRoleUser>添加成员</a-button>
+            <a-button type="primary" icon="usergroup-add" @click="addRoleUser" class="btn3" v-action:addRoleUser>添加成员</a-button>
           </div>
           <!-- <span class="anse" v-if="pid=0">+  如需更换企业所有者,请到【企业设置】页面,点击【转让企业】来更换所有者,设置完成后信息目动同步。<a-button type="primary" style="font-size:12px;">跳转至转让企业</a-button></span> -->
           <user-table
@@ -37,6 +37,7 @@
         </div>
       </a-col>
       <role-modal ref="roleModal" @back="renderTree"></role-modal>
+      <add-role-user-modal ref="addRoleUserModal" :role-id="curRoleId" @back="renderTable"></add-role-user-modal>
     </a-row>
   </div>
 </template>
@@ -50,9 +51,10 @@ import LeftTree from '../../memberManagement/page/Module/LeftTree'
 import ACol from 'ant-design-vue/es/grid/Col'
 import UserTable from '../../memberManagement/page/Module/UserTable'
 import { minxinModal } from '@/utils/mixin.js'
+import AddRoleUserModal from './Module/AddRoleUserModal'
 export default {
   name: 'RoleMembers',
-  components: { UserTable, ACol, LeftTree, BigHeader, RoleModal },
+  components: { AddRoleUserModal, UserTable, ACol, LeftTree, BigHeader, RoleModal },
   data () {
     return {
       roleTreeData: [],
@@ -72,7 +74,11 @@ export default {
   mixins: [minxinModal],
   methods: {
     onRoleSelect (selectKeys) {
-      this.curRoleId = parseInt(selectKeys[0])
+      if (selectKeys.length === 0) {
+        this.curRoleId = undefined
+      } else {
+        this.curRoleId = parseInt(selectKeys[0])
+      }
     },
     onRoleEdit (record) {
       // alert('修改空方法' + JSON.stringify(row))
@@ -119,11 +125,21 @@ export default {
       // 2. 重新渲染树
       this.renderTree()
     },
+    addRoleUser: function () {
+      if (this.curRoleId == undefined) {
+        this.$message.warn('请先选择对应的角色')
+        return
+      }
+      this.$refs.addRoleUserModal.showModal()
+    },
     renderTree () {
       const _this = this
       return getAllRoleTree().then(function (treeData) {
         _this.roleTreeData = treeData
       })
+    },
+    renderTable () {
+      this.$refs.userTable.reload()
     }
   },
   created () {

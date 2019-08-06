@@ -62,6 +62,7 @@ export const generatorDynamicRouter = (data) => {
     const sysResource = transferToMenuResource(resources)
     const routeTree = getRoute(sysResource)
     const routers = generator(routeTree)
+    debugger
     routers.push(notFoundRouter)
     console.log(JSON.stringify(routers))
     resolve(routers)

@@ -2,6 +2,7 @@ import { axios2 } from '@/utils/request'
 
 const api = {
   saveUserRole: '/org/base_service/user_role/save_user_role',
+  saveRoleUser: '/org/base_service/user_role/save_role_user',
   updateUserRole: '/org/base_service/user_role/update_user_role',
   findUserRole: '/org/base_service/user_role/find_user_role',
   findRoleUser: '/org/base_service/user_role/find_user_by_role_and_user_info',
@@ -16,6 +17,21 @@ const api = {
 export function saveUserRole (parameter, data) {
   return axios2({
     url: api.saveUserRole,
+    method: 'post',
+    params: parameter,
+    data: data
+  })
+}
+
+/**
+ * 给角色添加用户，会自动屏蔽已经添加过该角色的用户
+ * @param parameter
+ * @param data
+ * @returns {*}
+ */
+export function saveRoleUser (parameter, data) {
+  return axios2({
+    url: api.saveRoleUser,
     method: 'post',
     params: parameter,
     data: data
