@@ -9,7 +9,8 @@ const api = {
   batchDeleteUser: '/org/base_service/user/delete_users',
   findUserCount: '/org/base_service/user/find_user_count',
   findSystemUserByPhone: '/uc/user/find_user_phone',
-  findUsers: '/org/base_service/user/find_users'
+  findUsers: '/org/base_service/user/find_users',
+  findPageUsers: '/org/base_service/user/find_page_users'
 }
 
 /**
@@ -116,6 +117,20 @@ export function findUserByRule (parameter) {
     params: parameter
   })
 }
+
+/**
+ * 按照传入的用户信息分页查询返回的用户列表
+ * @param parameter
+ * @returns {*}
+ */
+export function findUserByRuleAndPage (parameter) {
+  return axios2({
+    url: api.findPageUsers,
+    method: 'get',
+    params: parameter
+  })
+}
+
 /**
  * 通过手机号查询系统用户
  * @param {phone}

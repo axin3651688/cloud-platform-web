@@ -21,6 +21,7 @@
               :company-id="curSelectCom"
               :dept-id="curSelectDept"
               :show-action="true"
+              :show-on-start="true"
               :enableParam="'0'">
               <template slot="dropdown" slot-scope="item">
                 <a-menu-item>

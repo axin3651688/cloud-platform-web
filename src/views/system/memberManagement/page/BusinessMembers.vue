@@ -22,6 +22,7 @@
               :company-id="curSelectCom"
               :dept-id="curSelectDept"
               :show-action="true"
+              :show-on-start="true"
               @rowSelect="onRowSelect">
               <template slot="dropdown" slot-scope="item">
                 <a-menu-item v-action:editUser>

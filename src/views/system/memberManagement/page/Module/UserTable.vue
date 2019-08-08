@@ -27,6 +27,7 @@
 
 <script>
 // 遇到表格请使用封装后的表格组件，这里是因为当时没有封装这样写的
+import { findUserByRuleAndPage } from '@/api/user'
 import { getPrimaryCompanyPeople } from '@/api/userCompany'
 import { getPrimaryDeptPeople } from '@/api/userDept'
 import { findRoleUser } from '@/api/userRole'
@@ -59,6 +60,10 @@ export default {
     enableParam: {
       type: String,
       default: '1'
+    },
+    showOnStart: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -176,6 +181,9 @@ export default {
       } else if (params.roleId >= 0) {
         const res = await findRoleUser(params)
         userData = res.data
+      } else {
+        const res = await findUserByRuleAndPage(params)
+        userData = res.data
       }
       const pagination = { ..._this.pagination }
       _this.loading = false
@@ -219,20 +227,20 @@ export default {
   },
   watch: {
     companyId (newVal, oldVal) {
-      if (typeUtils.isNotBlank(newVal)) {
-        this.reloadCom(newVal)
-      } else {
-        this.data = []
-      }
+      // if (typeUtils.isNotBlank(newVal)) {
+      this.reloadCom(newVal)
+      // } else {
+      //  this.data = []
+      // }
     },
     deptId (newVal, oldVal) {
-      if (this.companyId) {
-        this.initPage()
-        this.fetch({ comId: this.companyId,
-          deptId: newVal,
-          page: this.pagination.defaultCurrent,
-          size: this.pagination.defaultPageSize })
-      }
+      // if (this.companyId) {
+      this.initPage()
+      this.fetch({ comId: this.companyId,
+        deptId: newVal,
+        page: this.pagination.defaultCurrent,
+        size: this.pagination.defaultPageSize })
+      // }
     },
     roleId (newVal) {
       if (newVal >= 0) {
@@ -249,6 +257,9 @@ export default {
     /* Action在最后一列 */
     if (!this.showAction) {
       this.columns.pop()
+    }
+    if (this.showOnStart) {
+      this.reload()
     }
   }
 }
