@@ -136,7 +136,7 @@ export default {
       this.localLoading = true
       const parameter = Object.assign({
         page: ((pagination && pagination.current) ||
-          this.showPagination && this.localPagination.current || this.pageNum) - 1,
+          this.showPagination && this.localPagination.current || this.pageNum) - 1, // 欺骗一下，因为后台是 0 页开始的
         size: (pagination && pagination.pageSize) ||
           this.showPagination && this.localPagination.pageSize || this.pageSize
       },
@@ -156,7 +156,7 @@ export default {
       if ((typeof result === 'object' || typeof result === 'function') && typeof result.then === 'function') {
         result.then(r => {
           this.localPagination = this.showPagination && Object.assign({}, this.localPagination, {
-            current: r.number, // 返回结果中的当前分页数
+            current: r.number + 1, // 返回结果中的当前分页数 欺骗一下 +1 让页数跟着走，因为后台是 0 页开始的
             total: r.totalElements - 0, // 返回结果中的总记录数
             showSizeChanger: this.showSizeChanger,
             pageSize: (pagination && pagination.pageSize) ||

@@ -33,6 +33,7 @@ import { getPrimaryDeptPeople } from '@/api/userDept'
 import { findRoleUser } from '@/api/userRole'
 import { findAllPost } from '@/api/post'
 import typeUtils from '@/utils/typeUtils'
+let gthis
 export default {
   name: 'UserTable',
   props: {
@@ -70,9 +71,17 @@ export default {
     return {
       columns: [
         {
+          title: '序号',
+          customRender: function (text, row, index) {
+            const current = gthis.pagination.current || gthis.pagination.defaultCurrent
+            const pageSize = gthis.pagination.pageSize || gthis.pagination.defaultPageSize
+            return (current - 1 < 1 ? 0 : current - 1) * pageSize + index + 1
+          }
+        },
+        /* {
           title: 'ID',
           dataIndex: 'id'
-        },
+        }, */
         {
           title: '头像',
           dataIndex: 'avatar'
@@ -254,6 +263,7 @@ export default {
     }
   },
   created () {
+    gthis = this
     /* Action在最后一列 */
     if (!this.showAction) {
       this.columns.pop()

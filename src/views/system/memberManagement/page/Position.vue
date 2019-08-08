@@ -31,6 +31,7 @@ import { findPostByFiledAndPage, deletePost } from '@/api/post'
 import { STable } from '@/components'
 import PostModal from './Module/PostModal'
 import { minxinModal } from '@/utils/mixin.js'
+let gthis
 export default {
   name: 'Position',
   components: {
@@ -41,6 +42,14 @@ export default {
   data () {
     return {
       columns: [{
+        title: '序号',
+        customRender: function (text, row, index) {
+          const current = gthis.$refs.table.localPagination.current
+          const pageSize = gthis.$refs.table.localPagination.pageSize
+          return (current - 1 < 1 ? 0 : current - 1) * pageSize + index + 1
+        }
+      },
+      {
         title: '职位名称',
         dataIndex: 'text'
       }, {
@@ -85,6 +94,9 @@ export default {
         }
       })
     }
+  },
+  created () {
+    gthis = this
   }
 }
 </script>
