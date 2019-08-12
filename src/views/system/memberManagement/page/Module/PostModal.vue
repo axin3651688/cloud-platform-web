@@ -25,7 +25,7 @@
         label="排序"
         :label-col="labelCol"
         :wrapper-col="wrapperCol">
-        <a-input-number placeholder="请输入排序" v-decorator="[ 'sort', validatorRules.sort]"/>
+        <a-input-number placeholder="排序" v-decorator="[ 'sort', validatorRules.sort]"/>
       </a-form-item>
     </a-form>
   </a-modal>

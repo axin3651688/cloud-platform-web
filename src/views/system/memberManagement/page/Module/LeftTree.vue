@@ -13,8 +13,8 @@
       :expandedKeys="expandedKeys"
       :autoExpandParent="autoExpandParent"
       :treeData="treeData"
-      class="custom"
-    >
+      :showLine="showLine"
+      class="custom">
       <!--使用插槽来提示搜索-->
       <template slot="title" slot-scope="item">
         <span v-if="item.title.indexOf(searchValue) > -1">
@@ -93,6 +93,10 @@ export default {
       default: function () {
         return []
       }
+    },
+    showLine: {
+      type: Boolean,
+      default: false
     }
   },
   data () {

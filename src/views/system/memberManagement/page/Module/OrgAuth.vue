@@ -69,8 +69,8 @@ export default {
       return getCompanyDeptTree({ comId: comId }).then(async function (treeData) {
         if (treeData !== undefined) {
           const result = await findPrimaryDept({ id: _this.currentSelectUserId })
-          if (result && result.data && result.data.deptCode) {
-            _this.disablePrimary(treeData, result.data.deptCode)
+          if (result && result.data && result.data.id) {
+            _this.disablePrimary(treeData, result.data.id)
           }
           _this.deptTreeData = treeData
         } else {
@@ -147,8 +147,8 @@ export default {
       getAllCompanyTree().then(function (treeData) {
         if (treeData !== undefined) {
           findPrimaryCompany({ id: newVal }).then(function (res) {
-            if (res.data && res.data.comId) {
-              _this.disablePrimary(treeData, res.data.comId)
+            if (res.data && res.data.id) {
+              _this.disablePrimary(treeData, res.data.id)
             }
             _this.comTreeData = treeData
             _this.loadCompany()

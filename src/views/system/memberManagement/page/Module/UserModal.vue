@@ -215,7 +215,7 @@ export default {
             }
             const res = await Promise.all([promise1, promise2])
             res.forEach((item, index) => {
-              if (item.code !== 200) {
+              if (item && item.code !== 200) {
                 const text = index === 1 ? '角色' : '公司'
                 _this.$message.error(text + '保存失败')
               }
@@ -247,23 +247,23 @@ export default {
         })
         _this.form.setFieldsValue({ 'role': ids })
       })
-      findPrimaryCompany({ id: record.id }).then(function (res) {
-        _this.form.setFieldsValue({ 'company': res.data.comId })
+      const res = await findPrimaryCompany({ id: record.id })
+      if (res.data) {
+        _this.form.setFieldsValue({ 'company': res.data.id })
         // 别忘了设置公司对应的部门信息
-        _this.onComChange(res.data.comId).then(function () {
+        await _this.onComChange(res.data.id).then(function () {
           findPrimaryDept({ id: record.id }).then(function (res) {
-            if (res.data !== undefined && res.data.deptCode !== undefined) {
-              _this.form.setFieldsValue({ 'dept': res.data.deptCode })
+            if (res.data && res.data.id !== undefined) {
+              _this.form.setFieldsValue({ 'dept': res.data.id })
             }
           })
-        }).then(function () {
-          // 2. 设置record基本信息
-          _this.form.setFieldsValue({ 'trueName': record.trueName })
-          _this.form.setFieldsValue({ 'phone': record.phone })
-          _this.form.setFieldsValue({ 'gender': record.gender })
-          _this.form.setFieldsValue({ 'presentPost': record.presentPost })
         })
-      })
+      }
+      // 2. 设置record基本信息
+      _this.form.setFieldsValue({ 'trueName': record.trueName })
+      _this.form.setFieldsValue({ 'phone': record.phone })
+      _this.form.setFieldsValue({ 'gender': record.gender })
+      _this.form.setFieldsValue({ 'presentPost': record.presentPost })
     },
     onDeptChange (value) {
       this.form.setFieldsValue({ 'dept': value })
