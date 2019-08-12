@@ -1,5 +1,6 @@
 import { axios2 } from '@/utils/request'
-import store from '@/store'
+import Vue from 'vue'
+import { TOKEN_INFO } from '@/store/mutation-types'
 
 const api = {
   login: '/uaa/oauth/token',
@@ -12,7 +13,7 @@ const api = {
   findUserCount: '/org/base_service/user/find_user_count',
   getCurApp: '/org/base_service/tenancy/app',
   disableApp: '/org/base_service/tenancy/disable_app',
-  getDisableAppId: '/org/base_service/tenancy/disableAppId',
+  getDisableAppId: '/org/base_service/tenancy/disableAppId'
 }
 
 /**
@@ -49,7 +50,7 @@ export function refreshToken () {
   const params = {}
   params.grant_type = 'refresh_token'
   params.client_id = 'browser'
-  params.refresh_token = store.getters.token.refresh_token;
+  params.refresh_token = JSON.parse(Vue.ls.get(TOKEN_INFO)).refresh_token
   return axios2({
     url: api.refresh,
     method: 'post',

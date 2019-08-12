@@ -1,12 +1,12 @@
 import Vue from 'vue'
 // import { login, getInfo, logout } from '@/api/login'
 import { login, logout, getUserInfo, getUserAllResource } from '@/api/mylogin'
-import { ACCESS_TOKEN } from '@/store/mutation-types'
+import { ACCESS_TOKEN, TOKEN_INFO } from '@/store/mutation-types'
 import { welcome } from '@/utils/util'
 
 const user = {
   state: {
-    token: {},
+    // token: {},
     name: '',
     welcome: '',
     avatar: '',
@@ -17,9 +17,9 @@ const user = {
   },
 
   mutations: {
-    SET_TOKEN: (state, token) => {
-      state.token = token
-    },
+    // SET_TOKEN: (state, token) => {
+    //   state.token = token
+    // },
     SET_NAME: (state, { name, welcome }) => {
       state.name = name
       state.welcome = welcome
@@ -48,7 +48,8 @@ const user = {
         login(userInfo).then(response => {
           const result = response
           Vue.ls.set(ACCESS_TOKEN, result['token_type'] + ' ' + result['access_token'])
-          commit('SET_TOKEN', result)
+          Vue.ls.set(TOKEN_INFO, JSON.stringify(result));
+          // commit('SET_TOKEN', result)
           resolve()
         }).catch(error => {
           reject(error)
@@ -99,11 +100,13 @@ const user = {
     // 登出
     Logout ({ commit, state }) {
       return new Promise((resolve) => {
-        commit('SET_ROLES', [])
-        commit('SET_RESOURCE', [])
-        Vue.ls.remove(ACCESS_TOKEN)
-        logout({ access_token: state.token['access_token'], client_id: 'browser' }).then(() => {
-          commit('SET_TOKEN', {})
+        const tokenInfo = JSON.parse(Vue.ls.get(TOKEN_INFO))
+        logout({ access_token: tokenInfo['access_token'], client_id: 'browser' }).then(() => {
+          // commit('SET_TOKEN', {})
+          commit('SET_ROLES', [])
+          commit('SET_RESOURCE', [])
+          Vue.ls.remove(ACCESS_TOKEN)
+          Vue.ls.remove(TOKEN_INFO)
           resolve()
         }).catch(() => {
           resolve()

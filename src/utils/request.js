@@ -3,7 +3,7 @@ import axios from 'axios'
 import store from '@/store'
 import { VueAxios } from './axios'
 import notification from 'ant-design-vue/es/notification'
-import { ACCESS_TOKEN } from '@/store/mutation-types'
+import { ACCESS_TOKEN, TOKEN_INFO } from '@/store/mutation-types'
 import { refreshToken } from '@/api/mylogin'
 
 // 创建 axios 实例
@@ -27,9 +27,10 @@ const err = async (error) => {
       const res = await refreshToken()
       if (res.code === 200) {
         // 设置
-        store.commit('SET_TOKEN', res)
+        // store.commit('SET_TOKEN', res)
         const token = res['token_type'] + ' ' + res['access_token']
         Vue.ls.set(ACCESS_TOKEN, token)
+        Vue.ls.set(TOKEN_INFO, JSON.stringify(token))
         return doRequest(error, token)
       } else {
         notification.error({
@@ -85,10 +86,14 @@ service2.interceptors.request.use(config => {
 }, err)
 
 service2.interceptors.response.use((response) => {
-  if (response.data.code !== 200) {
+  if (response.data.code !== 200 && response.data.code !== '200') {
+    let description = '接口返回了错误的信息'
+    if (response.data && response.data.msg) {
+      description = response.data.msg
+    }
     notification.error({
       message: '异常请求',
-      description: '接口返回了错误的信息'
+      description: description
     })
     response.data.data = undefined
     return response.data

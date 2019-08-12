@@ -20,6 +20,7 @@ router.beforeEach((to, from, next) => {
       next({ path: '/Console' })
       NProgress.done()
     } else {
+      // 如果没有任何资源信息，那么重新去获取一下
       if (store.getters.resources.length === 0) {
         store.dispatch('GetInfo').then(res => {
           // 调用 vuex 从后端获取用户的路由菜单，动态添加可访问路由表
