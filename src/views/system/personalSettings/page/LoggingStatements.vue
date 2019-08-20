@@ -14,11 +14,24 @@
         <div v-if="isOut1">
           <div class="trueName" style="display:flex;align-items: center;">
             真实姓名:&nbsp;&nbsp;
-            <a-input size="small" style="width:200px;height:32px;" />&nbsp;
-            <a-icon type="edit" style="color:#336CFB;font-size:20px;" />
+            <a-input
+              v-model="trueName"
+              :disabled="editBB"
+              size="small"
+              style="width:200px;height:32px;"
+            />&nbsp;
+            <a-icon type="edit" style="color:#336CFB;font-size:20px;" @click="editAA" />
           </div>
           <template>
-            <system-upload @success="onUploadSuccess" :url="imgUrl" @del="onDelImg"></system-upload>
+            <!-- <system-upload @success="onUploadSuccess" :url="imgUrl" @del="onDelImg"></system-upload> -->
+            <system-upload
+              v-show="true"
+              :showDel="true"
+              @success="onUploadSuccess"
+              :url="imgUrl"
+              :disable="true"
+              @del="onDelImg"
+            ></system-upload>
           </template>
           <p style="font-size:12px;color:#ccc;">点击上传图片,建议上传22X22,支持svg、png、jpg格式,限制5M内</p>
           <div class="pic" style="width:360px;height:92px;">
@@ -120,6 +133,7 @@
 
 <script>
 import { getUserInfo } from '@/api/mylogin'
+import { modifyUser } from '@/api/user'
 import { getAllCompanyTree, updateCompany, deleteCompany } from '@/api/company'
 import SystemUpload from '../../enterpriseSettings/page/Module/SystemUpload'
 import typeUtils from '@/utils/typeUtils'
@@ -130,7 +144,10 @@ export default {
   data () {
     return {
       curSelectComId: undefined,
+      editBB: false,
       userId: '',//用户的id
+      trueName: '',
+      userImg: '',
       imgUrl: '',
       isOut1: false,
       // isOut2: false,
@@ -158,27 +175,52 @@ export default {
   },
   created () {
     // this.reloadCompany();
-    this.getUser_Info();
+    // this.getUser_Info();
+    // this.modify_User();
+  },
+  mounted () {
+    // this.getUser_Info();
   },
   mixins: [minxinModal],
   methods: {
+    //查询当前用户的信息
     getUser_Info () {
       debugger
       let me = this;
+      me.imgUrl = '';
       let userId
       getUserInfo().then(function (res) {
         if (res.code === 200 && res.data) {
-          me.userId = res.data.id
+          debugger
+          me.trueName = res.data.trueName
+          me.imgUrl = res.data.thumbnail
+          me.avatar = res.data.avatar
+        }
+      })
+    },
+    //获得修改后的用户信息
+    editAA () {
+      debugger;
+      let me = this;
+      me.editBB = !me.editBB;
+      modifyUser({ id: this.trueName }).then(function (res) {
+        if (res.code === 200 && res.data) {
+          debugger
+          // me.trueName = res.data.trueName
+          // me.userImg = res.data.thumbnail
+          // me.avatar = res.data.avatar
         }
       })
     },
     expend (val) {
       //展开按钮的点击事件
       if (val == 1) {
+        this.getUser_Info();
         if (this.param1 == '展开+') {
           this.isOut1 = true;
           this.param1 = '收起...';
         } else {
+
           this.isOut1 = false;
           this.param1 = '展开+';
         }
