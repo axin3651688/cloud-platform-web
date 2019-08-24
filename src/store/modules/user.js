@@ -1,8 +1,9 @@
 import Vue from 'vue'
-// import { login, getInfo, logout } from '@/api/login'
-import { login, logout, getUserInfo, getUserAllResource } from '@/api/mylogin'
+import { login, logout, refreshToken, getUserInfo, getUserAllResource } from '@/api/mylogin'
 import { ACCESS_TOKEN, TOKEN_INFO } from '@/store/mutation-types'
 import { welcome } from '@/utils/util'
+import notification from 'ant-design-vue/es/notification'
+import {TIME_SETTING} from '@/config/projectSetting'
 
 const user = {
   state: {
@@ -17,9 +18,6 @@ const user = {
   },
 
   mutations: {
-    // SET_TOKEN: (state, token) => {
-    //   state.token = token
-    // },
     SET_NAME: (state, { name, welcome }) => {
       state.name = name
       state.welcome = welcome
@@ -43,13 +41,15 @@ const user = {
 
   actions: {
     // 登录
-    Login ({ commit }, userInfo) {
+    Login ({ commit, dispatch }, userInfo) {
       return new Promise((resolve, reject) => {
         login(userInfo).then(response => {
-          const result = response
-          Vue.ls.set(ACCESS_TOKEN, result['token_type'] + ' ' + result['access_token'])
-          Vue.ls.set(TOKEN_INFO, JSON.stringify(result));
-          // commit('SET_TOKEN', result)
+          Vue.ls.set(ACCESS_TOKEN, response['token_type'] + ' ' + response['access_token'])
+          Vue.ls.set(TOKEN_INFO, JSON.stringify(response))
+          // 剩余时间小于三小时必须再重新登陆一下，这里可以异步也可以同步
+          if(response.expires_in < TIME_SETTING.reLoginTime) {
+            dispatch('RefreshToken')
+          }
           resolve()
         }).catch(error => {
           reject(error)
@@ -73,7 +73,7 @@ const user = {
             }
             commit('SET_INFO', user)
             commit('SET_NAME', { name: user.trueName, welcome: welcome() })
-            commit('SET_AVATAR', user.avatar)
+            commit('SET_AVATAR', user.thumbnail)
             // 查询用户所有权限塞进去
             const res = await getUserAllResource({ id: user.id })
             if (res.code !== 200) {
@@ -107,13 +107,40 @@ const user = {
           commit('SET_RESOURCE', [])
           Vue.ls.remove(ACCESS_TOKEN)
           Vue.ls.remove(TOKEN_INFO)
+          clearInterval(window.login_timer)
           resolve()
         }).catch(() => {
           resolve()
         })
       })
-    }
+    },
 
+    RefreshToken ({ dispatch }) {
+      return new Promise((resolve) => {
+        refreshToken().then(function (res) {
+          // 设置token
+          if (res.code == '200') {
+            Vue.ls.set(ACCESS_TOKEN, res['token_type'] + ' ' + res['access_token'])
+            Vue.ls.set(TOKEN_INFO, JSON.stringify(res))
+            resolve();
+          } else {
+            // 刷新失败让其重新登陆
+            notification.error({
+              message: '获取授权失败，请重新登陆！',
+              description: 'Authorization verification failed'
+            })
+            if (Vue.ls.get(ACCESS_TOKEN)) {
+              dispatch('Logout').then(() => {
+                setTimeout(() => {
+                  window.location.reload()
+                }, 1500)
+              })
+            }
+            resolve();
+          }
+        })
+      })
+    }
   }
 }
 

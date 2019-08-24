@@ -1,25 +1,35 @@
 import Vue from 'vue'
 import router from './router'
 import store from './store'
-
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import notification from 'ant-design-vue/es/notification'
 import { setDocumentTitle, domTitle } from '@/utils/domUtil'
-import { ACCESS_TOKEN } from '@/store/mutation-types'
-
+import { ACCESS_TOKEN, TOKEN_INFO } from '@/store/mutation-types'
+import {TIME_SETTING} from '@/config/projectSetting'
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
-
 const whiteList = ['login', 'register', 'registerResult'] // no redirect whitelist
 
 router.beforeEach((to, from, next) => {
   NProgress.start()
   to.meta && (typeof to.meta.title !== 'undefined' && setDocumentTitle(`${to.meta.title} - ${domTitle}`))
+  // 用于其他系统跳转过来，把Token也携带过来即可
+  if (to.query.access_token && to.query.token_info) {
+    Vue.ls.set(ACCESS_TOKEN, to.query.access_token)
+    Vue.ls.set(TOKEN_INFO, to.query.token_info)
+  }
   if (Vue.ls.get(ACCESS_TOKEN)) {
     if (to.path === '/user/login') {
       next({ path: '/Console' })
       NProgress.done()
     } else {
+      // 重新设置一个刷新token的定时器
+      clearInterval(window.login_timer)
+      window.login_timer = setInterval(function () {
+        store.dispatch('RefreshToken').then(function () {
+          console.info('刷新成功')
+        })
+      }, TIME_SETTING.refreshTokenInterval)
       // 如果没有任何资源信息，那么重新去获取一下
       if (store.getters.resources.length === 0) {
         store.dispatch('GetInfo').then(res => {

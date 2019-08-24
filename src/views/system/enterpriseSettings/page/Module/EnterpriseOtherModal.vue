@@ -19,13 +19,13 @@
         label="企业数据编码"
         :label-col="labelCol"
         :wrapper-col="wrapperCol">
-        <a-input placeholder="数字编码" v-decorator="['srcId2']"/>
+        <a-input placeholder="数据编码" v-decorator="['srcId2']"/>
       </a-form-item>
       <a-form-item
         label="企业信息编码"
         :label-col="labelCol"
         :wrapper-col="wrapperCol">
-        <a-input placeholder="数字编码" v-decorator="['srcId3']"/>
+        <a-input placeholder="信息编码" v-decorator="['srcId3']"/>
       </a-form-item>
       <custom-form-item
         v-for="item in customField"

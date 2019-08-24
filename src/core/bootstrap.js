@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import store from '@/store/'
 import {
-  ACCESS_TOKEN,
   DEFAULT_COLOR,
   DEFAULT_THEME,
   DEFAULT_LAYOUT_MODE,

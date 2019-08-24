@@ -52,7 +52,7 @@ export function refreshToken () {
   params.client_id = 'browser'
   params.refresh_token = JSON.parse(Vue.ls.get(TOKEN_INFO)).refresh_token
   return axios2({
-    url: api.refresh,
+    url: api.refreshToken,
     method: 'post',
     params: params
   })

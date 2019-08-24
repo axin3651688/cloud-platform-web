@@ -9,7 +9,7 @@
           </a>
         </div>
         <div class="desc">
-          经邦软件是中国最具影响力的财务分析系统
+          经邦软件致力于打造中国最具影响力的财务分析系统
         </div>
       </div>
 
@@ -22,7 +22,7 @@
           <a href="_self">条款</a>
         </div>
         <div class="copyright">
-          Copyright &copy; 2018 白鹭学园技术组出品
+          Copyright &copy; 2018  经邦出品
         </div>
       </div>
     </div>
