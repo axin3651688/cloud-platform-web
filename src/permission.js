@@ -18,13 +18,13 @@ router.beforeEach((to, from, next) => {
     Vue.ls.set(ACCESS_TOKEN, to.query.access_token)
     Vue.ls.set(TOKEN_INFO, to.query.token_info)
   }
+  clearInterval(window.login_timer)
   if (Vue.ls.get(ACCESS_TOKEN)) {
     if (to.path === '/user/login') {
       next({ path: '/Console' })
       NProgress.done()
     } else {
       // 重新设置一个刷新token的定时器
-      clearInterval(window.login_timer)
       window.login_timer = setInterval(function () {
         store.dispatch('RefreshToken').then(function () {
           console.info('刷新成功')
