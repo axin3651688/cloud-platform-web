@@ -11,7 +11,7 @@
       <span slot="action" slot-scope="text, record">
         <a-dropdown>
           <a class="ant-dropdown-link" href="#"><a-icon type="align-right" /></a>
-          <a-menu slot="overlay">
+          <a-menu class="cnbi-drop-down" slot="overlay">
             <slot name="dropdown" :record="record">
               <!--example -->
               <!--<a-menu-item>
@@ -22,6 +22,14 @@
         </a-dropdown>
       </span>
     </a-table>
+    <custom-column-modal
+      ref="columnModal"
+      :title="'添加自定义类别'"
+      :column="columns"
+      :default-column="defaultColumns"
+      @finalColumn="onChooseColumn"
+    >
+    </custom-column-modal>
   </div>
 </template>
 
@@ -33,9 +41,12 @@ import { getPrimaryDeptPeople } from '@/api/userDept'
 import { findRoleUser } from '@/api/userRole'
 import { findAllPost } from '@/api/post'
 import typeUtils from '@/utils/typeUtils'
+import CustomColumnModal from './CustomColumnModal'
+import store from '@/store'
 let gthis
 export default {
   name: 'UserTable',
+  components: { CustomColumnModal },
   props: {
     // 根据公司查
     companyId: {
@@ -65,30 +76,61 @@ export default {
     showOnStart: {
       type: Boolean,
       default: false
+    },
+    search: {
+      type: Object,
+      default: function () {
+        return {
+          key: undefined,
+          text: undefined
+        }
+      }
     }
   },
   data () {
     return {
-      columns: [
-        {
+      defaultColumns: [
+        /* {
           title: '序号',
           customRender: function (text, row, index) {
             const current = gthis.pagination.current || gthis.pagination.defaultCurrent
             const pageSize = gthis.pagination.pageSize || gthis.pagination.defaultPageSize
             return (current - 1 < 1 ? 0 : current - 1) * pageSize + index + 1
           }
-        },
-        /* {
-          title: 'ID',
-          dataIndex: 'id'
         }, */
-        {
+        /* {
           title: '头像',
           dataIndex: 'avatar'
-        },
+        }, */
         {
           title: '名称',
-          dataIndex: 'trueName'
+          dataIndex: 'trueName',
+          customRender: function (text, row, index) {
+            const userInfo = store.getters.userInfo
+            if (userInfo.id === row.id) {
+              return <span style="display: inline-block;">
+                <a-avatar style="margin-right: 8px" size="small" src={row.thumbnail} />
+                <div style="display: inline-block; line-height: 24px;">{text}</div>
+                <a-icon style="color: rgba(77, 124, 254, 1); font-size: 12px;" type="user" />
+              </span>
+            } else {
+              return <span style="display: inline-block;">
+                <a-avatar style="margin-right: 8px" size="small" src={row.thumbnail} />
+                <div style="display: inline-block; line-height: 24px;">{text}</div>
+              </span>
+            }
+          }
+        },
+        {
+          title: '部门',
+          dataIndex: 'dept',
+          customRender: (text, row, index) => {
+            /* let txt = ''
+            row.dept.forEach(function (ele) {
+              txt += ele.text
+            }) */
+            return row.dept.text
+          }
         },
         {
           title: '性别',
@@ -109,26 +151,73 @@ export default {
             return ''
           }
         },
+        {
+          title: '操作',
+          key: 'action',
+          scopedSlots: { customRender: 'action' }
+        }
+      ],
+      columns: [
         /* {
-          title: '邮箱',
-          dataIndex: 'email'
-        },
-        {
-          title: '主要职责',
-          dataIndex: 'mainDuty'
-        },
-        {
-          title: '政治面貌',
-          dataIndex: 'politicsStatus'
+          title: '序号',
+          customRender: function (text, row, index) {
+            const current = gthis.pagination.current || gthis.pagination.defaultCurrent
+            const pageSize = gthis.pagination.pageSize || gthis.pagination.defaultPageSize
+            return (current - 1 < 1 ? 0 : current - 1) * pageSize + index + 1
+          }
         }, */
         /* {
-          title: '学历',
-          dataIndex: 'qualifications'
+          title: '头像',
+          dataIndex: 'avatar'
+        }, */
+        {
+          title: '名称',
+          dataIndex: 'trueName',
+          customRender: function (text, row, index) {
+            const userInfo = store.getters.userInfo
+            if (userInfo.id === row.id) {
+              return <span style="display: inline-block;">
+                <a-avatar style="margin-right: 8px" size="small" src={row.thumbnail} />
+                <div style="display: inline-block; line-height: 24px;">{text}</div>
+                <a-icon style="color: rgba(77, 124, 254, 1); font-size: 12px;" type="user" />
+              </span>
+            } else {
+              return <span style="display: inline-block;">
+                <a-avatar style="margin-right: 8px" size="small" src={row.thumbnail} />
+                <div style="display: inline-block; line-height: 24px;">{text}</div>
+              </span>
+            }
+          }
         },
         {
-          title: '职称',
-          dataIndex: 'professionalTitle'
-        }, */
+          title: '部门',
+          dataIndex: 'dept',
+          customRender: (text, row, index) => {
+            if (row.dept && row.dept.text) {
+              return row.dept.text
+            }
+            return ''
+          }
+        },
+        {
+          title: '性别',
+          dataIndex: 'gender'
+        },
+        {
+          title: '电话号码',
+          dataIndex: 'phone'
+        },
+
+        {
+          title: '现任职位',
+          dataIndex: 'presentPost',
+          customRender: (text, row, index) => {
+            if (row.presentPost) {
+              return row.postText ? row.postText : ''
+            }
+            return ''
+          }
+        },
         {
           title: '操作',
           key: 'action',
@@ -145,7 +234,8 @@ export default {
         defaultCurrent: 0,
         defaultPageSize: 10,
         showSizeChanger: true,
-        pageSizeOptions: ['10', '20', '30', '40']
+        pageSizeOptions: ['10', '20', '30', '40'],
+        total: 0
       },
       // 被选择的
       selectedRowKeys: [],
@@ -204,13 +294,15 @@ export default {
     },
     reload () {
       this.initPage()
-      this.fetch({ comId: this.companyId,
+      this.fetch({
+        comId: this.companyId,
         deptId: this.deptId,
         roleId: this.roleId,
         page: this.pagination.defaultCurrent,
-        size: this.pagination.defaultPageSize })
+        size: this.pagination.defaultPageSize
+      })
     },
-    // 写这个是因为左边树又有部门又有公司的情况，判断不了公司有没有变化，重新选择公司，部门是不会清除的，还是回会去查部门数据
+    // 写这个是因为条件又有部门又有公司的情况，改变公司，部门是不会清除的，还是回会去查部门数据
     reloadCom (comId) {
       this.initPage()
       this.fetch({ comId: comId, page: this.pagination.defaultCurrent, size: this.pagination.defaultPageSize })
@@ -232,24 +324,24 @@ export default {
         })
       }
       return userData
+    },
+    showModal () {
+      this.$refs.columnModal.showModal()
+    },
+    onChooseColumn (lastColumn) {
+      this.columns = lastColumn
     }
   },
   watch: {
     companyId (newVal, oldVal) {
-      // if (typeUtils.isNotBlank(newVal)) {
       this.reloadCom(newVal)
-      // } else {
-      //  this.data = []
-      // }
     },
     deptId (newVal, oldVal) {
-      // if (this.companyId) {
       this.initPage()
       this.fetch({ comId: this.companyId,
         deptId: newVal,
         page: this.pagination.defaultCurrent,
         size: this.pagination.defaultPageSize })
-      // }
     },
     roleId (newVal) {
       if (newVal >= 0) {
@@ -259,6 +351,22 @@ export default {
           size: this.pagination.defaultPageSize })
       } else {
         this.data = []
+      }
+    },
+    search: {
+      deep: true,
+      handler: function (newVal) {
+        if (newVal.key !== undefined && newVal.text !== undefined) {
+          this.initPage()
+          this.fetch({
+            comId: this.companyId,
+            deptId: this.deptId,
+            roleId: this.roleId,
+            page: this.pagination.defaultCurrent,
+            size: this.pagination.defaultPageSize,
+            [newVal.key]: newVal.text
+          })
+        }
       }
     }
   },
@@ -275,6 +383,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 
 </style>

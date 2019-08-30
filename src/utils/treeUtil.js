@@ -8,7 +8,7 @@
  * @param rootPid  根节点
  * @returns {Array}   树形结构数据
  */
-export function listToTreeNode ({ data, id = 'id', pid = 'pid', leaf = 'leaf', text = 'text', rootPid = '0', key = 'id' }) {
+export function listToTreeNode ({ data, id = 'id', pid = 'pid', leaf = 'leaf', text = 'text', rootPid = '0', key = 'id'}) {
   if (!Array.isArray(data)) {
     throw Error('请传入正确的数组')
   }
@@ -26,7 +26,8 @@ export function listToTreeNode ({ data, id = 'id', pid = 'pid', leaf = 'leaf', t
     treeNode.text = ele[text]
     treeNode.value = ele[id]
     treeNode.scopedSlots = {
-      title: 'title'
+      title: 'title',
+      icon: 'icon'
     }
     return treeNode
   })
@@ -34,7 +35,6 @@ export function listToTreeNode ({ data, id = 'id', pid = 'pid', leaf = 'leaf', t
 }
 
 export function delSelfAndChildren (tree, id, idSign = 'id') {
-  debugger
   tree.forEach(function (ele, index) {
     if (ele[idSign] === id) {
       tree.splice(index, 1)

@@ -1,7 +1,7 @@
 <template>
   <div class="page_content_bg">
     <!--搜索框-->
-    <a-input-search style="margin-bottom: 8px" placeholder="搜索" @change="onChange"/>
+    <a-input-search placeholder="请输入搜索内容" @search="onChange" enterButton="查询" size="default" />
     <a-tree
       :checkable="checkable"
       :checkStrictly="checkStrictly"
@@ -14,7 +14,21 @@
       :autoExpandParent="autoExpandParent"
       :treeData="treeData"
       :showLine="showLine"
-      class="custom">
+      class="custom cnbi-tree"
+      :showIcon="showIcon"
+    >
+      <!--部门定制图标-->
+      <template slot="icon" slot-scope="item">
+        <slot name="icon" :data="item">
+          <!--自定义图标如下所示，要先引入svg图到Vue的data数据中，参考 https://pro.loacg.com/docs/biz-icon 最后-->
+          <!--<a-icon v-if="item.dataRef.level === 1" :component="BookMark"/>
+         <a-icon v-if="item.dataRef.level === 2" :component="BookMark"/>
+         <a-icon v-if="item.dataRef.level === 3" :component="BookMark"/>
+         <a-icon v-if="item.dataRef.level === 4" :component="BookMark"/>
+         <a-icon v-if="item.dataRef.level === 5" :component="BookMark"/>-->
+        </slot>
+      </template>
+
       <!--使用插槽来提示搜索-->
       <template slot="title" slot-scope="item">
         <span v-if="item.title.indexOf(searchValue) > -1">
@@ -23,6 +37,7 @@
           {{ item.title.substr(item.title.indexOf(searchValue) + searchValue.length) }}
         </span>
         <span v-else>{{ item.title }}</span>
+        <!--自定义的下拉菜单-->
         <a-dropdown v-show="showMenu">
           <a class="ant-dropdown-link" style="float: right; padding-right: 4px;" href="#">
             <a-icon type="align-right" />
@@ -30,19 +45,21 @@
           <a-menu slot="overlay">
             <slot name="menu" :data="item">
               <!--
-                example:
+                菜单节点示例:
                 <a-menu-item key="1"><a-icon type="user" />1st menu item</a-menu-item>
               -->
             </slot>
           </a-menu>
         </a-dropdown>
       </template>
+
     </a-tree>
   </div>
 </template>
 
 <script>
 // 搜索的展开，找到父节点
+import ACol from 'ant-design-vue/es/grid/Col'
 const getParentKey = (key, tree) => {
   let parentKey
   for (let i = 0; i < tree.length; i++) {
@@ -59,6 +76,7 @@ const getParentKey = (key, tree) => {
 }
 export default {
   name: 'LeftTree',
+  components: { ACol },
   props: {
     // 设置树数据
     treeData: {
@@ -97,6 +115,10 @@ export default {
     showLine: {
       type: Boolean,
       default: false
+    },
+    showIcon: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -124,8 +146,8 @@ export default {
       this.$emit('check', checkedKeys)
     },
     // 搜索
-    onChange (e) {
-      const value = e.target.value
+    onChange (text) {
+      const value = text
       const expandedKeys = this.dataList.map((item) => {
         if (item.title.indexOf(value) > -1) {
           return getParentKey(item.key, this.treeData)
@@ -156,7 +178,6 @@ export default {
     onTreeMenuClick (key) {
       alert(key)
     }
-
   },
   watch: {
     // 树变化，搜索列表变一下

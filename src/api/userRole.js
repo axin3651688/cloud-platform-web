@@ -5,7 +5,7 @@ const api = {
   saveRoleUser: '/org/base_service/user_role/save_role_user',
   updateUserRole: '/org/base_service/user_role/update_user_role',
   findUserRole: '/org/base_service/user_role/find_user_role',
-  findRoleUser: '/org/base_service/user_role/find_user_by_role_and_user_info',
+  findRoleUser: '/org/base_service/user_role/find_user_table',
   deleteRoleUser: '/org/base_service/user_role/delete_role_user'
 }
 

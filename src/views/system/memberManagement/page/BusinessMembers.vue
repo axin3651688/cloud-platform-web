@@ -3,19 +3,43 @@
     <a-row :gutter="16">
       <div v-show="!isOnOrgAuth">
         <a-col :md="6" :sm="24" >
-          <left-tree :treeData="comTreeData" @select="onSelectLeftTree"></left-tree>
+          <left-company-tree :treeData="comTreeData" @select="onSelectLeftTree" :show-icon="true">
+          </left-company-tree>
         </a-col>
         <a-col :md="18" :sm="24" class="page_full">
           <div style="background-color: #fff">
-            <div>
-              <tree-select
-                v-if="(!isSingle)"
-                @change="onSelectDept"
-                :value="curSelectDept"
-                :treeData="deptTreeData"
-                :placeholder="'请选择部门'">
-              </tree-select>
-              <a-button type="primary" @click="onUserAdd" v-action:addUser>添加成员</a-button>
+            <!--这里记得清除一下浮动-->
+            <div class="top-bar clearfix">
+              <div class="top-bar-left">
+                <tree-select
+                  style="width: 200px"
+                  v-if="(!isSingle)"
+                  @change="onSelectDept"
+                  :value="curSelectDept"
+                  :treeData="deptTreeData"
+                  :placeholder="'全部部门'">
+                </tree-select>
+                <span class="table-person-count">共{{ personCount() }}人</span>
+                <a-select class="search-name" defaultValue="姓名" style="width: 80px; margin-right: 16px;" @change="handleChange">
+                  <a-select-option value="trueName">姓名</a-select-option>
+                </a-select>
+                <a-input-search
+                  class="search-text"
+                  placeholder="要搜索的成员姓名"
+                  @search="onSearchPerson"
+                  enterButton>
+                </a-input-search>
+              </div>
+              <div class="table-btn-group">
+                <a-button class="add-custom-type" type="default" size="large" @click="onCustomType">添加自定义类别</a-button>
+                <a-button
+                  class="add-user"
+                  type="primary"
+                  style="color: #fff"
+                  size="large"
+                  @click="onUserAdd"
+                  v-action:addUser><a-icon type="user-add" />添加成员</a-button>
+              </div>
             </div>
             <user-table
               ref="userTable"
@@ -23,24 +47,40 @@
               :dept-id="curSelectDept"
               :show-action="true"
               :show-on-start="true"
-              @rowSelect="onRowSelect">
+              @rowSelect="onRowSelect"
+              :search="search">
               <template slot="dropdown" slot-scope="item">
                 <a-menu-item v-action:editUser>
-                  <a href="javascript:;" @click="onUserEdit(item.record)">编辑</a>
+                  <a href="javascript:;" @click="onUserEdit(item.record)">
+                    <a-icon :component="editUser" />编辑
+                  </a>
                 </a-menu-item>
-                <a-menu-item v-action:editUser>
-                  <a href="javascript:;" @click="onUserAuth(item.record)">授权</a>
+                <a-menu-item v-action:authUser>
+                  <a href="javascript:;" @click="onUserAuth(item.record)">
+                    <a-icon :component="authUser" />授权
+                  </a>
                 </a-menu-item>
                 <a-menu-item v-action:disableUser>
-                  <a href="javascript:;" @click="onUserDisable(item.record)">禁用</a>
+                  <a href="javascript:;" @click="onUserDisable(item.record)">
+                    <a-icon :component="disableUser" />禁用</a>
                 </a-menu-item>
                 <a-menu-item v-action:delUser>
-                  <a href="javascript:;" @click="onUserDelete(item.record)">删除</a>
+                  <a href="javascript:;" @click="onUserDelete(item.record)">
+                    <a-icon :component="delUser" />删除
+                  </a>
                 </a-menu-item>
               </template>
             </user-table>
-            <div>
-              已选择{{ selectedRowKeys.length }} <a @click="batchDeleteUser" v-action:delUser>删除</a>
+            <div class="bottom-bar">
+              <div class="del-bar">
+                <a-icon class="del-info-icon" type="info-circle" size="large" />
+                <div class="del-info-text">已选择<span class="del-info-number">{{ selectedRowKeys.length }}</span>人 </div>
+                <div class="operator-btn">
+                  <a class="del-btn" @click="batchDeleteUser" v-action:delUser>删除</a>
+                  <div class="v-line"></div>
+                  <a class="export-btn">导出</a>
+                </div>
+              </div>
             </div>
           </div>
         </a-col>
@@ -60,10 +100,13 @@ import LeftTree from './Module/LeftTree'
 import TreeSelect from './Module/TreeSelect'
 import UserModal from './Module/UserModal'
 import { minxinModal } from '@/utils/mixin.js'
+import CustomColumnModal from './Module/CustomColumnModal'
+import LeftCompanyTree from './Module/LeftCompanyTree'
+import { delUser, editUser, authUser, disableUser } from '@/core/icons'
 
 export default {
   name: 'BusinessMembers',
-  components: { UserModal, TreeSelect, LeftTree, UserTable, OrgAuth },
+  components: { LeftCompanyTree, CustomColumnModal, UserModal, TreeSelect, LeftTree, UserTable, OrgAuth },
   mixins: [minxinModal],
   data () {
     return {
@@ -82,7 +125,16 @@ export default {
       // 是否是单体公司
       isSingle: false,
       // 单体公司的Id
-      singleComId: undefined
+      singleComId: undefined,
+      // 搜索的内容
+      search: {
+        key: 'trueName',
+        text: undefined
+      },
+      delUser,
+      editUser,
+      authUser,
+      disableUser
     }
   },
   methods: {
@@ -146,17 +198,32 @@ export default {
         return treeData
       })
     },
+    /**
+     * 点击添加用户，调用用户表单莫泰框
+     */
     onUserAdd () {
       this.$refs.userModal.showModal()
     },
+    /**
+     * 点击编辑用户，调用用户表单莫泰框
+     * @param record 当前行数据
+     */
     onUserEdit (record) {
       this.$refs.userModal.onEdit(record)
     },
+    /**
+     * 点击用户授权，打开用户授权界面
+     * @param record 当前行数据
+     */
     onUserAuth (record) {
       // 表格申请编辑权限
       this.isOnOrgAuth = true
       this.$refs.orgAuth.onEditAuth(record.id)
     },
+    /**
+     * 点击用户禁用，直接发送禁用请求
+     * @param record 当前行数据
+     */
     onUserDisable (record) {
       const _this = this
       this.confirm({
@@ -237,6 +304,24 @@ export default {
     renderMultiCom: function (treeData) {
       const _this = this
       _this.comTreeData = treeData
+    },
+    handleChange (value) {
+      this.search.key = value
+      console.log(`selected ${value}`)
+    },
+    /**
+     * 统计人数的方法，调用用户表格中分页返回的总数，目前必须卸载方法里，否则先一步找不到userTable
+     * @returns {number}
+     */
+    personCount () {
+      return this.$refs.userTable ? this.$refs.userTable.pagination.total : 0
+    },
+    onSearchPerson (value) {
+      // 触发搜索事件，向子组件传值
+      this.search.text = value
+    },
+    onCustomType () {
+      this.$refs.userTable.showModal()
     }
   },
   created () {
@@ -251,7 +336,104 @@ export default {
   }
 }
 </script>
+<style lang="less" scoped>
+@import url('../../../../components/index');
+  .top-bar {
+    .top-bar-left {
+      float: left;
+      .table-person-count {
+        margin-left: 6px;
+        margin-right: 55px;
+        font-size:14px;
+        font-weight:400;
+        line-height:16px;
+        color: rgba(42,43,47,1);
+        opacity:0.5;
+        vertical-align: bottom;
+      }
+      .search-text {
+        width: 180px;
+      }
+    }
+    .table-btn-group {
+      float: right;
+      button {
+        margin-left: 40px;
+        font-size: 14px;
+      }
+    }
+  }
 
-<style scoped>
+  /*表格上方按钮布局*/
+  @media screen and (max-width: 1550px) {
+    .add-custom-type {
+      display: none;
+    }
+  }
+  @media screen and (max-width: 1300px) {
+    .search-name {
+      display: none;
+    }
+    .search-text {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 520px) {
+    .table-btn-group {
+      float: left !important;
+      button {
+        margin-left: 0px !important;
+      }
+    }
+  }
+  /*表格上方按钮布局*/
+
+  /*表格下的工具栏*/
+  .bottom-bar {
+    width: 100%;
+    height: 32px;
+    background: @primary-2;
+    border:1px solid @primary-6;
+    .del-bar {
+      height: 100%;
+      padding-top: 4px;
+      padding-left: 8px;
+      .del-info-icon {
+        display: inline-block;
+        color: @primary-color;
+      }
+      .del-info-text {
+        margin-left: 8px;
+        display: inline-block;
+        line-height: 20px;
+        .del-info-number {
+          padding-left: 1px;
+          padding-right: 1px;
+          font-size: 16px;
+          color: @primary-color;
+        }
+      }
+      .operator-btn {
+        display: inline-block;
+        margin-left: 38px;
+        .del-btn {
+          display: inline-block;
+          color: @highlight-color;
+        }
+        .v-line {
+          display: inline-block;
+          position: absolute;
+          margin-top: 6px;
+          margin-left: 3px;
+          height: 12px;
+          border: 1px solid @primary-color;
+        }
+        .export-btn {
+          margin-left: 6px;
+        }
+      }
+    }
+  }
 
 </style>

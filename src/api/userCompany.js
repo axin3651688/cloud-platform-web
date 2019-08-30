@@ -3,7 +3,7 @@ import { axios2 } from '@/utils/request'
 const api = {
   saveUserPrimaryCompany: '/org/base_service/user_company/update_user_primary_company',
   findPrimaryCompany: '/org/base_service/user_company/find_primary_company_by_user',
-  findCompanyStaff: '/org/base_service/user_company/find_users_by_primary_company_and_user_info',
+  findCompanyStaff: '/org/base_service/user_company/find_user_table',
   findCompanyByUser: '/org/base_service/user_company/find_companies_by_user/',
   updateUserCompany: '/org/base_service/user_company/update_user_company'
 }

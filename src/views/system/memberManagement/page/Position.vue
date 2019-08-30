@@ -1,7 +1,13 @@
 <template>
   <div class="wrapper">
-    <a-button @click="onAdd" type="primary" v-action:addPosition>添加职位</a-button>
+    <div class="btn-features clearfix">
+      <a-button class="add-btn" size="large" @click="onAdd" type="primary" v-action:addPosition>
+        <a-icon type="usergroup-add" />
+        添加职位
+      </a-button>
+    </div>
     <s-table
+      style="background-color: #fff"
       ref="table"
       size="default"
       :columns="columns"
@@ -9,7 +15,7 @@
       <span slot="action" slot-scope="text, record">
         <a-dropdown>
           <a class="ant-dropdown-link" href="#"><a-icon type="align-right" /></a>
-          <a-menu slot="overlay">
+          <a-menu class="cnbi-drop-down" slot="overlay">
             <slot name="dropdown" :record="record">
               <a-menu-item v-action:editPosition>
                 <a href="javascript:;" @click="onEdit(record)">编辑</a>
@@ -101,6 +107,11 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="less">
+  .wrapper {
+    .add-btn {
+      float: right;
+      font-size: 14px;
+    }
+  }
 </style>

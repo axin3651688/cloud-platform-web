@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
+  <defs>
+    <style>
+      .cls-1, .cls-3 {
+        fill: #4d7cfe;
+      }
+
+      .cls-1 {
+        opacity: 0.15;
+      }
+
+      .cls-2 {
+        clip-path: url(#clip-path);
+      }
+    </style>
+    <clipPath id="clip-path">
+      <rect id="矩形_670" data-name="矩形 670" class="cls-1" width="16" height="16" transform="translate(8 7)"/>
+    </clipPath>
+  </defs>
+  <g id="蒙版组_13" data-name="蒙版组 13" class="cls-2" transform="translate(-8 -7)">
+    <g id="编辑_1_" data-name="编辑 (1)" transform="translate(8 7.018)">
+      <path id="路径_343" data-name="路径 343" class="cls-3" d="M13.33,15.982H2.652A2.62,2.62,0,0,1,0,13.33V2.652A2.62,2.62,0,0,1,2.652,0H9.044a.515.515,0,0,1,.545.545.515.515,0,0,1-.545.545H2.652a1.567,1.567,0,0,0-1.6,1.6V13.33a1.567,1.567,0,0,0,1.6,1.6H13.294a1.567,1.567,0,0,0,1.6-1.6V6.938a.545.545,0,0,1,1.09,0V13.33a2.62,2.62,0,0,1-2.652,2.652Z"/>
+      <path id="路径_344" data-name="路径 344" class="cls-3" d="M7.991,8.536a.466.466,0,0,1-.363-.145.527.527,0,0,1,0-.763L15.074.145a.527.527,0,0,1,.763,0,.527.527,0,0,1,0,.763L8.354,8.354a.5.5,0,0,1-.363.182Z"/>
+    </g>
+  </g>
+</svg>

@@ -64,6 +64,8 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="less">
+  .tab_menu {
+    /*position: absolute;*/
+  }
 </style>

@@ -10,7 +10,7 @@ const api = {
   findUserCount: '/org/base_service/user/find_user_count',
   findSystemUserByPhone: '/uc/user/find_user_phone',
   findUsers: '/org/base_service/user/find_users',
-  findPageUsers: '/org/base_service/user/find_page_users'
+  findPageUsers: '/org/base_service/user/find_user_table'
 }
 
 /**
