@@ -86,7 +86,8 @@ module.exports = {
           'border-radius-base': '4px',
           */
         },
-        javascriptEnabled: true
+        javascriptEnabled: true,
+        data: `@import "@/components/index.less";`
       }
     }
   },
@@ -103,32 +104,32 @@ module.exports = {
         changeOrigin: true
       },
       '/org': {
-        target: 'http://192.168.1.145:80',
+        target: 'http://192.168.2.236:80',
         ws: false,
         changeOrigin: true
       },
       '/uc': {
-        target: 'http://192.168.1.145:80',
+        target: 'http://192.168.2.236:80',
         ws: false,
         changeOrigin: true
       },
       '/common': {
-        target: 'http://192.168.1.145:80',
+        target: 'http://192.168.2.236:80',
         ws: false,
         changeOrigin: true
       },
       '/uaa': {
-        target: 'http://192.168.1.145:80',
+        target: 'http://192.168.2.236:80',
         ws: false,
         changeOrigin: true
       },
       '/zuul': {
-        target: 'http://192.168.1.145:80',
+        target: 'http://192.168.2.236:80',
         ws: false,
         changeOrigin: true
       },
       '/tc': {
-        target: 'http://192.168.1.145:80',
+        target: 'http://192.168.2.236:80',
         ws: false,
         changeOrigin: true
       }

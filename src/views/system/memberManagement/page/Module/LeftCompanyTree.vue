@@ -12,6 +12,7 @@
     ref="leftTree"
     @select="onSelect"
     @check="onCheck"
+    :tool="tool"
   >
     <template slot="icon" slot-scope="item">
       <a-icon v-if="item.data.dataRef.level === 1" :component="BookMark"/>
@@ -70,6 +71,10 @@ export default {
       default: false
     },
     showIcon: {
+      type: Boolean,
+      default: false
+    },
+    tool: {
       type: Boolean,
       default: false
     }

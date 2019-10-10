@@ -2,6 +2,7 @@
   <div class="page_content_bg">
     <!--搜索框-->
     <a-input-search placeholder="请输入搜索内容" @search="onChange" enterButton="查询" size="default" />
+
     <a-tree
       :checkable="checkable"
       :checkStrictly="checkStrictly"
@@ -16,16 +17,16 @@
       :showLine="showLine"
       class="custom cnbi-tree"
       :showIcon="showIcon"
-    >
-      <!--部门定制图标-->
+      @rightClick="onRightClick">
+      <!--定制图标-->
       <template slot="icon" slot-scope="item">
         <slot name="icon" :data="item">
           <!--自定义图标如下所示，要先引入svg图到Vue的data数据中，参考 https://pro.loacg.com/docs/biz-icon 最后-->
           <!--<a-icon v-if="item.dataRef.level === 1" :component="BookMark"/>
-         <a-icon v-if="item.dataRef.level === 2" :component="BookMark"/>
-         <a-icon v-if="item.dataRef.level === 3" :component="BookMark"/>
-         <a-icon v-if="item.dataRef.level === 4" :component="BookMark"/>
-         <a-icon v-if="item.dataRef.level === 5" :component="BookMark"/>-->
+           <a-icon v-if="item.dataRef.level === 2" :component="BookMark"/>
+           <a-icon v-if="item.dataRef.level === 3" :component="BookMark"/>
+           <a-icon v-if="item.dataRef.level === 4" :component="BookMark"/>
+           <a-icon v-if="item.dataRef.level === 5" :component="BookMark"/>-->
         </slot>
       </template>
 
@@ -45,15 +46,24 @@
           <a-menu slot="overlay">
             <slot name="menu" :data="item">
               <!--
-                菜单节点示例:
-                <a-menu-item key="1"><a-icon type="user" />1st menu item</a-menu-item>
-              -->
+                  菜单节点示例:
+                  <a-menu-item key="1"><a-icon type="user" />1st menu item</a-menu-item>
+                -->
             </slot>
           </a-menu>
         </a-dropdown>
       </template>
-
     </a-tree>
+
+    <div ref="functionalMenu" class="functional-menu" v-if="tool" v-show="showFunctionalMenu">
+      <ul class="tree-functional-menu ant-dropdown-menu ant-dropdown-menu-vertical ant-dropdown-menu-root ant-dropdown-menu-light ant-dropdown-content">
+        <li class="tree-functional-menu-item ant-dropdown-menu-item ant-dropdown-menu choose-all">全选</li>
+        <li class="tree-functional-menu-item ant-dropdown-menu-item ant-dropdown-menu cancel-all">全取消</li>
+        <li class="tree-functional-menu-item ant-dropdown-menu-item ant-dropdown-menu choose-child">全选子节点</li>
+        <li class="tree-functional-menu-item ant-dropdown-menu-item ant-dropdown-menu cancel-child">全取消子节点</li>
+      </ul>
+    </div>
+
   </div>
 </template>
 
@@ -119,6 +129,10 @@ export default {
     showIcon: {
       type: Boolean,
       default: false
+    },
+    tool: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -128,7 +142,43 @@ export default {
       expandedKeys: [],
       autoExpandParent: false,
       checkNodes: [],
-      selectNodes: []
+      disabledCheckNodes: [],
+      selectNodes: [],
+      showFunctionalMenu: false
+    }
+  },
+  mounted: function () {
+    const _this = this
+    if (this.tool) {
+      // 绑定点击事件，点击其他地方隐藏工具栏
+      document.addEventListener('click', function (e) {
+        if (e.target.className.indexOf('tree-functional-menu-item') === -1) {
+          _this.showFunctionalMenu = false
+        }
+      })
+      // 绑定工具栏事件
+      const treeMenus = document.getElementsByClassName('functional-menu')
+      // treeMenu.removeEventListener('click', function () {})
+      for (const treeMenu of treeMenus) {
+        treeMenu.addEventListener('click', function (e) {
+          e.stopPropagation()
+          let treeIds = this.checkNodes
+          if (e.target.className.indexOf('choose-all') !== -1) {
+            treeIds = _this.findTreeIds(_this.treeData)
+          }
+          if (e.target.className.indexOf('cancel-all') !== -1) {
+            treeIds = _this.findTreeIds(_this.treeData)
+            _this.refreshDisableCheckNodes(_this.treeData)
+            console.log(_this.disabledCheckNodes)
+          }
+          if (e.target.className.indexOf('choose-child') !== -1) {
+            treeIds = _this.findTreeChildIds(_this.treeData, _this.selectNodes[0])
+          }
+          if (e.target.className.indexOf('cancel-child') !== -1) {
+            treeIds = _this.findTreeNextLevelChildIds(_this.treeData, _this.selectNodes[0])
+          }
+        })
+      }
     }
   },
   methods: {
@@ -160,6 +210,21 @@ export default {
         autoExpandParent: true
       })
     },
+    onRightClick ({ event, node }) {
+      if (!this.tool) {
+        return false
+      }
+      // 显示功能菜单
+      this.onSelect([node.eventKey])
+      this.showFunctionalMenu = true
+
+      // 设置功能菜单位置
+      const menuX = event.offsetX
+      const menuY = event.layerY
+      const menu = this.$refs.functionalMenu
+      menu.style.left = menuX + 'px'
+      menu.style.top = menuY + 'px'
+    },
     // 生成为搜索服务的列表数据
     generateList (data) {
       for (let i = 0; i < data.length; i++) {
@@ -175,8 +240,74 @@ export default {
     clearSelectNodes () {
       this.selectNodes = []
     },
-    onTreeMenuClick (key) {
-      alert(key)
+    // 找到所有树的所有Id
+    findTreeIds (treeData) {
+      let keys = []
+      const _this = this
+      treeData.forEach(function (ele) {
+        keys.push(ele.key)
+        if (Array.isArray(ele.children)) {
+          const childIds = _this.findTreeIds(ele.children)
+          keys = keys.concat(childIds)
+        }
+      })
+      return keys
+    },
+    findTreeChildIds (treeData, pid) {
+      let keys = []
+      const _this = this
+      for (const ele of treeData) {
+        // 找到了pid 和需要找的pid相同节点了，那么只需要找这个节点和这个节点的子节点即可
+        if (ele.pid === pid) {
+          keys.push(ele.key)
+          if (Array.isArray(ele.children)) {
+            const childIds = _this.findTreeChildIds(ele.children, ele.id)
+            keys = keys.concat(childIds)
+          }
+        } else {
+          // 没有找到该pid对应的节点，去children的中寻找
+          if (Array.isArray(ele.children)) {
+            const childIds = _this.findTreeChildIds(ele.children, pid)
+            keys = keys.concat(childIds)
+          }
+        }
+      }
+      return keys
+    },
+    findTreeNextLevelChildIds (treeData, pid) {
+      let keys = []
+      const _this = this
+      for (const ele of treeData) {
+        if (ele.pid === pid) {
+          keys.push(ele.key)
+        }
+        if (Array.isArray(ele.children)) {
+          const childIds = _this.findTreeNextLevelChildIds(ele.children, pid)
+          keys = keys.concat(childIds)
+        }
+      }
+      return keys
+    },
+    refreshDisableCheckNodes () {
+      const _this = this
+      // 清空
+      _this.disabledCheckNodes = []
+      // 重新放入失效的节点
+      this.pushDisableCheckNodes(this.treeData)
+      // 返回
+      return _this.disabledCheckNodes
+    },
+    pushDisableCheckNodes (treeData) {
+      const _this = this
+      // 递归去找disableCheckbox，找到放入this.disabledCheckNodes中
+      treeData.forEach(function (ele) {
+        if (ele.disableCheckbox === true) {
+          _this.disabledCheckNodes.push(ele.key)
+        }
+        if (Array.isArray(ele.children)) {
+          _this.pushDisableCheckNodes(ele.children)
+        }
+      })
     }
   },
   watch: {
@@ -203,6 +334,13 @@ export default {
       .ant-tree-node-content-wrapper {
         width: calc(100% - 24px);
       }
+    }
+  }
+  .functional-menu {
+    width: 100px;
+    position: absolute;
+    .tree-functional-menu {
+      padding: 0px;
     }
   }
 </style>

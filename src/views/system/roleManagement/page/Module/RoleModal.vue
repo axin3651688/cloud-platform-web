@@ -20,6 +20,14 @@
             v-decorator="['text',validatorRules.text]"/>
         </a-form-item>
         <a-form-item
+          label="角色描述"
+          :label-col="labelCol"
+          :wrapper-col="wrapperCol">
+          <a-input
+            placeholder="请输入角色描述"
+            v-decorator="['desc']"/>
+        </a-form-item>
+        <a-form-item
           label="排序"
           :label-col="labelCol"
           :wrapper-col="wrapperCol">
@@ -98,6 +106,7 @@ export default {
       // 根据id获取该角色的名称和排序
       findById({ id: record.id }).then(function (res) {
         _this.form.setFieldsValue({ 'text': res.data.text })
+        _this.form.setFieldsValue({ 'desc': res.data.desc })
         _this.form.setFieldsValue({ 'sort': res.data.sort })
       })
     },

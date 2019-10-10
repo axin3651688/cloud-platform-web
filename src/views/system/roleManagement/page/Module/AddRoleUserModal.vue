@@ -15,7 +15,12 @@
           label="角色名称"
           :label-col="labelCol"
           :wrapper-col="wrapperCol">
-          <a-select mode="multiple" placeholder="请选择对应的成员" v-decorator="['users', validatorRules.users]">
+          <a-select
+            showSearch
+            :filterOption="filterOption"
+            mode="multiple"
+            placeholder="请选择对应的成员"
+            v-decorator="['users', validatorRules.users]">
             <a-select-option v-for="user in userData" :key="user.id">{{ user.trueName }}</a-select-option>
           </a-select>
         </a-form-item>
@@ -86,6 +91,9 @@ export default {
     loadUserData: async function () {
       const res = await findUserByRule()
       this.userData = res.data
+    },
+    filterOption(input, option) {
+      return option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
     }
   }
 }

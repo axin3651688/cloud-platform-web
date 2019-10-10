@@ -16,8 +16,8 @@
             </div>
           </div>
           <div class="btn">
-            <a-button type="primary" @click="clickBang(1)">{{param1}}</a-button>  
-          </div>  
+            <a-button type="primary" @click="clickBang(1)">{{param1}}</a-button>
+          </div>
         </div>
         <div class="wechat">
           <div class="picture2">
@@ -32,8 +32,8 @@
             </div>
           </div>
           <div class="btn">
-            <a-button type="primary" @click="clickBang(2)">{{param2}}</a-button>  
-          </div>  
+            <a-button type="primary" @click="clickBang(2)">{{param2}}</a-button>
+          </div>
         </div>
       </div>
       <!-- <div>
@@ -52,12 +52,12 @@
 <script>
 import inputModel from '@/components/system/InputModel'
 import selectModel from '@/components/system/SelectModel'
-import bigHeader from '@/components/system/BigHeader'
+import DescHeader from '@/components/system/DescHeader'
   export default {
-    components: { 
+    components: {
       selectModel,
       inputModel,
-      bigHeader},
+      DescHeader},
     name: 'BindingAccount',
     data () {
       return {
@@ -97,7 +97,7 @@ import bigHeader from '@/components/system/BigHeader'
             this.param2 = '绑定'
           }
         }
-        
+
       }
     }
   }

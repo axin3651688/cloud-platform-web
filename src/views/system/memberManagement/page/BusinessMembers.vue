@@ -218,7 +218,7 @@ export default {
     onUserAuth (record) {
       // 表格申请编辑权限
       this.isOnOrgAuth = true
-      this.$refs.orgAuth.onEditAuth(record.id)
+      this.$refs.orgAuth.onAuth(record.id)
     },
     /**
      * 点击用户禁用，直接发送禁用请求

@@ -8,52 +8,60 @@
       </a-col>
       <a-col :md="18" :sm="24">
         <a-row :gutter="8">
-          <a-col :md="24" :sm="24">
-            <div class="banner"></div>
-          </a-col>
-          <a-col :md="8" :sm="24">
-            <left-tree
-              class="menuTree"
-              :tree-data="menuTreeData"
-              :show-menu="false"
-              @select="onMenuSelect"
-              :checkable="true"
-              :checkStrictly="true"
-              :checkedKeys="curRoleMenuIds"
-              @check="onMenuCheck"
-              :select-keys="menuSelectedKey"></left-tree>
-          </a-col>
-          <a-col :md="16" :sm="24">
-            <!--check组件-->
-            <check-box-nodes
-              :title="'管理权限'"
-              :nodes="nodes"
-              :checkedNodes="curRoleMenuActions"
-              @check="onActionCheck"></check-box-nodes>
-          </a-col>
+          <div class="right-panel">
+            <desc-header :title="title" :desc="desc" class="table-header"></desc-header>
+            <a-col :md="24" :sm="24">
+              <div class="banner"></div>
+            </a-col>
+            <a-col :md="8" :sm="24">
+              <left-tree
+                class="menuTree"
+                :tree-data="menuTreeData"
+                :show-menu="false"
+                @select="onMenuSelect"
+                :checkable="true"
+                :checkStrictly="true"
+                :checkedKeys="curRoleMenuIds"
+                @check="onMenuCheck"
+                :select-keys="menuSelectedKey"></left-tree>
+            </a-col>
+            <a-col :md="16" :sm="24">
+              <!--check组件-->
+              <check-box-nodes
+                :title="'管理权限'"
+                :nodes="nodes"
+                :checkedNodes="curRoleMenuActions"
+                @check="onActionCheck"></check-box-nodes>
+            </a-col>
+          </div>
         </a-row>
       </a-col>
-      <a-button type="primary" @click="onSave">确定</a-button>
     </a-row>
+    <a-button style="float: right;" type="primary" @click="onSave">授权</a-button>
   </div>
 </template>
 
 <script>
 import ARow from 'ant-design-vue/es/grid/Row'
 import LeftTree from '../../memberManagement/page/Module/LeftTree'
-import { getAllRoleTree } from '@/api/role'
+import { findAllRole } from '@/api/role'
 import { getAllMenuTree, getMenuAction } from '@/api/resource'
 import { findRoleResource, updateRoleResource } from '@/api/roleResource'
+// 标题
+import DescHeader from '@/components/system/DescHeader'
 import ACol from 'ant-design-vue/es/grid/Col'
 import CheckBoxNodes from './Module/CheckBoxNodes'
 import avril from '@/utils/avrcollectionUtil'
+import { listToTreeNode } from '@/utils/treeUtil'
+import StringUtil from '@/utils/commonUtil/StringUtil'
 
 export default {
   name: 'MenuPermissions',
-  components: { CheckBoxNodes, ACol, LeftTree, ARow },
+  components: { CheckBoxNodes, ACol, LeftTree, ARow, DescHeader },
   data () {
     return {
       roleTreeData: [],
+      roleMapData: {},
       curRoleId: undefined,
       menuTreeData: [],
       // 当前菜单Id
@@ -70,6 +78,27 @@ export default {
       nodes: [],
       // 当前菜单被选中的key
       menuSelectedKey: []
+    }
+  },
+  computed: {
+    title: function () {
+      if (this.curRoleId) {
+        return this.roleMapData[this.curRoleId].text
+      }
+      return ' '
+    },
+    desc: function () {
+      if (this.curRoleId) {
+        let desc = this.roleMapData[this.curRoleId].desc
+        if (!StringUtil.isNotBlank(desc)) {
+          desc = ''
+        } else {
+          desc += ','
+        }
+        const title = this.roleMapData[this.curRoleId].text
+        return desc + '可在此添加成员为' + title + '，并设置其功能权限和数据可见范围'
+      }
+      return ' '
     }
   },
   methods: {
@@ -191,8 +220,17 @@ export default {
     },
     renderRole () {
       const _this = this
-      return getAllRoleTree().then(function (treeData) {
-        _this.roleTreeData = treeData
+      return findAllRole().then(function (result) {
+        if (Array.isArray(result.data)) {
+          result.data.forEach(function (ele) {
+            ele.pid = 0
+            ele.isLeaf = '1'
+          })
+          _this.transformRoleMapData(result.data)
+          _this.roleTreeData = listToTreeNode({ data: result.data, rootPid: 0 })
+        } else {
+          _this.roleTreeData = []
+        }
       })
     },
     renderMenu () {
@@ -203,6 +241,16 @@ export default {
     },
     renderTree () {
       this.renderRole()
+    },
+    transformRoleMapData (list) {
+      const _this = this
+      if (!Array.isArray(list)) {
+        return {}
+      }
+      _this.roleMapData = {}
+      list.forEach(function (ele) {
+        _this.roleMapData[ele.id] = ele
+      })
     }
   },
   created () {
@@ -219,4 +267,18 @@ export default {
       }
     }
   }
+  .right-panel {
+    margin-left: 4px;
+    margin-right: 4px;
+    .table-header {
+      background-color: #fff;
+      margin-left: 4px;
+      /deep/ &>span.title {
+        // padding: 0 !important;
+        padding-left: 0px;
+        margin-left: 4px;
+      }
+    }
+  }
+
 </style>

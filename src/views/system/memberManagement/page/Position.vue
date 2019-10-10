@@ -18,10 +18,12 @@
           <a-menu class="cnbi-drop-down" slot="overlay">
             <slot name="dropdown" :record="record">
               <a-menu-item v-action:editPosition>
-                <a href="javascript:;" @click="onEdit(record)">编辑</a>
+                <a href="javascript:;" @click="onEdit(record)">
+                  <a-icon :component="editUser" />编辑</a>
               </a-menu-item>
               <a-menu-item v-action:delPosition>
-                <a href="javascript:;" @click="onDelete(record)">删除</a>
+                <a href="javascript:;" @click="onDelete(record)">
+                  <a-icon :component="delUser" />删除</a>
               </a-menu-item>
             </slot>
           </a-menu>
@@ -37,6 +39,7 @@ import { findPostByFiledAndPage, deletePost } from '@/api/post'
 import { STable } from '@/components'
 import PostModal from './Module/PostModal'
 import { minxinModal } from '@/utils/mixin.js'
+import { delUser, editUser } from '@/core/icons'
 let gthis
 export default {
   name: 'Position',
@@ -71,7 +74,9 @@ export default {
         return findPostByFiledAndPage(parameter).then(res => {
           return res.data
         })
-      }
+      },
+      delUser,
+      editUser
     }
   },
   methods: {

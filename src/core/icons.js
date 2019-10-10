@@ -13,6 +13,7 @@ import delUser from '@/assets/icons/del-user.svg?inline'
 import editUser from '@/assets/icons/edit-user.svg?inline'
 import authUser from '@/assets/icons/auth-user.svg?inline'
 import disableUser from '@/assets/icons/disable-user.svg?inline'
+import chooseAll from '@/assets/icons/choose-all.svg?inline'
 
 export { bxAnaalyse }
 export { roleM }
@@ -20,3 +21,4 @@ export { delUser }
 export { editUser }
 export { authUser }
 export { disableUser }
+export { chooseAll }
