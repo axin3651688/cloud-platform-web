@@ -1,8 +1,16 @@
-import { axios2 } from '@/utils/request'
+/* eslint-disable no-debugger */
+import {
+// axios2
+} from '@/utils/request'
 // eslint-disable-next-line
-import { UserLayout, BasicLayout, RouteView, BlankLayout, PageView } from '@/layouts'
+import {
+  // UserLayout,
+  BasicLayout,
+  RouteView,
+  BlankLayout,
+  PageView
+} from '@/layouts'
 import store from '@/store'
-
 // 前端路由表
 const constantRouterComponents = {
   // 基础页面 layout 必须引入
@@ -16,36 +24,51 @@ const constantRouterComponents = {
   workplace: () => import('@/views/dashboard/Workplace'),
   monitor: () => import('@/views/dashboard/Monitor'),
 
-  Console: () => import('@/views/system/Console'),
-  MemberManagement: () => import('@/views/system/memberManagement/Index'),
-  BusinessMembers: () => import('@/views/system/memberManagement/page/BusinessMembers'),
-  DisablingAccounts: () => import('@/views/system/memberManagement/page/DisablingAccounts'),
-  Position: () => import('@/views/system/memberManagement/page/Position'),
-  Robot: () => import('@/views/system/memberManagement/page/Robot'),
+  // MemberManagement: () => import('@/views/system/memberManagement/Index'),
+  // BusinessMembers: () => import('@/views/system/memberManagement/page/BusinessMembers'),
+  // DisablingAccounts: () => import('@/views/system/memberManagement/page/DisablingAccounts'),
+  // Position: () => import('@/views/system/memberManagement/page/Position'),
+  // Robot: () => import('@/views/system/memberManagement/page/Robot'),
 
-  RoleManagement: () => import('@/views/system/roleManagement/Index'),
-  FunctionalPermissions: () => import('@/views/system/roleManagement/page/FunctionalPermissions'),
-  MenuPermissions: () => import('@/views/system/roleManagement/page/MenuPermissions'),
-  RoleMembers: () => import('@/views/system/roleManagement/page/RoleMembers'),
-  DataScope: () => import('@/views/system/roleManagement/page/DataScope'),
+  // RoleManagement: () => import('@/views/system/roleManagement/Index'),
+  // FunctionalPermissions: () => import('@/views/system/roleManagement/page/FunctionalPermissions'),
+  // MenuPermissions: () => import('@/views/system/roleManagement/page/MenuPermissions'),
+  // RoleMembers: () => import('@/views/system/roleManagement/page/RoleMembers'),
+  // DataScope: () => import('@/views/system/roleManagement/page/DataScope'),
 
-  EnterpriseSettings: () => import('@/views/system/enterpriseSettings/Index'),
-  CompanyInformation: () => import('@/views/system/enterpriseSettings/page/CompanyInformation'),
-  SectoralInformation: () => import('@/views/system/enterpriseSettings/page/SectoralInformation'),
+  // EnterpriseSettings: () => import('@/views/system/enterpriseSettings/Index'),
+  // CompanyInformation: () => import('@/views/system/enterpriseSettings/page/CompanyInformation'),
+  // SectoralInformation: () => import('@/views/system/enterpriseSettings/page/SectoralInformation'),
 
-  PersonalSettings: () => import('@/views/system/personalSettings/Index'),
-  BindingAccount: () => import('@/views/system/personalSettings/page/BindingAccount'),
+  // PersonalSettings: () => import('@/views/system/personalSettings/Index'),
+  // BindingAccount: () => import('@/views/system/personalSettings/page/BindingAccount'),
   LoggingStatements: () => import('@/views/system/personalSettings/page/LoggingStatements'),
   LogInLog: () => import('@/views/system/personalSettings/page/LogInLog'),
 
-  ApplyManagement: () => import('@/views/system/ApplyManagement'),
-  SafeManagement: () => import('@/views/system/SafeManagement')
+  Console: () => import('@/views/system-module/console'),
+  ParamManagement: () => import('@/views/system-module/param-management'),
+  ServeManagement: () => import('@/views/system-module/serve-management'),
+  ApplyManagement: () => import('@/views/system-module/apply-management'),
+  ThirdPartyApply: () => import('@/views/system-module/third-party-apply'),
+  LicenseManagement: () => import('@/views/product-module/license-management'),
+  TenantManagement: () => import('@/views/product-module/tenant-management'),
+  ModuleManagement: () => import('@/views/product-module/module-management'),
+  UserManagement: () => import('@/views/product-module/user-management'),
+  ContentManagement: () => import('@/views/official-module/content-management'),
+  FileManagement: () => import('@/views/official-module/file-management'),
+  BusinessChanceManagement: () => import('@/views/official-module/business-chance-management'),
+  AccountManagement: () => import('@/views/set-module/account-management'),
+  RoleManagement: () => import('@/views/set-module/role-management'),
+  LimitManagement: () => import('@/views/set-module/limit-management'),
+  DataDictionary: () => import('@/views/set-module/data-dictionary')
   // ...more
 }
 
 // 前端未找到页面路由（固定不用改）
 const notFoundRouter = {
-  path: '*', redirect: '/404', hidden: true
+  path: '*',
+  redirect: '/404',
+  hidden: true
 }
 
 /**
@@ -69,6 +92,7 @@ export const generatorDynamicRouter = (data) => {
 }
 
 function transferToMenuResource (resources) {
+  debugger
   return resources.filter(function (ele) {
     return ele.type == 1 && ele.sys == '1'
   })
@@ -125,6 +149,7 @@ function list2Tree (list, pCode) {
  * @returns {Array}
  */
 function setRouteProperties (tree) {
+  // debugger
   const routerTree = []
   tree.forEach(function (ele) {
     const node = {
@@ -149,6 +174,98 @@ function setRouteProperties (tree) {
  * @returns {*}
  */
 export const generator = (routerMap, parent) => {
+  debugger
+  routerMap.forEach(res => {
+    if (res.children && res.children.length > 0 && res.name === 'index') {
+      res.children.push({
+        component: 'Console',
+        icon: 'bb',
+        key: 'Console',
+        title: '控制台'
+      },{
+        component: 'ParamManagement',
+        icon: 'bb',
+        key: 'ParamManagement',
+        title: '参数管理'
+      },{
+        component: 'ServeManagement',
+        icon: 'bb',
+        key: 'ServeManagement',
+        title: '服务管理'
+      },{
+        component: 'ApplyManagement',
+        icon: 'bb',
+        key: 'ApplyManagement',
+        title: '应用管理'
+      },
+      {
+        component: 'ThirdPartyApply',
+        icon: 'bb',
+        key: 'ThirdPartyApply',
+        title: '第三方应用'
+      },{
+        component: 'LicenseManagement',
+        icon: 'bb',
+        key: 'LicenseManagement',
+        title: '牌照管理'
+      },
+      {
+        component: 'TenantManagement',
+        icon: 'bb',
+        key: 'TenantManagement',
+        title: '租户管理'
+      },{
+        component: 'ModuleManagement',
+        icon: 'bb',
+        key: 'ModuleManagement',
+        title: '模块管理'
+      },
+      {
+        component: 'UserManagement',
+        icon: 'bb',
+        key: 'UserManagement',
+        title: '用户管理'
+      },{
+        component: 'ContentManagement',
+        icon: 'bb',
+        key: 'ContentManagement',
+        title: '内容管理'
+      },
+      {
+        component: 'FileManagement',
+        icon: 'bb',
+        key: 'FileManagement',
+        title: '文件管理'
+      },{
+        component: 'BusinessChanceManagement',
+        icon: 'bb',
+        key: 'BusinessChanceManagement',
+        title: '商机管理'
+      },
+      {
+        component: 'AccountManagement',
+        icon: 'bb',
+        key: 'AccountManagement',
+        title: '账号管理'
+      },{
+        component: 'RoleManagement',
+        icon: 'bb',
+        key: 'RoleManagement',
+        title: '角色管理'
+      },{
+        component: 'LimitManagement',
+        icon: 'bb',
+        key: 'LimitManagement',
+        title: '权限管理'
+      },
+      {
+        component: 'DataDictionary',
+        icon: 'bb',
+        key: 'DataDictionary',
+        title: '数据字典'
+      })
+    }
+  })
   return routerMap.map(item => {
     const currentRouter = {
       // 路由地址 动态拼接生成如 /dashboard/workplace
@@ -158,7 +275,12 @@ export const generator = (routerMap, parent) => {
       // 该路由对应页面的 组件
       component: constantRouterComponents[item.component || item.key],
       // meta: 页面标题, 菜单图标, 页面权限(供指令权限用，可去掉)
-      meta: { title: item.title, icon: item.icon || undefined, keepAlive: false, permission: item.key && [ item.key ] || null }
+      meta: {
+        title: item.title,
+        icon: item.icon || undefined,
+        keepAlive: false,
+        permission: item.key && [item.key] || null
+      }
     }
     // 为了防止出现后端返回结果不规范，处理有可能出现拼接出两个 反斜杠
     currentRouter.path = currentRouter.path.replace('//', '/')

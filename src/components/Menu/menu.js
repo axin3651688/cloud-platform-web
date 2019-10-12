@@ -115,12 +115,12 @@ export default {
 
       return (
         <Item {...{ key: menu.path }}>
-    <tag {...{ props, attrs }}>
-      {this.renderIcon(menu.meta.icon)}
-    <span>{menu.meta.title}</span>
-      </tag>
-      </Item>
-    )
+          <tag {...{ props, attrs }}>
+            {this.renderIcon(menu.meta.icon)}
+            <span>{menu.meta.title}</span>
+          </tag>
+        </Item>
+      )
     },
     renderSubMenu (menu) {
       const itemArr = []
@@ -129,13 +129,13 @@ export default {
       }
       return (
         <SubMenu {...{ key: menu.path }}>
-    <span slot="title">
-        {this.renderIcon(menu.meta.icon)}
-        <span>{menu.meta.title}</span>
-        </span>
-      {itemArr}
-    </SubMenu>
-    )
+          <span slot="title">
+            {this.renderIcon(menu.meta.icon)}
+            <span>{menu.meta.title}</span>
+          </span>
+          {itemArr}
+        </SubMenu>
+      )
     },
     renderIcon (icon) {
       if (icon === 'none' || icon === undefined) {
@@ -145,7 +145,7 @@ export default {
       typeof (icon) === 'object' ? props.component = icon : props.type = icon
       return (
         <Icon {... { props } }/>
-    )
+      )
     }
   },
 
@@ -173,8 +173,8 @@ export default {
     // {...{ props, on: on }}
     return (
       <Menu vModel={this.selectedKeys} {...{ props, on: on }}>
-    {menuTree}
-  </Menu>
-  )
+        {menuTree}
+      </Menu>
+    )
   }
 }

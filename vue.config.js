@@ -32,7 +32,7 @@ module.exports = {
             case '.ant-menu-horizontal>.ant-menu-item-active,.ant-menu-horizontal>.ant-menu-item-open,.ant-menu-horizontal>.ant-menu-item-selected,.ant-menu-horizontal>.ant-menu-item:hover,.ant-menu-horizontal>.ant-menu-submenu-active,.ant-menu-horizontal>.ant-menu-submenu-open,.ant-menu-horizontal>.ant-menu-submenu-selected,.ant-menu-horizontal>.ant-menu-submenu:hover':
             case '.ant-menu-horizontal > .ant-menu-item-active,.ant-menu-horizontal > .ant-menu-item-open,.ant-menu-horizontal > .ant-menu-item-selected,.ant-menu-horizontal > .ant-menu-item:hover,.ant-menu-horizontal > .ant-menu-submenu-active,.ant-menu-horizontal > .ant-menu-submenu-open,.ant-menu-horizontal > .ant-menu-submenu-selected,.ant-menu-horizontal > .ant-menu-submenu:hover':
               return '.ant-menu-horizontal > .ant-menu-item-active,.ant-menu-horizontal > .ant-menu-item-open,.ant-menu-horizontal > .ant-menu-item-selected,.ant-menu-horizontal > .ant-menu-item:hover,.ant-menu-horizontal > .ant-menu-submenu-active,.ant-menu-horizontal > .ant-menu-submenu-open,.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-selected,.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu:hover'
-            default :
+            default:
               return selector
           }
         }
@@ -103,32 +103,32 @@ module.exports = {
         changeOrigin: true
       },
       '/org': {
-        target: 'http://192.168.1.145:80',
+        target: 'http://192.168.2.236:80',
         ws: false,
         changeOrigin: true
       },
       '/uc': {
-        target: 'http://192.168.1.145:80',
+        target: 'http://192.168.2.236:80',
         ws: false,
         changeOrigin: true
       },
       '/common': {
-        target: 'http://192.168.1.145:80',
+        target: 'http://192.168.2.236:80',
         ws: false,
         changeOrigin: true
       },
       '/uaa': {
-        target: 'http://192.168.1.145:80',
+        target: 'http://192.168.2.236:80',
         ws: false,
         changeOrigin: true
       },
       '/zuul': {
-        target: 'http://192.168.1.145:80',
+        target: 'http://192.168.2.236:80',
         ws: false,
         changeOrigin: true
       },
       '/tc': {
-        target: 'http://192.168.1.145:80',
+        target: 'http://192.168.2.236:80',
         ws: false,
         changeOrigin: true
       }

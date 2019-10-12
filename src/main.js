@@ -5,7 +5,10 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store/'
-import { VueAxios } from './utils/request'
+import Antd from 'ant-design-vue'
+import {
+  VueAxios
+} from './utils/request'
 
 // mock
 import './mock'
@@ -19,6 +22,7 @@ Vue.config.productionTip = false
 
 // mount axios Vue.$http and this.$http
 Vue.use(VueAxios)
+Vue.use(Antd)
 
 new Vue({
   router,

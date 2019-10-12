@@ -87,7 +87,168 @@ export default {
     return {
       production: config.production,
       collapsed: false,
-      menus: []
+      menus: [
+        {
+          meta: {
+            icon: 'xx',
+            keepAlive: false,
+            permission: Array(1),
+            title: '控制台'
+          },
+          name: 'Console',
+          path: '/Console'
+        },
+        {
+          meta: {
+            icon: 'xx1',
+            keepAlive: false,
+            permission: Array(1),
+            title: '参数管理'
+          },
+          name: 'ParamManagement',
+          path: '/ParamManagement'
+        },
+        {
+          meta: {
+            icon: 'xx2',
+            keepAlive: false,
+            permission: Array(1),
+            title: '服务管理'
+          },
+          name: 'ServeManagement',
+          path: '/ServeManagement'
+        },
+        {
+          meta: {
+            icon: 'xx3',
+            keepAlive: false,
+            permission: Array(1),
+            title: '应用管理'
+          },
+          name: 'ApplyManagement',
+          path: '/ApplyManagement'
+        },
+        {
+          meta: {
+            icon: 'xx4',
+            keepAlive: false,
+            permission: Array(1),
+            title: '第三方应用'
+          },
+          name: 'ThirdPartyApply',
+          path: '/ThirdPartyApply'
+        },
+        {
+          meta: {
+            icon: 'xx5',
+            keepAlive: false,
+            permission: Array(1),
+            title: '牌照管理'
+          },
+          name: 'LicenseManagement',
+          path: '/LicenseManagement'
+        },
+        {
+          meta: {
+            icon: 'xx6',
+            keepAlive: false,
+            permission: Array(1),
+            title: '租户管理'
+          },
+          name: 'TenantManagement',
+          path: '/TenantManagement'
+        },
+        {
+          meta: {
+            icon: 'xx7',
+            keepAlive: false,
+            permission: Array(1),
+            title: '模块管理'
+          },
+          name: 'ModuleManagement',
+          path: '/ModuleManagement'
+        },
+        {
+          meta: {
+            icon: 'xx8',
+            keepAlive: false,
+            permission: Array(1),
+            title: '用户管理'
+          },
+          name: 'UserManagement',
+          path: '/UserManagement'
+        },
+        {
+          meta: {
+            icon: 'xx9',
+            keepAlive: false,
+            permission: Array(1),
+            title: '内容管理'
+          },
+          name: 'ContentManagement',
+          path: '/ContentManagement'
+        },
+        {
+          meta: {
+            icon: 'xx10',
+            keepAlive: false,
+            permission: Array(1),
+            title: '文件管理'
+          },
+          name: 'FileManagement',
+          path: '/FileManagement'
+        },
+        {
+          meta: {
+            icon: 'xx11',
+            keepAlive: false,
+            permission: Array(1),
+            title: '商机管理'
+          },
+          name: 'BusinessChanceManagement',
+          path: '/BusinessChanceManagement'
+        },
+        {
+          meta: {
+            icon: 'xx12',
+            keepAlive: false,
+            permission: Array(1),
+            title: '账号管理'
+          },
+          name: 'AccountManagement',
+          path: '/AccountManagement'
+        },
+        {
+          meta: {
+            icon: 'xx13',
+            keepAlive: false,
+            permission: Array(1),
+            title: '角色管理'
+          },
+          name: 'RoleManagement',
+          path: '/RoleManagement'
+        },
+        {
+          meta: {
+            icon: 'xx14',
+            keepAlive: false,
+            permission: Array(1),
+            title: '权限管理'
+          },
+          name: 'LimitManagement',
+          path: '/LimitManagement'
+        },
+        {
+          meta: {
+            icon: 'xx15',
+            keepAlive: false,
+            permission: Array(1),
+            title: '数据字典'
+          },
+          name: 'DataDictionary',
+          path: '/DataDictionary'
+        }
+      ]
     }
   },
   computed: {
@@ -141,7 +302,7 @@ export default {
       }
       return left
     },
-    menuSelect () {
+    menuSelect () {debugger
       if (!this.isDesktop()) {
         this.collapsed = false
       }
