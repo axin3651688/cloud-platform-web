@@ -3,7 +3,7 @@ const webpack = require('webpack')
 const ThemeColorReplacer = require('webpack-theme-color-replacer')
 const generate = require('@ant-design/colors/lib/generate').default
 
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
@@ -19,7 +19,7 @@ module.exports = {
         fileName: 'css/theme-colors-[contenthash:8].css',
         matchColors: getAntdSerials('#1890ff'), // 主色系列
         // 改变样式选择器，解决样式覆盖问题
-        changeSelector (selector) {
+        changeSelector(selector) {
           switch (selector) {
             case '.ant-calendar-today .ant-calendar-date':
               return ':not(.ant-calendar-selected-date)' + selector
@@ -131,6 +131,11 @@ module.exports = {
         target: 'http://192.168.2.236:80',
         ws: false,
         changeOrigin: true
+      },
+      '/zj': {
+        target: 'http://192.168.2.236',
+        ws: false,
+        changeOrigin: true
       }
     }
   },
@@ -142,7 +147,7 @@ module.exports = {
   transpileDependencies: []
 }
 
-function getAntdSerials (color) {
+function getAntdSerials(color) {
   // 淡化（即less的tint）
   const lightens = new Array(9).fill().map((t, i) => {
     return ThemeColorReplacer.varyColor.lighten(color, i / 10)
