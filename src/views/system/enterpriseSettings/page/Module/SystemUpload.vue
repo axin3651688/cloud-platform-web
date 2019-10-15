@@ -1,21 +1,23 @@
 <template>
   <div class="wrapper">
-    <a-upload
-      name="file"
-      :beforeUpload="beforeUpload"
-      :showUploadList="false"
-      listType="picture-card"
-      class="avatar-uploader"
-      :customRequest="customRequest"
-      :disabled="disable"
-      >
-      <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
+    <a-upload name="file"
+              :beforeUpload="beforeUpload"
+              :showUploadList="false"
+              listType="picture-card"
+              class="avatar-uploader"
+              :customRequest="customRequest"
+              :disabled="disable">
+      <img v-if="imageUrl"
+           :src="imageUrl"
+           alt="avatar" />
       <div v-else>
         <a-icon :type="loading ? 'loading' : 'plus'" />
         <div class="ant-upload-text">点击上传</div>
       </div>
     </a-upload>
-    <a-button type="default" @click="onDel" v-show="showDel">删除</a-button>
+    <a-button type="default"
+              @click="onDel"
+              v-show="showDel">删除</a-button>
   </div>
 </template>
 
@@ -85,18 +87,18 @@ export default {
 </script>
 
 <style scoped>
-  .avatar-uploader > .ant-upload {
-    width: 128px;
-    height: 128px;
-  }
+.avatar-uploader > .ant-upload {
+  width: 128px;
+  height: 128px;
+}
 
-  .ant-upload-select-picture-card i {
-    font-size: 32px;
-    color: #999;
-  }
+.ant-upload-select-picture-card i {
+  font-size: 32px;
+  color: #999;
+}
 
-  .ant-upload-select-picture-card .ant-upload-text {
-    margin-top: 8px;
-    color: #666;
-  }
+.ant-upload-select-picture-card .ant-upload-text {
+  margin-top: 8px;
+  color: #666;
+}
 </style>

@@ -24,21 +24,6 @@ class CnbiLicenseManagement {
   constructor(obj) {
     Object.assign(this, obj)
   }
-  // {牌照的属性
-  //   "cards": [0],
-  //   "dbTypes": [0],
-  //   "maxCompany": 0,
-  //   "maxConnect": 0,
-  //   "maxDesign": 0,
-  //   "maxLevel": 0,
-  //   "maxMemory": 0,
-  //   "maxUser": 0,
-  //   "modules": [0],
-  //   "name": "string",
-  //   "note": "string",
-  //   "price": 0,
-  //   "type": 0
-  // }
   // 牌照数据传输对象 {
   //   cards (Array[integer], optional): 可用的应用集合 ,
   //   dbTypes (Array[integer], optional): 可用的数据源类型 ,
@@ -57,6 +42,204 @@ class CnbiLicenseManagement {
   props = ['cards', 'dbTypes', 'maxCompany', 'maxConnect', 'maxDesign', 'maxLevel',
     'maxMemory', 'maxUser', 'modules', 'name', 'note', 'price', 'type'
   ]
-
+  /** 
+   * @desc    : 初始化的方法
+   * @author  : zj
+   * @date  : 2019/10/15
+   * @param   {} 
+   * @return  {} 
+   * @update   by   
+   */
+  init() {}
+  GET_LICENSE_ID: '/upm/license/get_license_id',
+    FIND_LICENSE_LIST: '/upm/license/find_list',
+    OPEN_LICENSE: '/upm/license/open_license',
+    SAVE_LICENSE: '/upm/license/save',
+    DELETE_LICENSE: '/upm/license/delete',
+    UPDATE_LICENSE: '/upm/license/update',
+    UPDATE_VAIL_LICENSE: '/upm/license_authority/update_vail_license'
+  /** 
+   * @desc    : 获取参数
+   * @author  : zj
+   * @date  : 2019/10/14
+   * @param   {} 
+   * @return  {} 
+   * @update   by   
+   */
+  getParams() {
+    let params = {}
+    this.props.forEach(param => {
+      params[param] = this[param]
+    })
+    return params
+  }
+  /** 
+   * @desc    : 查询牌照
+   * @author  : zj
+   * @date  : 2019/10/15
+   * @param   {} 
+   * @return  {} 
+   * @update   by   
+   */
+  getLicenseId() {
+    let params = getParams()
+    GET_LICENSE_ID().then(res => {
+      if (res.code === 200 && res.data) {
+        this.$message({
+          type: 'success',
+          message: res.msg
+        });
+      } else {
+        this.$message({
+          type: 'error',
+          message: res.msg
+        });
+      }
+    })
+  }
+  /** 
+   * @desc    : 查询牌照列表
+   * @author  : zj
+   * @date  : 2019/10/15
+   * @param   {} 
+   * @return  {} 
+   * @update   by   
+   */
+  findLicenseList() {
+    let params = getParams()
+    FIND_LICENSE_LIST().then(res => {
+      if (res.code === 200 && res.data) {
+        this.$message({
+          type: 'success',
+          message: res.msg
+        });
+      } else {
+        this.$message({
+          type: 'error',
+          message: res.msg
+        });
+      }
+    })
+  }
+  /** 
+   * @desc    : 开启关闭牌照
+   * @author  : zj
+   * @date  : 2019/10/15
+   * @param   {} 
+   * @return  {} 
+   * @update   by   
+   */
+  openLicense() {
+    let params = getParams()
+    OPEN_LICENSE().then(res => {
+      if (res.code === 200 && res.data) {
+        this.$message({
+          type: 'success',
+          message: res.msg
+        });
+      } else {
+        this.$message({
+          type: 'error',
+          message: res.msg
+        });
+      }
+    })
+  }
+  /** 
+   * @desc    : 添加牌照
+   * @author  : zj
+   * @date  : 2019/10/15
+   * @param   {} 
+   * @return  {} 
+   * @update   by   
+   */
+  saveLicense() {
+    let params = getParams()
+    SAVE_LICENSE().then(res => {
+      if (res.code === 200 && res.data) {
+        this.$message({
+          type: 'success',
+          message: res.msg
+        });
+      } else {
+        this.$message({
+          type: 'error',
+          message: res.msg
+        });
+      }
+    })
+  }
+  /** 
+   * @desc    : 删除牌照
+   * @author  : zj
+   * @date  : 2019/10/15
+   * @param   {} 
+   * @return  {} 
+   * @update   by   
+   */
+  deleteLicense() {
+    let params = getParams()
+    DELETE_LICENSE().then(res => {
+      if (res.code === 200 && res.data) {
+        this.$message({
+          type: 'success',
+          message: res.msg
+        });
+      } else {
+        this.$message({
+          type: 'error',
+          message: res.msg
+        });
+      }
+    })
+  }
+  /** 
+   * @desc    : 编辑牌照
+   * @author  : zj
+   * @date  : 2019/10/15
+   * @param   {} 
+   * @return  {} 
+   * @update   by   
+   */
+  updateLicense() {
+    let params = getParams()
+    UPDATE_LICENSE().then(res => {
+      if (res.code === 200 && res.data) {
+        this.$message({
+          type: 'success',
+          message: res.msg
+        });
+      } else {
+        this.$message({
+          type: 'error',
+          message: res.msg
+        });
+      }
+    })
+  }
+  /** 
+   * @desc    : 编辑牌照权限
+   * @author  : zj
+   * @date  : 2019/10/15
+   * @param   {} 
+   * @return  {} 
+   * @update   by   
+   */
+  updateVailLicense() {
+    let params = getParams()
+    UPDATE_VAIL_LICENSE().then(res => {
+      if (res.code === 200 && res.data) {
+        this.$message({
+          type: 'success',
+          message: res.msg
+        });
+      } else {
+        this.$message({
+          type: 'error',
+          message: res.msg
+        });
+      }
+    })
+  }
 }
 export default CnbiLicenseManagement

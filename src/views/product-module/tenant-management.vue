@@ -1,202 +1,304 @@
 <template>
   <div>
     <!-- <h1>租户管理 TenantManagement</h1> -->
-    <!-- <commom-search :placeholder="placeholder"></commom-search> -->
     <div>
       <!--下拉框-->
-      <common-drop-down
-        :name="owner"
-        :result="result"
-        :methodsName="methodsName[0]"
-        @selectOwner="selectOwners"
-        style="float:left;color:#D8DCE6"
-      ></common-drop-down>
+      <common-drop-down :name="owner"
+                        :result="result"
+                        :methodsName="methodsName[0]"
+                        @selectOwner="selectOwners"
+                        style="float:left;color:#D8DCE6"></common-drop-down>
       <!--搜索框-->
-      <common-search :placeholder="version" style="width: 220px"></common-search>
-      <common-search :placeholder="placeholder" style="width: 220px"></common-search>
+      <common-search :placeholder="version"
+                     style="width: 220px"></common-search>
+      <common-search :placeholder="placeholder"
+                     style="width: 220px"></common-search>
       <!--按钮-->
-      <common-button
-        :name1="name1"
-        :name2="name2"
-        @addClick="addClick"
-        @deleteClick="deleteClick">
+      <common-button :name1="name1"
+                     :name2="name2"
+                     @addClick="addClick"
+                     @deleteClick="deleteClick">
       </common-button>
       <div style="height:32px"></div>
       <!--表格-->
-      <common-table
-        style="margin-top:10px;"
-        :columns="columns"
-        :data="data"></common-table>
+      <common-table style="margin-top:10px;"
+                    :columns="columns"
+                    :data="data"></common-table>
     </div>
     <!--添加租户弹框-->
-    <a-modal
-      title="添加租户"
-      v-model="addTenantFlag"
-      @ok="saveTenant"
-      okText="确认"
-      cancelText="取消"
-      :destroyOnClose="true"
-      :width="600"
-    >
-      <div>
-        <div class="amodal-row">
-          <div class="amodal-row-cell">
-            <span>名称：</span>
-            <a-input placeholder="名称" class="tenantInput"/>
-          </div>
-          <div class="amodal-row-cell">
-            <span>营业执照：</span>
-            <a-input placeholder="目录" class="tenantInput"/>
-          </div>
-        </div>
-
-        <div class="amodal-row" >
-          <div class="amodal-row-cell">
-            <span>所属人：</span>
-            <common-drop-down
-              class="addTenantDown"
-              :name="belongPeople"
-              :result="result"
-              :methodsName="methodsName[1]"
-              @selectBelongPeople="selectBelongPeople"
-            ></common-drop-down>
-          </div>
-          <div class="amodal-row-cell">
-            <span>所属牌照：</span>
-            <common-drop-down
-              class="addTenantDown"
-              :name="licensePlate"
-              :result="result"
-              :methodsName="methodsName[2]"
-              @selectLicensePlate="selectLicensePlate"
-            ></common-drop-down>
-          </div>
-        </div>
-
-        <div class="amodal-row" >
-          <div class="amodal-row-cell">
-            <span>租户类型：</span>
-            <common-drop-down
-              class="addTenantDown"
-              :name="tenantType"
-              :result="result"
-              :methodsName="methodsName[3]"
-              @selectTenantType="selectTenantType"
-            ></common-drop-down>
-          </div>
-          <div class="amodal-row-cell">
-            <span>服务标识：</span>
-            <common-drop-down
-              class="addTenantDown"
-              :name="serveSign"
-              :result="result"
-              :methodsName="methodsName[4]"
-              @selectServeSign="selectServeSign"
-            ></common-drop-down>
-          </div>
-        </div>
-        <div class="amodal-row" >
-          <div class="amodal-row-cell">
-            <span>访问网址：</span>
-            <a-input addonBefore="Http://" addonAfter=".com" placeholder="请输入" />
-          </div>
-          <div class="amodal-row-cell">
-            <span>联系电话：</span>
-            <a-input placeholder="11位手机号">
-              <a-select slot="addonBefore" defaultValue="Http://">
-                <a-select-option value="Http://">+86</a-select-option>
-                <a-select-option value="Https://">+87</a-select-option>
+    <a-modal title="添加租户"
+             v-model="addTenantFlag"
+             @ok="saveTenant"
+             okText="保存"
+             cancelText="取消"
+             :destroyOnClose="true"
+             :width="730">
+      <a-form :form="form">
+        <!-- 表单第一行 -->
+        <a-row :gutter="24">
+          <a-col :span="12">
+            <a-form-item label="名称">
+              <a-input placeholder="请输入名称"
+                       v-decorator="[
+            'username',
+            {
+              rules: [{ required: true, message: '名称不能为空!' }],
+            }
+          ]" />
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item label="营业执照">
+              <a-input placeholder="目录"
+                       v-decorator="['username',{
+              rules: [{ required: true, message: '营业执照不能为空!' }],
+            }
+          ]" />
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <!-- 表单第二行 -->
+        <a-row :gutter="24">
+          <a-col :span="12">
+            <a-form-item label="所属人">
+              <a-select default-value="1">
+                <a-select-option value="1">
+                  拥有者1
+                </a-select-option>
+                <a-select-option value="2">
+                  拥有者2
+                </a-select-option>
+                <a-select-option value="3">
+                  拥有者3
+                </a-select-option>
               </a-select>
-            </a-input>
-          </div>
-        </div>
-        <div class="amodal-row" >
-          <div style="display: flex;flex-direction: column;">
-            <div style="display: flex;flex-direction: column;">
-              <span>租户地址：</span>
-              <a-input placeholder="租户地址" class="tenantInput"/>
-            </div>
-            <div style="display: flex;flex-direction: row;width: 220px;">
-              <div style="display: flex;flex-direction: column;">
-                <span>生效时间：</span>
-                <a-date-picker @change="accrueTime">
-                  <a-icon slot="suffixIcon" type="smile" />
-                </a-date-picker>
-              </div>
-              <div style="display: flex;flex-direction: column;">
-                <span>失效时间：</span>
-                <a-date-picker @change="failureTime">
-                  <a-icon slot="suffixIcon" type="smile" />
-                </a-date-picker>
-              </div>
-            </div>
-          </div>
-          <div style="display: flex;flex-direction: column;width: 228px;">
-            <div style="display: flex;flex-direction: column;justify-content: flex-start">
-              <span>企业标识：</span>
-              <a-button
-                type="primary"
-                class="upLoad-Button"
-                @click="uploadImg"
-              ><a-icon type="cloud-upload" />点击上传</a-button>
-              <img
-                style="width: 228px;margin-top: 10px;"
-                src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3389683750,3564498893&fm=26&gp=0.jpg">
-            </div>
-            <div>
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item label="所属牌照">
+              <a-select default-value="1">
+                <a-select-option value="1">
+                  基础版
+                </a-select-option>
+                <a-select-option value="2">
+                  旗舰版
+                </a-select-option>
+                <a-select-option value="3">
+                  免费版
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+        </a-row>
 
-            </div>
-          </div>
-        </div>
-      </div>
+        <!-- 表单第三行 -->
+        <a-row :gutter="24">
+          <a-col :span="12">
+            <a-form-item label="租户类型">
+              <a-select default-value="1">
+                <a-select-option value="1">
+                  公共部署
+                </a-select-option>
+                <a-select-option value="2">
+                  私有部署
+                </a-select-option>
+                <a-select-option value="3">
+                  本地部署
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item label="服务标识">
+              <a-select default-value="1">
+                <a-select-option value="1">
+                  服务标识
+                </a-select-option>
+                <a-select-option value="2">
+                  服务标识2
+                </a-select-option>
+                <a-select-option value="3">
+                  服务标识3
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+        </a-row>
 
+        <!-- 表单第四行 -->
+        <a-row :gutter="24">
+          <a-col :span="12">
+            <a-form-item label="访问地址">
+              <a-input addonBefore="Http://"
+                       style="width: 265px"
+                       addonAfter=".com"
+                       placeholder="请输入" />
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item label="联系电话">
+              <a-input v-decorator="[
+          'phone',
+          {
+            rules: [{ required: true, message: 'Please input your phone number!' }],
+          }
+        ]"
+                       style="width: 100%">
+                <a-select slot="addonBefore"
+                          default-value="86"
+                          v-decorator="[
+            'prefix',
+            { initialValue: '86' }
+          ]"
+                          style="width: 70px">
+                  <a-select-option value="86">
+                    +86
+                  </a-select-option>
+                  <a-select-option value="87">
+                    +87
+                  </a-select-option>
+                </a-select>
+              </a-input>
+            </a-form-item>
+          </a-col>
+        </a-row>
+
+        <!-- 表单第五行 -->
+        <a-row :gutter="24">
+          <a-col :span="12">
+            <!-- 第五行左1 -->
+            <a-form-item label="租户地址">
+              <a-input placeholder="请输入租户地址"
+                       v-decorator="[
+            'username',
+            {
+              rules: [{ required: true, message: '租户地址不能为空!' }],
+            }
+          ]" />
+            </a-form-item>
+            <!-- 第五行左2 -->
+            <a-row :gutter="24">
+              <a-col :span="12">
+                <a-form-item label="生效时间">
+                  <a-date-picker @change="onChange" />
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item label="失效时间">
+                  <a-date-picker @change="onChange" />
+                </a-form-item>
+              </a-col>
+            </a-row>
+          </a-col>
+          <a-col :span="12">
+            <!-- 第五行右侧企业标识 -->
+            <a-form-item label="企业标识">
+              <a-upload name="file"
+                        :beforeUpload="beforeUpload"
+                        :showUploadList="false"
+                        listType="picture-card"
+                        class="avatar-uploader"
+                        :customRequest="customRequest"
+                        :disabled="disable">
+                <img v-if="imageUrl"
+                     :src="imageUrl"
+                     alt="avatar" />
+                <div v-else>
+                  <a-icon :type="loading ? 'loading' : 'plus'" />
+                  <div class="ant-upload-text">点击上传</div>
+                </div>
+              </a-upload>
+            </a-form-item>
+          </a-col>
+        </a-row>
+      </a-form>
     </a-modal>
+
   </div>
 </template>
 
 <script>
+import CnbiTenantManagement from '@/classes/lib/CnbiTenantManagement'
 import SelectModel from '@/components/system/SelectModel'
 import CommonSearch from '@/components/system/common-search'
 import CommonTable from '@/components/system/common-table'
 import CommonButton from '@/components/system/common-button'
 import CommonDropDown from '@/components/system/common-drop-down'
-
+import SystemUpload from '@/views/system/enterpriseSettings/page/Module/SystemUpload'
+import { uploadFile } from '@/api/common'
 export default {
   components: {
     SelectModel,
     CommonTable,
     CommonButton,
     CommonSearch,
-    CommonDropDown
+    CommonDropDown,
+    SystemUpload
   },
   name: 'TenantManagement',
   data () {
     return {
+      CnbiTenantManagement: null,
+
+      url: "",
+      disable: false,
+      loading: false,
+      imageUrl: '',
       columns: [{
-        title: 'Name',
-        dataIndex: 'name'
+        title: '名称',
+        dataIndex: 'name1'
       }, {
-        title: 'Age',
-        dataIndex: 'age'
+        title: '拥有者',
+        dataIndex: 'name2'
       }, {
-        title: 'Address',
-        dataIndex: 'address'
+        title: '所属牌照',
+        dataIndex: 'name3'
+      }, {
+        title: '类型',
+        dataIndex: 'name4'
+      }, {
+        title: '更新时间',
+        dataIndex: 'name5'
+      }, {
+        title: '到期时间',
+        dataIndex: 'name6'
+      }, {
+        title: '初始化',
+        dataIndex: 'name7'
+      }, {
+        title: '更多',
+        dataIndex: 'name8'
       }],
       data: [{
         key: 1,
-        name: 'Edward King',
-        age: 32,
-        address: '合肥'
+        name1: 111,
+        name2: 111,
+        name3: 111,
+        name4: 111,
+        name5: 111,
+        name6: 111,
+        name7: 111,
+        name8: 111
       }, {
         key: 2,
-        name: 'Edward King2',
-        age: 30,
-        address: '合肥2'
+        name1: 222,
+        name2: 222,
+        name3: 222,
+        name4: 222,
+        name5: 222,
+        name6: 222,
+        name7: 222,
+        name8: 222
       }, {
         key: 3,
-        name: 'Edward King1',
-        age: 31,
-        address: '合肥1'
+        name1: 333,
+        name2: 333,
+        name3: 333,
+        name4: 333,
+        name5: 333,
+        name6: 333,
+        name7: 333,
+        name8: 333
       }
       ],
       result: ['1', '2', '3', '4'],
@@ -205,10 +307,10 @@ export default {
       placeholder: '关键词搜索',
       version: '免费版',
       owner: '拥有者',
-      belongPeople: '拥有者', // 所属人
-      licensePlate: '基础版', // 所属牌照
-      tenantType: '公共部署', // 租户类型
-      serveSign: '服务标识',
+      // belongPeople: '拥有者', // 所属人
+      // licensePlate: '基础版', // 所属牌照
+      // tenantType: '公共部署', // 租户类型
+      // serveSign: '服务标识',
       methodsName: ['selectOwner', 'selectBelongPeople', 'selectLicensePlate', 'selectTenantType', 'selectServeSign'],
       addTenantFlag: false,
       previewImage: '',
@@ -216,7 +318,16 @@ export default {
       fileList: ['https://tpc.googlesyndication.com/daca_images/simgad/17069283415306529692']
     }
   },
+  // watch: {
+  //   url: function (newVal) {
+  //     this.imageUrl = newVal
+  //   }
+  // },
+  created () {
+    this.CnbiTenantManagement = new CnbiTenantManagement()
+  },
   methods: {
+    onChange () { },
     addClick () {
       this.addTenantFlag = true
     },
@@ -261,6 +372,7 @@ export default {
     },
     handleCancel () {
       // this.previewVisible = false
+      alert('您还未完成添加租户，您确定取消？')
       console.log('handleCancel===')
     },
     handlePreview (file) {
@@ -271,37 +383,65 @@ export default {
     handleChange ({ fileList }) {
       console.log('handleChange===')
       // this.fileList = fileList
-    }
+    },
+    customRequest (data) {
+      const _this = this
+      const formData = new FormData()
+      formData.append('file', data.file)
+      formData.append('playtime', '0')
+      formData.append('bizId', 'cs')
+      formData.append('bizCode', 'cs')
+      uploadFile(formData).then(function (res) {
+        if (res.code === 200) {
+          _this.imageUrl = res.data.thumbUrl
+          _this.$emit('success', res.data)
+        } else {
+          _this.$emit('fail', res)
+        }
+      })
+    },
+    beforeUpload (file) {
+      const fileType = ['image/jpeg', 'image/png', 'image/bmp']
+      const isImg = fileType.indexOf(file.type) > -1
+      if (!isImg) {
+        this.$message.error('只能jpec、png、bmp图片！')
+      }
+      const isLt5M = file.size / 1024 / 1024 < 5
+      if (!isLt5M) {
+        this.$message.error('图片不能超过5MB！')
+      }
+      return isLt5M && isImg
+    },
   }
 }
 
 </script>
 
 <style scoped>
-  .tenantInput {
-    width: 220px;
-    margin: 0 8px 8px 0;
-  }
-  .addTenantDown{
-    margin: 0 8px 8px 0;
-    }
-  .ant-input-group-wrapper{
-    width: 220px;
-    margin: 0 8px 8px 0;
-  }
-  .amodal-row{
-    display: flex;
-    flex-direction: row;
-    justify-content:space-between
-  }
-  .amodal-row-cell{
-    display: flex;
-    flex-direction: column
-  }
-  .upLoad-Button{
-    width: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+.tenantInput {
+  width: 220px;
+  margin: 0 8px 8px 0;
+}
+.addTenantDown {
+  margin: 0 8px 8px 0;
+}
+.ant-input-group-wrapper {
+  width: 220px;
+  margin: 0 8px 8px 0;
+}
+.amodal-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.amodal-row-cell {
+  display: flex;
+  flex-direction: column;
+}
+.upLoad-Button {
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 </style>

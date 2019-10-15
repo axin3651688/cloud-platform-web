@@ -1,3 +1,4 @@
+import CnbiSta from '@/classes/lib/CnbiStatic';
 // 租户管理的对应的类
 import {
   GET_TENANCY_LIST,
@@ -6,6 +7,7 @@ import {
   GET_TENANCY,
   UPDATE_TENANCY
 } from '@/api/productModule'
+
 /** 
 * @desc    : 该类为租户管理类，为了实现页面代码更加简单清晰而写的，
              其中有增加租户，删除租户，编辑租户，查询租户等其他操作，
@@ -43,11 +45,12 @@ class CnbiTenantManagement {
   constructor(obj) {
     Object.assign(this, obj)
   }
-  props = ['address', 'beginTime', 'checkInfo', 'checkTime',
-    'checkerId', 'creatorId', 'domain', 'endTime',
-    'licenseId', 'logoId', 'name', 'note', 'ownerId',
-    'phone', 'serviceId', 'societyCode', 'tel', 'type', 'url'
-  ]
+  // props = ['address', 'beginTime', 'checkInfo', 'checkTime',
+  //   'checkerId', 'creatorId', 'domain', 'endTime',
+  //   'licenseId', 'logoId', 'name', 'note', 'ownerId',
+  //   'phone', 'serviceId', 'societyCode', 'tel', 'type', 'url'
+  // ]
+
   /** 
    * @desc    : 租户页面的初始化方法
    * @author  : zj
@@ -67,7 +70,7 @@ class CnbiTenantManagement {
    */
   getParams() {
     let params = {}
-    this.props.forEach(param => {
+    CnbiSta.CnbiTenantManagementProps.forEach(param => {
       params[param] = this[param]
     })
     return params

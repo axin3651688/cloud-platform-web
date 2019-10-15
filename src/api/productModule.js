@@ -11,13 +11,13 @@ const api = {
   GET_TENANCY: '/tc/tenancy/get', //（同上）
   UPDATE_TENANCY: '/tc/tenancy/update',
   //牌照管理相关接口
-  GET_LICENSE_ID:'/upm/license/get_license_id',
-  FIND_LICENSE_LIST:'/upm/license/find_list',
-  OPEN_LICENSE:'/upm/license/open_license',
-  SAVE_LICENSE:'/upm/license/save',
-  DELETE_LICENSE:'/upm/license/delete',
-  UPDATE_LICENSE:'/upm/license/update',
-  UPDATE_VAIL_LICENSE:'/upm/license_authority/update_vail_license'
+  GET_LICENSE_ID: '/upm/license/get_license_id',
+  FIND_LICENSE_LIST: '/upm/license/find_list',
+  OPEN_LICENSE: '/upm/license/open_license',
+  SAVE_LICENSE: '/upm/license/save',
+  DELETE_LICENSE: '/upm/license/delete',
+  UPDATE_LICENSE: '/upm/license/update',
+  UPDATE_VAIL_LICENSE: '/upm/license_authority/update_vail_license'
 }
 
 export default api
@@ -101,14 +101,14 @@ export function UPDATE_TENANCY(parameter) {
 }
 
 /** 
-* @desc    : 根据牌照id查询牌照信息
-* @author  : zj
-* @date  : 2019/10/14
-* @param   {} 
-* @return  {} 
-* @update   by   
-*/
-export function GET_LICENSE_ID (parameter) {
+ * @desc    : 根据牌照id查询牌照信息
+ * @author  : zj
+ * @date  : 2019/10/14
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function GET_LICENSE_ID(parameter) {
   return axios2({
     url: api.GET_LICENSE_ID,
     method: 'get',
@@ -117,14 +117,14 @@ export function GET_LICENSE_ID (parameter) {
 }
 
 /** 
-* @desc    : 查询牌照列表
-* @author  : zj
-* @date  : 2019/10/14
-* @param   {} 
-* @return  {} 
-* @update   by   
-*/
-export function FIND_LICENSE_LIST (parameter) {
+ * @desc    : 查询牌照列表
+ * @author  : zj
+ * @date  : 2019/10/14
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function FIND_LICENSE_LIST(parameter) {
   return axios2({
     url: api.FIND_LICENSE_LIST,
     method: 'get',
@@ -133,14 +133,14 @@ export function FIND_LICENSE_LIST (parameter) {
 }
 
 /** 
-* @desc    : 开启关闭牌照
-* @author  : zj
-* @date  : 2019/10/14
-* @param   {} 
-* @return  {} 
-* @update   by   
-*/
-export function OPEN_LICENSE (parameter) {
+ * @desc    : 开启关闭牌照
+ * @author  : zj
+ * @date  : 2019/10/14
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function OPEN_LICENSE(parameter) {
   return axios2({
     url: api.OPEN_LICENSE,
     method: 'put',
@@ -149,14 +149,14 @@ export function OPEN_LICENSE (parameter) {
 }
 
 /** 
-* @desc    : 添加牌照
-* @author  : zj
-* @date  : 2019/10/14
-* @param   {} 
-* @return  {} 
-* @update   by   
-*/
-export function SAVE_LICENSE (parameter) {
+ * @desc    : 添加牌照
+ * @author  : zj
+ * @date  : 2019/10/14
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function SAVE_LICENSE(parameter) {
   return axios2({
     url: api.SAVE_LICENSE,
     method: 'post',
@@ -164,8 +164,15 @@ export function SAVE_LICENSE (parameter) {
   })
 }
 
-
-export function DELETE_LICENSE (parameter) {
+/** 
+ * @desc    : 删除牌照
+ * @author  : zj
+ * @date  : 2019/10/15
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function DELETE_LICENSE(parameter) {
   return axios2({
     url: api.DELETE_LICENSE,
     method: 'delete',
@@ -174,14 +181,14 @@ export function DELETE_LICENSE (parameter) {
 }
 
 /** 
-* @desc    : 编辑牌照
-* @author  : zj
-* @date  : 2019/10/14
-* @param   {} 
-* @return  {} 
-* @update   by   
-*/
-export function UPDATE_LICENSE (parameter) {
+ * @desc    : 编辑牌照
+ * @author  : zj
+ * @date  : 2019/10/14
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function UPDATE_LICENSE(parameter) {
   return axios2({
     url: api.UPDATE_LICENSE,
     method: 'put',
@@ -190,14 +197,14 @@ export function UPDATE_LICENSE (parameter) {
 }
 
 /** 
-* @desc    : 编辑牌照权限
-* @author  : zj
-* @date  : 2019/10/14
-* @param   {} 
-* @return  {} 
-* @update   by   
-*/
-export function UPDATE_VAIL_LICENSE (parameter) {
+ * @desc    : 编辑牌照权限
+ * @author  : zj
+ * @date  : 2019/10/14
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function UPDATE_VAIL_LICENSE(parameter) {
   return axios2({
     url: api.UPDATE_VAIL_LICENSE,
     method: 'post',
