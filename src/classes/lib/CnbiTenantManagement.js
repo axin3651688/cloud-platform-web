@@ -1,4 +1,4 @@
-import CnbiStatic from '@/classes/lib/CnbiStatic';
+// import CnbiStatic from '@/classes/lib/CnbiStatic';
 // 租户管理的对应的类
 import {
   GET_TENANCY_LIST,
