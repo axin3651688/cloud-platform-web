@@ -14,34 +14,27 @@
       </template> -->
       <!-- </span> -->
     </div>
-    <a-table :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
-             :columns="columns"
-             :dataSource="data" />
+    <!--<a-table-->
+    <!--:rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"-->
+    <!--:columns="columns"-->
+    <!--:dataSource="data" />-->
+    <a-table bordered :dataSource="data" :columns="columns" :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
+
+      <span slot="action" slot-scope="text" @click="btnclick(text.key )">Delete</span>
+      <!--<p slot="expandedRowRender" slot-scope="record" style="margin: 0">{{ record.description }}</p>-->
+
+      <!-- <template slot="name" slot-scope="text, record">
+        <span :text="text" @change="onCellChange(record.key, 'name', $event)" >123</span>
+        <span slot="action" slot-scope="text, record">
+          <a href="javascript:;" class="ant-dropdown-link"> Invite 一 {{ record.name }} <a-icon type="down" /> </a>
+        </span>
+      </template>-->
+      <span>123</span>
+    </a-table>
   </div>
 </template>
 
 <script>
-// const columns = [{
-//   title: 'Name',
-//   dataIndex: 'name'
-// }, {
-//   title: 'Age',
-//   dataIndex: 'age'
-// }, {
-//   title: 'Address',
-//   dataIndex: 'address'
-// }]
-
-// const data = []
-// for (let i = 0; i < 46; i++) {
-//   data.push({
-//     key: i,
-//     name: `Edward King ${i}`,
-//     age: 32,
-//     address: `London, Park Lane no. ${i}`
-//   })
-// }
-
 export default {
   name: 'CommonTable',
   data () {
@@ -74,6 +67,14 @@ export default {
     onSelectChange (selectedRowKeys) {
       console.log('selectedRowKeys changed: ', selectedRowKeys)
       this.selectedRowKeys = selectedRowKeys
+    },
+    onCellChange (key, dataIndex, value) {
+
+    },
+    btnclick (key) {
+      console.log('按钮====' + key)
+      this.$router.push({ name: 'TenantDetail' })
+      // this.$router.push({ name: 'TenantDetail' })
     }
   }
 }

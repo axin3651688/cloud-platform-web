@@ -1,4 +1,4 @@
-import CnbiSta from '@/classes/lib/CnbiStatic';
+import CnbiStatic from '@/classes/lib/CnbiStatic'
 // 租户管理的对应的类
 import {
   GET_TENANCY_LIST,
@@ -8,7 +8,7 @@ import {
   UPDATE_TENANCY
 } from '@/api/productModule'
 
-/** 
+/**
 * @desc    : 该类为租户管理类，为了实现页面代码更加简单清晰而写的，
              其中有增加租户，删除租户，编辑租户，查询租户等其他操作，
              有租户的属性，在页面代码中只需引用该类，并创建一个租户
@@ -16,9 +16,9 @@ import {
              在组件中引用接口等，也便于后期维护......
 * @author  : zj
 * @date  : 2019/10/14
-* @param   {} 
-* @return  {} 
-* @update   by   
+* @param   {}
+* @return  {}
+* @update   by
 */
 class CnbiTenantManagement {
   // 租户传输对象 {
@@ -41,160 +41,115 @@ class CnbiTenantManagement {
   //   tel (string, optional): 电话 ,
   //   type (string, optional): 租户类型 ,
   //   url (string, optional): 网址
-  //   } 
-  constructor(obj) {
+  //   }
+  constructor (obj) {
     Object.assign(this, obj)
   }
-  // props = ['address', 'beginTime', 'checkInfo', 'checkTime',
-  //   'checkerId', 'creatorId', 'domain', 'endTime',
-  //   'licenseId', 'logoId', 'name', 'note', 'ownerId',
-  //   'phone', 'serviceId', 'societyCode', 'tel', 'type', 'url'
-  // ]
 
-  /** 
+  // getProps() {
+  //   return ['address', 'beginTime', 'checkInfo', 'checkTime',
+  //     'checkerId', 'creatorId', 'domain', 'endTime',
+  //     'licenseId', 'logoId', 'name', 'note', 'ownerId',
+  //     'phone', 'serviceId', 'societyCode', 'tel', 'type', 'url'
+  //   ];
+  // }
+
+  /**
    * @desc    : 租户页面的初始化方法
    * @author  : zj
    * @date  : 2019/10/14
-   * @param   {} 
-   * @return  {} 
-   * @update   by   
+   * @param   {}
+   * @return  {}
+   * @update   by
    */
-  init() {}
-  /** 
+  init () {}
+  /**
    * @desc    : 获取参数
    * @author  : zj
    * @date  : 2019/10/14
-   * @param   {} 
-   * @return  {} 
-   * @update   by   
+   * @param   {}
+   * @return  {}
+   * @update   by
    */
-  getParams() {
-    let params = {}
-    CnbiSta.CnbiTenantManagementProps.forEach(param => {
+  getParams () {
+    const params = {}
+    CnbiStatic.CnbiTenantManagementGetProps().forEach(param => {
       params[param] = this[param]
     })
     return params
   }
-  /** 
+  /**
    * @desc    : 新增租户的方法
    * @author  : zj
    * @date  : 2019/10/14
-   * @param   {} 
-   * @return  {} 
-   * @update   by   
+   * @param   {}
+   * @return  {}
+   * @update   by
    */
-  saveTenancy() {
-    let params = getParams()
-    SAVE_TENANCY().then(res => {
-      if (res.code === 200 && res.data) {
-        this.$message({
-          type: 'success',
-          message: res.msg
-        });
-      } else {
-        this.$message({
-          type: 'error',
-          message: res.msg
-        });
-      }
-    })
+  // static async getPortalSource (params) {
+  //   const result = await FIND_PORTAL_SOURCE_BY_ID({
+  //     sourceId: params.id,
+  //     sourceType: params.type
+  //   });
+  //   return result;
+  // }
+  async saveTenancy () {
+    const params = getParams()
+    const res = await SAVE_TENANCY(params)
+    await this.after(res)
   }
-  /** 
+  /**
    * @desc    : 删除租户的方法
    * @author  : zj
    * @date  : 2019/10/14
-   * @param   {} 
-   * @return  {} 
-   * @update   by   
+   * @param   {}
+   * @return  {}
+   * @update   by
    */
-  deleteTenancy() {
-    let params = getParams()
-    DELETE_TENANCY.then(res => {
-      if (res.code === 200 && res.data) {
-        this.$message({
-          type: 'success',
-          message: res.msg
-        });
-      } else {
-        this.$message({
-          type: 'error',
-          message: res.msg
-        });
-      }
-    })
+  async deleteTenancy () {
+    const params = getParams()
+    const res = await DELETE_TENANCY(params)
+    await this.after(res)
   }
 
-  /** 
+  /**
    * @desc    : 获取租户列表的方法
    * @author  : zj
    * @date  : 2019/10/14
-   * @param   {} 
-   * @return  {} 
-   * @update   by   
+   * @param   {}
+   * @return  {}
+   * @update   by
    */
-  getTenancyList() {
-    let params = getParams()
-    GET_TENANCY_LIST.then(res => {
-      if (res.code === 200 && res.data) {
-        this.$message({
-          type: 'success',
-          message: res.msg
-        });
-      } else {
-        this.$message({
-          type: 'error',
-          message: res.msg
-        });
-      }
-    })
+  async getTenancyList () {
+    const params = getParams()
+    const res = await GET_TENANCY_LIST(params)
+    await this.after(res)
   }
-  /** 
+  /**
    * @desc    : 根据传入的租户id，查询该租户的详细信息
    * @author  : zj
    * @date  : 2019/10/14
-   * @param   {} 
-   * @return  {} 
-   * @update   by   
+   * @param   {}
+   * @return  {}
+   * @update   by
    */
-  getTenancy() {
-    let params = getParams()
-    GET_TENANCY.then(res => {
-      if (res.code === 200 && res.data) {
-        this.$message({
-          type: 'success',
-          message: res.msg
-        });
-      } else {
-        this.$message({
-          type: 'error',
-          message: res.msg
-        });
-      }
-    })
+  async getTenancy () {
+    const params = getParams()
+    const res = await GET_TENANCY(params)
+    await this.after(res)
   }
-  /** 
+  /**
    * @desc    : 编辑租户基本信息
    * @author  : zj
    * @date  : 2019/10/14
-   * @param   {} 
-   * @return  {} 
-   * @update   by   
+   * @param   {}
+   * @return  {}
+   * @update   by
    */
-  updateTenancy() {
-    let params = getParams()
-    UPDATE_TENANCY.then(res => {
-      if (res.code === 200 && res.data) {
-        this.$message({
-          type: 'success',
-          message: res.msg
-        });
-      } else {
-        this.$message({
-          type: 'error',
-          message: res.msg
-        });
-      }
-    })
+  async updateTenancy () {
+    const params = getParams()
+    const res = await UPDATE_TENANCY(params)
+    await this.after(res)
   }
 }
 export default CnbiTenantManagement
