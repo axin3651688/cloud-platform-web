@@ -90,7 +90,7 @@ export function SAVE_RESOURCE(parameter) {
   return axios2({
     url: api.SAVE_RESOURCE,
     method: 'post',
-    params: parameter
+    data: parameter
   })
 }
 

@@ -1,6 +1,6 @@
 /* eslint-disable no-debugger */
 import {
-// axios2
+  // axios2
 } from '@/utils/request'
 // eslint-disable-next-line
 import {
@@ -91,8 +91,7 @@ export const generatorDynamicRouter = (data) => {
   })
 }
 
-function transferToMenuResource (resources) {
-  debugger
+function transferToMenuResource(resources) {
   return resources.filter(function (ele) {
     return ele.type == 1 && ele.sys == '1'
   })
@@ -104,7 +103,7 @@ function transferToMenuResource (resources) {
  * @param list
  * @returns {{redirect: string, component: string, children: Array, name: string, title: string, key: string}[]}
  */
-function getRoute (list) {
+function getRoute(list) {
   // 必要要一个默认首页
   const rootRouter = {
     title: '首页',
@@ -128,7 +127,7 @@ function getRoute (list) {
  * @param pCode 传入父节点，找到该父节点所有子节点
  * @returns {Array}
  */
-function list2Tree (list, pCode) {
+function list2Tree(list, pCode) {
   const arr = []
   list.forEach(function (ele) {
     if (ele.pcode == pCode) {
@@ -148,8 +147,7 @@ function list2Tree (list, pCode) {
  * @param tree
  * @returns {Array}
  */
-function setRouteProperties (tree) {
-  // debugger
+function setRouteProperties(tree) {
   const routerTree = []
   tree.forEach(function (ele) {
     const node = {
@@ -174,7 +172,6 @@ function setRouteProperties (tree) {
  * @returns {*}
  */
 export const generator = (routerMap, parent) => {
-  debugger
   routerMap.forEach(res => {
     if (res.children && res.children.length > 0 && res.name === 'index') {
       res.children.push({
@@ -182,83 +179,77 @@ export const generator = (routerMap, parent) => {
         icon: 'bb',
         key: 'Console',
         title: '控制台'
-      },{
+      }, {
         component: 'ParamManagement',
         icon: 'bb',
         key: 'ParamManagement',
         title: '参数管理'
-      },{
+      }, {
         component: 'ServeManagement',
         icon: 'bb',
         key: 'ServeManagement',
         title: '服务管理'
-      },{
+      }, {
         component: 'ApplyManagement',
         icon: 'bb',
         key: 'ApplyManagement',
         title: '应用管理'
-      },
-      {
+      }, {
         component: 'ThirdPartyApply',
         icon: 'bb',
         key: 'ThirdPartyApply',
         title: '第三方应用'
-      },{
+      }, {
         component: 'LicenseManagement',
         icon: 'bb',
         key: 'LicenseManagement',
         title: '牌照管理'
-      },
-      {
+      }, {
         component: 'TenantManagement',
         icon: 'bb',
         key: 'TenantManagement',
         title: '租户管理'
-      },{
+      }, {
         component: 'ModuleManagement',
         icon: 'bb',
         key: 'ModuleManagement',
         title: '模块管理'
-      },
-      {
+      }, {
         component: 'UserManagement',
         icon: 'bb',
         key: 'UserManagement',
         title: '用户管理'
-      },{
+      }, {
         component: 'ContentManagement',
         icon: 'bb',
         key: 'ContentManagement',
         title: '内容管理'
-      },
-      {
+      }, {
         component: 'FileManagement',
         icon: 'bb',
         key: 'FileManagement',
         title: '文件管理'
-      },{
+      }, {
         component: 'BusinessChanceManagement',
         icon: 'bb',
         key: 'BusinessChanceManagement',
         title: '商机管理'
-      },
-      {
+      }, {
         component: 'AccountManagement',
         icon: 'bb',
         key: 'AccountManagement',
         title: '账号管理'
-      },{
+      }, {
         component: 'RoleManagement',
         icon: 'bb',
         key: 'RoleManagement',
         title: '角色管理'
-      },{
+      }, {
         component: 'LimitManagement',
         icon: 'bb',
         key: 'LimitManagement',
         title: '权限管理'
-      },
-      {
+      }, {
         component: 'DataDictionary',
         icon: 'bb',
         key: 'DataDictionary',

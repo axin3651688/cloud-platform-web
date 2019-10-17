@@ -234,22 +234,22 @@ export default {
       imageUrl: '',
       columns: [{
         title: '名称',
-        dataIndex: 'name1'
+        dataIndex: 'name'
       }, {
         title: '拥有者',
-        dataIndex: 'name2'
+        dataIndex: 'ownerName'
       }, {
         title: '所属牌照',
-        dataIndex: 'name3'
+        dataIndex: 'licenseId'
       }, {
         title: '类型',
-        dataIndex: 'name4'
+        dataIndex: 'type'
       }, {
         title: '更新时间',
-        dataIndex: 'name5'
+        dataIndex: 'updateTime'
       }, {
         title: '到期时间',
-        dataIndex: 'name6'
+        dataIndex: 'endTime'
       }, {
         title: '初始化',
         dataIndex: 'name7'
@@ -257,37 +257,18 @@ export default {
         title: '更多',
         dataIndex: 'name8'
       }],
-      data: [{
-        key: 1,
-        name1: 111,
-        name2: 111,
-        name3: 111,
-        name4: 111,
-        name5: 111,
-        name6: 111,
-        name7: 111,
-        name8: 111
-      }, {
-        key: 2,
-        name1: 222,
-        name2: 222,
-        name3: 222,
-        name4: 222,
-        name5: 222,
-        name6: 222,
-        name7: 222,
-        name8: 222
-      }, {
-        key: 3,
-        name1: 333,
-        name2: 333,
-        name3: 333,
-        name4: 333,
-        name5: 333,
-        name6: 333,
-        name7: 333,
-        name8: 333
-      }
+      data: [
+        //   {
+        //   key: 1,
+        //   name: 111,
+        //   ownerName: 111,
+        //   licenseId: 111,
+        //   type: 111,
+        //   nameupdate: 111,
+        //   endTime: 111,
+        //   name7: '是',
+        //   name8: '详情'
+        // }
       ],
       result: ['1', '2', '3', '4'],
       name1: '添加租户',
@@ -313,8 +294,31 @@ export default {
   // },
   created () {
     this.CnbiTenantManagement = new CnbiTenantManagement()
+    this.getData();
   },
   methods: {
+    //进入页面  加载数据列表
+    async getData () {
+      debugger
+      let data = await this.CnbiTenantManagement.getTenancyList();
+      console.log('98989', data)
+      var unixTimestamp = new Date(data[0].updateTime * 1),
+      commonTime = unixTimestamp.toLocaleString();
+      // var oDate = new Date(data[0].updateTime)
+      // var oYear = oDate.getFullYear()
+      // var oMonth = oDate.getMonth() + 1
+      // var oDay = oDate.getDate()
+      // debugger
+      // var oTime = oYear + '/' + addZero(oMonth) + '/' + addZero(oDay)
+      data[0].updateTime = commonTime
+      // data[0].updateTime = '2018/08/02'
+      this.data = data;
+      // return data
+    },
+    after (res) {
+      debugger;
+      let _this = this;
+    },
     onChange () { },
     addClick () {
       this.visible = true

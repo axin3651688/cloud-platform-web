@@ -1,4 +1,4 @@
-import CnbiSta from '@/classes/lib/CnbiStatic';
+import CnbiStatic from '@/classes/lib/CnbiStatic';
 // 租户管理的对应的类
 import {
   GET_TENANCY_LIST,
@@ -112,7 +112,6 @@ class CnbiTenantManagement {
     let res = await DELETE_TENANCY(params);
     await this.after(res)
   }
-
   /** 
    * @desc    : 获取租户列表的方法
    * @author  : zj
@@ -122,9 +121,11 @@ class CnbiTenantManagement {
    * @update   by   
    */
   async getTenancyList() {
-    let params = getParams()
-    let res = await GET_TENANCY_LIST(params);
-    await this.after(res)
+    let res = await GET_TENANCY_LIST({
+      page: 1,
+      size: 10
+    });
+    return res.data.data
   }
   /** 
    * @desc    : 根据传入的租户id，查询该租户的详细信息
