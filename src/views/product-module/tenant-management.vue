@@ -302,18 +302,31 @@ export default {
       debugger
       let data = await this.CnbiTenantManagement.getTenancyList();
       console.log('98989', data)
-      var unixTimestamp = new Date(data[0].updateTime * 1),
-      commonTime = unixTimestamp.toLocaleString();
-      // var oDate = new Date(data[0].updateTime)
-      // var oYear = oDate.getFullYear()
-      // var oMonth = oDate.getMonth() + 1
-      // var oDay = oDate.getDate()
-      // debugger
-      // var oTime = oYear + '/' + addZero(oMonth) + '/' + addZero(oDay)
-      data[0].updateTime = commonTime
-      // data[0].updateTime = '2018/08/02'
+      data.forEach(item => {
+        debugger
+        var oDate = new Date(item.updateTime * 1)
+        var oYear = oDate.getFullYear()
+        var oMonth = oDate.getMonth() + 1
+        var oDay = oDate.getDate()
+        if (oMonth < 10 || oDay < 10) {
+          oMonth = '0' + oMonth
+          oDay = '0' + oDay
+        }
+        var oTime = oDay + '/' + oMonth + '/' + oYear
+        item.updateTime = oTime
+
+        var oDate1 = new Date(item.endTime * 1)
+        var oYear1 = oDate1.getFullYear()
+        var oMonth1 = oDate1.getMonth() + 1
+        var oDay1 = oDate1.getDate()
+        if (oMonth1 < 10 || oDay1 < 10) {
+          oMonth1 = '0' + oMonth1
+          oDay1 = '0' + oDay1
+        }
+        var oTime1 = oDay1 + '/' + oMonth1 + '/' + oYear1
+        item.endTime = oTime1
+      });
       this.data = data;
-      // return data
     },
     after (res) {
       debugger;

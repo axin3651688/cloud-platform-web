@@ -44,8 +44,11 @@ class CnbiTenantManagement {
   //   } 
   constructor(obj) {
     Object.assign(this, obj)
+    this.init()
   }
-
+  test() {
+    console.log(this, "1111111111111");
+  }
 
   // getProps() {
   //   return ['address', 'beginTime', 'checkInfo', 'checkTime',
@@ -63,7 +66,11 @@ class CnbiTenantManagement {
    * @return  {} 
    * @update   by   
    */
-  init() {}
+  init() {
+    this.getTenancyList()
+    this.tenancyList = []
+    this.test()
+  }
   /** 
    * @desc    : 获取参数
    * @author  : zj
@@ -97,7 +104,7 @@ class CnbiTenantManagement {
   async saveTenancy() {
     let params = getParams()
     let res = await SAVE_TENANCY(params);
-    await this.after(res)
+    return res
   }
   /** 
    * @desc    : 删除租户的方法
@@ -110,7 +117,7 @@ class CnbiTenantManagement {
   async deleteTenancy() {
     let params = getParams()
     let res = await DELETE_TENANCY(params);
-    await this.after(res)
+    return res
   }
   /** 
    * @desc    : 获取租户列表的方法
@@ -125,6 +132,7 @@ class CnbiTenantManagement {
       page: 1,
       size: 10
     });
+    // this.tenancyList = res.data.data
     return res.data.data
   }
   /** 
@@ -138,7 +146,7 @@ class CnbiTenantManagement {
   async getTenancy() {
     let params = getParams()
     let res = await GET_TENANCY(params);
-    await this.after(res)
+    return res
   }
   /** 
    * @desc    : 编辑租户基本信息
@@ -151,7 +159,7 @@ class CnbiTenantManagement {
   async updateTenancy() {
     let params = getParams()
     let res = await UPDATE_TENANCY(params);
-    await this.after(res)
+    return res
   }
 }
 export default CnbiTenantManagement
