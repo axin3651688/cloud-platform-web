@@ -1,6 +1,6 @@
 /* eslint-disable no-debugger */
 import {
-  // axios2
+// axios2
 } from '@/utils/request'
 // eslint-disable-next-line
 import {
@@ -51,7 +51,7 @@ const constantRouterComponents = {
   ApplyManagement: () => import('@/views/system-module/apply-management'),
   ThirdPartyApply: () => import('@/views/system-module/third-party-apply'),
   LicenseManagement: () => import('@/views/product-module/license-management'),
-  TenantManagement: () => import('@/views/product-module/tenant-management'),
+  TenantManagement: () => import('@/views/product-module/tenant-management'), // *********
   ModuleManagement: () => import('@/views/product-module/module-management'),
   UserManagement: () => import('@/views/product-module/user-management'),
   ContentManagement: () => import('@/views/official-module/content-management'),
@@ -60,8 +60,9 @@ const constantRouterComponents = {
   AccountManagement: () => import('@/views/set-module/account-management'),
   RoleManagement: () => import('@/views/set-module/role-management'),
   LimitManagement: () => import('@/views/set-module/limit-management'),
-  DataDictionary: () => import('@/views/set-module/data-dictionary')
+  DataDictionary: () => import('@/views/set-module/data-dictionary'),
   // ...more
+  TenantDetail: () => import('@/views/product-module/tenant-components/tenant-detail')
 }
 
 // 前端未找到页面路由（固定不用改）
@@ -70,6 +71,111 @@ const notFoundRouter = {
   redirect: '/404',
   hidden: true
 }
+
+const customRoute = [
+  {
+    title: '首页',
+    key: '',
+    name: 'index',
+    component: 'BasicLayout',
+    redirect: '/Console',
+    children: [
+      {
+        component: 'Console',
+        icon: 'bb',
+        key: 'Console',
+        title: '控制台'
+      }, {
+        component: 'ParamManagement',
+        icon: 'bb',
+        key: 'ParamManagement',
+        title: '参数管理'
+      }, {
+        component: 'ServeManagement',
+        icon: 'bb',
+        key: 'ServeManagement',
+        title: '服务管理'
+      }, {
+        component: 'ApplyManagement',
+        icon: 'bb',
+        key: 'ApplyManagement',
+        title: '应用管理'
+      },
+      {
+        component: 'ThirdPartyApply',
+        icon: 'bb',
+        key: 'ThirdPartyApply',
+        title: '第三方应用'
+      }, {
+        component: 'LicenseManagement',
+        icon: 'bb',
+        key: 'LicenseManagement',
+        title: '牌照管理'
+      },
+      {
+        component: 'TenantManagement',
+        icon: 'bb',
+        key: 'TenantManagement',
+        title: '租户管理'
+      },
+      {
+        component: 'TenantDetail',
+        icon: 'bb',
+        key: 'TenantDetail',
+        hidden: true,
+        title: '租户详情'
+      }, {
+        component: 'ModuleManagement',
+        icon: 'bb',
+        key: 'ModuleManagement',
+        title: '模块管理'
+      },
+      {
+        component: 'UserManagement',
+        icon: 'bb',
+        key: 'UserManagement',
+        title: '用户管理'
+      }, {
+        component: 'ContentManagement',
+        icon: 'bb',
+        key: 'ContentManagement',
+        title: '内容管理'
+      },
+      {
+        component: 'FileManagement',
+        icon: 'bb',
+        key: 'FileManagement',
+        title: '文件管理'
+      }, {
+        component: 'BusinessChanceManagement',
+        icon: 'bb',
+        key: 'BusinessChanceManagement',
+        title: '商机管理'
+      },
+      {
+        component: 'AccountManagement',
+        icon: 'bb',
+        key: 'AccountManagement',
+        title: '账号管理'
+      }, {
+        component: 'RoleManagement',
+        icon: 'bb',
+        key: 'RoleManagement',
+        title: '角色管理'
+      }, {
+        component: 'LimitManagement',
+        icon: 'bb',
+        key: 'LimitManagement',
+        title: '权限管理'
+      },
+      {
+        component: 'DataDictionary',
+        icon: 'bb',
+        key: 'DataDictionary',
+        title: '数据字典'
+      }
+    ]
+  }]
 
 /**
  * 获取路由菜单信息
@@ -81,9 +187,10 @@ const notFoundRouter = {
  */
 export const generatorDynamicRouter = (data) => {
   return new Promise((resolve, reject) => {
-    const resources = store.getters.resources
-    const sysResource = transferToMenuResource(resources)
-    const routeTree = getRoute(sysResource)
+    // const resources = store.getters.resources
+    // const sysResource = transferToMenuResource(resources)
+    // const routeTree = getRoute(sysResource)
+    const routeTree = customRoute
     const routers = generator(routeTree)
     routers.push(notFoundRouter)
     console.log(JSON.stringify(routers))
@@ -91,7 +198,7 @@ export const generatorDynamicRouter = (data) => {
   })
 }
 
-function transferToMenuResource(resources) {
+function transferToMenuResource (resources) {
   return resources.filter(function (ele) {
     return ele.type == 1 && ele.sys == '1'
   })
@@ -103,7 +210,7 @@ function transferToMenuResource(resources) {
  * @param list
  * @returns {{redirect: string, component: string, children: Array, name: string, title: string, key: string}[]}
  */
-function getRoute(list) {
+function getRoute (list) {
   // 必要要一个默认首页
   const rootRouter = {
     title: '首页',
@@ -127,7 +234,7 @@ function getRoute(list) {
  * @param pCode 传入父节点，找到该父节点所有子节点
  * @returns {Array}
  */
-function list2Tree(list, pCode) {
+function list2Tree (list, pCode) {
   const arr = []
   list.forEach(function (ele) {
     if (ele.pcode == pCode) {
@@ -147,7 +254,7 @@ function list2Tree(list, pCode) {
  * @param tree
  * @returns {Array}
  */
-function setRouteProperties(tree) {
+function setRouteProperties (tree) {
   const routerTree = []
   tree.forEach(function (ele) {
     const node = {
@@ -172,91 +279,6 @@ function setRouteProperties(tree) {
  * @returns {*}
  */
 export const generator = (routerMap, parent) => {
-  routerMap.forEach(res => {
-    if (res.children && res.children.length > 0 && res.name === 'index') {
-      res.children.push({
-        component: 'Console',
-        icon: 'bb',
-        key: 'Console',
-        title: '控制台'
-      }, {
-        component: 'ParamManagement',
-        icon: 'bb',
-        key: 'ParamManagement',
-        title: '参数管理'
-      }, {
-        component: 'ServeManagement',
-        icon: 'bb',
-        key: 'ServeManagement',
-        title: '服务管理'
-      }, {
-        component: 'ApplyManagement',
-        icon: 'bb',
-        key: 'ApplyManagement',
-        title: '应用管理'
-      }, {
-        component: 'ThirdPartyApply',
-        icon: 'bb',
-        key: 'ThirdPartyApply',
-        title: '第三方应用'
-      }, {
-        component: 'LicenseManagement',
-        icon: 'bb',
-        key: 'LicenseManagement',
-        title: '牌照管理'
-      }, {
-        component: 'TenantManagement',
-        icon: 'bb',
-        key: 'TenantManagement',
-        title: '租户管理'
-      }, {
-        component: 'ModuleManagement',
-        icon: 'bb',
-        key: 'ModuleManagement',
-        title: '模块管理'
-      }, {
-        component: 'UserManagement',
-        icon: 'bb',
-        key: 'UserManagement',
-        title: '用户管理'
-      }, {
-        component: 'ContentManagement',
-        icon: 'bb',
-        key: 'ContentManagement',
-        title: '内容管理'
-      }, {
-        component: 'FileManagement',
-        icon: 'bb',
-        key: 'FileManagement',
-        title: '文件管理'
-      }, {
-        component: 'BusinessChanceManagement',
-        icon: 'bb',
-        key: 'BusinessChanceManagement',
-        title: '商机管理'
-      }, {
-        component: 'AccountManagement',
-        icon: 'bb',
-        key: 'AccountManagement',
-        title: '账号管理'
-      }, {
-        component: 'RoleManagement',
-        icon: 'bb',
-        key: 'RoleManagement',
-        title: '角色管理'
-      }, {
-        component: 'LimitManagement',
-        icon: 'bb',
-        key: 'LimitManagement',
-        title: '权限管理'
-      }, {
-        component: 'DataDictionary',
-        icon: 'bb',
-        key: 'DataDictionary',
-        title: '数据字典'
-      })
-    }
-  })
   return routerMap.map(item => {
     const currentRouter = {
       // 路由地址 动态拼接生成如 /dashboard/workplace
