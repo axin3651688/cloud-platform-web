@@ -308,8 +308,10 @@ export default {
         var oYear = oDate.getFullYear()
         var oMonth = oDate.getMonth() + 1
         var oDay = oDate.getDate()
-        if (oMonth < 10 || oDay < 10) {
+        if (oMonth < 10) {
           oMonth = '0' + oMonth
+        }
+        if (oDay < 10) {
           oDay = '0' + oDay
         }
         var oTime = oDay + '/' + oMonth + '/' + oYear
@@ -319,8 +321,10 @@ export default {
         var oYear1 = oDate1.getFullYear()
         var oMonth1 = oDate1.getMonth() + 1
         var oDay1 = oDate1.getDate()
-        if (oMonth1 < 10 || oDay1 < 10) {
+        if (oMonth1 < 10 ) {
           oMonth1 = '0' + oMonth1
+        }
+        if (oDay1 < 10) {
           oDay1 = '0' + oDay1
         }
         var oTime1 = oDay1 + '/' + oMonth1 + '/' + oYear1
