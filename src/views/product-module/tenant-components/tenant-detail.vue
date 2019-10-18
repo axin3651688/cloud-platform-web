@@ -107,7 +107,12 @@
       <div></div>
     </div>
     <!--修改基本信息-->
-    <a-modal v-model="showUpdataInfo" title="修改基本信息" @ok="UpdataInfo">
+    <a-modal
+      v-model="showUpdataInfo"
+      @ok="UpdataInfo"
+      okText="保存"
+      cancelText="取消"
+      title="修改基本信息">
       <a-form :form="form">
         <a-row
           :gutter="24"
@@ -221,7 +226,7 @@ export default {
       this.tabKey = key
     },
     UpdataInfo () {
-
+      this.showUpdataInfo = false
     }
   }
 }
