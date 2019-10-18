@@ -7,7 +7,7 @@
               @click.prevent="addClick">
       <a-icon type="cloud-upload" />{{ name1 }}</a-button>
     <a-button class="button_style_two"
-              @click="deleteClick">{{ name2 }}</a-button>   
+              @click="deleteClick">{{ name2 }}</a-button>
   </div>
 </template>
 <script>
@@ -28,7 +28,6 @@ export default {
   methods: {
     // this.$emit('deleteClick')
     addClick () {
-      debugger
       this.$emit('addClick')
     },
     deleteClick () {

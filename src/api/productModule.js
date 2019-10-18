@@ -34,7 +34,7 @@ export function GET_TENANCY_LIST(parameter) {
   return axios2({
     url: api.GET_TENANCY_LIST,
     method: 'post',
-    params: parameter
+    data: parameter
   })
 }
 
@@ -50,7 +50,7 @@ export function SAVE_TENANCY(parameter) {
   return axios2({
     url: api.SAVE_TENANCY,
     method: 'post',
-    params: parameter
+    data: parameter
   })
 }
 /** 
@@ -160,7 +160,7 @@ export function SAVE_LICENSE(parameter) {
   return axios2({
     url: api.SAVE_LICENSE,
     method: 'post',
-    params: parameter
+    data: parameter
   })
 }
 
