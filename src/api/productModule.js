@@ -10,6 +10,7 @@ const api = {
   DELETE_TENANCY: '/tc/tenancy/delete', //(同上)
   GET_TENANCY: '/tc/tenancy/get', //（同上）
   UPDATE_TENANCY: '/tc/tenancy/update',
+  USER_SIMPLE_INFO_LIST:'/user/user_simple_info_list/',
   //牌照管理相关接口
   GET_LICENSE_ID: '/upm/license/get_license_id',
   FIND_LICENSE_LIST: '/upm/license/find_list',
@@ -17,7 +18,13 @@ const api = {
   SAVE_LICENSE: '/upm/license/save',
   DELETE_LICENSE: '/upm/license/delete',
   UPDATE_LICENSE: '/upm/license/update',
-  UPDATE_VAIL_LICENSE: '/upm/license_authority/update_vail_license'
+  UPDATE_VAIL_LICENSE: '/upm/license_authority/update_vail_license',
+  //模块管理相关接口
+  GET_RESOURCES_TREE: '/upm/resource/get_resources_tree',
+  SAVE_RESOURCE: '/upm/resource/save',
+  DELETE_RESOURCE: '/upm/resource/delete',
+  OPEN_RESOURCE: '/upm/resource/open_resource',
+  UPDATE_RESOURCE: '/upm/resource/update'
 }
 
 export default api
@@ -96,10 +103,25 @@ export function UPDATE_TENANCY(parameter) {
   return axios2({
     url: api.UPDATE_TENANCY,
     method: 'put',
-    params: parameter
+    data: parameter
   })
 }
 
+/** 
+* @desc    : 分页查询所有的拥有者
+* @author  : zj
+* @date  : 2019/10/18
+* @param   {} 
+* @return  {} 
+* @update   by   
+*/
+export function USER_SIMPLE_INFO_LIST(parameter){
+  return axios2({
+    url: api.USER_SIMPLE_INFO_LIST,
+    method: 'get',
+    params: parameter
+  })
+}
 /** 
  * @desc    : 根据牌照id查询牌照信息
  * @author  : zj
@@ -209,5 +231,80 @@ export function UPDATE_VAIL_LICENSE(parameter) {
     url: api.UPDATE_VAIL_LICENSE,
     method: 'post',
     data: parameter
+  })
+}
+/** 
+ * @desc    : 获取权限列表（模块管理的）
+ * @author  : zj
+ * @date  : 2019/10/18
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function GET_RESOURCES_TREE(parameter) {
+  return axios2({
+    url: api.GET_RESOURCES_TREE,
+    method: 'get',
+    params: parameter
+  })
+}
+/** 
+ * @desc    : 添加权限（模块管理的）
+ * @author  : zj
+ * @date  : 2019/10/18
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function SAVE_RESOURCE() {
+  return axios2({
+    url: api.SAVE_RESOURCE,
+    method: 'post',
+    data: parameter
+  })
+}
+/** 
+ * @desc    : 删除权限（模块管理的）
+ * @author  : zj
+ * @date  : 2019/10/18
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function DELETE_RESOURCE(parameter) {
+  return axios2({
+    url: api.DELETE_RESOURCE,
+    method: 'delete',
+    params: parameter
+  })
+}
+/** 
+ * @desc    : 启用禁用权限(模块管理的)
+ * @author  : zj
+ * @date  : 2019/10/18
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function OPEN_RESOURCE(parameter) {
+  return axios2({
+    url: api.OPEN_RESOURCE,
+    method: 'put',
+    params: parameter
+  })
+}
+/** 
+ * @desc    : 编辑权限（模块管理的）
+ * @author  : zj
+ * @date  : 2019/10/18
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function UPDATE_RESOURCE() {
+  return axios2({
+    url: api.UPDATE_RESOURCE,
+    method: 'put',
+    params: parameter
   })
 }

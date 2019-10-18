@@ -319,11 +319,11 @@ export default {
   methods: {
     // 进入页面  加载数据列表
     async getData () {
-      debugger
+      // debugger
       const data = await this.CnbiTenantManagement.getTenancyList()
-      console.log('98989', data)
+      // console.log('98989', data)
       data.forEach(item => {
-        debugger
+        // debugger
         var oDate = new Date(item.updateTime * 1)
         var oYear = oDate.getFullYear()
         var oMonth = oDate.getMonth() + 1

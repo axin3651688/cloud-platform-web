@@ -7,6 +7,9 @@ module.exports = {
         'useBuiltIns': 'entry'
       }
     ]
+  ],  
+  plugins: [
+    "transform-class-properties"
   ]
   // if your use import on Demand, Use this code
   // ,
