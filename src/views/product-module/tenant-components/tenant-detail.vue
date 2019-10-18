@@ -128,23 +128,48 @@
                 class="item2-input"/>
             </a-form-item>
             <a-form-item label="所属牌照:" class="item2">
-              <a-input
-                placeholder="请输入"
-                v-decorator="[
-                  'pz',
-                  { rules: [{ required: true, message: '请输入所属牌照！' }] },
-                ]"
-                class="item2-input"/>
+              <a-select
+                default-value="1"
+                v-decorator="['licenseId',{rules: [{ required: true, message: '请选择所属牌照!' }],}]">>
+                <a-select-option value="1">
+                  基础版
+                </a-select-option>
+                <a-select-option value="2">
+                  旗舰版
+                </a-select-option>
+                <a-select-option value="3">
+                  免费版
+                </a-select-option>
+              </a-select>
             </a-form-item>
             <a-form-item label="服务标识:" class="item2">
+              <a-select
+                default-value="1"
+                v-decorator="['serviceId',{rules: [{ required: true, message: '请选择服务标识!' }],}]">
+                <a-select-option value="1">
+                  服务标识
+                </a-select-option>
+                <a-select-option value="2">
+                  服务标识2
+                </a-select-option>
+                <a-select-option value="3">
+                  服务标识3
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+            <a-form-item label="访问网址:" class="item2">
               <a-input
                 placeholder="请输入"
-                class="item2-input"
-                v-decorator="[
-                  'fwbs',
-                  { rules: [{ required: true, message: '请输入所属牌照！' }] },
-                ]"/>
+                v-decorator="['url',{rules: [{ required: true, pattern: /^http:\/\/([\w-]+.)+[\w-]+(\/[\w-./?%&=]*)?$/, message: '请输入正确的网址' }]}]"
+                class="item2-input"/>
             </a-form-item>
+            <a-form-item label="生效日期：" class="item2">
+              <a-date-picker
+                @change="onChange"
+                v-decorator="['beginTime',{rules: [{ required: true, message: '请选择生效日期!' }],}]" />
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
             <a-form-item
               label="联系电话:"
               class="item2"
@@ -154,40 +179,37 @@
                 v-decorator="['phone',{rules: [{ required: true, pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号' }]}]"
                 class="item2-input"/>
             </a-form-item>
-            <a-form-item label="生效日期：" class="item2">
-              <a-date-picker v-decorator="['date-picker', config]" />
-            </a-form-item>
-          </a-col>
-          <a-col :span="12">
-            <a-form-item label="所属人：" class="item2">
-              <a-input
-                placeholder="请输入"
-                v-decorator="[
-                  'pz',
-                  { rules: [{ required: true, message: '请输入所属牌照！' }] },
-                ]"
-                class="item2-input"/>
-            </a-form-item>
             <a-form-item
               label="租户类型:"
-              v-decorator="[
-                'pz',
-                { rules: [{ required: true, message: '请输入所属牌照！' }] },
-              ]"
               class="item2">
-              <a-input
-                placeholder="请输入"
-                v-decorator="[
-                  'pz',
-                  { rules: [{ required: true, message: '请输入所属牌照！' }] },
-                ]"
-                class="item2-input"/>
+              <a-select
+                default-value="1"
+                v-decorator="['type',{rules: [{ required: true, message: '请选择租户类型!' }],}]">
+                <a-select-option value="1">
+                  公共部署
+                </a-select-option>
+                <a-select-option value="2">
+                  私有部署
+                </a-select-option>
+                <a-select-option value="3">
+                  本地部署
+                </a-select-option>
+              </a-select>
             </a-form-item>
-            <a-form-item label="访问网址:" class="item2">
-              <a-input
-                placeholder="请输入"
-                v-decorator="['url',{rules: [{ required: true, pattern: /^http:\/\/([\w-]+.)+[\w-]+(\/[\w-./?%&=]*)?$/, message: '请输入正确的网址' }]}]"
-                class="item2-input"/>
+            <a-form-item label="所属人：" class="item2">
+              <a-select
+                default-value="1"
+                v-decorator="['ownerId',{rules: [{ required: true, message: '请选择所属人!' }],}]">
+                <a-select-option value="1">
+                  拥有者1
+                </a-select-option>
+                <a-select-option value="2">
+                  拥有者2
+                </a-select-option>
+                <a-select-option value="3">
+                  拥有者3
+                </a-select-option>
+              </a-select>
             </a-form-item>
             <a-form-item label="租户地址:" class="item2">
               <a-input
@@ -199,7 +221,9 @@
                 class="item2-input"/>
             </a-form-item>
             <a-form-item label="到期日期:" class="item2">
-              <a-date-picker v-decorator="['date-picker', config]" />
+              <a-date-picker
+                @change="onChange"
+                v-decorator="['endTime',{rules: [{ required: true, message: '请选择到期日期!' }],}]" />
             </a-form-item>
           </a-col>
         </a-row>
@@ -227,6 +251,9 @@ export default {
     },
     UpdataInfo () {
       this.showUpdataInfo = false
+    },
+    onChange () {
+
     }
   }
 }
