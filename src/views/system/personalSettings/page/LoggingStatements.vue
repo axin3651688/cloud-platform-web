@@ -7,34 +7,35 @@
           <div class="title">头像</div>
           <div class="anse">更换你的头像,选择一张个人正面照片作为头像,企业成员可以更容易认识你</div>
           <div class="btn">
-            <a-button type="primary" @click="expend(1)">{{param1}}</a-button>
+            <a-button type="primary"
+                      @click="expend(1)">{{param1}}</a-button>
           </div>
         </div>
         <!--头像点击展开后的页面 -->
         <div v-if="isOut1">
-          <div class="trueName" style="display:flex;align-items: center;">
+          <div class="trueName"
+               style="display:flex;align-items: center;">
             真实姓名:&nbsp;&nbsp;
-            <a-input
-              v-model="trueName"
-              :disabled="editBB"
-              size="small"
-              style="width:200px;height:32px;"
-            />&nbsp;
-            <a-icon type="edit" style="color:#336CFB;font-size:20px;" @click="editAA" />
+            <a-input v-model="trueName"
+                     :disabled="editBB"
+                     size="small"
+                     style="width:200px;height:32px;" />&nbsp;
+            <a-icon type="edit"
+                    style="color:#336CFB;font-size:20px;"
+                    @click="editAA" />
           </div>
           <template>
             <!-- <system-upload @success="onUploadSuccess" :url="imgUrl" @del="onDelImg"></system-upload> -->
-            <system-upload
-              v-show="true"
-              :showDel="true"
-              @success="onUploadSuccess"
-              :url="imgUrl"
-              :disable="true"
-              @del="onDelImg"
-            ></system-upload>
+            <system-upload v-show="true"
+                           :showDel="true"
+                           @success="onUploadSuccess"
+                           :url="imgUrl"
+                           :disable="true"
+                           @del="onDelImg"></system-upload>
           </template>
           <p style="font-size:12px;color:#ccc;">点击上传图片,建议上传22X22,支持svg、png、jpg格式,限制5M内</p>
-          <div class="pic" style="width:360px;height:92px;">
+          <div class="pic"
+               style="width:360px;height:92px;">
             <!-- <img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1651287656,2337091096&fm=26&gp=0.jpg" 
             alt="111" 
             style="height:80px;width:80px;">
@@ -185,13 +186,11 @@ export default {
   methods: {
     //查询当前用户的信息
     getUser_Info () {
-      debugger
       let me = this;
       me.imgUrl = '';
       let userId
       getUserInfo().then(function (res) {
         if (res.code === 200 && res.data) {
-          debugger
           me.trueName = res.data.trueName
           me.imgUrl = res.data.thumbnail
           me.avatar = res.data.avatar
@@ -200,12 +199,10 @@ export default {
     },
     //获得修改后的用户信息
     editAA () {
-      debugger;
       let me = this;
       me.editBB = !me.editBB;
       modifyUser({ id: this.trueName }).then(function (res) {
         if (res.code === 200 && res.data) {
-          debugger
           // me.trueName = res.data.trueName
           // me.userImg = res.data.thumbnail
           // me.avatar = res.data.avatar
@@ -251,7 +248,6 @@ export default {
       }
     },
     onDelImg: function () {
-      debugger
       const _this = this
       this.confirm({
         title: '确认删除该图片吗吗',
@@ -270,7 +266,6 @@ export default {
       })
     },
     onUploadSuccess: function (data) {
-      debugger
       let userId = this.userId
       if (!userId) return
       const _this = this
@@ -287,7 +282,6 @@ export default {
 
     },
     // reloadCompany: function () {
-    //   debugger
     //   const _this = this
     //   getAllCompanyTree().then(function (treeData) {
     //     _this.comTreeData = treeData
