@@ -42,6 +42,7 @@ class CnbiTenantManagement {
   //   type (string, optional): 租户类型 ,
   //   url (string, optional): 网址
   //   } 
+  // tenancyList = []
   constructor(obj) {
     Object.assign(this, obj)
     this.init()
@@ -68,7 +69,7 @@ class CnbiTenantManagement {
    */
   init() {
     this.getTenancyList()
-    this.tenancyList = []
+ 
     this.test()
   }
   /** 
