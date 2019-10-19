@@ -3,7 +3,7 @@
   <div>
     <a-dropdown :trigger="['click']">
       <a-menu slot="overlay" @click="handleMenuClick">
-        <a-menu-item :key="item" v-for="item in result">{{ item }}</a-menu-item>
+        <a-menu-item :key="item.key" v-for="item in result">{{ item.name }}</a-menu-item>
       </a-menu>
       <a-button style="display: flex;justify-content: space-between;width: auto;min-width: 220px;">
         {{ name }} <img src="../../assets/icons/paixu.svg" >

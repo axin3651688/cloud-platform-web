@@ -18,9 +18,14 @@
     <!--:rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"-->
     <!--:columns="columns"-->
     <!--:dataSource="data" />-->
-    <a-table bordered :dataSource="data" :columns="columns" :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
+    <a-table bordered
+             :dataSource="data"
+             :columns="columns"
+             :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
 
-      <span slot="action" slot-scope="text" @click="btnclick(text.key )">Delete</span>
+      <span slot="action"
+            slot-scope="text"
+            @click="btnclick(text.key )">详情</span>
       <!--<p slot="expandedRowRender" slot-scope="record" style="margin: 0">{{ record.description }}</p>-->
 
       <!-- <template slot="name" slot-scope="text, record">
@@ -64,7 +69,8 @@ export default {
         this.selectedRowKeys = []
       }, 1000)
     },
-    onSelectChange (selectedRowKeys) {
+    onSelectChange (selectedRowKeys,dd,bb) {
+      debugger
       console.log('selectedRowKeys changed: ', selectedRowKeys)
       this.selectedRowKeys = selectedRowKeys
     },
