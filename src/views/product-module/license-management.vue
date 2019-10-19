@@ -30,7 +30,7 @@
               <editable-cell :text="record.name1" />
             </template>
           </a-table-column>
-          <a-table-column title="服务标识" dataIndex="name2" key="name2" />
+          <a-table-column title="价格" dataIndex="name2" key="name2" />
           <a-table-column title="更新时间" dataIndex="name3" key="name3" />
           <a-table-column title="状态" key="name4" >
             <template slot-scope="text, record">
@@ -48,7 +48,7 @@
         </a-table>
       </div>
       <!--中间-->
-      <div class="license-middle">
+      <div class="license-middle" v-if="showFoot">
         <div style="display: flex;flex-direction: column;flex-grow: 1;margin-left: 30px;">
           <div class="middle-a">
             <span>创建公司最大个数：</span><span>111111111111111</span>
@@ -75,7 +75,7 @@
       </div>
     </div>
 
-    <div class="license-foot">
+    <div class="license-foot" v-if="showFoot">
       <!--服务地址-->
       <div class="license-foot-a">
         <div style="display: flex;flex-direction: row;justify-content: space-between;height: 50px;">
@@ -142,6 +142,7 @@
 
       </div>
     </div>
+    <!--添加牌照弹框-->
     <a-modal v-model="showLicenseModal" footer="">
       <a-steps :current="current" style="margin-top: 20px;" size="small">
         <a-step key="1" title="创建牌照" />
@@ -149,6 +150,7 @@
         <a-step key="3" title="相关功能" />
         <a-step key="4" title="完成" />
       </a-steps>
+      <!-- 添加牌照步骤一 -->
       <div class="steps-content" style="display: flex;justify-content: center" v-if="current==0">
         <a-form :form="form" @submit="oneSubmit">
           <a-form-item label="牌照名称:" >
@@ -160,16 +162,9 @@
               ]"/>
           </a-form-item>
           <a-form-item label="牌照描述:" >
-            <a-input
+            <a-textarea
               placeholder="请输入"
-              v-decorator="[
-                'b',
-                { rules: [{ required: true, message: '请输入牌照描述！' }] },
-              ]"/>
-          </a-form-item>
-          <a-form-item label="牌照描述:" >
-            <a-input
-              placeholder="请输入"
+              :rows="4"
               v-decorator="[
                 'b',
                 { rules: [{ required: true, message: '请输入牌照描述！' }] },
@@ -182,6 +177,7 @@
           </a-form-item>
         </a-form>
       </div>
+      <!-- 添加牌照步骤二 -->
       <div class="steps-content" style="display: flex;justify-content: center" v-if="current==1">
         <a-form :form="form1" class="step1" @submit="handleSubmit">
           <a-form-item label="创建最大公司数:" >
@@ -239,6 +235,61 @@
           </a-form-item>
         </a-form>
       </div>
+      <!-- 添加牌照步骤三 -->
+      <div class="steps-content" style="display: flex;justify-content: center" v-if="current==2">
+        <a-form :form="form2" @submit="threeSubmit">
+          <a-form-item label="可用应用:" >
+            <a-select
+              v-decorator="[
+                'a',
+                { rules: [{ required: true, message: '请选择可用应用' }] },
+              ]"
+              placeholder="请选择"
+              mode="multiple"
+              @change="handleSelectChange"
+            >
+              <a-select-option value="male">
+                male
+              </a-select-option>
+              <a-select-option value="female">
+                female
+              </a-select-option>
+            </a-select>
+          </a-form-item>
+          <a-form-item label="可用模块:" >
+            <a-select
+              style="width: 100%;min-width: 200px;"
+              v-decorator="[
+                'b',
+                { rules: [{ required: true, message: '请选择可用模块' }] },
+              ]"
+              placeholder="请选择"
+              mode="multiple"
+              @change="handleSelectChange"
+            >
+              <a-select-option value="male">
+                male
+              </a-select-option>
+              <a-select-option value="female">
+                female
+              </a-select-option>
+            </a-select>
+          </a-form-item>
+          <a-form-item>
+            <a-button type="primary" html-type="submit">
+              下一步
+            </a-button>
+          </a-form-item>
+        </a-form>
+      </div>
+      <!-- 添加牌照步骤4 -->
+      <div class="steps-content" style="display: flex;justify-content: center;flex-direction: column;align-items: center;" v-if="current==3">
+        <div v-if="saveFlag" style="display: flex;flex-direction: column;align-items: center; justify-content: center;margin-top: 50px">
+          <img style="width: 72px" src="../../assets/icons/wancheng.svg">
+          <span>牌照创建成功</span>
+        </div>
+        <a-button type="primary" style="width: 100px;margin-top: 50px" @click="saveLicense"> 保存牌照</a-button>
+      </div>
     </a-modal>
   </div>
 
@@ -264,6 +315,7 @@ export default {
       name2: '删除',
       addressState: true, // 服务地址编辑状态
       dataSourceState: true, // 数据源状态
+      showFoot: false, // 脚部
       selectedRowKeys: [],
       tableData: [
         {
@@ -324,7 +376,10 @@ export default {
       ], // 可用数据源
       showLicenseModal: false, // 添加牌照弹框
       current: 0, // 步骤条
-      form1: this.$form.createForm(this)
+      form: this.$form.createForm(this),
+      form1: this.$form.createForm(this),
+      form2: this.$form.createForm(this),
+      saveFlag: false // 保存状态
     }
   },
   methods: {
@@ -339,6 +394,7 @@ export default {
       this.selectedRowKeys = selectedRowKeys
     },
     btnClick (key) {
+      this.showFoot = true
       this.$message.success('操作成功')
     },
     onChange (checked) {
@@ -369,6 +425,34 @@ export default {
           console.log('cuowu')
         }
       })
+    },
+    oneSubmit (e) {
+      e.preventDefault()
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          console.log('1')
+          this.current += 1
+        } else {
+          console.log('cuowu')
+        }
+      })
+    },
+    handleSelectChange () {
+
+    },
+    threeSubmit (e) {
+      e.preventDefault()
+      this.form2.validateFields((err, values) => {
+        if (!err) {
+          console.log('1')
+          this.current += 1
+        } else {
+          console.log('cuowu')
+        }
+      })
+    },
+    saveLicense () {
+      this.saveFlag = true
     }
 
   }
