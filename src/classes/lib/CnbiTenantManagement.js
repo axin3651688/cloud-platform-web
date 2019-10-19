@@ -80,10 +80,10 @@ class CnbiTenantManagement {
     Object.assign(this, obj)
     this.init()
   }
-  test(data) {
-    // debugger
-    console.log(data, "11112222");
-  }
+  // test(data) {
+  //   // debugger
+  //   console.log(data, "11112222");
+  // }
   /** 
    * @desc    : 租户页面的初始化方法
    * @author  : zj
@@ -94,9 +94,9 @@ class CnbiTenantManagement {
    */
   async init() {
     debugger
-    var data = await this.getUserSimpleInfoList();
+    // var data = await this.getUserSimpleInfoList();
     debugger
-    this.test(data)
+    // this.test(data)
     // this.getTenancyList()
     // var id = 7
     // let data = await this.getTenancy(id)
