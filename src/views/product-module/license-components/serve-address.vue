@@ -6,7 +6,7 @@
         style="width: 24px;height: 24px;border-radius:50%;margin: 0 16px;"
         :src="src"
       />
-      <div style="width: 125px;height: 46px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+      <div style="display:flex;align-items:center;width: 125px;height: 46px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
         {{ name }}
       </div>
       <div v-if="!addressState">
