@@ -10,7 +10,7 @@ const api = {
   DELETE_TENANCY: '/tc/tenancy/delete', //(同上)
   GET_TENANCY: '/tc/tenancy/get', //（同上）
   UPDATE_TENANCY: '/tc/tenancy/update',
-  USER_SIMPLE_INFO_LIST:'/user/user_simple_info_list/',
+  USER_SIMPLE_INFO_LIST:'/uc/user/user_simple_info_list/{page}/{size}',
   //牌照管理相关接口
   GET_LICENSE_ID: '/upm/license/get_license_id',
   FIND_LICENSE_LIST: '/upm/license/find_list',
