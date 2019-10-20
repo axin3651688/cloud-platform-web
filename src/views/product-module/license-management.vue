@@ -386,6 +386,7 @@ export default {
     addClick () {
       console.log('123')
       this.showLicenseModal = true
+      this.current = 0
     },
     deleteClick () {
 
@@ -534,5 +535,8 @@ export default {
   .step1 input{
     width: auto;
     margin-right: 10px;
+  }
+  .steps-content .ant-form-item{
+    margin-bottom: 0;
   }
 </style>
