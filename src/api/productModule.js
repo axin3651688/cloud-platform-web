@@ -3,6 +3,7 @@ import {
   axios2
 } from '@/utils/request'
 
+
 const api = {
   //租户管理相关接口（初始化的相关接口暂时没有）
   GET_TENANCY_LIST: '/tc/tenancy/get_tenancy_list',
@@ -69,6 +70,7 @@ export function SAVE_TENANCY(parameter) {
  * @update   by   
  */
 export function DELETE_TENANCY(parameter) {
+  debugger
   return axios2({
     url: api.DELETE_TENANCY,
     method: 'delete',

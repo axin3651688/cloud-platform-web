@@ -24,8 +24,8 @@
              :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
 
       <span slot="action"
-            slot-scope="text"
-            @click="btnclick(text.key )">详情</span>
+            slot-scope="text,record"
+            @click="btnclick(record )">详情</span>
       <!--<p slot="expandedRowRender" slot-scope="record" style="margin: 0">{{ record.description }}</p>-->
 
       <!-- <template slot="name" slot-scope="text, record">
@@ -69,17 +69,21 @@ export default {
         this.selectedRowKeys = []
       }, 1000)
     },
-    onSelectChange (selectedRowKeys,dd,bb) {
-      debugger
-      console.log('selectedRowKeys changed: ', selectedRowKeys)
+    onSelectChange (selectedRowKeys, dd, bb) { 
+      // debugger
+      // console.log('selectedRowKeys changed: ', selectedRowKeys)
+      // console.log(dd, '55555555555')
       this.selectedRowKeys = selectedRowKeys
+      let ids = dd.map(d => d.id * 1)
+      this.$emit('getIds', ids);
     },
     onCellChange (key, dataIndex, value) {
 
     },
     btnclick (key) {
-      console.log('按钮====' + key)
-      this.$router.push({ name: 'TenantDetail' })
+      // debugger
+      // console.log('按钮====' + key.id)
+      this.$router.push({ name: 'TenantDetail', query: { id: key.id } })
       // this.$router.push({ name: 'TenantDetail' })
     }
   }

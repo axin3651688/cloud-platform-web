@@ -93,10 +93,10 @@ class CnbiTenantManagement {
    * @update   by   
    */
   async init() {
-    debugger
-    var data = await this.getUserSimpleInfoList();
-    debugger
-    this.test(data)
+    // debugger
+    // var data = await this.getUserSimpleInfoList();
+    // debugger
+    // this.test(data)
     // this.test(data)
     // this.getTenancyList()
     // var id = 7
@@ -139,7 +139,7 @@ class CnbiTenantManagement {
     // }
     // await this.updateTenancy(tenancyEditDto);
 
-    // var tenancyIds = [9, 10]
+    // var tenancyIds = [9]
 
     // await this.deleteTenancy(tenancyIds)
     // this.test()
@@ -209,6 +209,7 @@ class CnbiTenantManagement {
    */
   async deleteTenancy(tenancyIds) {
     let res = await DELETE_TENANCY(tenancyIds);
+    debugger
     return res
   }
   /** 
