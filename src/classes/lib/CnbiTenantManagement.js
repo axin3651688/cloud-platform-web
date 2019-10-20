@@ -80,10 +80,10 @@ class CnbiTenantManagement {
     Object.assign(this, obj)
     this.init()
   }
-  // test(data) {
-  //   // debugger
-  //   console.log(data, "11112222");
-  // }
+  test(data) {
+    // debugger
+    console.log(data, "11112222");
+  }
   /** 
    * @desc    : 租户页面的初始化方法
    * @author  : zj
@@ -94,8 +94,9 @@ class CnbiTenantManagement {
    */
   async init() {
     debugger
-    // var data = await this.getUserSimpleInfoList();
+    var data = await this.getUserSimpleInfoList();
     debugger
+    this.test(data)
     // this.test(data)
     // this.getTenancyList()
     // var id = 7
@@ -195,7 +196,7 @@ class CnbiTenantManagement {
     //   "type": "string",
     //   "url": "string"
     // }
-    // let res = await SAVE_TENANCY(tenancyDto);
+    let res = await SAVE_TENANCY(tenancyDto);
     return res
   }
   /** 
@@ -234,12 +235,9 @@ class CnbiTenantManagement {
    * @update   by   
    */
   async getUserSimpleInfoList() {
-    let res = await USER_SIMPLE_INFO_LIST({
-      page: 1,
-      size: 10
-    })
+    let res = await USER_SIMPLE_INFO_LIST({page:1,size:10})
     debugger
-    return res.data
+    return res.data.data
   }
   /** 
    * @desc    : 根据传入的租户id，查询该租户的详细信息

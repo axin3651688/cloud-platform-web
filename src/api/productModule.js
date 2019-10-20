@@ -10,7 +10,7 @@ const api = {
   DELETE_TENANCY: '/tc/tenancy/delete', //(同上)
   GET_TENANCY: '/tc/tenancy/get', //（同上）
   UPDATE_TENANCY: '/tc/tenancy/update',
-  USER_SIMPLE_INFO_LIST:'/uc/user/user_simple_info_list/{page}/{size}',
+  USER_SIMPLE_INFO_LIST: '/uc/user/user_simple_info_list/',
   //牌照管理相关接口
   GET_LICENSE_ID: '/upm/license/get_license_id',
   FIND_LICENSE_LIST: '/upm/license/find_list',
@@ -108,16 +108,16 @@ export function UPDATE_TENANCY(parameter) {
 }
 
 /** 
-* @desc    : 分页查询所有的拥有者
-* @author  : zj
-* @date  : 2019/10/18
-* @param   {} 
-* @return  {} 
-* @update   by   
-*/
-export function USER_SIMPLE_INFO_LIST(parameter){
+ * @desc    : 分页查询所有的拥有者
+ * @author  : zj
+ * @date  : 2019/10/18
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function USER_SIMPLE_INFO_LIST(parameter) {
   return axios2({
-    url: api.USER_SIMPLE_INFO_LIST,
+    url: api.USER_SIMPLE_INFO_LIST + parameter.page + '\/' + parameter.size,
     method: 'get',
     params: parameter
   })
