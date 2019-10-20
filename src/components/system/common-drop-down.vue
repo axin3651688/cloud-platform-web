@@ -1,14 +1,12 @@
 <!--下拉框-->
 <template>
   <div>
-    <a-dropdown :trigger="['click']">
-      <a-menu slot="overlay" @click="handleMenuClick">
-        <a-menu-item :key="item.key" v-for="item in result">{{ item.name }}</a-menu-item>
-      </a-menu>
-      <a-button style="display: flex;justify-content: space-between;width: auto;min-width: 220px;">
-        {{ name }} <img src="../../assets/icons/paixu.svg" >
-      </a-button>
-    </a-dropdown>
+    <a-select :defaultValue="defaultValue" @change="selectCell" style="width: 100%">
+      <template slot="suffixIcon" >
+        <img style="width: 12px;" src="../../assets/icons/paixu.svg"/>
+      </template>
+      <a-select-option :value="item.key" v-for="item in result" :key="item.key">{{ item.name }}</a-select-option>
+    </a-select>
   </div>
 </template>
 
@@ -16,15 +14,12 @@
 export default {
   name: 'CommonDropDown',
   props: {
-    name: { type: String, default: '' },
-    result: { type: Array, default: null },
-    methodsName: { type: String, default: '' }
+    defaultValue: { type: String, default: '' },
+    result: { type: Array, default: null }
   },
   methods: {
-    handleMenuClick (val) {
-      const methodsName = this.methodsName
-      console.log(methodsName)
-      this.$emit(methodsName, val)
+    selectCell (val) {
+      this.$emit('selectCell', val)
     }
   }
 }

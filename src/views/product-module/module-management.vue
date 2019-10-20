@@ -1,14 +1,15 @@
 <template>
   <!-- <h1>模块管理 ModuleManagement</h1> -->
   <div>
+    <!--头部-->
     <div style="display: flex;flex-direction: row;justify-content: space-between">
-      <div>
+      <div style="display: flex;flex-direction: row">
         <common-drop-down
-          :name="all"
           :result="result"
-          :methodsName="methodsName[0]"
-          @selectModule="selectModule"
-          style="float:left;color:#D8DCE6">
+          :defaultValue="defaultValue"
+          @selectCell="selectCell"
+          class="com-drop-down"
+        >
         </common-drop-down>
         <!--搜索框-->
         <common-search
@@ -22,6 +23,7 @@
         :name2="name2">
       </common-button>
     </div>
+    <!--表格-->
     <a-table
       bordered
       :columns="columns"
@@ -36,6 +38,207 @@
         <span @click="btnClick(record.key)">编辑</span>
       </template>
     </a-table>
+    <!--添加模块-->
+    <a-modal
+      v-model="showAddModule"
+      title="添加模块"
+    >
+      <a-form :form="form">
+        <a-row
+          :gutter="24"
+          class="row1">
+          <a-col :span="12">
+            <a-form-item label="名称">
+              <a-input
+                placeholder="请输入名称"
+                v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],}]" />
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item label="服务标识">
+              <a-input
+                placeholder="请输入服务标识"
+                v-decorator="['name',{rules: [{ required: true, message: '服务标识不能为空!' }],}]" />
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <a-row
+          :gutter="24"
+          class="row2">
+          <a-col :span="12">
+            <a-form-item label="上级目录">
+              <a-select
+                v-decorator="[
+                  'a',
+                  { rules: [{ required: true, message: '请选择上级目录' }] },
+                ]"
+                placeholder="请选择"
+              >
+                <template slot="suffixIcon" >
+                  <img style="width: 12px;" src="../../assets/icons/paixu.svg"/>
+                </template>
+                <a-select-option value="male">
+                  1级
+                </a-select-option>
+                <a-select-option value="female">
+                  2级
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item label="类型">
+              <a-select
+                v-decorator="[
+                  'a',
+                  { rules: [{ required: true, message: '请选择类型' }] },
+                ]"
+                placeholder="请选择"
+              >
+                <template slot="suffixIcon" >
+                  <img style="width: 12px;" src="../../assets/icons/paixu.svg"/>
+                </template>
+                <a-select-option value="male">
+                  male
+                </a-select-option>
+                <a-select-option value="female">
+                  female
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <a-row
+          :gutter="24"
+          class="row3">
+          <a-col :span="12">
+            <a-form-item label="权限路由">
+              <a-input
+                placeholder="请输入权限路由"
+                v-decorator="['name',{rules: [{ required: true, message: '权限路由不能为空!' }],}]" />
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item label="访问路由">
+              <a-input
+                placeholder="请输入访问路由"
+                v-decorator="['name',{rules: [{ required: true, message: '访问路由不能为空!' }],}]" />
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <a-row
+          :gutter="24"
+          class="row4">
+          <a-col :span="12">
+            <a-form-item label="状态">
+              <a-switch defaultChecked />
+            </a-form-item>
+          </a-col>
+        </a-row>
+      </a-form>
+      <template slot="footer">
+        <a-button key="back" @click="cancelSave">取消</a-button>
+        <a-button key="submit" type="primary" @click="saveModule">
+          <a-icon type="cloud-upload" /> 保存
+        </a-button>
+      </template>
+    </a-modal>
+    <!--编辑模块-->
+    <a-modal
+      v-model="showEditModule"
+      title="编辑"
+    >
+      <a-form :form="form">
+        <a-row
+          :gutter="24"
+          class="row1">
+          <a-col :span="12">
+            <a-form-item label="名称">
+              <a-input
+                placeholder="请输入名称"
+                v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],}]" />
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item label="服务标识">
+              <a-input
+                placeholder="请输入服务标识"
+                v-decorator="['name',{rules: [{ required: true, message: '服务标识不能为空!' }],}]" />
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <a-row
+          :gutter="24"
+          class="row2">
+          <a-col :span="12">
+            <a-form-item label="上级目录">
+              <a-select
+                v-decorator="[
+                  'a',
+                  { rules: [{ required: true, message: '请选择上级目录' }] },
+                ]"
+                placeholder="请选择"
+              >
+                <template slot="suffixIcon" >
+                  <img style="width: 12px;" src="../../assets/icons/paixu.svg"/>
+                </template>
+                <a-select-option value="male">
+                  1级
+                </a-select-option>
+                <a-select-option value="female">
+                  2级
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item label="类型">
+              <a-select
+                v-decorator="[
+                  'a',
+                  { rules: [{ required: true, message: '请选择类型' }] },
+                ]"
+                placeholder="请选择"
+              >
+                <template slot="suffixIcon" >
+                  <img style="width: 12px;" src="../../assets/icons/paixu.svg"/>
+                </template>
+                <a-select-option value="male">
+                  male
+                </a-select-option>
+                <a-select-option value="female">
+                  female
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <a-row
+          :gutter="24"
+          class="row3">
+          <a-col :span="12">
+            <a-form-item label="权限路由">
+              <a-input
+                placeholder="请输入权限路由"
+                v-decorator="['name',{rules: [{ required: true, message: '权限路由不能为空!' }],}]" />
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item label="访问路由">
+              <a-input
+                placeholder="请输入访问路由"
+                v-decorator="['name',{rules: [{ required: true, message: '访问路由不能为空!' }],}]" />
+            </a-form-item>
+          </a-col>
+        </a-row>
+      </a-form>
+      <template slot="footer">
+        <a-button key="back" @click="cancelEdit">取消</a-button>
+        <a-button key="submit" type="primary" @click="saveEdit">
+          <a-icon type="cloud-upload" /> 保存
+        </a-button>
+      </template>
+    </a-modal>
   </div>
 
 </template>
@@ -57,6 +260,7 @@ export default {
       version: '模块搜索',
       name1: '添加',
       name2: '删除',
+      defaultValue: '0',
       result: [
         { name: '全部', key: '0' },
         { name: '名称', key: '1' },
@@ -66,7 +270,6 @@ export default {
         { name: '服务标识', key: '3' }
 
       ],
-      methodsName: ['selectModule'],
       columns: [
         {
           title: '名称',
@@ -189,14 +392,19 @@ export default {
           address: 'Sidney No. 1 Lake Park'
         }
       ],
-      selectedRowKeys: []
+      selectedRowKeys: [],
+      showAddModule: false,
+      showEditModule: false,
+      form: this.$form.createForm(this)
     }
   },
   methods: {
-    addClick () { alert('123') },
+    addClick () {
+      this.showAddModule = true
+    },
     deleteClick () { alert('456') },
-    selectModule (val) {
-
+    selectCell (val) {
+      console.log(val)
     },
     onSelectChange () {
 
@@ -206,6 +414,23 @@ export default {
     },
     btnClick (key) {
       this.$message.success('操作成功')
+      this.showEditModule = true
+    },
+    saveModule () {
+      this.form.validateFields(err => {
+        if (!err) {
+          this.showAddModule = false
+        }
+      })
+    },
+    cancelSave () {
+      this.showAddModule = false
+    },
+    cancelEdit () {
+      this.showEditModule = false
+    },
+    saveEdit () {
+      this.showEditModule = false
     }
   }
 }
@@ -214,5 +439,11 @@ export default {
 <style scoped>
   .button_style{
     float: none;
+  }
+  .com-drop-down{
+    width: 120px;
+  }
+  /deep/.row4 .ant-row .ant-form-item{
+    display: flex;
   }
 </style>

@@ -130,7 +130,10 @@
             <a-form-item label="所属牌照:" class="item2">
               <a-select
                 default-value="1"
-                v-decorator="['licenseId',{rules: [{ required: true, message: '请选择所属牌照!' }],}]">>
+                v-decorator="['licenseId',{rules: [{ required: true, message: '请选择所属牌照!' }],}]">
+                <template slot="suffixIcon" >
+                  <img style="width: 12px;" src="../../../assets/icons/paixu.svg"/>
+                </template>
                 <a-select-option value="1">
                   基础版
                 </a-select-option>
@@ -146,6 +149,9 @@
               <a-select
                 default-value="1"
                 v-decorator="['serviceId',{rules: [{ required: true, message: '请选择服务标识!' }],}]">
+                <template slot="suffixIcon" >
+                  <img style="width: 12px;" src="../../../assets/icons/paixu.svg"/>
+                </template>
                 <a-select-option value="1">
                   服务标识
                 </a-select-option>
@@ -185,6 +191,9 @@
               <a-select
                 default-value="1"
                 v-decorator="['type',{rules: [{ required: true, message: '请选择租户类型!' }],}]">
+                <template slot="suffixIcon" >
+                  <img style="width: 12px;" src="../../../assets/icons/paixu.svg"/>
+                </template>
                 <a-select-option value="1">
                   公共部署
                 </a-select-option>
@@ -200,6 +209,9 @@
               <a-select
                 default-value="1"
                 v-decorator="['ownerId',{rules: [{ required: true, message: '请选择所属人!' }],}]">
+                <template slot="suffixIcon" >
+                  <img style="width: 12px;" src="../../../assets/icons/paixu.svg"/>
+                </template>
                 <a-select-option value="1">
                   拥有者1
                 </a-select-option>

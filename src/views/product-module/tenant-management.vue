@@ -2,52 +2,66 @@
   <div>
     <!-- <h1>租户管理 TenantManagement</h1> -->
     <div>
-      <!--下拉框-->
-      <common-drop-down :name="owner"
-                        :result="result"
-                        :methodsName="methodsName[0]"
-                        @selectOwner="selectOwners"
-                        style="float:left;color:#D8DCE6"></common-drop-down>
-      <!--搜索框-->
-      <common-search :placeholder="version"
-                     style="width: 220px"></common-search>
-      <!-- <common-search :placeholder="placeholder"
-                     style="width: 220px"></common-search> -->
-      <!--按钮-->
-      <common-button :name1="name1"
-                     :name2="name2"
-                     @addClick="addClick"
-                     @deleteClick="deleteClick">
-      </common-button>
+      <div style="display: flex;flex-direction: row;justify-content: space-between">
+        <div style="display: flex;flex-direction: row;">
+          <common-drop-down
+            :result="result"
+            :defaultValue="defaultValue"
+            @selectCell="selectCell"
+            class="com-drop-down"
+          >
+          </common-drop-down>
+          <!--搜索框-->
+          <common-search
+            :placeholder="version"
+            style="width: 220px;float: none">
+
+          </common-search>
+        </div>
+        <!--按钮-->
+        <common-button
+          style="float: none;"
+          :name1="name1"
+          :name2="name2"
+          @addClick="addClick"
+          @deleteClick="deleteClick">
+        </common-button>
+      </div>
+
       <div style="height:32px"></div>
       <!--表格-->
-      <common-table style="margin-top:10px;"
-                    :columns="columns"
-                    :data="data"></common-table>
+      <common-table
+        style="margin-top:10px;"
+        :columns="columns"
+        :data="data"></common-table>
     </div>
     <!--添加租户弹框-->
-    <a-modal title="添加租户"
-             :visible="visible"
-             @ok="handleOk"
-             @cancel="handleCancel"
-             okText="保存"
-             cancelText="取消"
-             :destroyOnClose="true"
-             :width="730">
+    <a-modal
+      title="添加租户"
+      :visible="visible"
+      @ok="handleOk"
+      @cancel="handleCancel"
+      okText="保存"
+      cancelText="取消"
+      :destroyOnClose="true"
+      :width="730">
       <a-form :form="form">
         <!-- 表单第一行 -->
-        <a-row :gutter="24"
-               class="row1">
+        <a-row
+          :gutter="24"
+          class="row1">
           <a-col :span="12">
             <a-form-item label="名称">
-              <a-input placeholder="请输入名称"
-                       v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],}]" />
+              <a-input
+                placeholder="请输入名称"
+                v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],}]" />
             </a-form-item>
           </a-col>
           <a-col :span="12">
             <a-form-item label="营业执照">
-              <a-input placeholder="目录"
-                       v-decorator="['societyCode',{rules: [{ required: true, message: '营业执照不能为空!' }],}]" />
+              <a-input
+                placeholder="目录"
+                v-decorator="['societyCode',{rules: [{ required: true, message: '营业执照不能为空!' }],}]" />
             </a-form-item>
           </a-col>
         </a-row>
@@ -55,8 +69,12 @@
         <a-row :gutter="24">
           <a-col :span="12">
             <a-form-item label="所属人">
-              <a-select default-value="1"
-                        v-decorator="['ownerId',{rules: [{ required: true, message: '请选择所属人!' }],}]">
+              <a-select
+                default-value="1"
+                v-decorator="['ownerId',{rules: [{ required: true, message: '请选择所属人!' }],}]">
+                <template slot="suffixIcon" >
+                  <img style="width: 12px;" src="../../assets/icons/paixu.svg"/>
+                </template>
                 <a-select-option value="1">
                   拥有者1
                 </a-select-option>
@@ -71,8 +89,12 @@
           </a-col>
           <a-col :span="12">
             <a-form-item label="所属牌照">
-              <a-select default-value="1"
-                        v-decorator="['licenseId',{rules: [{ required: true, message: '请选择所属牌照!' }],}]">>
+              <a-select
+                default-value="1"
+                v-decorator="['licenseId',{rules: [{ required: true, message: '请选择所属牌照!' }],}]">>
+                <template slot="suffixIcon" >
+                  <img style="width: 12px;" src="../../assets/icons/paixu.svg"/>
+                </template>
                 <a-select-option value="1">
                   基础版
                 </a-select-option>
@@ -91,8 +113,12 @@
         <a-row :gutter="24">
           <a-col :span="12">
             <a-form-item label="租户类型">
-              <a-select default-value="1"
-                        v-decorator="['type',{rules: [{ required: true, message: '请选择租户类型!' }],}]">
+              <a-select
+                default-value="1"
+                v-decorator="['type',{rules: [{ required: true, message: '请选择租户类型!' }],}]">
+                <template slot="suffixIcon" >
+                  <img style="width: 12px;" src="../../assets/icons/paixu.svg"/>
+                </template>
                 <a-select-option value="1">
                   公共部署
                 </a-select-option>
@@ -107,8 +133,12 @@
           </a-col>
           <a-col :span="12">
             <a-form-item label="服务标识">
-              <a-select default-value="1"
-                        v-decorator="['serviceId',{rules: [{ required: true, message: '请选择服务标识!' }],}]">
+              <a-select
+                default-value="1"
+                v-decorator="['serviceId',{rules: [{ required: true, message: '请选择服务标识!' }],}]">
+                <template slot="suffixIcon" >
+                  <img style="width: 12px;" src="../../assets/icons/paixu.svg"/>
+                </template>
                 <a-select-option value="1">
                   服务标识
                 </a-select-option>
@@ -127,20 +157,26 @@
         <a-row :gutter="24">
           <a-col :span="12">
             <a-form-item label="访问地址">
-              <a-input addonBefore="Http://"
-                       style="width: 329px"
-                       placeholder="请输入"
-                       v-decorator="['url']" />
+              <a-input
+                addonBefore="Http://"
+                style="width: 329px"
+                placeholder="请输入"
+                v-decorator="['url']" />
             </a-form-item>
           </a-col>
           <a-col :span="12">
             <a-form-item label="联系电话">
-              <a-input v-decorator="['phone',{rules: [{ required: true, message: 'Please input your phone number!' }],}]"
-                       style="width: 100%">
-                <a-select slot="addonBefore"
-                          default-value="86"
-                          v-decorator="['prefix', { initialValue: '86' }]"
-                          style="width: 70px">
+              <a-input
+                v-decorator="['phone',{rules: [{ required: true, message: 'Please input your phone number!' }],}]"
+                style="width: 100%">
+                <a-select
+                  slot="addonBefore"
+                  default-value="86"
+                  v-decorator="['prefix', { initialValue: '86' }]"
+                  style="width: 70px">
+                  <template slot="suffixIcon" >
+                    <img style="width: 12px;" src="../../assets/icons/paixu.svg"/>
+                  </template>
                   <a-select-option value="86">
                     +86
                   </a-select-option>
@@ -158,21 +194,24 @@
           <a-col :span="12">
             <!-- 第五行左1 -->
             <a-form-item label="租户地址">
-              <a-input placeholder="请输入租户地址"
-                       v-decorator="['address',{rules: [{ required: true, message: '租户地址不能为空!' }],}]" />
+              <a-input
+                placeholder="请输入租户地址"
+                v-decorator="['address',{rules: [{ required: true, message: '租户地址不能为空!' }],}]" />
             </a-form-item>
             <!-- 第五行左2 -->
             <a-row :gutter="24">
               <a-col :span="12">
                 <a-form-item label="生效时间">
-                  <a-date-picker @change="onChange"
-                                 v-decorator="['beginTime',{rules: [{ required: true, message: '请选择牌照生效时间!' }],}]" />
+                  <a-date-picker
+                    @change="onChange"
+                    v-decorator="['beginTime',{rules: [{ required: true, message: '请选择牌照生效时间!' }],}]" />
                 </a-form-item>
               </a-col>
               <a-col :span="12">
                 <a-form-item label="失效时间">
-                  <a-date-picker @change="onChange"
-                                 v-decorator="['endTime',{rules: [{ required: true, message: '请选择牌照到期时间!' }],}]" />
+                  <a-date-picker
+                    @change="onChange"
+                    v-decorator="['endTime',{rules: [{ required: true, message: '请选择牌照到期时间!' }],}]" />
                 </a-form-item>
               </a-col>
             </a-row>
@@ -180,17 +219,19 @@
           <a-col :span="12">
             <!-- 第五行右侧企业标识 -->
             <a-form-item label="企业标识">
-              <a-upload name="file"
-                        :beforeUpload="beforeUpload"
-                        :showUploadList="false"
-                        listType="picture-card"
-                        class="avatar-uploader"
-                        :customRequest="customRequest"
-                        :disabled="disable">
-                <img v-if="imageUrl"
-                     :src="imageUrl"
-                     alt="avatar"
-                     v-decorator="['logoId']" />
+              <a-upload
+                name="file"
+                :beforeUpload="beforeUpload"
+                :showUploadList="false"
+                listType="picture-card"
+                class="avatar-uploader"
+                :customRequest="customRequest"
+                :disabled="disable">
+                <img
+                  v-if="imageUrl"
+                  :src="imageUrl"
+                  alt="avatar"
+                  v-decorator="['logoId']" />
                 <div v-else>
                   <a-icon :type="loading ? 'loading' : 'plus'" />
                   <div class="ant-upload-text">点击上传</div>
@@ -230,6 +271,7 @@ export default {
       TenantMObj: null,
       url: '',
       disable: false,
+      defaultValue: '0',
       loading: false,
       imageUrl: '',
       columns: [{
@@ -326,15 +368,9 @@ export default {
     deleteClick () {
 
     },
-    // 选择拥有者(查询所有拥有者)
-    async selectOwners (val) {
-      // debugger
-      // const result = await this.TenantMObj.getUserSimpleInfoList();
-      // this.result = result.map(item => item.trueName);
+    selectCell (val) {
       debugger
-      console.log(val)
-      this.owner = val.key
-      console.log('选择拥有者===' + val.key)
+      console.log('选择：' + val)
     },
     // 选择所属人
     selectBelongPeople (val) {
@@ -372,8 +408,8 @@ export default {
         if (!err) {
           const formData = JSON.parse(JSON.stringify(values))
           debugger
-          formData.beginTime = new Date(formData.beginTime).getTime();
-          formData.endTime = new Date(formData.endTime).getTime();
+          formData.beginTime = new Date(formData.beginTime).getTime()
+          formData.endTime = new Date(formData.endTime).getTime()
           formData.checkTime = 1
           formData.checkerId = 2
 
@@ -434,6 +470,9 @@ export default {
 </script>
 
 <style scoped>
+  .com-drop-down{
+    width: 120px;
+  }
 ant .tenantInput {
   width: 220px;
   margin: 0 8px 8px 0;
