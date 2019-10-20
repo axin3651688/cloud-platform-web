@@ -62,7 +62,9 @@ const constantRouterComponents = {
   LimitManagement: () => import('@/views/set-module/limit-management'),
   DataDictionary: () => import('@/views/set-module/data-dictionary'),
   // ...more
-  TenantDetail: () => import('@/views/product-module/tenant-components/tenant-detail')
+  TenantDetail: () => import('@/views/product-module/tenant-components/tenant-detail'),
+  UserDetail: () => import('@/views/product-module/user-components/user-detail')
+
 }
 
 // 前端未找到页面路由（固定不用改）
@@ -135,7 +137,14 @@ const customRoute = [
         icon: 'bb',
         key: 'UserManagement',
         title: '用户管理'
-      }, {
+      },
+      {
+        component: 'UserDetail',
+        icon: 'bb',
+        key: 'UserDetail',
+        title: '用户管理详情'
+      },
+      {
         component: 'ContentManagement',
         icon: 'bb',
         key: 'ContentManagement',
