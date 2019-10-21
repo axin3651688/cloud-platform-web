@@ -132,8 +132,8 @@ module.exports = {
         ws: false,
         changeOrigin: true
       },
-      '/zj': {
-        target: 'http://192.168.2.236',
+      '/upm': {
+        target: 'http://192.168.2.236:80',
         ws: false,
         changeOrigin: true
       }

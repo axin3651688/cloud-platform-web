@@ -6,7 +6,8 @@ import {
   DELETE_TENANCY,
   GET_TENANCY,
   UPDATE_TENANCY,
-  USER_SIMPLE_INFO_LIST
+  USER_SIMPLE_INFO_LIST,
+  FIND_LICENSE_LIST
 } from '@/api/productModule'
 
 /** 
@@ -82,7 +83,7 @@ class CnbiTenantManagement {
   }
   test(data) {
     // debugger
-    console.log(data, "11112222");
+    // console.log(data.data, "11112222");
   }
   /** 
    * @desc    : 租户页面的初始化方法
@@ -140,9 +141,10 @@ class CnbiTenantManagement {
     // await this.updateTenancy(tenancyEditDto);
 
     // var tenancyIds = [9]
-
-    // await this.deleteTenancy(tenancyIds)
+    // await this.deleteTenancy([34])
     // this.test()
+    // var data = await this.findLicenseList()
+    // this.test(data)
   }
   /** 
    * @desc    : 获取参数
@@ -223,7 +225,7 @@ class CnbiTenantManagement {
   async getTenancyList() {
     let res = await GET_TENANCY_LIST({
       page: 1,
-      size: 10
+      size: 30
     });
     return res.data.data
   }
@@ -276,8 +278,23 @@ class CnbiTenantManagement {
     //   "url": "string"
     // }
     let res = await UPDATE_TENANCY(tenancyEditDto);
-    debugger
+    // debugger
     return res
   }
+
+  /** 
+  * @desc    : 查询牌照列表
+  * @author  : zj
+  * @date  : 2019/10/21
+  * @param   {} 
+  * @return  {} 
+  * @update   by   
+  */
+async findLicenseList(){
+  // debugger
+  let res = await FIND_LICENSE_LIST();
+  return res.data
+}
+  
 }
 export default CnbiTenantManagement

@@ -9,8 +9,8 @@ const api = {
   GET_TENANCY_LIST: '/tc/tenancy/get_tenancy_list',
   SAVE_TENANCY: '/tc/tenancy/save', //(此处命名与接口不同，由于接口就一个save，避免冲突，自行定义该接口名称 by:zj)
   DELETE_TENANCY: '/tc/tenancy/delete', //(同上)
-  GET_TENANCY: '/tc/tenancy/get', //（同上）
-  UPDATE_TENANCY: '/tc/tenancy/update',
+  GET_TENANCY: '/tc/tenancy/get_tenancy_detail', //（同上）
+  UPDATE_TENANCY: '/tc/tenancy/update_tenancy_info',
   USER_SIMPLE_INFO_LIST: '/uc/user/user_simple_info_list/',
   //牌照管理相关接口
   GET_LICENSE_ID: '/upm/license/get_license_id',
@@ -74,7 +74,7 @@ export function DELETE_TENANCY(parameter) {
   return axios2({
     url: api.DELETE_TENANCY,
     method: 'delete',
-    params: parameter
+    data: parameter
   })
 }
 /** 
@@ -148,11 +148,10 @@ export function GET_LICENSE_ID(parameter) {
  * @return  {} 
  * @update   by   
  */
-export function FIND_LICENSE_LIST(parameter) {
+export function FIND_LICENSE_LIST() {
   return axios2({
     url: api.FIND_LICENSE_LIST,
-    method: 'get',
-    params: parameter
+    method: 'get'
   })
 }
 

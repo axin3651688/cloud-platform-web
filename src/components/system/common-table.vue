@@ -69,12 +69,13 @@ export default {
         this.selectedRowKeys = []
       }, 1000)
     },
-    onSelectChange (selectedRowKeys, dd, bb) { 
-      // debugger
+    onSelectChange (selectedRowKeys, dd, bb) {
+      debugger
       // console.log('selectedRowKeys changed: ', selectedRowKeys)
-      // console.log(dd, '55555555555')
+      console.log(dd, '55555555555')
       this.selectedRowKeys = selectedRowKeys
       let ids = dd.map(d => d.id * 1)
+      console.log(ids, '111111000000')
       this.$emit('getIds', ids);
     },
     onCellChange (key, dataIndex, value) {
@@ -85,6 +86,10 @@ export default {
       // console.log('按钮====' + key.id)
       this.$router.push({ name: 'TenantDetail', query: { id: key.id } })
       // this.$router.push({ name: 'TenantDetail' })
+    },
+    //清楚勾选的id
+    clearSelectedKey () {
+      this.selectedRowKeys = []
     }
   }
 }

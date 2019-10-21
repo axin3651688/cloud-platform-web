@@ -9,14 +9,14 @@
              src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1570683276,2169925905&fm=26&gp=0.jpg">
         <div style="margin-left: 30px;display: flex;flex-direction: column">
           <div>
-            <h3 style="font-size: 18px;font-weight: bold;">{{info.name}}</h3>
+            <h3 style="font-size: 18px;font-weight: bold;">{{info.ownerName}}</h3>
           </div>
           <div style="display: flex;flex-direction: row;">
             <div>
-              <p>编号：<span>123456</span></p>
+              <p>编号：<span>{{info.owneId}}</span></p>
             </div>
             <div style="margin-left: 100px;">
-              <p>拥有者：<span>123456</span></p>
+              <p>拥有者：<span>{{info.ownerName}}</span></p>
             </div>
           </div>
         </div>
@@ -51,48 +51,48 @@
                  class="row1">
             <a-col :span="12">
               <a-form-item label="营业执照">
-                <span>123</span>
+                <span>{{info.societyCode}}</span>
               </a-form-item>
               <a-form-item label="所属牌照">
-                df
+                {{info.licenseName}}
               </a-form-item>
               <a-form-item label="服务标识">
                 {{info.serviceId}}
               </a-form-item>
               <a-form-item label="联系电话">
-                df
+                {{info.tel}}
               </a-form-item>
               <a-form-item label="生效日期">
-                df
+                {{info.beginTime}}
               </a-form-item>
               <a-form-item label="创建日期">
-                df
+                {{info.createTime}}
               </a-form-item>
               <a-form-item label="最近更新日期">
-                df
+                {{info.updateTime}}
               </a-form-item>
             </a-col>
             <a-col :span="12">
               <a-form-item label="所属人">
-                df
+                {{info.ownerName}}
               </a-form-item>
               <a-form-item label="租户类型">
-                df
+                {{info.typeName}}
               </a-form-item>
               <a-form-item label="访问网址">
-                df
+                {{info.url}}
               </a-form-item>
               <a-form-item label="租户地址">
-                df
+                {{info.address}}
               </a-form-item>
               <a-form-item label="到期日期">
-                df
+                {{info.endTime}}
               </a-form-item>
               <a-form-item label="创建人">
-                第三方
+                {{info.createUserName}}
               </a-form-item>
               <a-form-item label="最近更新人">
-                df
+                {{info.updateUserName}}
               </a-form-item>
             </a-col>
           </a-row>
@@ -143,40 +143,22 @@
                   <img style="width: 12px;"
                        src="../../../assets/icons/paixu.svg" />
                 </template>
-                <a-select-option value="1">
-                  基础版
-                </a-select-option>
-                <a-select-option value="2">
-                  旗舰版
-                </a-select-option>
-                <a-select-option value="3">
-                  免费版
+                <a-select-option v-for="(item,index) in LicenseList"
+                                 :key="index">
+                  {{item}}
                 </a-select-option>
               </a-select>
             </a-form-item>
             <a-form-item label="服务标识:"
                          class="item2">
-              <a-select default-value="1"
-                        v-decorator="['serviceId',{rules: [{ required: true, message: '请选择服务标识!' }],}]">
-                <template slot="suffixIcon">
-                  <img style="width: 12px;"
-                       src="../../../assets/icons/paixu.svg" />
-                </template>
-                <a-select-option value="1">
-                  服务标识
-                </a-select-option>
-                <a-select-option value="2">
-                  服务标识2
-                </a-select-option>
-                <a-select-option value="3">
-                  服务标识3
-                </a-select-option>
-              </a-select>
+              <a-input placeholder="请输入服务标识"
+                       v-decorator="['service',{rules: [{ required: true, message: '服务标识不能为空!' }],}]" />
             </a-form-item>
             <a-form-item label="访问网址:"
                          class="item2">
+              <!--  pattern: /^http:\/\/([\w-]+.)+[\w-]+(\/[\w-./?%&=]*)?$/, 验证方式 -->
               <a-input placeholder="请输入"
-                       v-decorator="['url',{rules: [{ required: true, pattern: /^http:\/\/([\w-]+.)+[\w-]+(\/[\w-./?%&=]*)?$/, message: '请输入正确的网址' }]}]"
+                       v-decorator="['url',{rules: [{ required: true,  message: '请输入正确的网址' }]}]"
                        class="item2-input" />
             </a-form-item>
             <a-form-item label="生效日期："
@@ -188,8 +170,9 @@
           <a-col :span="12">
             <a-form-item label="联系电话:"
                          class="item2">
+              <!--  pattern: /^1[34578]\d{9}$/,  验证方式 -->
               <a-input placeholder="请输入"
-                       v-decorator="['phone',{rules: [{ required: true, pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号' }]}]"
+                       v-decorator="['tel',{rules: [{ required: true, message: '请输入正确的手机号' }]}]"
                        class="item2-input" />
             </a-form-item>
             <a-form-item label="租户类型:"
@@ -213,20 +196,14 @@
             </a-form-item>
             <a-form-item label="所属人："
                          class="item2">
-              <a-select default-value="1"
-                        v-decorator="['ownerId',{rules: [{ required: true, message: '请选择所属人!' }],}]">
+              <a-select v-decorator="['ownerId',{rules: [{ required: true, message: '请选择所属人!' }],}]">
                 <template slot="suffixIcon">
                   <img style="width: 12px;"
                        src="../../../assets/icons/paixu.svg" />
                 </template>
-                <a-select-option value="1">
-                  拥有者1
-                </a-select-option>
-                <a-select-option value="2">
-                  拥有者2
-                </a-select-option>
-                <a-select-option value="3">
-                  拥有者3
+                <a-select-option v-for="(item,index) in owners"
+                                 :key="index">
+                  {{item}}
                 </a-select-option>
               </a-select>
             </a-form-item>
@@ -260,6 +237,8 @@ export default {
   data () {
     return {
       form: this.$form.createForm(this),
+      owners: [],//从云智囊中查询的所有拥有者数组
+      LicenseList: [],//牌照列表数组
       TenantMObj: null,
       id: null,//点击的租户详情对应的id
       info: null,//当租户的所有详细信息
@@ -276,51 +255,82 @@ export default {
     this.showInfo()
   },
   methods: {
+    showModal () {
+      this.visible = true
+    },
+    //点击详情  查询信息
     async showInfo () {
       // debugger
       var info = await this.TenantMObj.getTenancy(this.id)
+      info.beginTime = new Date(info.beginTime * 1).toLocaleString();
+      info.createTime = new Date(info.createTime * 1).toLocaleString();
+      info.endTime = new Date(info.endTime * 1).toLocaleString();
+      info.updateTime = new Date(info.updateTime * 1).toLocaleString();
       this.info = info
       // console.log(info, '66666666')
+
+      //获取所有的所属人
+      // debugger
+      const owners = await this.TenantMObj.getUserSimpleInfoList();
+      this.owners = owners.map(item => item.trueName);
+      // console.log(owners, '888888')
+
+      //获取所有的牌照列表
+      const LicenseList = await this.TenantMObj.findLicenseList();
+      this.LicenseList = LicenseList.map(item => item.name);
+      // console.log(LicenseList, '888888')
     },
     callback (key) { //
       console.log(key)
       this.tabKey = key
     },
     //修改按钮点击事件
-    async editClick (record) {
+    editClick () {
+      debugger
       const _this = this
+      this.showModal()
       //1.打开弹框
       _this.showUpdataInfo = true
       //2.让原有的信息呈现在弹框中
       this.$nextTick(() => {
-        _this.form.setFieldsValue({ 'societyCode': record.societyCode })//营业执照
-        _this.form.setFieldsValue({ 'licenseId': record.licenseId })//所属牌照
-        _this.form.setFieldsValue({ 'serviceId': record.serviceId })//服务标识
-        _this.form.setFieldsValue({ 'url': record.url })//访问网址
-        _this.form.setFieldsValue({ 'beginTime': record.beginTime })//生效时间
-        _this.form.setFieldsValue({ 'phone': record.phone })//联系电话
-        _this.form.setFieldsValue({ 'type': record.type })//租户类型
-        _this.form.setFieldsValue({ 'ownerId': record.ownerId })//所属人
-        _this.form.setFieldsValue({ 'address': record.address })//租户地址
-        _this.form.setFieldsValue({ 'endTime': record.endTime })//到期日期
+        _this.form.setFieldsValue({ 'societyCode': _this.info.societyCode })//营业执照
+        _this.form.setFieldsValue({ 'licenseId': _this.info.licenseId })//所属牌照
+        _this.form.setFieldsValue({ 'service': _this.info.serviceId })//服务标识
+        _this.form.setFieldsValue({ 'url': _this.info.url })//访问网址
+        _this.form.setFieldsValue({ 'beginTime': _this.info.beginTime })//生效时间
+        _this.form.setFieldsValue({ 'tel': _this.info.tel })//联系电话
+        _this.form.setFieldsValue({ 'type': _this.info.type })//租户类型
+        _this.form.setFieldsValue({ 'ownerId': _this.info.ownerId })//所属人
+        _this.form.setFieldsValue({ 'address': _this.info.address })//租户地址
+        _this.form.setFieldsValue({ 'endTime': _this.info.endTime })//到期日期
       })
-      //3.获取修改后的数据
+
+    },
+    async UpdataInfo () {
+      const _this = this
+      //3.获取修改后的数据  
       _this.form.validateFields(async (err, values) => {
-        // debugger
+        debugger
         if (!err) {
           const formData = JSON.parse(JSON.stringify(values))
+
           formData.beginTime = new Date(formData.beginTime).getTime()
           formData.endTime = new Date(formData.endTime).getTime()
-          // formData.checkTime = 1
-          // formData.checkerId = 2
+          formData.id = this.id
           //4.调用修改接口的方法，完成修改操作，关闭弹框
           await _this.TenantMObj.updateTenancy(formData)
-          _this.showUpdataInfo = false
+
+          //重新加载最新的数据
+          // debugger
+          var info = await _this.TenantMObj.getTenancy(this.id)
+          info.beginTime = new Date(info.beginTime * 1).toLocaleString();
+          info.createTime = new Date(info.createTime * 1).toLocaleString();
+          info.endTime = new Date(info.endTime * 1).toLocaleString();
+          info.updateTime = new Date(info.updateTime * 1).toLocaleString();
+          _this.info = info
         }
-      })    
-      },
-    UpdataInfo () {
-      this.showUpdataInfo = false
+        _this.showUpdataInfo = false
+      })
     },
     onChange () {
 

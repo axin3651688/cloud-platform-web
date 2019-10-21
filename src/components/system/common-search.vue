@@ -19,12 +19,13 @@ export default {
   methods: {
     onSearch (value) {
       console.log(value)
+      this.$emit('inputHandler', value);
     },
   }
 }
 </script>
 <style scoped>
-.commonSearch{
+.commonSearch {
   padding-left: 32px;
   float: left;
   padding-bottom: 15px;
