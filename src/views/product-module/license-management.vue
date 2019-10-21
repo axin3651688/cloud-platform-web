@@ -14,6 +14,7 @@
           :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
           :dataSource="tableData"
           size="small"
+          :customRow="setRow"
         >
           <a-table-column title="版本" dataIndex="tag" key="tag">
             <template slot-scope="tags">
@@ -25,9 +26,32 @@
               </span>
             </template>
           </a-table-column>
-          <a-table-column title="描述" key="name1" >
+          <a-table-column title="描述" key="name1" width="30%">
             <template slot-scope="text, record">
-              <editable-cell :text="record.name1" />
+              <!-- <editable-cell :text="record.name1" />-->
+              <span >{{ record.name1 }}</span>
+              <span v-if="active==record.key">
+                <a-popover trigger="click" v-model="editState" v-if="record.key==active">
+                  <template slot="title">
+                    <div style="margin: 5px 0;">
+                      <span>
+                        <a-icon type="exclamation-circle" style="color: #FAAD14;width: 14px;height: 14px;"/>你确定更改这项描述吗
+                      </span>
+                    </div>
+                  </template>
+                  <template slot="content" >
+                    <a-input style="width: 200px" placeholder="替换内容"/>
+                    <div style="display: flex;justify-content: flex-end; margin: 10px 20px;">
+                      <a-button style="margin-right: 10px;" @click="cancelEdit">取消</a-button>
+                      <a-button type="primary">保存</a-button>
+                    </div>
+                  </template>
+                  <span type="primary">
+                    <img style="width: 16px;height: 16px" src="../../assets/icons/bianji.svg"/>
+                  </span>
+                </a-popover>
+              </span>
+
             </template>
           </a-table-column>
           <a-table-column title="价格" dataIndex="name2" key="name2" />
@@ -314,6 +338,8 @@ export default {
     return {
       name1: '添加牌照',
       name2: '删除',
+      editState: false, // 编辑状态
+      active: '',
       addressState: true, // 服务地址编辑状态
       dataSourceState: true, // 数据源状态
       showFoot: false, // 脚部
@@ -380,10 +406,33 @@ export default {
       form: this.$form.createForm(this),
       form1: this.$form.createForm(this),
       form2: this.$form.createForm(this),
-      saveFlag: false // 保存状态
+      saveFlag: false // 保存状态,
     }
   },
   methods: {
+    setRow (record) {
+      return {
+        on: { // 事件
+          click: (event) => {}, // 点击行
+          doubleclick: (event) => {},
+          contextmenu: (event) => {},
+          mouseenter: (event) => {
+            if (!this.editState) {
+              this.active = record.key
+            }
+          }, // 鼠标移入行
+
+          mouseleave: (event) => {
+            if (!this.editState) {
+              this.active = ''
+            }
+          }
+        }
+      }
+    },
+    cancelEdit () {
+      this.editState = false
+    },
     addClick () {
       console.log('123')
       this.showLicenseModal = true
