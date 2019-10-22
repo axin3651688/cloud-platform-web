@@ -32,7 +32,11 @@
       :dataSource="dataSource"
       :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}" >
       <template slot="caozuo" slot-scope="text, record">
-        <span @click="btnClick(record)">服务配置<a-icon type="setting" style="margin-left: 4px;" /></span>
+        <div style="display: flex;flex-direction: row;justify-content: space-around;align-items: center;">
+          <span @click="btnClickEdit(record)"><a-icon type="edit" style="margin-left: 4px;cursor: pointer;" title="编辑"/></span>
+          <span @click="btnClick(record)"><a-icon type="setting" style="margin-left: 4px;cursor: pointer;" title="服务配置"/></span>
+        </div>
+
       </template>
 
       <template slot="zhuangtai" slot-scope="text, record">
@@ -85,6 +89,55 @@
       </form>
     </a-modal>
     <a-modal v-model="showAddApply" title="添加应用">
+      <a-form :form="form1">
+        <a-form-item label="牌照名称" >
+          <a-input
+            placeholder="请输入"
+            v-decorator="[
+              'a',
+              { rules: [{ required: true, message: '请输入牌照名称！' }] },
+            ]"/>
+        </a-form-item>
+        <a-form-item label="描述">
+          <a-textarea
+            placeholder="请输入描述"
+          />
+        </a-form-item>
+        <a-form-item label="图标" class="form1-icon">
+          <a-upload
+            name="file"
+            :beforeUpload="beforeUpload"
+            :showUploadList="false"
+            listType="picture-card"
+            class="avatar-uploader"
+            :customRequest="customRequest"
+            :disabled="disable"
+            v-decorator="[
+              'c',
+              { rules: [{ required: true, message: '请上传图标！' }] },
+            ]"
+          >
+            <img
+              v-if="imageUrl"
+              :src="imageUrl"
+              alt="avatar"
+              v-decorator="['logoId']" />
+            <div v-else>
+              <a-icon :type="loading ? 'loading' : 'plus'" />
+              <div class="ant-upload-text">点击上传</div>
+            </div>
+          </a-upload>
+          <span>只能上传jpg/png文件， 且不超过500kb</span>
+        </a-form-item>
+      </a-form>
+      <template slot="footer">
+        <a-button key="back" @click="cancelSave">取消</a-button>
+        <a-button key="submit" type="primary" @click="saveApply">
+          <a-icon type="cloud-upload" /> 保存
+        </a-button>
+      </template>
+    </a-modal>
+    <a-modal v-model="showEditApply" title="编辑应用">
       <a-form :form="form1">
         <a-form-item label="牌照名称" >
           <a-input
@@ -207,6 +260,7 @@ export default {
       loading: false,
       ServiceSetting: false, // 服务配置
       showAddApply: false, // 添加应用
+      showEditApply: false, // 编辑应用
       form: this.$form.createForm(this), // 服务配置弹框
       form1: this.$form.createForm(this), // 添加应用弹框
       active: '',
@@ -225,6 +279,9 @@ export default {
       this.ServiceSetting = true
       this.title = 'XX应用服务配置'
       console.log(record)
+    },
+    btnClickEdit (record) {
+      this.showEditApply = true
     },
     addClick () {
       this.showAddApply = true
