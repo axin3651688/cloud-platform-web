@@ -38,7 +38,6 @@
         </div>
 
       </template>
-
       <template slot="zhuangtai" slot-scope="text, record">
         <!--1代表开-->
         <span style="margin-right: 4px;">{{ record.name2==1?'启用':'禁用' }}</span>

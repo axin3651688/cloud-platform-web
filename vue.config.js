@@ -103,40 +103,13 @@ module.exports = {
         ws: false,
         changeOrigin: true
       },
-      '/org': {
+      '/aapi': {
         target: 'http://192.168.2.236:80',
         ws: false,
-        changeOrigin: true
-      },
-      '/uc': {
-        target: 'http://192.168.2.236:80',
-        ws: false,
-        changeOrigin: true
-      },
-      '/common': {
-        target: 'http://192.168.2.236:80',
-        ws: false,
-        changeOrigin: true
-      },
-      '/uaa': {
-        target: 'http://192.168.2.236:80',
-        ws: false,
-        changeOrigin: true
-      },
-      '/zuul': {
-        target: 'http://192.168.2.236:80',
-        ws: false,
-        changeOrigin: true
-      },
-      '/tc': {
-        target: 'http://192.168.2.236:80',
-        ws: false,
-        changeOrigin: true
-      },
-      '/upm': {
-        target: 'http://192.168.2.236:80',
-        ws: false,
-        changeOrigin: true
+        changeOrigin: true,
+        pathRewrite: {
+          '^/aapi': '/'
+        }
       }
     }
   },
