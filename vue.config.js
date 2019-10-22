@@ -111,8 +111,8 @@ module.exports = {
         pathRewrite: {
           '^/aapi': '/'
         }
-      },
-      '/org': {
+      }
+      /* '/org': {
         target: 'http://192.168.2.236:80',
         ws: false,
         changeOrigin: true
@@ -141,7 +141,7 @@ module.exports = {
         target: 'http://192.168.2.236:80',
         ws: false,
         changeOrigin: true
-      }
+      } */
     }
   },
 
