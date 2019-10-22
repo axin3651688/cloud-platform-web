@@ -54,11 +54,11 @@
               </a-form-item>
             </a-col>
             <a-col :span="12">
-              <a-form-item label="地址">
-                <span v-if="!InfoState">狗家县，狗家庄</span>
+              <a-form-item label="用户名">
+                <span v-if="!InfoState">狗蛋</span>
                 <a-input
                   v-else
-                  placeholder="请输入地址"
+                  placeholder="请输入用户名"
                   v-decorator="['b',{rules: [{ required: true, message: '地址不能为空!' }],}]" />
               </a-form-item>
             </a-col>

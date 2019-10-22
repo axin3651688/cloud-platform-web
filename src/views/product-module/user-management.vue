@@ -39,6 +39,43 @@
         </template>
       </a-table>
     </div>
+    <a-modal v-model="showAddUser" title="添加用户">
+      <a-form :form="form">
+        <a-form-item label="昵称">
+          <a-input
+            placeholder="请输入昵称"
+            v-decorator="[
+              'a',
+              { rules: [{ required: true, message: '请输入昵称！' }] },
+            ]"/>
+        </a-form-item>
+        <a-form-item label="性别">
+          <a-radio-group name="c" :defaultValue="1">
+            <a-radio :value="1">男</a-radio>
+            <a-radio :value="2">女</a-radio>
+          </a-radio-group>
+        </a-form-item>
+        <a-form-item label="密码">
+          <a-input
+            v-decorator="[
+              'password',
+              {
+                rules: [
+                  {
+                    required: true,
+                    message: 'Please input your password!',
+                  },
+                  {
+                    validator: validateToNextPassword,
+                  },
+                ],
+              },
+            ]"
+            type="password"
+          />
+        </a-form-item>
+      </a-form>
+    </a-modal>
   </div>
 </template>
 
@@ -46,8 +83,10 @@
 import CommonButton from '@/components/system/common-button'
 import CommonSearch from '@/components/system/common-search'
 import CommonDropDown from '@/components/system/common-drop-down'
+import AFormItem from 'ant-design-vue/es/form/FormItem'
 export default {
   components: {
+    AFormItem,
     CommonButton,
     CommonSearch,
     CommonDropDown
@@ -57,6 +96,8 @@ export default {
       version: '请输入',
       name1: '添加',
       name2: '删除',
+      showAddUser: false,
+      form: this.$form.createForm(this),
       defaultValue: '0',
       selectedRowKeys: [],
       result: [
@@ -159,7 +200,7 @@ export default {
   },
   methods: {
     addClick () {
-
+      this.showAddUser = true
     },
     deleteClick () {
 
