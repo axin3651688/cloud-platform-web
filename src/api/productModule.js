@@ -17,7 +17,7 @@ const api = {
   FIND_LICENSE_LIST: '/upm/license/find_list',
   OPEN_LICENSE: '/upm/license/open_license',
   SAVE_LICENSE: '/upm/license/save',
-  DELETE_LICENSE: '/upm/license/delete',
+  DELETE_LICENSE: '/upm/license/bat_delete',
   UPDATE_LICENSE: '/upm/license/update',
   UPDATE_VAIL_LICENSE: '/upm/license_authority/update_vail_license',
   //模块管理相关接口
@@ -199,7 +199,7 @@ export function DELETE_LICENSE(parameter) {
   return axios2({
     url: api.DELETE_LICENSE,
     method: 'delete',
-    params: parameter
+    data: parameter
   })
 }
 
