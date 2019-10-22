@@ -6,7 +6,7 @@
         <div style="display: flex;flex-direction: row;">
           <common-drop-down :result="result"
                             class="com-drop-down"
-                            
+                            :defaultValue="'name'"
                             @selectCell="selectCell">
           </common-drop-down>
           <!--搜索框-->

@@ -211,7 +211,7 @@ class CnbiTenantManagement {
    */
   async deleteTenancy(tenancyIds) {
     let res = await DELETE_TENANCY(tenancyIds);
-    debugger
+    // debugger
     return res
   }
   /** 

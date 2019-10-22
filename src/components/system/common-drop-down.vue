@@ -3,6 +3,7 @@
   <div>
     <a-select @change="selectCell"
               style="width: 100%"
+              :defaultValue="defaultValue"
               allowClear>
       <template slot="suffixIcon">
         <img style="width: 12px;"

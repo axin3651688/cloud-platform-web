@@ -11,7 +11,7 @@ import {
 /** 
 * @desc    : 该类为牌照管理类，为了实现页面代码更加简单清晰而写的，
              其中有增加牌照，删除牌照，编辑牌照，查询牌照等其他操作，
-             有租户的属性，在页面代码中只需引用该类，并创建一个牌照
+             有租户的属性，在页面代码中只需引用该类，并创建一个牌照 
              对象，以对象点的形式去调用需要的属性和方法，也不再需要
              在组件中引用接口等，也便于后期维护......
 * @author  : zj
@@ -39,9 +39,11 @@ class CnbiLicenseManagement {
   //   price (number, optional): 价格 ,
   //   type (integer, optional): 类型
   //   }
-  props = ['cards', 'dbTypes', 'maxCompany', 'maxConnect', 'maxDesign', 'maxLevel',
-    'maxMemory', 'maxUser', 'modules', 'name', 'note', 'price', 'type'
-  ]
+
+  // props = ['cards', 'dbTypes', 'maxCompany', 'maxConnect', 'maxDesign', 'maxLevel',
+  //   'maxMemory', 'maxUser', 'modules', 'name', 'note', 'price', 'type'
+  // ]
+
   /** 
    * @desc    : 初始化的方法
    * @author  : zj
@@ -51,13 +53,6 @@ class CnbiLicenseManagement {
    * @update   by   
    */
   init() {}
-  GET_LICENSE_ID: '/upm/license/get_license_id',
-    FIND_LICENSE_LIST: '/upm/license/find_list',
-    OPEN_LICENSE: '/upm/license/open_license',
-    SAVE_LICENSE: '/upm/license/save',
-    DELETE_LICENSE: '/upm/license/delete',
-    UPDATE_LICENSE: '/upm/license/update',
-    UPDATE_VAIL_LICENSE: '/upm/license_authority/update_vail_license'
   /** 
    * @desc    : 获取参数
    * @author  : zj
@@ -81,21 +76,11 @@ class CnbiLicenseManagement {
    * @return  {} 
    * @update   by   
    */
-  getLicenseId() {
-    let params = getParams()
-    GET_LICENSE_ID().then(res => {
-      if (res.code === 200 && res.data) {
-        this.$message({
-          type: 'success',
-          message: res.msg
-        });
-      } else {
-        this.$message({
-          type: 'error',
-          message: res.msg
-        });
-      }
-    })
+  getLicenseId(Id) {
+    let res = await GET_LICENSE_ID({
+      licenseId: id
+    });
+    return res.data
   }
   /** 
    * @desc    : 查询牌照列表
@@ -105,21 +90,10 @@ class CnbiLicenseManagement {
    * @return  {} 
    * @update   by   
    */
-  findLicenseList() {
-    let params = getParams()
-    FIND_LICENSE_LIST().then(res => {
-      if (res.code === 200 && res.data) {
-        this.$message({
-          type: 'success',
-          message: res.msg
-        });
-      } else {
-        this.$message({
-          type: 'error',
-          message: res.msg
-        });
-      }
-    })
+  async findLicenseList() {
+    // debugger
+    let res = await FIND_LICENSE_LIST();
+    return res.data
   }
   /** 
    * @desc    : 开启关闭牌照
@@ -129,21 +103,13 @@ class CnbiLicenseManagement {
    * @return  {} 
    * @update   by   
    */
-  openLicense() {
-    let params = getParams()
-    OPEN_LICENSE().then(res => {
-      if (res.code === 200 && res.data) {
-        this.$message({
-          type: 'success',
-          message: res.msg
-        });
-      } else {
-        this.$message({
-          type: 'error',
-          message: res.msg
-        });
-      }
+  openLicense(enable, licenseId) {
+    let res = await OPEN_LICENSE({
+      enable: enable,
+      licenseId: licenseId
     })
+    debugger
+    return res.data
   }
   /** 
    * @desc    : 添加牌照
@@ -153,21 +119,9 @@ class CnbiLicenseManagement {
    * @return  {} 
    * @update   by   
    */
-  saveLicense() {
-    let params = getParams()
-    SAVE_LICENSE().then(res => {
-      if (res.code === 200 && res.data) {
-        this.$message({
-          type: 'success',
-          message: res.msg
-        });
-      } else {
-        this.$message({
-          type: 'error',
-          message: res.msg
-        });
-      }
-    })
+  saveLicense(licenseDto) {
+    let res = await SAVE_LICENSE(licenseDto);
+    return res
   }
   /** 
    * @desc    : 删除牌照
@@ -177,21 +131,10 @@ class CnbiLicenseManagement {
    * @return  {} 
    * @update   by   
    */
-  deleteLicense() {
-    let params = getParams()
-    DELETE_LICENSE().then(res => {
-      if (res.code === 200 && res.data) {
-        this.$message({
-          type: 'success',
-          message: res.msg
-        });
-      } else {
-        this.$message({
-          type: 'error',
-          message: res.msg
-        });
-      }
-    })
+  deleteLicense(licenseIds) {
+    let res = await DELETE_LICENSE(licenseIds);
+    // debugger
+    return res
   }
   /** 
    * @desc    : 编辑牌照
@@ -201,21 +144,10 @@ class CnbiLicenseManagement {
    * @return  {} 
    * @update   by   
    */
-  updateLicense() {
-    let params = getParams()
-    UPDATE_LICENSE().then(res => {
-      if (res.code === 200 && res.data) {
-        this.$message({
-          type: 'success',
-          message: res.msg
-        });
-      } else {
-        this.$message({
-          type: 'error',
-          message: res.msg
-        });
-      }
-    })
+  updateLicense(licenseEditDto) {
+    let res = await UPDATE_LICENSE(licenseEditDto);
+    // debugger
+    return res
   }
   /** 
    * @desc    : 编辑牌照权限
@@ -225,21 +157,10 @@ class CnbiLicenseManagement {
    * @return  {} 
    * @update   by   
    */
-  updateVailLicense() {
-    let params = getParams()
-    UPDATE_VAIL_LICENSE().then(res => {
-      if (res.code === 200 && res.data) {
-        this.$message({
-          type: 'success',
-          message: res.msg
-        });
-      } else {
-        this.$message({
-          type: 'error',
-          message: res.msg
-        });
-      }
-    })
+  updateVailLicense(updateLicenseDto) {
+    let res = await UPDATE_VAIL_LICENSE(updateLicenseDto);
+    // debugger
+    return res
   }
 }
 export default CnbiLicenseManagement

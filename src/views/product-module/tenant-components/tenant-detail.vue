@@ -9,11 +9,11 @@
              src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1570683276,2169925905&fm=26&gp=0.jpg">
         <div style="margin-left: 30px;display: flex;flex-direction: column">
           <div>
-            <h3 style="font-size: 18px;font-weight: bold;">{{info.ownerName}}</h3>
+            <h3 style="font-size: 18px;font-weight: bold;">{{info.name}}</h3>
           </div>
           <div style="display: flex;flex-direction: row;">
             <div>
-              <p>编号：<span>{{info.owneId}}</span></p>
+              <p>编号：<span>{{info.id}}</span></p>
             </div>
             <div style="margin-left: 100px;">
               <p>拥有者：<span>{{info.ownerName}}</span></p>
