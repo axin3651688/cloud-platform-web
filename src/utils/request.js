@@ -40,7 +40,7 @@ service.interceptors.response.use((response) => {
 
 const service2 = axios.create({
   baseURL: '/aapi', // api base_url
-  timeout: 1 // 请求超时时间
+  timeout: 6000 // 请求超时时间
 })
 /* *************************** service2 因为上面的用于请求mock了，下面的是改动过得 *************************** */
 service2.interceptors.request.use(config => {
