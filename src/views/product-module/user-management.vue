@@ -39,6 +39,70 @@
         </template>
       </a-table>
     </div>
+    <a-modal v-model="showAddUser" title="添加用户">
+      <a-form :form="form" class="addUser-table">
+        <a-form-item label="昵称">
+          <a-input
+            placeholder="请输入昵称"
+            v-decorator="[
+              'a',
+              { rules: [{ required: true, message: '请输入昵称！' }] },
+            ]"/>
+        </a-form-item>
+        <a-form-item label="性别" class="table-sex">
+          <a-radio-group name="c" :defaultValue="1">
+            <a-radio :value="1">男</a-radio>
+            <a-radio :value="2">女</a-radio>
+          </a-radio-group>
+        </a-form-item>
+        <a-form-item label="密码">
+          <a-input
+            v-decorator="['password',
+                          { rules: [ { required: true,
+                                       message: '请输入密码!',
+                                     },
+                                     {
+                                       validator: validateToNextPassword,
+                                     },
+                          ],},
+            ]"
+            type="password"
+          />
+        </a-form-item>
+        <a-form-item label="再次输入密码">
+          <a-input
+            v-decorator="['confirm',
+                          {rules: [ {
+                                      required: true,
+                                      message: '请确认你的密码!',
+                                    },
+                                    {
+                                      validator: compareToFirstPassword,
+                                    },
+                          ],},
+            ]"
+            type="password"
+            @blur="handleConfirmBlur"
+          />
+        </a-form-item>
+        <a-form-item label="邮箱">
+          <a-input
+            placeholder="请输入"
+          />
+        </a-form-item>
+        <a-form-item label="手机号" >
+          <a-input
+            placeholder="请输入"
+            v-decorator="['tel',{rules: [{ required: true, message: '请输入正确的手机号' }]}]"/>
+        </a-form-item>
+      </a-form>
+      <template slot="footer" style="display: flex">
+        <a-button key="back" @click="cancelAddUser">取消</a-button>
+        <a-button key="submit" type="primary" @click="saveAddUser">
+          <a-icon type="cloud-upload" /> 保存
+        </a-button>
+      </template>
+    </a-modal>
   </div>
 </template>
 
@@ -46,8 +110,10 @@
 import CommonButton from '@/components/system/common-button'
 import CommonSearch from '@/components/system/common-search'
 import CommonDropDown from '@/components/system/common-drop-down'
+import AFormItem from 'ant-design-vue/es/form/FormItem'
 export default {
   components: {
+    AFormItem,
     CommonButton,
     CommonSearch,
     CommonDropDown
@@ -57,6 +123,9 @@ export default {
       version: '请输入',
       name1: '添加',
       name2: '删除',
+      showAddUser: false,
+      form: this.$form.createForm(this),
+      confirmDirty: false,
       defaultValue: '0',
       selectedRowKeys: [],
       result: [
@@ -159,7 +228,7 @@ export default {
   },
   methods: {
     addClick () {
-
+      this.showAddUser = true
     },
     deleteClick () {
 
@@ -177,6 +246,38 @@ export default {
           id: key
         }
       })
+    },
+    handleConfirmBlur (e) {
+      const value = e.target.value
+      this.confirmDirty = this.confirmDirty || !!value
+    },
+    compareToFirstPassword (rule, value, callback) {
+      const form = this.form
+      if (value && value !== form.getFieldValue('password')) {
+        callback('两次密码不一致！')
+      } else {
+        callback()
+      }
+    },
+    validateToNextPassword (rule, value, callback) {
+      const form = this.form
+      if (value && this.confirmDirty) {
+        form.validateFields(['confirm'], { force: true })
+      }
+      callback()
+    },
+    cancelAddUser () {
+      this.showAddUser = false
+    },
+    saveAddUser () {
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          console.log('1')
+          this.showAddUser = false
+        } else {
+          console.log('cuowu')
+        }
+      })
     }
   }
 }
@@ -185,5 +286,17 @@ export default {
 <style scoped>
   .com-drop-down{
     width: 120px;
+  }
+  .addUser-table{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+  }
+  .addUser-table input{
+    width: 200px;
+  }
+  .table-sex{
+    display: flex;
   }
 </style>

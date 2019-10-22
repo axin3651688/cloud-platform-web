@@ -54,11 +54,11 @@
               </a-form-item>
             </a-col>
             <a-col :span="12">
-              <a-form-item label="地址">
-                <span v-if="!InfoState">狗家县，狗家庄</span>
+              <a-form-item label="用户名">
+                <span v-if="!InfoState">狗蛋</span>
                 <a-input
                   v-else
-                  placeholder="请输入地址"
+                  placeholder="请输入用户名"
                   v-decorator="['b',{rules: [{ required: true, message: '地址不能为空!' }],}]" />
               </a-form-item>
             </a-col>
@@ -78,9 +78,10 @@
             <a-col :span="12">
               <a-form-item label="创建日期">
                 <span v-if="!InfoState">2020.12.36</span>
-                <a-date-picker
+                <a-input
                   v-else
-                  v-decorator="['d',{rules: [{ required: true, message: '请选择创建日期!' }],}]"/>
+                  disabled
+                />
               </a-form-item>
             </a-col>
           </a-row>
@@ -92,9 +93,8 @@
                 <span v-if="!InfoState">*******</span>
                 <a-input
                   v-else
-                  type="password"
-                  placeholder="请输入密码"
-                  v-decorator="['e',{rules: [{ required: true, message: '密码不能为空!' }],}]" />
+                  disabled
+                />
               </a-form-item>
             </a-col>
             <a-col :span="12">
@@ -102,8 +102,8 @@
                 <span v-if="!InfoState">哈哈哈</span>
                 <a-input
                   v-else
-                  placeholder="请输入创建人"
-                  v-decorator="['f',{rules: [{ required: true, message: '创建人不能为空!' }],}]" />
+                  disabled
+                />
               </a-form-item>
             </a-col>
           </a-row>
@@ -123,9 +123,10 @@
             <a-col :span="12">
               <a-form-item label="最近更新日期">
                 <span v-if="!InfoState">2020.2.53</span>
-                <a-date-picker
+                <a-input
                   v-else
-                  v-decorator="['h',{rules: [{ required: true, message: '请选择最近更新日期!' }],}]"/>
+                  disabled
+                />
               </a-form-item>
             </a-col>
           </a-row>
@@ -147,8 +148,8 @@
                 <span v-if="!InfoState">啊深地税发</span>
                 <a-input
                   v-else
-                  placeholder="请输入最近更新人"
-                  v-decorator="['h',{rules: [{ required: true, message: '最近更新人不能为空!' }],}]" />
+                  disabled
+                />
               </a-form-item>
             </a-col>
           </a-row>
