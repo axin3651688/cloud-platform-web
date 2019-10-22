@@ -6,7 +6,9 @@ import {
   SAVE_LICENSE,
   DELETE_LICENSE,
   UPDATE_LICENSE,
-  UPDATE_VAIL_LICENSE
+  UPDATE_VAIL_LICENSE,
+  GET_RESOURCES_CARD,
+  GET_RESOURCES_MODULE
 } from '@/api/productModule'
 /** 
 * @desc    : 该类为牌照管理类，为了实现页面代码更加简单清晰而写的，
@@ -76,7 +78,7 @@ class CnbiLicenseManagement {
    * @return  {} 
    * @update   by   
    */
-  getLicenseId(Id) {
+  async getLicenseId(id) {
     let res = await GET_LICENSE_ID({
       licenseId: id
     });
@@ -103,7 +105,7 @@ class CnbiLicenseManagement {
    * @return  {} 
    * @update   by   
    */
-  openLicense(enable, licenseId) {
+  async openLicense(enable, licenseId) {
     let res = await OPEN_LICENSE({
       enable: enable,
       licenseId: licenseId
@@ -119,7 +121,7 @@ class CnbiLicenseManagement {
    * @return  {} 
    * @update   by   
    */
-  saveLicense(licenseDto) {
+  async saveLicense(licenseDto) {
     let res = await SAVE_LICENSE(licenseDto);
     return res
   }
@@ -131,7 +133,7 @@ class CnbiLicenseManagement {
    * @return  {} 
    * @update   by   
    */
-  deleteLicense(licenseIds) {
+  async deleteLicense(licenseIds) {
     let res = await DELETE_LICENSE(licenseIds);
     // debugger
     return res
@@ -144,7 +146,7 @@ class CnbiLicenseManagement {
    * @return  {} 
    * @update   by   
    */
-  updateLicense(licenseEditDto) {
+  async updateLicense(licenseEditDto) {
     let res = await UPDATE_LICENSE(licenseEditDto);
     // debugger
     return res
@@ -157,10 +159,34 @@ class CnbiLicenseManagement {
    * @return  {} 
    * @update   by   
    */
-  updateVailLicense(updateLicenseDto) {
+  async updateVailLicense(updateLicenseDto) {
     let res = await UPDATE_VAIL_LICENSE(updateLicenseDto);
     // debugger
     return res
+  }
+  /** 
+   * @desc    : 查询应用列表
+   * @author  : zj
+   * @date  : 2019/10/22
+   * @param   {} 
+   * @return  {} 
+   * @update   by   
+   */
+  async getResourcesCard() {
+    let res = await GET_RESOURCES_CARD();
+    return res.data
+  }
+  /** 
+  * @desc    : 查询模块列表
+  * @author  : zj
+  * @date  : 2019/10/22
+  * @param   {} 
+  * @return  {} 
+  * @update   by   
+  */
+  async getResourcesModule() {
+    let res = await GET_RESOURCES_MODULE();
+    return res.data
   }
 }
 export default CnbiLicenseManagement

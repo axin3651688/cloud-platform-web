@@ -14,26 +14,25 @@
                  size="small"
                  :customRow="setRow">
           <a-table-column title="版本"
-                          dataIndex="tag"
-                          key="tag">
+                          dataIndex="name"
+                          key="name">
             <template slot-scope="tags">
               <span>
-                <a-tag v-for="tag in tags"
-                       color="blue"
-                       :key="tag">{{ tag }}</a-tag>
+                <a-tag color="blue"
+                       :key="tags">{{ tags }}</a-tag>
               </span>
             </template>
           </a-table-column>
           <a-table-column title="描述"
-                          key="name1"
+                          key="note"
                           width="30%">
             <template slot-scope="text, record">
               <!-- <editable-cell :text="record.name1" />-->
-              <span>{{ record.name1 }}</span>
-              <span v-if="active==record.key">
+              <span>{{ record.note }}</span>
+              <span v-if="active==record.id">
                 <a-popover trigger="click"
                            v-model="editState"
-                           v-if="record.key==active">
+                           v-if="record.id==active">
                   <template slot="title">
                     <div style="margin: 5px 0;">
                       <span>
@@ -61,23 +60,23 @@
             </template>
           </a-table-column>
           <a-table-column title="价格"
-                          dataIndex="name2"
-                          key="name2" />
+                          dataIndex="price"
+                          key="price" />
           <a-table-column title="更新时间"
-                          dataIndex="name3"
-                          key="name3" />
+                          dataIndex="updateTime"
+                          key="updateTime" />
           <a-table-column title="状态"
-                          key="name4">
+                          key="enable">
             <template slot-scope="text, record">
               <!--1代表开-->
-              <a-switch :defaultChecked="record.name4==1?true:false"
-                        @change="onChange(record.key)" />
+              <a-switch :defaultChecked="record.enable==1?true:false"
+                        @change="onChange(record)" />
             </template>
           </a-table-column>
           <a-table-column title="操作"
                           key="action">
             <template slot-scope="text, record">
-              <span @click="btnClick(record.key)">
+              <span @click="btnClick(record)">
                 编辑
               </span>
             </template>
@@ -89,24 +88,24 @@
            v-if="showFoot">
         <div style="display: flex;flex-direction: column;flex-grow: 1;margin-left: 30px;">
           <div class="middle-a">
-            <span>创建公司最大个数：</span><span>111111111111111</span>
+            <span>创建公司最大个数：</span><span>{{info.maxCompany}}</span>
           </div>
           <div class="middle-a">
-            <span>最创建多资源数：</span><span>111111111</span>
+            <span>最创建多资源数：</span><span>{{info.maxDesign}}</span>
           </div>
           <div class="middle-a">
-            <span>最多可用空间：</span><span>1111111</span>
+            <span>最多可用空间：</span><span>{{info.maxMemory}}</span>
           </div>
         </div>
         <div style="display: flex;flex-direction: column;flex-grow: 2;">
           <div class="middle-a">
-            <span>最多用户数：</span><span>1111111</span>
+            <span>最多用户数：</span><span>{{info.maxUser}}</span>
           </div>
           <div class="middle-a">
-            <span>最大级别数：</span><span>111111111</span>
+            <span>最大级别数：</span><span>{{info.maxLevel}}</span>
           </div>
           <div class="middle-a">
-            <span>最多链接数：</span><span>1111111</span>
+            <span>最多链接数：</span><span>{{info.maxConnect}}</span>
           </div>
         </div>
 
@@ -119,7 +118,7 @@
       <div class="license-foot-a">
         <div style="display: flex;flex-direction: row;justify-content: space-between;height: 50px;">
           <div style="display: flex;flex-direction: row;align-items: center;margin-right: 10px">
-            <img src="../../assets/icons/weizhi.svg">服务地址
+            <img src="../../assets/icons/weizhi.svg">数据源
           </div>
           <div style="display: flex;flex-direction: row;align-items: center;flex-grow: 1;justify-content: space-between;">
             <div v-if="addressState">
@@ -140,7 +139,7 @@
           </div>
         </div>
         <div style="display: flex;flex-direction: row;overflow: hidden;flex-wrap:wrap;flex-grow: 1">
-          <div v-for="(item,index) in address"
+          <div v-for="(item,index) in info.dpTypes"
                :key="index">
             <serve-address :src="item.src"
                            :name="item.name"
@@ -153,7 +152,7 @@
         <!--头部-->
         <div style="display: flex;flex-direction: row;justify-content: space-between;height: 50px;">
           <div style="display: flex;flex-direction: row;align-items: center;margin-right: 10px">
-            <img src="../../assets/icons/shujuyuan.svg">可用数据源
+            <img src="../../assets/icons/shujuyuan.svg">应用
           </div>
           <div style="display: flex;flex-direction: row;align-items: center;flex-grow: 1;justify-content: space-between;">
             <div v-if="dataSourceState">
@@ -175,7 +174,7 @@
         </div>
         <!--内容-->
         <div style="display: flex;flex-direction: row;overflow: hidden;flex-wrap:wrap;flex-grow: 1">
-          <div v-for="(item,index) in dataSource"
+          <div v-for="(item,index) in info.cards"
                :key="index">
             <data-source :src="item.src"
                          :dataSourceState="dataSourceState"></data-source>
@@ -208,7 +207,7 @@
           <a-form-item label="牌照名称:">
             <a-input placeholder="请输入"
                      v-decorator="[
-                'a',
+                'name',
                 { rules: [{ required: true, message: '请输入牌照名称！' }] },
               ]" />
           </a-form-item>
@@ -216,7 +215,7 @@
             <a-textarea placeholder="请输入"
                         :rows="4"
                         v-decorator="[
-                'b',
+                'note',
                 { rules: [{ required: true, message: '请输入牌照描述！' }] },
               ]" />
           </a-form-item>
@@ -238,42 +237,42 @@
           <a-form-item label="创建最大公司数:">
             <a-input placeholder="请输入"
                      v-decorator="[
-                'a',
+                'maxCompany',
                 { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }] },
               ]" />个
           </a-form-item>
           <a-form-item label="最多用户数:">
             <a-input placeholder="请输入"
                      v-decorator="[
-                'b',
+                'maxUser',
                 { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }] },
               ]" />个
           </a-form-item>
           <a-form-item label="创建最多资源数:">
             <a-input placeholder="请输入"
                      v-decorator="[
-                'c',
+                'maxDesign',
                 { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }] },
               ]" />个
           </a-form-item>
           <a-form-item label="最大级别数:">
             <a-input placeholder="请输入"
                      v-decorator="[
-                'd',
+                'maxLevel',
                 { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }] },
               ]" />级
           </a-form-item>
           <a-form-item label="最多可用空间:">
             <a-input placeholder="请输入"
                      v-decorator="[
-                'e',
+                'maxMemory',
                 { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }] },
               ]" />MB
           </a-form-item>
           <a-form-item label="最多链接数:">
             <a-input placeholder="请输入"
                      v-decorator="[
-                'f',
+                'maxConnect',
                 { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }] },
               ]" />个
           </a-form-item>
@@ -293,35 +292,31 @@
                 @submit="threeSubmit">
           <a-form-item label="可用应用:">
             <a-select v-decorator="[
-                'a',
+                'cards',
                 { rules: [{ required: true, message: '请选择可用应用' }] },
               ]"
                       placeholder="请选择"
                       mode="multiple"
                       @change="handleSelectChange">
 
-              <a-select-option value="male">
-                male
-              </a-select-option>
-              <a-select-option value="female">
-                female
+              <a-select-option v-for="(item,index) in cardArr"
+                               :key="index">
+                {{item}}
               </a-select-option>
             </a-select>
           </a-form-item>
           <a-form-item label="可用模块:">
             <a-select style="width: 100%;min-width: 200px;"
                       v-decorator="[
-                'b',
+                'modules',
                 { rules: [{ required: true, message: '请选择可用模块' }] },
               ]"
                       placeholder="请选择"
                       mode="multiple"
                       @change="handleSelectChange">
-              <a-select-option value="male">
-                male
-              </a-select-option>
-              <a-select-option value="female">
-                female
+              <a-select-option v-for="(item,index) in moduleArr"
+                               :key="index">
+                {{item}}
               </a-select-option>
             </a-select>
           </a-form-item>
@@ -337,8 +332,7 @@
       <div class="steps-content"
            style="display: flex;justify-content: center;flex-direction: column;align-items: center;"
            v-if="current==3">
-        <div v-if="saveFlag"
-             style="display: flex;flex-direction: column;align-items: center; justify-content: center;margin-top: 50px">
+        <div style="display: flex;flex-direction: column;align-items: center; justify-content: center;margin-top: 50px">
           <img style="width: 72px"
                src="../../assets/icons/wancheng.svg">
           <span>牌照创建成功</span>
@@ -353,7 +347,7 @@
 </template>
 
 <script>
-// import CnbiLicenseManagement from '@/classes/lib/CnbiLicenseManagement'
+import CnbiLicenseManagement from '@/classes/lib/CnbiLicenseManagement'
 import EditableCell from '@/components/system/editable-cell'
 import CommonButton from '@/components/system/common-button'
 import ServeAddress from './license-components/serve-address'
@@ -370,6 +364,7 @@ export default {
   name: 'LicenseManagement',
   data () {
     return {
+      info: null,//要编辑的牌照所有详细信息
       name1: '添加牌照',
       name2: '删除',
       editState: false, // 编辑状态
@@ -378,72 +373,83 @@ export default {
       dataSourceState: true, // 数据源状态
       showFoot: false, // 脚部
       selectedRowKeys: [],
-      tableData: [
-        {
-          key: 1,
-          name: 11,
-          name1: '这是一段描述，关于这个版本的一段文字占位符',
-          name2: 111,
-          name3: 111,
-          name4: 1,
-          tag: ['刁民']
-        },
-        {
-          key: 2,
-          name: 222,
-          name1: '这是一段描述，关于这个版本的一段文字占位符',
-          name2: 222,
-          name3: 222,
-          name4: 0,
-          tag: ['平民']
-        },
-        {
-          key: 3,
-          name: 333,
-          name1: '这是一段描述，关于这个版本的一段文字占位符',
-          name2: 33,
-          name3: 33,
-          name4: 0,
-          tag: ['地主']
-        }
-      ], // 表格数据
-      address: [
-        {
-          src: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2350302849,3323337377&fm=26&gp=0.jpg',
-          name: 'Oracel'
-        },
-        {
-          src: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2350302849,3323337377&fm=26&gp=0.jpg',
-          name: 'Mysql'
-        },
-        {
-          src: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2350302849,3323337377&fm=26&gp=0.jpg',
-          name: 'Sql Serve'
-        },
-        {
-          src: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2350302849,3323337377&fm=26&gp=0.jpg',
-          name: 'asdf'
-        }
-      ], // 服务地址
-      dataSource: [
-        {
-          src: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2018939532,1617516463&fm=26&gp=0.jpg'
-        }, {
-          src: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2536453479,3877278103&fm=26&gp=0.jpg'
-        },
-        {
-          src: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2018939532,1617516463&fm=26&gp=0.jpg'
-        }
-      ], // 可用数据源
+      tableData: [], // 表格数据
+      // address: [
+      //   {
+      //     src: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2350302849,3323337377&fm=26&gp=0.jpg',
+      //     name: 'Oracel'
+      //   },
+      //   {
+      //     src: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2350302849,3323337377&fm=26&gp=0.jpg',
+      //     name: 'Mysql'
+      //   },
+      //   {
+      //     src: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2350302849,3323337377&fm=26&gp=0.jpg',
+      //     name: 'Sql Serve'
+      //   },
+      //   {
+      //     src: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2350302849,3323337377&fm=26&gp=0.jpg',
+      //     name: 'asdf'
+      //   }
+      // ], // 服务地址
+      // dataSource: [
+      //   {
+      //     src: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2018939532,1617516463&fm=26&gp=0.jpg'
+      //   }, {
+      //     src: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2536453479,3877278103&fm=26&gp=0.jpg'
+      //   },
+      //   {
+      //     src: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2018939532,1617516463&fm=26&gp=0.jpg'
+      //   }
+      // ], // 可用数据源
       showLicenseModal: false, // 添加牌照弹框
       current: 0, // 步骤条
       form: this.$form.createForm(this),
       form1: this.$form.createForm(this),
       form2: this.$form.createForm(this),
-      saveFlag: false // 保存状态,
+      // saveFlag: false, // 保存状态,
+      cardArr: [],//应用数组
+      moduleArr: [],//模块数组
+      formData: {},//表单的数据
+      ids: []//根据勾选的，获得对应牌照信息的id
     }
   },
+  created () {
+    this.LicenseMObj = new CnbiLicenseManagement()
+    this.getData()
+  },
   methods: {
+    async refreshData () {
+      const data = await this.LicenseMObj.findLicenseList()
+      data.forEach(item => {
+        var oDate = new Date(item.updateTime * 1)
+        var oYear = oDate.getFullYear()
+        var oMonth = oDate.getMonth() + 1
+        var oDay = oDate.getDate()
+        if (oMonth < 10) {
+          oMonth = '0' + oMonth
+        }
+        if (oDay < 10) {
+          oDay = '0' + oDay
+        }
+        var oTime = oDay + '/' + oMonth + '/' + oYear
+        item.updateTime = oTime
+      })
+      this.tableData = data
+    },
+    // 进入页面  加载数据列表
+    async getData () {
+      await this.refreshData()
+
+      //获取应用数组
+      debugger
+      const cardArr = await this.LicenseMObj.getResourcesCard();
+      // console.log(cardArr, '0000000')
+      this.cardArr = cardArr.map(item => item.name);
+      const moduleArr = await this.LicenseMObj.getResourcesModule();
+      this.moduleArr = moduleArr.map(item => item.name);
+      //获取模块数组
+    },
     setRow (record) {
       return {
         on: { // 事件
@@ -452,7 +458,7 @@ export default {
           contextmenu: (event) => { },
           mouseenter: (event) => {
             if (!this.editState) {
-              this.active = record.key
+              this.active = record.id
             }
           }, // 鼠标移入行
 
@@ -468,23 +474,58 @@ export default {
       this.editState = false
     },
     addClick () {
-      console.log('123')
+      // console.log('123')
       this.showLicenseModal = true
       this.current = 0
     },
-    deleteClick () {
-
+    async deleteClick () {
+      //1.如果没有勾选就点击删除按钮，提示框
+      if (this.ids.length == 0) {
+        confirm('请勾选要删除的租户')
+        return
+      }
+      if (this.ids.length > 0) {
+        confirm('删除后无法恢复，您确定继续？')
+      }
+      //2.如果勾选了，则获取勾选的id数组
+      //3.调用删除接口，传入参数，删除
+      debugger
+      await this.LicenseMObj.deleteLicense(this.ids)
+      //4.删除成功后，及时更新数据，清除勾选图标
+      await this.refreshData()
     },
-    onSelectChange (selectedRowKeys) {
+    //勾选事件
+    onSelectChange (selectedRowKeys, bb, cc) {
+      // debugger
+      // console.log(bb, '888888222')
       this.selectedRowKeys = selectedRowKeys
+      this.ids = bb.map(d => d.id * 1)
+      // console.log(ids, '00001222211')
     },
-    btnClick (key) {
+
+    //点击编辑按钮
+    async btnClick (record) {
+      //展开详细信息
+      // debugger
       this.showFoot = true
-      this.$message.success('操作成功')
+      // console.log(record, '44444444444444444')
+      //查询牌照的详细信息
+      var info = await this.LicenseMObj.getLicenseId(record.id * 1)
+      info.createTime = new Date(info.createTime * 1).toLocaleString();
+      info.updateTime = new Date(info.updateTime * 1).toLocaleString();
+      this.info = info
+      // console.log(info, '55555555555555')
+      //info.cards(应用数组)
+      //info.dbTypes(数据源数组)
+      //info.modules(模块数组)
     },
-    onChange (checked) {
-      console.log(checked)
+    //修改状态
+    async onChange (record) {
+      // debugger
+      // console.log(record, '44444444444444444')
+      await this.LicenseMObj.openLicense((record.enable - 0 == 0) ? 1 : 0, record.id * 1)
     },
+
     updateAddress () { // 保存地址修改
       this.addressState = true
     },
@@ -504,6 +545,7 @@ export default {
       e.preventDefault()
       this.form1.validateFields((err, values) => {
         if (!err) {
+          this.formData = Object.assign(this.formData, values)
           console.log('1')
           this.current += 1
         } else {
@@ -515,6 +557,7 @@ export default {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
+          this.formData = Object.assign(this.formData, values)
           console.log('1')
           this.current += 1
         } else {
@@ -527,8 +570,9 @@ export default {
     },
     threeSubmit (e) {
       e.preventDefault()
-      this.form2.validateFields((err, values) => {
+      this.form2.validateFields((err, values) => {        debugger
         if (!err) {
+          this.formData = Object.assign(this.formData, values)
           console.log('1')
           this.current += 1
         } else {
@@ -536,8 +580,18 @@ export default {
         }
       })
     },
-    saveLicense () {
-      this.saveFlag = true
+
+    //保存新增的牌照
+    async saveLicense () {
+      // this.saveFlag = true
+      let params = this.formData
+      // debugger
+      await this.LicenseMObj.saveLicense(params)
+
+      //保存成功后继续刷新数据
+      await this.refreshData()
+      //关闭弹框
+      this.showLicenseModal = false
     }
 
   }

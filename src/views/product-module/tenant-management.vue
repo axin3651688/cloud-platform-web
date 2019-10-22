@@ -281,15 +281,8 @@ export default {
     this.getData()
   },
   methods: {
-    getIds (ids) {//1.获取表格中勾选的租户id数组(删除操作第一步)
-      // debugger
-      this.tenancyIds = ids
-    },
-    // 进入页面  加载数据列表
-    async getData () {
-      // debugger
+    async refreshData () {
       const data = await this.TenantMObj.getTenancyList()
-      // console.log('98989', data)
       data.forEach(item => {
         // debugger
         var oDate = new Date(item.updateTime * 1)
@@ -319,6 +312,14 @@ export default {
         item.endTime = oTime1
       })
       this.data = data
+    },
+    getIds (ids) {//1.获取表格中勾选的租户id数组(删除操作第一步)
+      // debugger
+      this.tenancyIds = ids
+    },
+    // 进入页面  加载数据列表
+    async getData () {
+      await this.refreshData()
       this.dataOld = this.deepCopy(this.data);
       //获取所有的所属人
       // debugger
@@ -342,15 +343,16 @@ export default {
       debugger
       //2.根据传过来的id数组参数，传入，对应的删除接口中，完成删除操作（删除操作第二步）
       if (_this.tenancyIds.length == 0) {
-        alert('请勾选要删除的租户')
+        confirm('请勾选要删除的租户')
+        return
+      }
+      if (_this.tenancyIds.length > 0) {
+        confirm('删除后无法恢复，您确定继续？')
       }
       await _this.TenantMObj.deleteTenancy(_this.tenancyIds)
-      //删除之后去除勾选的标记
-      // _this.tenancyIds = []
 
       //重新加载最新的数据
-      const data = await _this.TenantMObj.getTenancyList()
-      _this.data = data
+      await _this.refreshData()
 
       //清除勾选的id
       this.$refs.table.clearSelectedKey()
@@ -369,8 +371,7 @@ export default {
           await _this.TenantMObj.saveTenancy(formData)
 
           //重新加载最新的数据
-          const data = await _this.TenantMObj.getTenancyList()
-          _this.data = data
+          await _this.refreshData()
         }
         _this.visible = false
       })
