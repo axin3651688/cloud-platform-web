@@ -104,6 +104,14 @@ module.exports = {
         ws: false,
         changeOrigin: true
       },
+      '/aapi': {
+        target: 'http://192.168.2.236:80',
+        ws: false,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/aapi': '/'
+        }
+      },
       '/org': {
         target: 'http://192.168.2.236:80',
         ws: false,
