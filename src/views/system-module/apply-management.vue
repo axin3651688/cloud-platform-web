@@ -324,7 +324,7 @@ export default {
     width: 120px;
   }
   .form1-icon .ant-form-item-children{
-display: flex;
+    display: flex;
     align-items: center;
   }
 </style>

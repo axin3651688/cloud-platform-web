@@ -406,8 +406,8 @@ export default {
     selectCell (val) {
       console.log(val)
     },
-    onSelectChange () {
-
+    onSelectChange (selectedRowKeys) {
+      this.selectedRowKeys = selectedRowKeys
     },
     updataState (key) {
 
