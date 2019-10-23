@@ -493,6 +493,7 @@ export default {
       await this.LicenseMObj.deleteLicense(this.ids)
       //4.删除成功后，及时更新数据，清除勾选图标
       await this.refreshData()
+      this.selectedRowKeys = []
     },
     //勾选事件
     onSelectChange (selectedRowKeys, bb, cc) {

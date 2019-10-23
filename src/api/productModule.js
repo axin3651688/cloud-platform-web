@@ -167,7 +167,6 @@ export function FIND_LICENSE_LIST() {
  */
 export function OPEN_LICENSE(parameter) {
   return axios2({
-    // url: api.OPEN_LICENSE+ parameter.enable + '\/' + parameter.licenseId,
     url: api.OPEN_LICENSE,
     method: 'put',
     params: parameter
