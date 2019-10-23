@@ -1,19 +1,22 @@
 <!--牌照管理-可用数据源-->
 <template>
-  <div class="box" style="margin: 10px 30px" v-show="flag">
-    <img
-      style="width: 64px;height: 64px;"
-      :src="src"/>
-    <a-badge count="X" class="icon-cha" v-if="!dataSourceState" @click="aclick()">
-      <span href="#" class="head-example" ></span>
-    </a-badge>
+  <div class="box" v-show="flag">
+    <div style="margin: 10px 30px;display: flex;flex-direction: column;align-items: center">
+      <img
+        style="width: 64px;height: 64px;border-radius: 4px;"
+        :src="src"/>
+      <span style="margin: 5px 0">{{ name }}</span>
+      <a-badge count="X" class="icon-cha" v-if="!dataSourceState" @click="aclick()">
+        <span href="#" class="head-example" ></span>
+      </a-badge>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'DataSoucer',
-  props: ['src', 'dataSourceState'],
+  props: ['src', 'dataSourceState', 'name'],
   data () {
     return {
       flag: true
