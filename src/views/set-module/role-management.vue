@@ -1,4 +1,5 @@
 <template>
+  <!--角色管理-->
   <div>
     <div style="display: flex;flex-direction: row;justify-content: flex-end">
       <common-button
@@ -10,7 +11,6 @@
       </common-button>
     </div>
     <a-table
-      bordered
       :columns="columns"
       :dataSource="dataSource"
       :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}" >
@@ -152,7 +152,7 @@ export default {
 
     },
     accredit () {
-      console.log('授权-----------------')
+      this.$router.push({ name: 'RoleAccredit' })
     },
     btnClick () {
       this.showEditRole = true
