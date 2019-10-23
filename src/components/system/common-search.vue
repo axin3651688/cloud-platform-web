@@ -17,7 +17,7 @@ export default {
     placeholder: String
   },
   methods: {
-    onSearch (value) {
+    onSearch (value) {debugger
       console.log(value)
       this.$emit('inputHandler', value);
     },

@@ -369,6 +369,7 @@ export default {
       name2: '删除',
       editState: false, // 编辑状态
       active: '',
+      LicenseMObj:null,
       addressState: true, // 服务地址编辑状态
       dataSourceState: true, // 数据源状态
       showFoot: false, // 脚部

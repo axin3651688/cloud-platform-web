@@ -57,7 +57,7 @@
                 {{info.licenseName}}
               </a-form-item>
               <a-form-item label="服务标识">
-                {{info.serviceId}}
+                {{info.service}}
               </a-form-item>
               <a-form-item label="联系电话">
                 {{info.tel}}
@@ -267,7 +267,7 @@ export default {
       info.endTime = new Date(info.endTime * 1).toLocaleString();
       info.updateTime = new Date(info.updateTime * 1).toLocaleString();
       this.info = info
-      // console.log(info, '66666666')
+      console.log(info, '6666666677777777777777')
 
       //获取所有的所属人
       // debugger

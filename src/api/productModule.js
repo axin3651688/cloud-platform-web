@@ -25,7 +25,7 @@ const api = {
   //模块管理相关接口
   GET_RESOURCES_TREE: '/upm/resource/get_resources_tree',
   SAVE_RESOURCE: '/upm/resource/save',
-  DELETE_RESOURCE: '/upm/resource/delete',
+  DELETE_RESOURCE: '/upm/resource/bat_delete',
   OPEN_RESOURCE: '/upm/resource/open_resource',
   UPDATE_RESOURCE: '/upm/resource/update'
 }
@@ -237,13 +237,13 @@ export function UPDATE_VAIL_LICENSE(parameter) {
   })
 }
 /** 
-* @desc    : 查询应用列表
-* @author  : zj
-* @date  : 2019/10/22
-* @param   {} 
-* @return  {} 
-* @update   by   
-*/
+ * @desc    : 查询应用列表
+ * @author  : zj
+ * @date  : 2019/10/22
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
 export function GET_RESOURCES_CARD() {
   return axios2({
     url: api.GET_RESOURCES_CARD,
@@ -251,14 +251,14 @@ export function GET_RESOURCES_CARD() {
   })
 }
 /** 
-* @desc    : 查询模块列表
-* @author  : zj
-* @date  : 2019/10/22
-* @param   {} 
-* @return  {} 
-* @update   by   
-*/
-export function GET_RESOURCES_MODULE(){
+ * @desc    : 查询模块列表
+ * @author  : zj
+ * @date  : 2019/10/22
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function GET_RESOURCES_MODULE() {
   return axios2({
     url: api.GET_RESOURCES_MODULE,
     method: 'get'
@@ -272,11 +272,10 @@ export function GET_RESOURCES_MODULE(){
  * @return  {} 
  * @update   by   
  */
-export function GET_RESOURCES_TREE(parameter) {
+export function GET_RESOURCES_TREE() {
   return axios2({
     url: api.GET_RESOURCES_TREE,
-    method: 'get',
-    params: parameter
+    method: 'get'
   })
 }
 /** 
@@ -287,7 +286,7 @@ export function GET_RESOURCES_TREE(parameter) {
  * @return  {} 
  * @update   by   
  */
-export function SAVE_RESOURCE() {
+export function SAVE_RESOURCE(parameter) {
   return axios2({
     url: api.SAVE_RESOURCE,
     method: 'post',
@@ -304,9 +303,9 @@ export function SAVE_RESOURCE() {
  */
 export function DELETE_RESOURCE(parameter) {
   return axios2({
-    url: api.DELETE_RESOURCE,
+    url: api.DELETE_RESOURCE + parameter.type,
     method: 'delete',
-    params: parameter
+    data: parameter.ids
   })
 }
 /** 
@@ -332,10 +331,10 @@ export function OPEN_RESOURCE(parameter) {
  * @return  {} 
  * @update   by   
  */
-export function UPDATE_RESOURCE() {
+export function UPDATE_RESOURCE(parameter) {
   return axios2({
     url: api.UPDATE_RESOURCE,
     method: 'put',
-    params: parameter
+    data: parameter
   })
 }

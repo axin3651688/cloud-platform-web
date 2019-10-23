@@ -8,25 +8,25 @@ const api = {
   GET_RESOURCES_CARD: '/upm/resource/get_resources_card',
   OPEN_RESOURCE: '/upm/resource/open_resource',
   GET_CARD_CONFIG: '/upm/resource/get_card_config',
-  DELETE_RESOURCE: '/upm/resource/delete',
+  DELETE_RESOURCE: '/upm/resource/bat_delete/',
   SAVE_RESOURCE: '/upm/resource/save',
+  UPDATE_RESOURCE: '/upm/resource/update',
   SEARCH_RESOURCES_CARD: '/upm/resource/search_resources_card'
 }
 export default api
 
 /** 
- * @desc    : 通过父资源查询所有子资源(应用列表)
+ * @desc    : 应用列表
  * @author  : zj
  * @date  : 2019/10/15
  * @param   {} 
  * @return  {} 
  * @update   by   
  */
-export function GET_RESOURCES_CARD(parameter) {
+export function GET_RESOURCES_CARD() {
   return axios2({
     url: api.GET_RESOURCES_CARD,
-    method: 'get',
-    params: parameter
+    method: 'get'
   })
 }
 
@@ -72,9 +72,9 @@ export function GET_CARD_CONFIG(parameter) {
  */
 export function DELETE_RESOURCE(parameter) {
   return axios2({
-    url: api.DELETE_RESOURCE,
+    url: api.DELETE_RESOURCE + parameter.type,
     method: 'delete',
-    params: parameter
+    data: parameter.ids
   })
 }
 
@@ -93,7 +93,21 @@ export function SAVE_RESOURCE(parameter) {
     data: parameter
   })
 }
-
+/** 
+ * @desc    : 编辑应用
+ * @author  : zj
+ * @date  : 2019/10/23
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function UPDATE_RESOURCE(parameter) {
+  return axios2({
+    url: api.UPDATE_RESOURCE,
+    method: 'put',
+    data: parameter
+  })
+}
 /** 
  * @desc    : 搜索应用
  * @author  : zj
@@ -102,7 +116,7 @@ export function SAVE_RESOURCE(parameter) {
  * @return  {} 
  * @update   by   
  */
-export function SEARCH_RESOURCES_CARD() {
+export function SEARCH_RESOURCES_CARD(parameter) {
   return axios2({
     url: api.SEARCH_RESOURCES_CARD,
     method: 'get',

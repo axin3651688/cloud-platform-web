@@ -189,7 +189,7 @@
                   :customRequest="customRequest"
                   :disabled="disable">
                   <img
-                    v-if="imageUrl"
+                    v-if="imageUrl" 
                     :src="imageUrl"
                     alt="avatar"
                     v-decorator="['logoId']" />

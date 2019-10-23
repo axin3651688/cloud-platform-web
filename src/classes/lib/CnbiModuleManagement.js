@@ -20,17 +20,6 @@ import {
 * @update   by   
 */
 class CnbiModuleManagement {
-  // 资源数据传输对象 {
-  //   iconId (integer, optional): 图标 ,
-  //   id (integer, optional): 主键 ,
-  //   name (string, optional): 名称 ,
-  //   note (string, optional): 描述 ,
-  //   pid (string, optional): 父编码 ,
-  //   route (string, optional): 路由 ,
-  //   serviceId (string, optional): 服务标识 ,
-  //   type (integer, optional): 类型 0：目录，1：菜单，2：功能 3：卡片 ,
-  //   url (string, optional): 路由
-  //   }
   constructor(obj) {
     Object.assign(this, obj)
     this.init()
@@ -43,10 +32,66 @@ class CnbiModuleManagement {
    * @return  {} 
    * @update   by   
    */
-  init() {
+  init() {}
 
+
+  async getResourcesTree() {
+    let res = await GET_RESOURCES_TREE();
+    return res.data
   }
-
-
+  /** 
+   * @desc    : 开启关闭应用
+   * @author  : zj
+   * @date  : 2019/10/23
+   * @param   {} 
+   * @return  {} 
+   * @update   by   
+   */
+  async openResource(id, enable) {
+    let res = await OPEN_RESOURCE({
+      id: id,
+      enable: enable
+    });
+    return res
+  }
+  /** 
+   * @desc    : 删除应用
+   * @author  : zj
+   * @date  : 2019/10/23
+   * @param   {} 
+   * @return  {} 
+   * @update   by   
+   */
+  async deleteResource(ids, type) {
+    debugger
+    let res = await DELETE_RESOURCE({
+      ids: ids,
+      type: type
+    });
+  }
+  /** 
+   * @desc    : 添加应用
+   * @author  : zj
+   * @date  : 2019/10/23
+   * @param   {} 
+   * @return  {} 
+   * @update   by   
+   */
+  async saveResource(resourceDto) {
+    let res = await SAVE_RESOURCE(resourceDto);
+    return res
+  }
+  /** 
+   * @desc    : 编辑应用
+   * @author  : zj
+   * @date  : 2019/10/23
+   * @param   {} 
+   * @return  {} 
+   * @update   by   
+   */
+  async updateResource(resourceDto) {
+    let res = await UPDATE_RESOURCE(resourceDto);
+    return res
+  }
 }
 export default CnbiModuleManagement
