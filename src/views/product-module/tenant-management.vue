@@ -4,63 +4,55 @@
     <div>
       <div style="display: flex;flex-direction: row;justify-content: space-between">
         <div style="display: flex;flex-direction: row;">
-          <common-drop-down
-            :result="result"
-            class="com-drop-down"
-            :defaultValue="'name'"
-            @selectCell="selectCell">
+          <common-drop-down :result="result"
+                            class="com-drop-down"
+                            :defaultValue="'name'"
+                            @selectCell="selectCell">
           </common-drop-down>
           <!--搜索框-->
-          <common-search
-            :placeholder="version"
-            style="width: 220px;float: none"
-            @inputHandler="inputHandler">
+          <common-search :placeholder="version"
+                         style="width: 220px;float: none"
+                         @inputHandler="inputHandler">
           </common-search>
         </div>
         <!--按钮-->
-        <common-button
-          style="float: none;"
-          :name1="name1"
-          :name2="name2"
-          @addClick="addClick"
-          @deleteClick="deleteClick">
+        <common-button style="float: none;"
+                       :name1="name1"
+                       :name2="name2"
+                       @addClick="addClick"
+                       @deleteClick="deleteClick">
         </common-button>
       </div>
       <!--表格-->
-      <common-table
-        :columns="columns"
-        :data="data"
-        @getIds="getIds"
-        ref="table"></common-table>
+      <common-table :columns="columns"
+                    :data="data"
+                    @getIds="getIds"
+                    ref="table"></common-table>
     </div>
     <!--添加租户弹框-->
     <div v-if="visible">
-      <a-modal
-        title="添加租户"
-        :visible="visible"
-        @ok="handleOk"
-        @cancel="handleCancel"
-        okText="保存"
-        cancelText="取消"
-        :destroyOnClose="true"
-        :width="730">
+      <a-modal title="添加租户"
+               :visible="visible"
+               @ok="handleOk"
+               @cancel="handleCancel"
+               okText="保存"
+               cancelText="取消"
+               :destroyOnClose="true"
+               :width="730">
         <a-form :form="form">
           <!-- 表单第一行 -->
-          <a-row
-            :gutter="24"
-            class="row1">
+          <a-row :gutter="24"
+                 class="row1">
             <a-col :span="12">
               <a-form-item label="名称">
-                <a-input
-                  placeholder="请输入名称"
-                  v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],}]" />
+                <a-input placeholder="请输入名称"
+                         v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],}]" />
               </a-form-item>
             </a-col>
             <a-col :span="12">
               <a-form-item label="营业执照">
-                <a-input
-                  placeholder="目录"
-                  v-decorator="['societyCode',{rules: [{ required: true, message: '营业执照不能为空!' }],}]" />
+                <a-input placeholder="目录"
+                         v-decorator="['societyCode',{rules: [{ required: true, message: '营业执照不能为空!' }],}]" />
               </a-form-item>
             </a-col>
           </a-row>
@@ -70,32 +62,27 @@
               <a-form-item label="所属人">
                 <a-select v-decorator="['ownerId',{rules: [{ required: true, message: '请选择所属人!' }],}]">
                   <template slot="suffixIcon">
-                    <img
-                      style="width: 12px;"
-                      src="../../assets/icons/paixu.svg" />
+                    <img style="width: 12px;"
+                         src="../../assets/icons/paixu.svg" />
                   </template>
-                  <a-select-option
-                    v-for="(item,index) in owners"
-                    :key="index">
-                    {{ item }}
+                  <a-select-option v-for="(item,index) in owners"
+                                   :key="index">
+                    {{item}}
                   </a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>
             <a-col :span="12">
               <a-form-item label="所属牌照">
-                <a-select
-                  default-value="1"
-                  v-decorator="['licenseId',{rules: [{ required: true, message: '请选择所属牌照!' }],}]">>
+                <a-select default-value="1"
+                          v-decorator="['licenseId',{rules: [{ required: true, message: '请选择所属牌照!' }],}]">>
                   <template slot="suffixIcon">
-                    <img
-                      style="width: 12px;"
-                      src="../../assets/icons/paixu.svg" />
+                    <img style="width: 12px;"
+                         src="../../assets/icons/paixu.svg" />
                   </template>
-                  <a-select-option
-                    v-for="(item,index) in LicenseList"
-                    :key="index">
-                    {{ item }}
+                  <a-select-option v-for="(item,index) in LicenseList"
+                                   :key="index">
+                    {{item}}
                   </a-select-option>
                 </a-select>
               </a-form-item>
@@ -106,13 +93,11 @@
           <a-row :gutter="24">
             <a-col :span="12">
               <a-form-item label="租户类型">
-                <a-select
-                  default-value="1"
-                  v-decorator="['type',{rules: [{ required: true, message: '请选择租户类型!' }],}]">
+                <a-select default-value="1"
+                          v-decorator="['type',{rules: [{ required: true, message: '请选择租户类型!' }],}]">
                   <template slot="suffixIcon">
-                    <img
-                      style="width: 12px;"
-                      src="../../assets/icons/paixu.svg" />
+                    <img style="width: 12px;"
+                         src="../../assets/icons/paixu.svg" />
                   </template>
                   <a-select-option value="1">
                     公共部署
@@ -128,9 +113,8 @@
             </a-col>
             <a-col :span="12">
               <a-form-item label="服务标识">
-                <a-input
-                  placeholder="请输入服务标识"
-                  v-decorator="['serviceId',{rules: [{ required: true, message: '服务标识不能为空!' }],}]" />
+                <a-input placeholder="请输入服务标识"
+                         v-decorator="['serviceId',{rules: [{ required: true, message: '服务标识不能为空!' }],}]" />
               </a-form-item>
             </a-col>
           </a-row>
@@ -139,27 +123,23 @@
           <a-row :gutter="24">
             <a-col :span="12">
               <a-form-item label="访问地址">
-                <a-input
-                  addonBefore="Http://"
-                  style="width: 329px"
-                  placeholder="请输入"
-                  v-decorator="['url']" />
+                <a-input addonBefore="Http://"
+                         style="width: 329px"
+                         placeholder="请输入"
+                         v-decorator="['url']" />
               </a-form-item>
             </a-col>
             <a-col :span="12">
               <a-form-item label="联系电话">
-                <a-input
-                  v-decorator="['tel',{rules: [{ required: true, message: 'Please input your phone number!' }],}]"
-                  style="width: 100%">
-                  <a-select
-                    slot="addonBefore"
-                    default-value="86"
-                    v-decorator="['prefix', { initialValue: '86' }]"
-                    style="width: 70px">
+                <a-input v-decorator="['tel',{rules: [{ required: true, message: 'Please input your phone number!' }],}]"
+                         style="width: 100%">
+                  <a-select slot="addonBefore"
+                            default-value="86"
+                            v-decorator="['prefix', { initialValue: '86' }]"
+                            style="width: 70px">
                     <template slot="suffixIcon">
-                      <img
-                        style="width: 12px;"
-                        src="../../assets/icons/paixu.svg" />
+                      <img style="width: 12px;"
+                           src="../../assets/icons/paixu.svg" />
                     </template>
                     <a-select-option value="86">
                       +86
@@ -178,24 +158,21 @@
             <a-col :span="12">
               <!-- 第五行左1 -->
               <a-form-item label="租户地址">
-                <a-input
-                  placeholder="请输入租户地址"
-                  v-decorator="['address',{rules: [{ required: true, message: '租户地址不能为空!' }],}]" />
+                <a-input placeholder="请输入租户地址"
+                         v-decorator="['address',{rules: [{ required: true, message: '租户地址不能为空!' }],}]" />
               </a-form-item>
               <!-- 第五行左2 -->
               <a-row :gutter="24">
                 <a-col :span="12">
                   <a-form-item label="生效时间">
-                    <a-date-picker
-                      @change="onChange"
-                      v-decorator="['beginTime',{rules: [{ required: true, message: '请选择牌照生效时间!' }],}]" />
+                    <a-date-picker @change="onChange"
+                                   v-decorator="['beginTime',{rules: [{ required: true, message: '请选择牌照生效时间!' }],}]" />
                   </a-form-item>
                 </a-col>
                 <a-col :span="12">
                   <a-form-item label="失效时间">
-                    <a-date-picker
-                      @change="onChange"
-                      v-decorator="['endTime',{rules: [{ required: true, message: '请选择牌照到期时间!' }],}]" />
+                    <a-date-picker @change="onChange"
+                                   v-decorator="['endTime',{rules: [{ required: true, message: '请选择牌照到期时间!' }],}]" />
                   </a-form-item>
                 </a-col>
               </a-row>
@@ -254,8 +231,8 @@ export default {
   data () {
     return {
       form: this.$form.createForm(this),
-      owners: [], // 从云智囊中查询的所有拥有者数组
-      LicenseList: [], // 牌照列表数组
+      owners: [],//从云智囊中查询的所有拥有者数组
+      LicenseList: [],//牌照列表数组
       TenantMObj: null,
       url: '',
       disable: false,
@@ -297,7 +274,7 @@ export default {
       previewImage: '',
       previewVisible: false,
       fileList: ['https://tpc.googlesyndication.com/daca_images/simgad/17069283415306529692'],
-      tenancyIds: [], // 勾选的要删除的租户id数组
+      tenancyIds: [], //勾选的要删除的租户id数组
       selectVal: '',
       dataOld: []
     }
@@ -307,13 +284,7 @@ export default {
     this.getData()
   },
   methods: {
-    getIds (ids) { // 1.获取表格中勾选的租户id数组(删除操作第一步)
-      // debugger
-      this.tenancyIds = ids
-    },
-    // 进入页面  加载数据列表
-    async getData () {
-      // debugger
+    async refreshData () {
       const data = await this.TenantMObj.getTenancyList()
       // console.log('98989', data)
       data.forEach(item => {
@@ -345,40 +316,49 @@ export default {
         item.endTime = oTime1
       })
       this.data = data
-      this.dataOld = this.deepCopy(this.data)
-      // 获取所有的所属人
+    },
+    getIds (ids) {//1.获取表格中勾选的租户id数组(删除操作第一步)
       // debugger
-      const owners = await this.TenantMObj.getUserSimpleInfoList()
-      this.owners = owners.map(item => item.trueName)
+      this.tenancyIds = ids
+    },
+    // 进入页面  加载数据列表
+    async getData () {
+      await this.refreshData()
+      this.dataOld = this.deepCopy(this.data);
+      //获取所有的所属人
+      // debugger
+      const owners = await this.TenantMObj.getUserSimpleInfoList();
+      this.owners = owners.map(item => item.trueName);
       // console.log(owners, '888888')
 
-      // 获取所有的牌照列表
-      const LicenseList = await this.TenantMObj.findLicenseList()
-      this.LicenseList = LicenseList.map(item => item.name)
+      //获取所有的牌照列表
+      const LicenseList = await this.TenantMObj.findLicenseList();
+      this.LicenseList = LicenseList.map(item => item.name);
       // console.log(LicenseList, '888888')
     },
     onChange () { },
-    // 添加按钮的点击事件
+    //添加按钮的点击事件
     addClick () {
       this.visible = true
     },
-    // 删除按钮的点击事件
+    //删除按钮的点击事件
     async deleteClick () {
       const _this = this
       debugger
-      // 2.根据传过来的id数组参数，传入，对应的删除接口中，完成删除操作（删除操作第二步）
+      //2.根据传过来的id数组参数，传入，对应的删除接口中，完成删除操作（删除操作第二步）
       if (_this.tenancyIds.length == 0) {
-        alert('请勾选要删除的租户')
+        confirm('请勾选要删除的租户')
+        return
+      }
+      if (_this.tenancyIds.length > 0) {
+        confirm('删除后无法恢复，您确定继续？')
       }
       await _this.TenantMObj.deleteTenancy(_this.tenancyIds)
-      // 删除之后去除勾选的标记
-      // _this.tenancyIds = []
 
-      // 重新加载最新的数据
-      const data = await _this.TenantMObj.getTenancyList()
-      _this.data = data
+      //重新加载最新的数据
+      await _this.refreshData()
 
-      // 清除勾选的id
+      //清除勾选的id
       this.$refs.table.clearSelectedKey()
     },
     // 保存租户（保存按钮）
@@ -394,9 +374,8 @@ export default {
           // formData.checkerId = 2
           await _this.TenantMObj.saveTenancy(formData)
 
-          // 重新加载最新的数据
-          const data = await _this.TenantMObj.getTenancyList()
-          _this.data = data
+          //重新加载最新的数据
+          await _this.refreshData()
         }
         _this.visible = false
       })
@@ -408,7 +387,7 @@ export default {
       }
       this.visible = false
     },
-    // 以下几个方法都是处理文件，图像上传的方法
+    //以下几个方法都是处理文件，图像上传的方法
     handlePreview (file) {
       console.log('handlePreview===')
       this.previewImage = file.url || file.thumbUrl
@@ -447,36 +426,36 @@ export default {
     },
     inputHandler (val) {
       debugger
-      const _this = this
+      let _this = this;
       if (this.selectVal) {
         this.data = this.dataOld.filter(item => {
-          return item[_this.selectVal] && item[_this.selectVal].indexOf(val) != -1
-        })
+          return item[_this.selectVal] && item[_this.selectVal].indexOf(val) != -1;
+        });
       }
     },
     /**
      * 深拷贝
      */
-    deepCopy (obj) { // 深拷贝
-      const result = Array.isArray(obj) ? [] : {}
-      for (const key in obj) {
+    deepCopy (obj) { //深拷贝
+      let result = Array.isArray(obj) ? [] : {};
+      for (let key in obj) {
         if (obj.hasOwnProperty(key)) {
           if (obj[key] == null) {
-            result[key] = null
+            result[key] = null;
           } else if (obj[key] == undefined) {
-            result[key] = undefined
+            result[key] = undefined;
           } else if (typeof obj[key] === 'object') {
-            result[key] = this.deepCopy(obj[key]) // 递归复制
+            result[key] = this.deepCopy(obj[key]); //递归复制
           } else {
-            result[key] = obj[key]
+            result[key] = obj[key];
           }
         }
       }
-      return result
+      return result;
     },
     selectCell (val) {
-      debugger
-      this.selectVal = val
+      debugger;
+      this.selectVal = val;
     }
   }
 }

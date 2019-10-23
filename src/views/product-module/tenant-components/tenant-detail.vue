@@ -241,7 +241,7 @@ export default {
       LicenseList: [],//牌照列表数组
       TenantMObj: null,
       id: null,//点击的租户详情对应的id
-      info: null,//当租户的所有详细信息
+      info: null,//当前租户的所有详细信息
       tabKey: '1', // 标签页
       showUpdataInfo: false, // 修改信息弹框
       form: this.$form.createForm(this, { name: 'dynamic_rule' })

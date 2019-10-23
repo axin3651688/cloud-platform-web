@@ -20,6 +20,8 @@ const api = {
   DELETE_LICENSE: '/upm/license/bat_delete',
   UPDATE_LICENSE: '/upm/license/update',
   UPDATE_VAIL_LICENSE: '/upm/license_authority/update_vail_license',
+  GET_RESOURCES_CARD: '/upm/resource/get_resources_card',
+  GET_RESOURCES_MODULE: '/upm/resource/get_resources_module',
   //模块管理相关接口
   GET_RESOURCES_TREE: '/upm/resource/get_resources_tree',
   SAVE_RESOURCE: '/upm/resource/save',
@@ -165,6 +167,7 @@ export function FIND_LICENSE_LIST() {
  */
 export function OPEN_LICENSE(parameter) {
   return axios2({
+    // url: api.OPEN_LICENSE+ parameter.enable + '\/' + parameter.licenseId,
     url: api.OPEN_LICENSE,
     method: 'put',
     params: parameter
@@ -232,6 +235,34 @@ export function UPDATE_VAIL_LICENSE(parameter) {
     url: api.UPDATE_VAIL_LICENSE,
     method: 'post',
     data: parameter
+  })
+}
+/** 
+* @desc    : 查询应用列表
+* @author  : zj
+* @date  : 2019/10/22
+* @param   {} 
+* @return  {} 
+* @update   by   
+*/
+export function GET_RESOURCES_CARD() {
+  return axios2({
+    url: api.GET_RESOURCES_CARD,
+    method: 'get'
+  })
+}
+/** 
+* @desc    : 查询模块列表
+* @author  : zj
+* @date  : 2019/10/22
+* @param   {} 
+* @return  {} 
+* @update   by   
+*/
+export function GET_RESOURCES_MODULE(){
+  return axios2({
+    url: api.GET_RESOURCES_MODULE,
+    method: 'get'
   })
 }
 /** 
