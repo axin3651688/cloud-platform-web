@@ -63,7 +63,8 @@ const constantRouterComponents = {
   DataDictionary: () => import('@/views/set-module/data-dictionary'),
   // ...more
   TenantDetail: () => import('@/views/product-module/tenant-components/tenant-detail'),
-  UserDetail: () => import('@/views/product-module/user-components/user-detail')
+  UserDetail: () => import('@/views/product-module/user-components/user-detail'),
+  RoleAccredit: () => import('@/views/set-module/role-components/role-accredit')
 
 }
 
@@ -172,6 +173,12 @@ const customRoute = [
         key: 'RoleManagement',
         title: '角色管理'
       }, {
+        component: 'RoleAccredit',
+        icon: 'bb',
+        key: 'RoleAccredit',
+        title: '角色授权'
+      },
+      {
         component: 'LimitManagement',
         icon: 'bb',
         key: 'LimitManagement',
@@ -185,7 +192,7 @@ const customRoute = [
       }
     ]
   }]
-
+//
 /**
  * 获取路由菜单信息
  *
