@@ -23,7 +23,7 @@ const api = {
   GET_RESOURCES_CARD: '/upm/resource/get_resources_card',
   GET_RESOURCES_MODULE: '/upm/resource/get_resources_module',
   //模块管理相关接口
-  GET_RESOURCES_TREE: '/upm/resource/get_resources_tree',
+  GET_RESOURCES_TREE: '/upm/resource/get_resources_module',
   SAVE_RESOURCE: '/upm/resource/save',
   DELETE_RESOURCE: '/upm/resource/bat_delete',
   OPEN_RESOURCE: '/upm/resource/open_resource',
@@ -303,7 +303,7 @@ export function SAVE_RESOURCE(parameter) {
  */
 export function DELETE_RESOURCE(parameter) {
   return axios2({
-    url: api.DELETE_RESOURCE + parameter.type,
+    url: api.DELETE_RESOURCE +'/'+ parameter.type,
     method: 'delete',
     data: parameter.ids
   })

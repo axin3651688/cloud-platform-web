@@ -144,8 +144,9 @@
                        src="../../../assets/icons/paixu.svg" />
                 </template>
                 <a-select-option v-for="(item,index) in LicenseList"
-                                 :key="index">
-                  {{item}}
+                                 :key="index"
+                                 :value="item.id">
+                  {{item.name}}
                 </a-select-option>
               </a-select>
             </a-form-item>
@@ -249,9 +250,7 @@ export default {
   },
   created () {
     this.TenantMObj = new CnbiTenantManagement()
-    // console.log(this.$route.query, '999999999')
     this.id = this.$route.query.id
-    // console.log(this.id, '101010')
     this.showInfo()
   },
   methods: {
@@ -260,33 +259,25 @@ export default {
     },
     //点击详情  查询信息
     async showInfo () {
-      // debugger
       var info = await this.TenantMObj.getTenancy(this.id)
       info.beginTime = new Date(info.beginTime * 1).toLocaleString();
       info.createTime = new Date(info.createTime * 1).toLocaleString();
       info.endTime = new Date(info.endTime * 1).toLocaleString();
       info.updateTime = new Date(info.updateTime * 1).toLocaleString();
       this.info = info
-      console.log(info, '6666666677777777777777')
 
       //获取所有的所属人
-      // debugger
       const owners = await this.TenantMObj.getUserSimpleInfoList();
       this.owners = owners.map(item => item.trueName);
-      // console.log(owners, '888888')
 
       //获取所有的牌照列表
       const LicenseList = await this.TenantMObj.findLicenseList();
-      this.LicenseList = LicenseList.map(item => item.name);
-      // console.log(LicenseList, '888888')
     },
-    callback (key) { //
-      console.log(key)
+    callback (key) {
       this.tabKey = key
     },
     //修改按钮点击事件
     editClick () {
-      debugger
       const _this = this
       this.showModal()
       //1.打开弹框
@@ -310,7 +301,6 @@ export default {
       const _this = this
       //3.获取修改后的数据  
       _this.form.validateFields(async (err, values) => {
-        debugger
         if (!err) {
           const formData = JSON.parse(JSON.stringify(values))
 
@@ -321,7 +311,6 @@ export default {
           await _this.TenantMObj.updateTenancy(formData)
 
           //重新加载最新的数据
-          // debugger
           var info = await _this.TenantMObj.getTenancy(this.id)
           info.beginTime = new Date(info.beginTime * 1).toLocaleString();
           info.createTime = new Date(info.createTime * 1).toLocaleString();

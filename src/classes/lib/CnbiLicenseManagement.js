@@ -26,26 +26,6 @@ class CnbiLicenseManagement {
   constructor(obj) {
     Object.assign(this, obj)
   }
-  // 牌照数据传输对象 {
-  //   cards (Array[integer], optional): 可用的应用集合 ,
-  //   dbTypes (Array[integer], optional): 可用的数据源类型 ,
-  //   maxCompany (integer, optional): 最大公司数 ,
-  //   maxConnect (integer, optional): 最大连接数 ,
-  //   maxDesign (integer, optional): 最大设计数 ,
-  //   maxLevel (integer, optional): 最大层级 ,
-  //   maxMemory (integer, optional): 最大内存 ,
-  //   maxUser (integer, optional): 最大用户数 ,
-  //   modules (Array[integer], optional): 可用的模块集合 ,
-  //   name (string, optional): 名称 ,
-  //   note (string, optional): 描述 ,
-  //   price (number, optional): 价格 ,
-  //   type (integer, optional): 类型
-  //   }
-
-  // props = ['cards', 'dbTypes', 'maxCompany', 'maxConnect', 'maxDesign', 'maxLevel',
-  //   'maxMemory', 'maxUser', 'modules', 'name', 'note', 'price', 'type'
-  // ]
-
   /**
    * @desc    : 初始化的方法
    * @author  : zj
@@ -55,21 +35,7 @@ class CnbiLicenseManagement {
    * @update   by
    */
   init() {}
-  /**
-   * @desc    : 获取参数
-   * @author  : zj
-   * @date  : 2019/10/14
-   * @param   {}
-   * @return  {}
-   * @update   by
-   */
-  getParams() {
-    let params = {}
-    this.props.forEach(param => {
-      params[param] = this[param]
-    })
-    return params
-  }
+
   /**
    * @desc    : 查询牌照
    * @author  : zj
@@ -135,7 +101,6 @@ class CnbiLicenseManagement {
    */
   async deleteLicense(licenseIds) {
     let res = await DELETE_LICENSE(licenseIds);
-    // debugger
     return res
   }
   /**
@@ -148,7 +113,6 @@ class CnbiLicenseManagement {
    */
   async updateLicense(licenseEditDto) {
     let res = await UPDATE_LICENSE(licenseEditDto);
-    // debugger
     return res
   }
   /**
@@ -161,7 +125,6 @@ class CnbiLicenseManagement {
    */
   async updateVailLicense(updateLicenseDto) {
     let res = await UPDATE_VAIL_LICENSE(updateLicenseDto);
-    // debugger
     return res
   }
   /**

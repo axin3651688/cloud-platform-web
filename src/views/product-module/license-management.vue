@@ -12,6 +12,7 @@
         <a-table :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
                  :dataSource="tableData"
                  size="small"
+                 :rowKey="setKey"
                  :expandRowByClick="true"
                  :customRow="setRow"
                  :expandedRowKeys="expandedRowKeys">
@@ -538,7 +539,6 @@ export default {
     async getData () {
       await this.refreshData()
       // 获取应用数组
-      debugger
       this.cardArr = await this.LicenseMObj.getResourcesCard()
       // 获取模块数组
       this.moduleArr = await this.LicenseMObj.getResourcesModule()
@@ -551,10 +551,8 @@ export default {
 
     //编辑弹框的保存事件
     async saveEdit () {
-      debugger
       const _this = this
       _this.form3.validateFields(async (err, values) => {
-        // debugger
         if (!err) {
           const formData = JSON.parse(JSON.stringify(values))
           //获取点击行对应的id
@@ -572,7 +570,6 @@ export default {
       this.editId = record.id * 1
     },
     addClick () {
-      // console.log('123')
       this.showLicenseModal = true
       this.current = 0
     },
@@ -587,7 +584,6 @@ export default {
       }
       // 2.如果勾选了，则获取勾选的id数组
       // 3.调用删除接口，传入参数，删除
-      debugger
       await this.LicenseMObj.deleteLicense(this.ids)
       // 4.删除成功后，及时更新数据，清除勾选图标
       await this.refreshData()
@@ -595,16 +591,12 @@ export default {
     },
     // 勾选事件
     onSelectChange (selectedRowKeys, bb, cc) {
-      debugger
-      // console.log(bb, '888888222')
       this.selectedRowKeys = selectedRowKeys
-      this.ids = bb.map(d => d.id * 1)
-      // console.log(this.selectedRowKeys, '00001222211')
+      this.ids =selectedRowKeys
+      // this.ids = bb.map(d => d.id * 1)
     },
     // 修改状态
     async onChange (record) {
-      // debugger
-      // console.log(record, '44444444444444444')
       await this.LicenseMObj.openLicense((record.enable - 0 == 0) ? 1 : 0, record.id * 1)
     },
 
@@ -653,7 +645,6 @@ export default {
     threeSubmit (e) {
       e.preventDefault()
       this.form2.validateFields((err, values) => {
-        debugger
         if (!err) {
           this.formData = Object.assign(this.formData, values)
           console.log('1')
@@ -668,7 +659,6 @@ export default {
     async saveLicense () {
       // this.saveFlag = true
       const params = this.formData
-      // debugger
       await this.LicenseMObj.saveLicense(params)
 
       // 保存成功后继续刷新数据
@@ -687,11 +677,11 @@ export default {
               disableArray.indexOf(event.target.localName) > -1) { // 点击状态，操作两列不响应
               return
             }
-            if (_this.expandedRowKeys[0] == index) { // 已展开状态，缩回
+            if (_this.expandedRowKeys[0] == record.id) { // 已展开状态，缩回
               _this.expandedRowKeys = []
               return
             }
-            _this.expandedRowKeys = [index]
+            _this.expandedRowKeys = [record.id]
 
             //* ****************************接口请求数据************************************************************
             var info = await this.LicenseMObj.getLicenseId(record.id * 1)
@@ -706,6 +696,10 @@ export default {
         }
 
       }
+    },
+    // 设置每行id为主键
+    setKey(record){
+      return record.id
     }
 
   }

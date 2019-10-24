@@ -66,8 +66,9 @@
                          src="../../assets/icons/paixu.svg" />
                   </template>
                   <a-select-option v-for="(item,index) in owners"
-                                   :key="index">
-                    {{item}}
+                                   :key="index"
+                                   :value="item.id">
+                    {{item.trueName}}
                   </a-select-option>
                 </a-select>
               </a-form-item>
@@ -81,8 +82,9 @@
                          src="../../assets/icons/paixu.svg" />
                   </template>
                   <a-select-option v-for="(item,index) in LicenseList"
-                                   :key="index">
-                    {{item}}
+                                   :key="index"
+                                   :value="item.id">
+                    {{item.name}}
                   </a-select-option>
                 </a-select>
               </a-form-item>
@@ -179,20 +181,19 @@
             </a-col>
             <a-col :span="12">
               <!-- 第五行右侧企业标识 -->
-              <a-form-item label="企业标识" class="qybs">
-                <a-upload
-                  name="file"
-                  :beforeUpload="beforeUpload"
-                  :showUploadList="false"
-                  listType="picture-card"
-                  class="avatar-uploader"
-                  :customRequest="customRequest"
-                  :disabled="disable">
-                  <img
-                    v-if="imageUrl" 
-                    :src="imageUrl"
-                    alt="avatar"
-                    v-decorator="['logoId']" />
+              <a-form-item label="企业标识"
+                           class="qybs">
+                <a-upload name="file"
+                          :beforeUpload="beforeUpload"
+                          :showUploadList="false"
+                          listType="picture-card"
+                          class="avatar-uploader"
+                          :customRequest="customRequest"
+                          :disabled="disable">
+                  <img v-if="imageUrl"
+                       :src="imageUrl"
+                       alt="avatar"
+                       v-decorator="['logoId']" />
                   <div v-else>
                     <a-icon :type="loading ? 'loading' : 'plus'" />
                     <div class="ant-upload-text">点击上传</div>
@@ -284,11 +285,10 @@ export default {
     this.getData()
   },
   methods: {
+    //刷新数据的方法
     async refreshData () {
       const data = await this.TenantMObj.getTenancyList()
-      // console.log('98989', data)
       data.forEach(item => {
-        // debugger
         var oDate = new Date(item.updateTime * 1)
         var oYear = oDate.getFullYear()
         var oMonth = oDate.getMonth() + 1
@@ -317,8 +317,8 @@ export default {
       })
       this.data = data
     },
-    getIds (ids) {//1.获取表格中勾选的租户id数组(删除操作第一步)
-      // debugger
+    getIds (ids) {
+      //1.获取表格中勾选的租户id数组(删除操作第一步)
       this.tenancyIds = ids
     },
     // 进入页面  加载数据列表
@@ -326,15 +326,10 @@ export default {
       await this.refreshData()
       this.dataOld = this.deepCopy(this.data);
       //获取所有的所属人
-      // debugger
-      const owners = await this.TenantMObj.getUserSimpleInfoList();
-      this.owners = owners.map(item => item.trueName);
-      // console.log(owners, '888888')
+      this.owners = await this.TenantMObj.getUserSimpleInfoList();
 
       //获取所有的牌照列表
-      const LicenseList = await this.TenantMObj.findLicenseList();
-      this.LicenseList = LicenseList.map(item => item.name);
-      // console.log(LicenseList, '888888')
+      this.LicenseList = await this.TenantMObj.findLicenseList();
     },
     onChange () { },
     //添加按钮的点击事件
@@ -344,7 +339,6 @@ export default {
     //删除按钮的点击事件
     async deleteClick () {
       const _this = this
-      debugger
       //2.根据传过来的id数组参数，传入，对应的删除接口中，完成删除操作（删除操作第二步）
       if (_this.tenancyIds.length == 0) {
         confirm('请勾选要删除的租户')
@@ -365,7 +359,6 @@ export default {
     async handleOk () {
       const _this = this
       _this.form.validateFields(async (err, values) => {
-        debugger
         if (!err) {
           const formData = JSON.parse(JSON.stringify(values))
           formData.beginTime = new Date(formData.beginTime).getTime()
@@ -389,12 +382,10 @@ export default {
     },
     //以下几个方法都是处理文件，图像上传的方法
     handlePreview (file) {
-      console.log('handlePreview===')
       this.previewImage = file.url || file.thumbUrl
       this.previewVisible = true
     },
     handleChange ({ fileList }) {
-      console.log('handleChange===')
     },
     customRequest (data) {
       const _this = this
@@ -425,7 +416,6 @@ export default {
       return isLt5M && isImg
     },
     inputHandler (val) {
-      debugger
       let _this = this;
       if (this.selectVal) {
         this.data = this.dataOld.filter(item => {
@@ -454,7 +444,6 @@ export default {
       return result;
     },
     selectCell (val) {
-      debugger;
       this.selectVal = val;
     }
   }
@@ -495,9 +484,9 @@ ant .tenantInput {
 .row1 {
   margin-bottom: 0px;
 }
-  /deep/.qybs .ant-form-item-children{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
+/deep/.qybs .ant-form-item-children {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 </style>

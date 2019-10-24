@@ -90,7 +90,7 @@
                        src="../../assets/icons/paixu.svg" />
                 </template>
 
-                <!-- 功能的选择框 -->
+                <!-- 模块的选择框 -->
                 <template v-if="type == 3">
                   <a-select-option v-for="(item,index) in cardArr"
                                    :key="index"
@@ -98,7 +98,7 @@
                     {{item.name}}
                   </a-select-option>
                 </template>
-                <!-- 模块的选择框 -->
+                <!-- 功能的选择框 -->
                 <template v-else-if="type == 4">
                   <a-select-option v-for="(item,index) in moduleArr"
                                    :key="index"
@@ -198,7 +198,7 @@
                   <img style="width: 12px;"
                        src="../../assets/icons/paixu.svg" />
                 </template>
-                <!-- 功能的选择框 -->
+                <!-- 模块的选择框 -->
                 <template v-if="type == 3">
                   <a-select-option v-for="(item,index) in cardArr"
                                    :key="index"
@@ -206,7 +206,7 @@
                     {{item.name}}
                   </a-select-option>
                 </template>
-                <!-- 模块的选择框 -->
+                <!-- 功能的选择框 -->
                 <template v-else-if="type == 4">
                   <a-select-option v-for="(item,index) in moduleArr"
                                    :key="index"
@@ -349,25 +349,20 @@ export default {
   },
   methods: {
     changeType (type) {
-      debugger
       this.type = type
     },
     //获取功能和模块的数组列表方法
     async getArrData () {
       //获取应用数组
-      debugger
       this.cardArr = await this.LicenseMObj.getResourcesCard();
-      console.log(this.cardArr, '死死死死死死死死isisisi')
       //获取模块数组
       this.moduleArr = await this.LicenseMObj.getResourcesModule();
-      // this.moduleArr = moduleArr.map(item => {return{ name: item.name, code: item.code }});
 
     },
     //加载页面 获取数据
     async getData () {
       const data = await this.ModuleMObj.getResourcesTree();
       data.forEach(item => {
-        // debugger
         var oDate = new Date(item.updateTime * 1)
         var oYear = oDate.getFullYear()
         var oMonth = oDate.getMonth() + 1
@@ -381,7 +376,6 @@ export default {
         var oTime = oDay + '/' + oMonth + '/' + oYear
         item.updateTime = oTime
       })
-      console.log(data, '年少不知')
       this.dataSource = data
     },
     //添加按钮触发事件
@@ -400,8 +394,8 @@ export default {
       }
       //2.如果勾选了，则获取勾选的id数组
       //3.调用删除接口，传入参数，删除
-      // debugger
-      await this.ModuleMObj.deleteResource(this.ids, 4)
+      debugger
+      await this.ModuleMObj.deleteResource(this.ids, 3)
       //4.删除成功后，及时更新数据，清除勾选图标
       await this.getData()
       this.selectedRowKeys = []
@@ -409,13 +403,14 @@ export default {
 
     //模糊查询的第一个框的选择事件  
     selectCell (val) {
-      console.log(val)
     },
 
     //删除的勾选事件
     onSelectChange (selectedRowKeys, bb) {
+      debugger
       this.selectedRowKeys = selectedRowKeys
       this.ids = bb.map(d => d.id * 1)
+      console.log(this.ids, '323323232')
     },
 
     //修改模块状态的点击事件
@@ -435,7 +430,6 @@ export default {
     async saveModule () {
       const _this = this
       _this.form.validateFields(async (err, values) => {
-        // debugger
         if (!err) {
           const formData = JSON.parse(JSON.stringify(values))
           await _this.ModuleMObj.saveResource(formData)
@@ -459,11 +453,10 @@ export default {
     async saveEdit () {
       const _this = this
       _this.form.validateFields(async (err, values) => {
-        // debugger
         if (!err) {
           const formData = JSON.parse(JSON.stringify(values))
           formData.id = this.editId
-          // formData.type = 4
+          // formData.type = 3
           await _this.ModuleMObj.updateResource(formData)
           //重新加载最新的数据
           await _this.getData();

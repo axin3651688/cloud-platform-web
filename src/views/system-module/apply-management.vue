@@ -218,7 +218,7 @@ export default {
   name: 'ApplyManagement',
   data () {
     return {
-      ApplyMObj:null,
+      ApplyMObj: null,
       version: '关键字搜索',
       defaultValue: 'name',
       name1: '添加应用',
@@ -276,7 +276,6 @@ export default {
     //获取列表数据
     async getData () {
       const data = await this.ApplyMObj.getResourcesCard();
-      // console.log(data, '020202')
       this.dataSource = data
 
       //拷贝数据
@@ -284,7 +283,6 @@ export default {
     },
     //搜索的第一个下拉框的事件
     selectCell (val1) {
-      debugger;
       this.selectVal = val1;
     },
     //点击搜索框的事件
@@ -292,20 +290,16 @@ export default {
       if (!val2) {
         this.dataSource = this.dataOld
       }
-      // debugger
       this.dataSource = await this.ApplyMObj.searchResourcesCard(this.selectVal || this.defaultValue, val2);
-      // console.log(dataSource, '36363636')
     },
     //点击服务设置按钮事件
     btnClick (record) {
       // this.ServiceSetting = true
       this.title = 'XX应用服务配置'
-      console.log(record)
     },
     btnClickEdit (record) {
       this.showEditApply = true
       this.editId = record.id * 1
-      // console.log(record,'66666')
     },
 
     //添加按钮事件
@@ -330,7 +324,6 @@ export default {
       }
       //2.如果勾选了，则获取勾选的id数组
       //3.调用删除接口，传入参数，删除
-      // debugger
       await this.ApplyMObj.deleteResource(this.ids, 2)
       //4.删除成功后，及时更新数据，清除勾选图标
       await this.getData()
@@ -341,8 +334,6 @@ export default {
     },
     //当状态为启用的时候，想修改为禁用的时候确认事件
     async saveActive (record) {
-      // debugger
-      // console.log(record, '030303030303030303030303030303')
       this.active = ''
       await this.ApplyMObj.openResource(record.id * 1, (record.enable - 1 == 0 ? 0 : 1));
       //刷新数据
@@ -377,7 +368,6 @@ export default {
     saveApplyOk () {
       const _this = this
       _this.form1.validateFields(async (err, values) => {
-        debugger
         if (!err) {
           const formData = JSON.parse(JSON.stringify(values))
           //t添加成功，更新数据
@@ -393,13 +383,11 @@ export default {
     editApplyOk () {
       const _this = this
       _this.form1.validateFields(async (err, values) => {
-        // debugger
         if (!err) {
           const formData = JSON.parse(JSON.stringify(values))
           //添加成功，更新数据
           formData.id = this.editId
           formData.type = 2
-          // console.log(formData.id, '3213213')
           await _this.ApplyMObj.updateResource(formData)
           //重新加载最新的数据
           await _this.getData()

@@ -42,47 +42,11 @@ class CnbiTenantManagement {
    */
   tenancyEditDto = null;
 
-
-  // 租户传输对象 {
-  //    (string, optional): 地址 ,
-  //   beginTime (integer, optional): 牌照生效时间 ,
-  //   checkInfo (string, optional): 审核详情 ,
-  //   checkTime (integer, optional): 审核通过时间 ,
-  //   checkerId (integer, optional): 审核人 ,
-  //   creatorId (integer, optional): 创建人 ,
-  //   domain (string, optional): 域名 ,
-  //   endTime (integer, optional): 牌照到期时间 ,
-  //   licenseId (integer, optional): 牌照 ,
-  //   logoId (integer, optional): logo图片 ,
-  //   name (string, optional): 名称 ,
-  //   note (string, optional): 简介 ,
-  //   ownerId (integer, optional): 管理员 ,
-  //   phone (string, optional): 联系电话 ,
-  //   serviceId (string, optional): 服务标识 ,
-  //   societyCode (string, optional): 社会编码 ,
-  //   tel (string, optional): 电话 ,
-  //   type (string, optional): 租户类型 ,
-  //   url (string, optional): 网址
-  //   } 
-  // tenancyList = []
-  getProps() {
-    return ['address', 'beginTime', 'checkInfo', 'checkTime',
-      'checkerId', 'creatorId', 'domain', 'endTime',
-      'licenseId', 'logoId', 'name', 'note', 'ownerId',
-      'phone', 'serviceId', 'societyCode', 'tel', 'type', 'url'
-    ];
-  }
-
-
-
-
-
   constructor(obj) {
     Object.assign(this, obj)
     this.init()
   }
   test(data) {
-    // debugger
     // console.log(data.data, "11112222");
   }
   /** 
@@ -147,21 +111,6 @@ class CnbiTenantManagement {
     // this.test(data)
   }
   /** 
-   * @desc    : 获取参数
-   * @author  : zj
-   * @date  : 2019/10/14
-   * @param   {} 
-   * @return  {} 
-   * @update   by   
-   */
-  getParams() {
-    let params = {}
-    getProps().forEach(param => {
-      params[param] = this[param]
-    })
-    return params
-  }
-  /** 
    * @desc    : 新增租户的方法
    * @author  : zj
    * @date  : 2019/10/14
@@ -169,35 +118,7 @@ class CnbiTenantManagement {
    * @return  {} 
    * @update   by   
    */
-  // static async getPortalSource (params) {
-  //   const result = await FIND_PORTAL_SOURCE_BY_ID({
-  //     sourceId: params.id,
-  //     sourceType: params.type
-  //   });
-  //   return result;
-  // }
   async saveTenancy(tenancyDto) {
-    // tenancyDto = {
-    //   "address": "string",
-    //   "beginTime": 0,
-    //   "checkInfo": "string",
-    //   "checkTime": 0,
-    //   "checkerId": 0,
-    //   "creatorId": 0,
-    //   "domain": "string",
-    //   "endTime": 0,
-    //   "licenseId": 0,
-    //   "logoId": 0,
-    //   "name": "string",
-    //   "note": "string",
-    //   "ownerId": 0,
-    //   "phone": "string",
-    //   "serviceId": "string",
-    //   "societyCode": "string",
-    //   "tel": "string",
-    //   "type": "string",
-    //   "url": "string"
-    // }
     let res = await SAVE_TENANCY(tenancyDto);
     return res
   }
@@ -238,7 +159,10 @@ class CnbiTenantManagement {
    * @update   by   
    */
   async getUserSimpleInfoList() {
-    let res = await USER_SIMPLE_INFO_LIST({page:1,size:10})
+    let res = await USER_SIMPLE_INFO_LIST({
+      page: 1,
+      size: 10
+    })
     debugger
     return res.data.data
   }
@@ -265,36 +189,22 @@ class CnbiTenantManagement {
    * @update   by   
    */
   async updateTenancy(tenancyEditDto) {
-    // tenancyEditDto:{
-    //   "address": "string",
-    //   "domain": "string",
-    //   "id": 0,
-    //   "industry": "string",
-    //   "logoId": 0,
-    //   "name": "string",
-    //   "note": "string",
-    //   "teamSize": "string",
-    //   "tel": "string",
-    //   "url": "string"
-    // }
     let res = await UPDATE_TENANCY(tenancyEditDto);
-    // debugger
     return res
   }
 
   /** 
-  * @desc    : 查询牌照列表
-  * @author  : zj
-  * @date  : 2019/10/21
-  * @param   {} 
-  * @return  {} 
-  * @update   by   
-  */
-async findLicenseList(){
-  // debugger
-  let res = await FIND_LICENSE_LIST();
-  return res.data
-}
-  
+   * @desc    : 查询牌照列表
+   * @author  : zj
+   * @date  : 2019/10/21
+   * @param   {} 
+   * @return  {} 
+   * @update   by   
+   */
+  async findLicenseList() {
+    let res = await FIND_LICENSE_LIST();
+    return res.data
+  }
+
 }
 export default CnbiTenantManagement
