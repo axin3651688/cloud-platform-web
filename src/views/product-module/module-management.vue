@@ -33,7 +33,7 @@
       <template slot="bianji"
                 slot-scope="text, record">
         <!--1代表开-->
-        <span @click="btnClick(record.key)">编辑</span>
+        <span @click="btnClick(record)">编辑</span>
       </template>
     </a-table>
     <!--添加模块-->
@@ -58,32 +58,6 @@
         <a-row :gutter="24"
                class="row2">
           <a-col :span="12">
-            <a-form-item label="上级目录">
-              <a-select v-decorator="[
-                  'pid',
-                  { rules: [{ required: true, message: '请选择上级目录' }] },
-                ]"
-                        placeholder="请选择">
-                <template slot="suffixIcon">
-                  <img style="width: 12px;"
-                       src="../../assets/icons/paixu.svg" />
-                </template>
-                <!-- 功能的选择框 -->
-                <a-select-option v-if="type==2"
-                                 v-for="(item,index) in cardArr"
-                                 :key="index">
-                  {{item}}
-                </a-select-option>
-                <!-- 模块的选择框 -->
-                <a-select-option v-if="type==4"
-                                 v-for="(item,index) in moduleArr"
-                                 :key="index">
-                  {{item}}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :span="12">
             <a-form-item label="类型">
               <a-select v-decorator="[
                   'type',
@@ -95,12 +69,44 @@
                   <img style="width: 12px;"
                        src="../../assets/icons/paixu.svg" />
                 </template>
-                <a-select-option value="2">
-                  功能
-                </a-select-option>
-                <a-select-option value="4">
+                <a-select-option value="3">
                   模块
                 </a-select-option>
+                <a-select-option value="4">
+                  功能
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item label="上级目录">
+              <a-select v-decorator="[
+                  'pid',
+                  { rules: [{ required: true, message: '请选择上级目录' }] },
+                ]"
+                        placeholder="请选择">
+                <template slot="suffixIcon">
+                  <img style="width: 12px;"
+                       src="../../assets/icons/paixu.svg" />
+                </template>
+
+                <!-- 功能的选择框 -->
+                <template v-if="type == 3">
+                  <a-select-option v-for="(item,index) in cardArr"
+                                   :key="index"
+                                   :value="item.code">
+                    {{item.name}}
+                  </a-select-option>
+                </template>
+                <!-- 模块的选择框 -->
+                <template v-else-if="type == 4">
+                  <a-select-option v-for="(item,index) in moduleArr"
+                                   :key="index"
+                                   :value="item.code">
+                    {{item.name}}
+                  </a-select-option>
+                </template>
+
               </a-select>
             </a-form-item>
           </a-col>
@@ -161,6 +167,27 @@
         <a-row :gutter="24"
                class="row2">
           <a-col :span="12">
+            <a-form-item label="类型">
+              <a-select v-decorator="[
+                  'type',
+                  { rules: [{ required: true, message: '请选择类型' }] },
+                ]"
+                        placeholder="请选择"
+                        @change="changeType">
+                <template slot="suffixIcon">
+                  <img style="width: 12px;"
+                       src="../../assets/icons/paixu.svg" />
+                </template>
+                <a-select-option value="3">
+                  模块
+                </a-select-option>
+                <a-select-option value="4">
+                  功能
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
             <a-form-item label="上级目录">
               <a-select v-decorator="[
                   'pid',
@@ -172,37 +199,21 @@
                        src="../../assets/icons/paixu.svg" />
                 </template>
                 <!-- 功能的选择框 -->
-                <a-select-option v-if="type==2"
-                                 v-for="(item,index) in cardArr"
-                                 :key="index">
-                  {{item}}
-                </a-select-option>
-                <!-- 模块的选择框 -->
-                <a-select-option v-if="type==4"
-                                 v-for="(item,index) in moduleArr"
-                                 :key="index">
-                  {{item}}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :span="12">
-            <a-form-item label="类型">
-              <a-select v-decorator="[
-                  'type',
-                  { rules: [{ required: true, message: '请选择类型' }] },
-                ]"
-                        placeholder="请选择">
-                <template slot="suffixIcon">
-                  <img style="width: 12px;"
-                       src="../../assets/icons/paixu.svg" />
+                <template v-if="type == 3">
+                  <a-select-option v-for="(item,index) in cardArr"
+                                   :key="index"
+                                   :value="item.code">
+                    {{item.name}}
+                  </a-select-option>
                 </template>
-                <a-select-option value="2">
-                  功能
-                </a-select-option>
-                <a-select-option value="4">
-                  模块
-                </a-select-option>
+                <!-- 模块的选择框 -->
+                <template v-else-if="type == 4">
+                  <a-select-option v-for="(item,index) in moduleArr"
+                                   :key="index"
+                                   :value="item.code">
+                    {{item.name}}
+                  </a-select-option>
+                </template>
               </a-select>
             </a-form-item>
           </a-col>
@@ -253,6 +264,8 @@ export default {
   name: 'ModuleManagement',
   data () {
     return {
+      editId: null,//点击编辑的时候该行数据对应的id
+      ids: [],// 根据勾选的，获得对应模块信息的id
       type: '',
       LicenseMObj: null,
       cardArr: [],//应用（功能）数组
@@ -336,17 +349,18 @@ export default {
   },
   methods: {
     changeType (type) {
+      debugger
       this.type = type
     },
     //获取功能和模块的数组列表方法
     async getArrData () {
       //获取应用数组
-      const cardArr = await this.LicenseMObj.getResourcesCard();
-      // console.log(cardArr, '0000000')
-      this.cardArr = cardArr.map(item => item.name);
+      debugger
+      this.cardArr = await this.LicenseMObj.getResourcesCard();
+      console.log(this.cardArr, '死死死死死死死死isisisi')
       //获取模块数组
-      const moduleArr = await this.LicenseMObj.getResourcesModule();
-      this.moduleArr = moduleArr.map(item => item.name);
+      this.moduleArr = await this.LicenseMObj.getResourcesModule();
+      // this.moduleArr = moduleArr.map(item => {return{ name: item.name, code: item.code }});
 
     },
     //加载页面 获取数据
@@ -375,12 +389,33 @@ export default {
       this.showAddModule = true
     },
     //删除按钮触发事件
-    deleteClick () { alert('456') },
+    async deleteClick () {
+      //1.如果没有勾选就点击删除按钮，提示框
+      if (this.ids.length == 0) {
+        confirm('请勾选要删除的模块')
+        return
+      }
+      if (this.ids.length > 0) {
+        confirm('删除后可能会影响使用功能的使用，您确定继续？')
+      }
+      //2.如果勾选了，则获取勾选的id数组
+      //3.调用删除接口，传入参数，删除
+      // debugger
+      await this.ModuleMObj.deleteResource(this.ids, 4)
+      //4.删除成功后，及时更新数据，清除勾选图标
+      await this.getData()
+      this.selectedRowKeys = []
+    },
+
+    //模糊查询的第一个框的选择事件  
     selectCell (val) {
       console.log(val)
     },
-    onSelectChange (selectedRowKeys) {
+
+    //删除的勾选事件
+    onSelectChange (selectedRowKeys, bb) {
       this.selectedRowKeys = selectedRowKeys
+      this.ids = bb.map(d => d.id * 1)
     },
 
     //修改模块状态的点击事件
@@ -390,16 +425,17 @@ export default {
       //及时刷新数据
       await this.getData();
     },
-    btnClick (key) {
+    btnClick (record) {
       // this.$message.success('操作成功')
       this.showEditModule = true
+      this.editId = record.id * 1
     },
 
     //添加弹框的确定按钮
     async saveModule () {
       const _this = this
       _this.form.validateFields(async (err, values) => {
-        debugger
+        // debugger
         if (!err) {
           const formData = JSON.parse(JSON.stringify(values))
           await _this.ModuleMObj.saveResource(formData)
@@ -410,9 +446,11 @@ export default {
         _this.showAddModule = false
       })
     },
+    //添加弹框的取消事件
     cancelSave () {
       this.showAddModule = false
     },
+    //编辑弹框的取消事件
     cancelEdit () {
       this.showEditModule = false
     },
@@ -421,9 +459,11 @@ export default {
     async saveEdit () {
       const _this = this
       _this.form.validateFields(async (err, values) => {
-        debugger
+        // debugger
         if (!err) {
           const formData = JSON.parse(JSON.stringify(values))
+          formData.id = this.editId
+          // formData.type = 4
           await _this.ModuleMObj.updateResource(formData)
           //重新加载最新的数据
           await _this.getData();

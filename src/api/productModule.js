@@ -217,7 +217,7 @@ export function UPDATE_LICENSE(parameter) {
   return axios2({
     url: api.UPDATE_LICENSE,
     method: 'put',
-    params: parameter
+    data: parameter
   })
 }
 

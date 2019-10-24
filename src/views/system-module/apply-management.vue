@@ -292,9 +292,9 @@ export default {
       if (!val2) {
         this.dataSource = this.dataOld
       }
-      debugger
+      // debugger
       this.dataSource = await this.ApplyMObj.searchResourcesCard(this.selectVal || this.defaultValue, val2);
-      console.log(dataSource, '36363636')
+      // console.log(dataSource, '36363636')
     },
     //点击服务设置按钮事件
     btnClick (record) {
@@ -330,8 +330,8 @@ export default {
       }
       //2.如果勾选了，则获取勾选的id数组
       //3.调用删除接口，传入参数，删除
-      debugger
-      await this.ApplyMObj.deleteResource(this.ids, 3)
+      // debugger
+      await this.ApplyMObj.deleteResource(this.ids, 2)
       //4.删除成功后，及时更新数据，清除勾选图标
       await this.getData()
       this.selectedRowKeys = []
@@ -341,8 +341,8 @@ export default {
     },
     //当状态为启用的时候，想修改为禁用的时候确认事件
     async saveActive (record) {
-      debugger
-      console.log(record, '030303030303030303030303030303')
+      // debugger
+      // console.log(record, '030303030303030303030303030303')
       this.active = ''
       await this.ApplyMObj.openResource(record.id * 1, (record.enable - 1 == 0 ? 0 : 1));
       //刷新数据
@@ -381,7 +381,7 @@ export default {
         if (!err) {
           const formData = JSON.parse(JSON.stringify(values))
           //t添加成功，更新数据
-          formData.type = 3
+          formData.type = 2
           await _this.ApplyMObj.saveResource(formData)
           //重新加载最新的数据
           await _this.getData()
@@ -393,13 +393,13 @@ export default {
     editApplyOk () {
       const _this = this
       _this.form1.validateFields(async (err, values) => {
-        debugger
+        // debugger
         if (!err) {
           const formData = JSON.parse(JSON.stringify(values))
           //添加成功，更新数据
           formData.id = this.editId
-          formData.type = 3
-          console.log(formData.id, '3213213')
+          formData.type = 2
+          // console.log(formData.id, '3213213')
           await _this.ApplyMObj.updateResource(formData)
           //重新加载最新的数据
           await _this.getData()
