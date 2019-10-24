@@ -11,6 +11,7 @@
       </common-button>
     </div>
     <a-table
+      bordered
       :columns="columns"
       :dataSource="dataSource"
       :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}" >
@@ -20,8 +21,10 @@
       </template>
       <template slot="caozuo" slot-scope="text, record">
         <!--1代表开-->
-        <span @click="btnClick(record)" style="margin-right: 4px;">编辑</span>
-        <span @click="accredit(record)">授权</span>
+        <div >
+          <span @click="btnClick(record)" style="margin: 0 32px;"><a-icon type="edit"></a-icon></span>
+          <span @click="accredit(record)">授权</span>
+        </div>
       </template>
     </a-table>
     <!--添加用户-->
