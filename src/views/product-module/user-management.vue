@@ -236,8 +236,8 @@ export default {
     selectCell () {
 
     },
-    onSelectChange () {
-
+    onSelectChange (selectedRowKeys) {
+      this.selectedRowKeys = selectedRowKeys
     },
     btnClick (key) {
       this.$router.push({
