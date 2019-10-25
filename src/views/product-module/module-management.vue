@@ -34,7 +34,6 @@
       </template>
       <template slot="bianji"
                 slot-scope="text, record">
-        <!--1代表开-->
         <span @click="btnClick(record)">编辑</span>
       </template>
     </a-table>
@@ -364,7 +363,7 @@ export default {
     },
     //加载页面 获取数据
     async getData () {
-      const data = await this.ModuleMObj.getResourcesTree();
+      const data = await this.ModuleMObj.getResourcesModule();
       data.forEach(item => {
         var oDate = new Date(item.updateTime * 1)
         var oYear = oDate.getFullYear()
@@ -440,6 +439,8 @@ export default {
       //及时刷新数据
       await this.getData();
     },
+
+    //编辑按钮的点击事件
     btnClick (record) {
       // this.$message.success('操作成功')
       this.showEditModule = true

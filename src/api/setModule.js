@@ -1,4 +1,4 @@
-// 设置模块调用接口封装(包括账号管理，角色管理，权限管理，数据字典4个模块需要的接口)
+// 设置模块调用接口封装(包括账号管理，角色管理，权限管理(在模块管理中共用)，数据字典4个模块需要的接口)
 import {
   axios2
 } from '@/utils/request'
@@ -11,9 +11,7 @@ const api = {
   SAVE_ROLE: '/upm/role/save',
   DELETE_ROLE: '/upm/role/delete',
   LISTRESOURCE: '/upm/authority/listResource',
-
-  //权限管理的相关接口（除了查询接口不一致，其余用模块的接口）
-  GET_RESOURCES_TREE:'/upm/resource/get_resources_tree'
+  AUTHORITY_ROLE: '/upm/authority/authority_role'
 }
 export default api
 
@@ -56,7 +54,7 @@ export function OPEN_ROLE(parameter) {
  * @return  {} 
  * @update   by   
  */
-export function UPDATE_ROLE() {
+export function UPDATE_ROLE(parameter) {
   return axios2({
     url: api.UPDATE_ROLE,
     method: 'put',
@@ -72,7 +70,7 @@ export function UPDATE_ROLE() {
  * @return  {} 
  * @update   by   
  */
-export function SAVE_ROLE() {
+export function SAVE_ROLE(parameter) {
   return axios2({
     url: api.SAVE_ROLE,
     method: 'post',
@@ -113,16 +111,17 @@ export function LISTRESOURCE(parameter) {
 }
 
 /** 
-* @desc    : 查询权限列表
-* @author  : zj
-* @date  : 2019/10/24
-* @param   {} 
-* @return  {} 
-* @update   by   
-*/
-export function GET_RESOURCES_TREE(){
+ * @desc    : 角色授权
+ * @author  : zj
+ * @date  : 2019/10/25
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function AUTHORITY_ROLE(parameter) {
   return axios2({
-    url: api.GET_RESOURCES_TREE,
-    method: 'get'
+    url: api.AUTHORITY_ROLE,
+    method: 'put',
+    params: parameter
   })
 }

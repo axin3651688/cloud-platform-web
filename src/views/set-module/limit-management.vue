@@ -2,177 +2,183 @@
   <div>
     <div style="display: flex;flex-direction: row;justify-content: space-between">
       <div style="display: flex;flex-direction: row">
-        <common-drop-down
-          :result="result"
-          :defaultValue="defaultValue"
-          @selectCell="selectCell"
-          class="com-drop-down"
-        >
+        <common-drop-down :result="result"
+                          :defaultValue="defaultValue"
+                          @selectCell="selectCell"
+                          class="com-drop-down">
         </common-drop-down>
         <!--搜索框-->
-        <common-search
-          :placeholder="'请输入'"
-          style="width: 220px">
+        <common-search :placeholder="'请输入'"
+                       style="width: 220px"
+                       @inputHandler="inputHandler">
         </common-search>
       </div>
-      <common-button
-        @addClick="addClick"
-        @deleteClick="deleteClick"
-        :name1="name1"
-        :name2="name2">
+      <common-button @addClick="addClick"
+                     @deleteClick="deleteClick"
+                     :name1="name1"
+                     :name2="name2">
       </common-button>
     </div>
     <!--表格-->
-    <a-table
-      bordered
-      :columns="columns"
-      :dataSource="dataSource"
-      :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}" >
-      <template slot="zhuangtai" slot-scope="text, record">
+    <a-table bordered
+             :columns="columns"
+             :dataSource="dataSource"
+             :rowKey="setKey"
+             :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
+      <template slot="zhuangtai"
+                slot-scope="text, record">
         <!--1代表开-->
-        <a-switch :defaultChecked="record.zt==1?true:false" @change="updataState(record)" />
+        <a-switch :defaultChecked="record.enable==1?true:false"
+                  @change="updataState(record)" />
       </template>
-      <template slot="bianji" slot-scope="text, record">
+      <template slot="bianji"
+                slot-scope="text, record">
         <!--1代表开-->
         <span @click="btnClick(record)">编辑</span>
       </template>
     </a-table>
-    <a-modal v-model="showAddLimit" title="新增权限" :width="350">
+    <a-modal v-model="showAddLimit"
+             title="新增权限"
+             :width="350">
       <a-form :form="form">
         <a-form-item label="名称">
-          <a-input
-            placeholder="请输入名称"
-            v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],}]" />
+          <a-input placeholder="请输入名称"
+                   v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],}]" />
         </a-form-item>
         <a-form-item label="类型">
-          <a-select
-            style="width: 200px;"
-            default-value="1"
-            v-decorator="['type',{rules: [{ required: true, message: '请选择类型!' }],}]">
+          <a-select style="width: 200px;"
+                    @change="changeType"
+                    v-decorator="['type',{rules: [{ required: true, message: '请选择类型!' }],}]">
             <template slot="suffixIcon">
-              <img
-                style="width: 12px;"
-                src="../../assets/icons/paixu.svg" />
+              <img style="width: 12px;"
+                   src="../../assets/icons/paixu.svg" />
             </template>
-            <a-select-option value="1">
-              a类型
-            </a-select-option>
-            <a-select-option value="2">
-              b类型
-            </a-select-option>
             <a-select-option value="3">
-              c类型
+              模块
+            </a-select-option>
+            <a-select-option value="4">
+              功能
             </a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item label="上级目录">
-          <a-select
-            style="width: 200px;"
-            default-value="1"
-            v-decorator="['type',{rules: [{ required: true, message: '请选择目录!' }],}]">
+          <a-select style="width: 200px;"
+                    v-decorator="['pid',{rules: [{ required: true, message: '请选择目录!' }],}]">
             <template slot="suffixIcon">
-              <img
-                style="width: 12px;"
-                src="../../assets/icons/paixu.svg" />
+              <img style="width: 12px;"
+                   src="../../assets/icons/paixu.svg" />
             </template>
-            <a-select-option value="1">
-              a目录
-            </a-select-option>
-            <a-select-option value="2">
-              b目录
-            </a-select-option>
-            <a-select-option value="3">
-              c目录
-            </a-select-option>
+            <!-- 菜单的选择框 -->
+            <template v-if="type == 3">
+              <a-select-option v-for="(item,index) in menuArr"
+                               :key="index"
+                               :value="item.code">
+                {{item.name}}
+              </a-select-option>
+            </template>
+            <!-- 模块的选择框 -->
+            <template v-else-if="type == 4">
+              <a-select-option v-for="(item,index) in moduleArr"
+                               :key="index"
+                               :value="item.code">
+                {{item.name}}
+              </a-select-option>
+            </template>
           </a-select>
         </a-form-item>
         <a-form-item label="权限路由">
-          <a-input
-            placeholder="请输入权限路由"
-            v-decorator="['name',{rules: [{ required: true, message: '权限路由不能为空!' }],}]" />
+          <a-input placeholder="请输入权限路由"
+                   v-decorator="['route',{rules: [{ required: true, message: '权限路由不能为空!' }],}]" />
         </a-form-item>
         <a-form-item label="访问路由">
-          <a-input
-            placeholder="请输入访问路由"
-            v-decorator="['name',{rules: [{ required: true, message: '访问路由不能为空!' }],}]" />
+          <a-input placeholder="请输入访问路由"
+                   v-decorator="['url',{rules: [{ required: true, message: '访问路由不能为空!' }],}]" />
         </a-form-item>
-        <a-form-item label="状态" style="display: flex">
+        <a-form-item label="状态"
+                     style="display: flex">
           <a-switch defaultChecked />
         </a-form-item>
       </a-form>
       <template slot="footer">
         <div style="display: flex;margin-left: 32px">
-          <a-button key="back" @click="cancelAddLimit" style="margin-right: 32px;">取消</a-button>
-          <a-button key="submit" type="primary" @click="saveAddLimit">
+          <a-button key="back"
+                    @click="cancelAddLimit"
+                    style="margin-right: 32px;">取消</a-button>
+          <a-button key="submit"
+                    type="primary"
+                    @click="saveAddLimit">
             <a-icon type="cloud-upload" /> 保存
           </a-button>
         </div>
       </template>
     </a-modal>
-    <a-modal v-model="showEditLimit" title="编辑权限" :width="350">
+    <a-modal v-model="showEditLimit"
+             title="编辑权限"
+             :width="350">
       <a-form :form="form1">
         <a-form-item label="名称">
-          <a-input
-            placeholder="请输入名称"
-            v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],}]" />
+          <a-input placeholder="请输入名称"
+                   v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],}]" />
         </a-form-item>
         <a-form-item label="类型">
-          <a-select
-            style="width: 200px;"
-            default-value="1"
-            v-decorator="['type',{rules: [{ required: true, message: '请选择类型!' }],}]">
+          <a-select style="width: 200px;"
+                    @change="changeType"
+                    v-decorator="['type',{rules: [{ required: true, message: '请选择类型!' }],}]">
             <template slot="suffixIcon">
-              <img
-                style="width: 12px;"
-                src="../../assets/icons/paixu.svg" />
+              <img style="width: 12px;"
+                   src="../../assets/icons/paixu.svg" />
             </template>
-            <a-select-option value="1">
-              a类型
-            </a-select-option>
-            <a-select-option value="2">
-              b类型
-            </a-select-option>
             <a-select-option value="3">
-              c类型
+              模块
+            </a-select-option>
+            <a-select-option value="4">
+              功能
             </a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item label="上级目录">
-          <a-select
-            style="width: 200px;"
-            default-value="1"
-            v-decorator="['type',{rules: [{ required: true, message: '请选择目录!' }],}]">
+          <a-select style="width: 200px;"
+                    default-value="1"
+                    v-decorator="['type',{rules: [{ required: true, message: '请选择目录!' }],}]">
             <template slot="suffixIcon">
-              <img
-                style="width: 12px;"
-                src="../../assets/icons/paixu.svg" />
+              <img style="width: 12px;"
+                   src="../../assets/icons/paixu.svg" />
             </template>
-            <a-select-option value="1">
-              a目录
-            </a-select-option>
-            <a-select-option value="2">
-              b目录
-            </a-select-option>
-            <a-select-option value="3">
-              c目录
-            </a-select-option>
+            <!-- 菜单的选择框 -->
+            <template v-if="type == 3">
+              <a-select-option v-for="(item,index) in menuArr"
+                               :key="index"
+                               :value="item.code">
+                {{item.name}}
+              </a-select-option>
+            </template>
+            <!-- 模块的选择框 -->
+            <template v-else-if="type == 4">
+              <a-select-option v-for="(item,index) in moduleArr"
+                               :key="index"
+                               :value="item.code">
+                {{item.name}}
+              </a-select-option>
+            </template>
           </a-select>
         </a-form-item>
         <a-form-item label="权限路由">
-          <a-input
-            placeholder="请输入权限路由"
-            v-decorator="['name',{rules: [{ required: true, message: '权限路由不能为空!' }],}]" />
+          <a-input placeholder="请输入权限路由"
+                   v-decorator="['route',{rules: [{ required: true, message: '权限路由不能为空!' }],}]" />
         </a-form-item>
         <a-form-item label="访问路由">
-          <a-input
-            placeholder="请输入访问路由"
-            v-decorator="['name',{rules: [{ required: true, message: '访问路由不能为空!' }],}]" />
+          <a-input placeholder="请输入访问路由"
+                   v-decorator="['url',{rules: [{ required: true, message: '访问路由不能为空!' }],}]" />
         </a-form-item>
       </a-form>
-      <template slot="footer" >
+      <template slot="footer">
         <div style="display: flex;margin-left: 32px">
-          <a-button key="back" @click="cancelEditLimit" style="margin-right: 32px;">取消</a-button>
-          <a-button key="submit" type="primary" @click="saveEditLimit">
+          <a-button key="back"
+                    @click="cancelEditLimit"
+                    style="margin-right: 32px;">取消</a-button>
+          <a-button key="submit"
+                    type="primary"
+                    @click="saveEditLimit">
             <a-icon type="cloud-upload" /> 保存
           </a-button>
         </div>
@@ -182,6 +188,7 @@
 </template>
 
 <script>
+import CnbiModuleManagement from '@/classes/lib/CnbiModuleManagement'
 import CommonButton from '@/components/system/common-button'
 import CommonSearch from '@/components/system/common-search'
 import CommonDropDown from '@/components/system/common-drop-down'
@@ -193,10 +200,17 @@ export default {
     CommonSearch,
     CommonDropDown
   },
+  name: "LimitManagement",
   data () {
     return {
+      LimitMObj: null,
       selectedRowKeys: [],
-      defaultValue: '0',
+      defaultValue: 'name',
+      menuArr: [],//应用（功能）数组
+      moduleArr: [],//模块数组
+      type: '',
+      editId: null,//点击编辑的时候该行数据对应的id
+      dataOld: [],//拷贝获取的原有数据
       showAddLimit: false,
       showEditLimit: false,
       form: this.$form.createForm(this),
@@ -204,11 +218,11 @@ export default {
       name1: '添加',
       name2: '删除',
       result: [
-        { name: '名称', key: '0' },
-        { name: '类型', key: '1' },
-        { name: '权限路由', key: '2' },
-        { name: '访问路由', key: '3' },
-        { name: '状态', key: '4' }
+        { name: '名称', key: 'name' },
+        { name: '类型', key: 'type' },
+        { name: '权限路由', key: 'route' },
+        { name: '访问路由', key: 'url' },
+        { name: '状态', key: 'enable' }
       ],
       columns: [
         {
@@ -218,34 +232,34 @@ export default {
         },
         {
           title: '类型',
-          dataIndex: 'age',
-          key: 'age',
+          dataIndex: 'type',
+          key: 'type',
           width: '12%'
         },
         {
           title: '权限路由',
-          dataIndex: 'address',
+          dataIndex: 'route',
           width: '12%',
-          key: 'address'
+          key: 'route'
         },
         {
           title: '访问路由',
-          dataIndex: 'fw',
+          dataIndex: 'url',
           width: '12%',
-          key: 'fw'
+          key: 'url'
         },
         {
           title: '更新时间',
-          dataIndex: 'gxsj',
+          dataIndex: 'updateTime',
           width: '12%',
-          key: 'gxsj'
+          key: 'updateTime'
         },
         {
           title: '状态',
-          dataIndex: 'zt',
+          dataIndex: 'enable',
           scopedSlots: { customRender: 'zhuangtai' },
           width: '12%',
-          key: 'zt'
+          key: 'enable'
         },
         {
           title: '操作',
@@ -254,141 +268,191 @@ export default {
           scopedSlots: { customRender: 'bianji' }
         }
       ],
-      dataSource: [
-        {
-          key: 1,
-          name: 'John Brown sr.',
-          age: 60,
-          address: 'New York No. 1 Lake Park',
-          zt: 1,
-          children: [
-            {
-              key: 11,
-              name: 'John Brown',
-              age: 42,
-              address: 'New York No. 2 Lake Park',
-              zt: 1
-            },
-            {
-              key: 12,
-              name: 'John Brown jr.',
-              age: 30,
-              address: 'New York No. 3 Lake Park',
-              zt: 1,
-              children: [
-                {
-                  key: 121,
-                  name: 'Jimmy Brown',
-                  age: 16,
-                  zt: 1,
-                  address: 'New York No. 3 Lake Park'
-                }
-              ]
-            },
-            {
-              key: 13,
-              name: 'Jim Green sr.',
-              age: 72,
-              zt: 1,
-              address: 'London No. 1 Lake Park',
-              children: [
-                {
-                  key: 131,
-                  name: 'Jim Green',
-                  age: 42,
-                  address: 'London No. 2 Lake Park',
-                  zt: 1,
-                  children: [
-                    {
-                      key: 1311,
-                      name: 'Jim Green jr.',
-                      age: 25,
-                      zt: 1,
-                      address: 'London No. 3 Lake Park'
-                    },
-                    {
-                      key: 1312,
-                      name: 'Jimmy Green sr.',
-                      age: 18,
-                      zt: 1,
-                      address: 'London No. 4 Lake Park'
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        {
-          key: 2,
-          name: 'Joe Black',
-          age: 32,
-          zt: 0,
-          address: 'Sidney No. 1 Lake Park'
-        }
-      ]
+      dataSource: []
     }
   },
+  created () {
+    this.LimitMObj = new CnbiModuleManagement()
+    this.getData()
+    this.getArrData()
+  },
   methods: {
-    selectCell (val) {
+    //获取功能和模块的数组列表方法
+    async getArrData () {
+      //获取应用数组
+      this.moduleArr = await this.LimitMObj.getResourcesModule();
+      //获取模块数组
+      this.menuArr = await this.LimitMObj.getResourcesMenu();
 
     },
+    //选择类型时触发的事件
+    changeType (type) {
+      this.type = type
+    },
+    //加载页面 获取数据
+    async getData () {
+      const data = await this.LimitMObj.getResourcesTree();
+      data.forEach(item => {
+        var oDate = new Date(item.updateTime * 1)
+        var oYear = oDate.getFullYear()
+        var oMonth = oDate.getMonth() + 1
+        var oDay = oDate.getDate()
+        if (oMonth < 10) {
+          oMonth = '0' + oMonth
+        }
+        if (oDay < 10) {
+          oDay = '0' + oDay
+        }
+        var oTime = oDay + '/' + oMonth + '/' + oYear
+        item.updateTime = oTime
+      })
+      this.dataSource = data
+
+      //拷贝数据
+      this.dataOld = this.deepCopy(this.dataSource);
+      console.log(data, '死死死isisis')
+    },
+
+    //模糊查询的第一个框的选择事件 
+    selectCell (val1) {
+      this.selectVal = val1;
+    },
+
+    //点击搜索框的事件
+    async inputHandler (val2) {
+      if (!val2 || this.selectVal == 0) {
+        debugger
+        this.dataSource = this.dataOld
+      } else {
+        this.dataSource = await this.LimitMObj.searchResources(this.selectVal, val2, 3);
+      }
+    },
+
+    //添加按钮的点击事件
     addClick () {
       this.showAddLimit = true
     },
-    deleteClick () {
+    //删除按钮触发事件
+    async deleteClick () {
+      //1.如果没有勾选就点击删除按钮，提示框
+      if (this.selectedRowKeys.length == 0) {
+        confirm('请勾选要删除的权限')
+        return
+      }
+      if (this.selectedRowKeys.length > 0) {
+        confirm('删除后数据无法恢复，您确定继')
+      }
+      //2.如果勾选了，则获取勾选的id数组
+      //3.调用删除接口，传入参数，删除
+      debugger
+      await this.LimitMObj.deleteResource(this.selectedRowKeys, 3)
+      //4.删除成功后，及时更新数据，清除勾选图标
+      await this.getData()
+      this.selectedRowKeys = []
     },
+
+    //删除的勾选事件
     onSelectChange (selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys
     },
-    updataState (record) {
 
+    // 设置每行id为主键
+    setKey (record) {
+      return record.id
     },
+
+    //修改权限状态的点击事件
+    async updataState (record) {
+      //调用切换状态接口方法
+      await this.LimitMObj.openResource(record.id * 1, (record.enable - 1 == 0 ? 0 : 1))
+      //及时刷新数据
+      await this.getData();
+    },
+
+    //编辑按钮的点击事件
     btnClick (record) {
       this.showEditLimit = true
+      this.editId = record.id * 1
     },
+
+    //添加弹框的取消事件
     cancelAddLimit () {
       this.showAddLimit = false
     },
-    saveAddLimit () {
-      this.form.validateFields(err => {
+
+    //添加弹框的保存按钮事件
+    async saveAddLimit () {
+      const _this = this
+      _this.form.validateFields(async (err, values) => {
         if (!err) {
-          this.showAddLimit = false
+          const formData = JSON.parse(JSON.stringify(values))
+          await _this.LimitMObj.saveResource(formData)
+          //重新加载最新的数据
+          await _this.getData();
         }
+        _this.showAddLimit = false
       })
     },
+    //编辑弹框的取消事件
     cancelEditLimit () {
       this.showEditLimit = false
     },
-    saveEditLimit () {
-      this.form1.validateFields(err => {
+    //编辑弹框的确认事件
+    async saveEditLimit () {
+      const _this = this
+      _this.form.validateFields(async (err, values) => {
         if (!err) {
-          this.showEditLimit = false
+          const formData = JSON.parse(JSON.stringify(values))
+          formData.id = this.editId
+          // formData.type = 3
+          await _this.LimitMObj.updateResource(formData)
+          //重新加载最新的数据
+          await _this.getData();
         }
+        _this.showEditLimit = false
       })
+    },
+    /**
+     * 深拷贝
+     */
+    deepCopy (obj) { //深拷贝
+      let result = Array.isArray(obj) ? [] : {};
+      for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          if (obj[key] == null) {
+            result[key] = null;
+          } else if (obj[key] == undefined) {
+            result[key] = undefined;
+          } else if (typeof obj[key] === 'object') {
+            result[key] = this.deepCopy(obj[key]); //递归复制
+          } else {
+            result[key] = obj[key];
+          }
+        }
+      }
+      return result;
     }
-
   }
 }
 </script>
 
 <style scoped>
-  .com-drop-down{
-    width: 120px;
-  }
-  .ant-form-item{
-    margin-bottom: 0;
-  }
-  .ant-form-item input{
-    width: 200px;
-  }
-  form{
-    display: flex;
-    flex-direction: column;
-    /*align-items: center;*/
-    margin: 0 32px;
-  }
-/deep/.ant-modal-footer{
+.com-drop-down {
+  width: 120px;
+}
+.ant-form-item {
+  margin-bottom: 0;
+}
+.ant-form-item input {
+  width: 200px;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  /*align-items: center;*/
+  margin: 0 32px;
+}
+/deep/.ant-modal-footer {
   display: flex;
 }
 </style>

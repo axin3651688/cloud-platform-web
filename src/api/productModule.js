@@ -21,14 +21,21 @@ const api = {
   UPDATE_LICENSE: '/upm/license/update',
   UPDATE_VAIL_LICENSE: '/upm/license_authority/update_vail_license',
   GET_RESOURCES_CARD: '/upm/resource/get_resources_card',
+
   GET_RESOURCES_MODULE: '/upm/resource/get_resources_module',
+  GET_RESOURCES_MENU: '/upm/resource/get_resources_menu',
   //模块管理相关接口
-  GET_RESOURCES_TREE: '/upm/resource/get_resources_module',
+  // GET_RESOURCES_MODULE: '/upm/resource/get_resources_module',
   SAVE_RESOURCE: '/upm/resource/save',
   DELETE_RESOURCE: '/upm/resource/bat_delete',
   OPEN_RESOURCE: '/upm/resource/open_resource',
   UPDATE_RESOURCE: '/upm/resource/update',
-  SEARCH_RESOURCES: '/upm/resource/search_resources'
+  SEARCH_RESOURCES: '/upm/resource/search_resources',
+
+  //权限管理的相关接口（除了查询接口不一致，其余用模块的接口）
+  GET_RESOURCES_TREE: '/upm/resource/get_resources_tree',
+  FIND_SYSTEM_MODULE: '/upm/resource/find_system_module'
+
 }
 
 export default api
@@ -238,7 +245,7 @@ export function UPDATE_VAIL_LICENSE(parameter) {
   })
 }
 /** 
- * @desc    : 查询应用列表
+ * @desc    : 查询应用列表（权限，模块都用）
  * @author  : zj
  * @date  : 2019/10/22
  * @param   {} 
@@ -266,16 +273,16 @@ export function GET_RESOURCES_MODULE() {
   })
 }
 /** 
- * @desc    : 获取权限列表（模块管理的）
+ * @desc    : 查询后台管理的菜单列表（权限管理用）
  * @author  : zj
- * @date  : 2019/10/18
+ * @date  : 2019/10/25
  * @param   {} 
  * @return  {} 
  * @update   by   
  */
-export function GET_RESOURCES_TREE() {
+export function GET_RESOURCES_MENU() {
   return axios2({
-    url: api.GET_RESOURCES_TREE,
+    url: api.GET_RESOURCES_MENU,
     method: 'get'
   })
 }
@@ -352,5 +359,27 @@ export function SEARCH_RESOURCES(parameter) {
     url: api.SEARCH_RESOURCES,
     method: 'get',
     params: parameter
+  })
+}
+
+/** 
+ * @desc    : 获取权限列表（模块管理的）
+ * @author  : zj
+ * @date  : 2019/10/18
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function GET_RESOURCES_TREE() {
+  return axios2({
+    url: api.GET_RESOURCES_TREE,
+    method: 'get'
+  })
+}
+
+export function FIND_SYSTEM_MODULE() {
+  return axios2({
+    url: api.FIND_SYSTEM_MODULE,
+    method: 'get'
   })
 }

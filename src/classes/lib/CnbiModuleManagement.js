@@ -1,11 +1,13 @@
 // 模块管理的对应的类
 import {
-  GET_RESOURCES_TREE,
+  GET_RESOURCES_MODULE,
   SAVE_RESOURCE,
   DELETE_RESOURCE,
   OPEN_RESOURCE,
   UPDATE_RESOURCE,
-  SEARCH_RESOURCES
+  SEARCH_RESOURCES,
+  GET_RESOURCES_TREE,
+  GET_RESOURCES_MENU
 } from '@/api/productModule'
 
 /** 
@@ -36,8 +38,29 @@ class CnbiModuleManagement {
   init() {}
 
 
-  async getResourcesTree() {
-    let res = await GET_RESOURCES_TREE();
+  /** 
+   * @desc    : 查询模块的列表
+   * @author  : zj
+   * @date  : 2019/10/25
+   * @param   {} 
+   * @return  {} 
+   * @update   by   
+   */
+  async getResourcesModule() {
+    let res = await GET_RESOURCES_MODULE();
+    return res.data
+  }
+
+  /** 
+   * @desc    : 查询菜单列表
+   * @author  : zj
+   * @date  : 2019/10/25
+   * @param   {} 
+   * @return  {} 
+   * @update   by   
+   */
+  async getResourcesMenu() {
+    let res = await GET_RESOURCES_MENU();
     return res.data
   }
   /** 
@@ -94,7 +117,7 @@ class CnbiModuleManagement {
     let res = await UPDATE_RESOURCE(resourceDto);
     return res
   }
-   /** 
+  /** 
    * @desc    : 搜索应用
    * @author  : zj
    * @date  : 2019/10/25
@@ -102,12 +125,25 @@ class CnbiModuleManagement {
    * @return  {} 
    * @update   by   
    */
-  async searchResources(field, value,type) {
+  async searchResources(field, value, type) {
     let res = await SEARCH_RESOURCES({
       field: field,
       value: value,
-      type:type
+      type: type
     })
+    return res.data
+  }
+
+  /** 
+   * @desc    : 获取权限管理的列表
+   * @author  : zj
+   * @date  : 2019/10/25
+   * @param   {} 
+   * @return  {} 
+   * @update   by   
+   */
+  async getResourcesTree() {
+    let res = await GET_RESOURCES_TREE();
     return res.data
   }
 }
