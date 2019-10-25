@@ -18,10 +18,8 @@
       :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}" >
       <template slot="caozuo" slot-scope="text, record">
         <div style="display: flex;flex-direction: row;justify-content: space-around;align-items: center;">
-          <span @click="btnClickEdit(record)">修改
-            <img
-              style="width: 12px;"
-              src="../../assets/icons/paixu.svg" />
+          <span @click="btnClickEdit(record)" style="cursor: pointer">
+            <a-icon type="edit" />
           </span>
         </div>
       </template>
@@ -31,14 +29,200 @@
         <a-switch :defaultChecked="record.name2==1?true:false" @click="changeState"/>
       </template>
     </a-table>
+    <a-modal title="添加接入" v-model="showAddApply">
+      <a-form :form="form">
+        <a-row :gutter="24">
+          <a-col :span="12">
+            <a-form-item label="服务地址">
+              <a-input
+                placeholder="请输入"
+                v-decorator="['name',{ rules: [{ required: true, message: '请输入服务地址！' }] }]" />
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item label="回调地址">
+              <a-input
+                placeholder="请输入"
+                v-decorator="['name',{ rules: [{ required: true, message: '请输入回调地址！' }] }]" />
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <a-row :gutter="24">
+          <a-col :span="12">
+            <a-form-item label="TOKEN">
+              <a-input
+                placeholder="请输入"
+                v-decorator="['name',{ rules: [{ required: true, message: '请输入TOKEN！' }] }]" />
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item label="APIKEY">
+              <a-input
+                placeholder="请输入"
+                v-decorator="['name',{ rules: [{ required: true, message: '请输入APIKEY！' }] }]" />
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <a-row :gutter="24">
+          <a-col :span="12">
+            <a-row :gutter="24">
+              <a-form-item label="名称">
+                <a-input
+                  placeholder="请输入"
+                  v-decorator="['name',{ rules: [{ required: true, message: '请输入名称！' }] }]" />
+              </a-form-item>
+            </a-row>
+            <a-row :gutter="24">
+              <a-form-item
+                label="图标"
+                class="form1-icon"
+              >
+                <a-upload
+                  name="file"
+                  :beforeUpload="beforeUpload"
+                  :showUploadList="false"
+                  listType="picture-card"
+                  class="avatar-uploader"
+                  :customRequest="customRequest"
+                  :disabled="disable"
+                  v-decorator="['iconId',{ rules: [{ required: true, message: '请上传图标！' }] }]">
+                  <img
+                    v-if="imageUrl"
+                    :src="imageUrl"
+                    alt="avatar"
+                    v-decorator="['logoId']" />
+                  <div v-else>
+                    <a-icon :type="loading ? 'loading' : 'plus'" />
+                    <div class="ant-upload-text">点击上传</div>
+                  </div>
+
+                </a-upload>
+                <span>只能上传jpg/png文件， 且不超过500kb</span>
+              </a-form-item>
+            </a-row>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item label="描述">
+              <a-textarea
+                :rows="6"
+                placeholder="请输入"
+                v-decorator="['name',{ rules: [{ required: true, message: '请输入名称！' }] }]" />
+            </a-form-item>
+          </a-col>
+        </a-row>
+      </a-form>
+      <template slot="footer" >
+        <div style="display: flex;margin-left: 32px">
+          <a-button key="back" @click="cancelAddApply" style="margin-right: 32px">取消</a-button>
+          <a-button key="submit" type="primary" @click="saveAddApply">
+            <a-icon type="cloud-upload" /> 保存
+          </a-button>
+        </div>
+      </template>
+    </a-modal>
+    <a-modal title="编辑应用" v-model="showEditApply">
+      <a-form :form="form1">
+        <a-row :gutter="24">
+          <a-col :span="12">
+            <a-form-item label="服务地址">
+              <a-input
+                placeholder="请输入"
+                v-decorator="['name',{ rules: [{ required: true, message: '请输入服务地址！' }] }]" />
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item label="回调地址">
+              <a-input
+                placeholder="请输入"
+                v-decorator="['name',{ rules: [{ required: true, message: '请输入回调地址！' }] }]" />
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <a-row :gutter="24">
+          <a-col :span="12">
+            <a-form-item label="TOKEN">
+              <a-input
+                placeholder="请输入"
+                v-decorator="['name',{ rules: [{ required: true, message: '请输入TOKEN！' }] }]" />
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item label="APIKEY">
+              <a-input
+                placeholder="请输入"
+                v-decorator="['name',{ rules: [{ required: true, message: '请输入APIKEY！' }] }]" />
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <a-row :gutter="24">
+          <a-col :span="12">
+            <a-row :gutter="24">
+              <a-form-item label="名称">
+                <a-input
+                  placeholder="请输入"
+                  v-decorator="['name',{ rules: [{ required: true, message: '请输入名称！' }] }]" />
+              </a-form-item>
+            </a-row>
+            <a-row :gutter="24">
+              <a-form-item
+                label="图标"
+                class="form1-icon"
+              >
+                <a-upload
+                  name="file"
+                  :beforeUpload="beforeUpload"
+                  :showUploadList="false"
+                  listType="picture-card"
+                  class="avatar-uploader"
+                  :customRequest="customRequest"
+                  :disabled="disable"
+                  v-decorator="['iconId',{ rules: [{ required: true, message: '请上传图标！' }] }]">
+                  <img
+                    v-if="imageUrl"
+                    :src="imageUrl"
+                    alt="avatar"
+                    v-decorator="['logoId']" />
+                  <div v-else>
+                    <a-icon :type="loading ? 'loading' : 'plus'" />
+                    <div class="ant-upload-text">点击上传</div>
+                  </div>
+
+                </a-upload>
+                <span>只能上传jpg/png文件， 且不超过500kb</span>
+              </a-form-item>
+            </a-row>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item label="描述">
+              <a-textarea
+                :rows="6"
+                placeholder="请输入"
+                v-decorator="['name',{ rules: [{ required: true, message: '请输入名称！' }] }]" />
+            </a-form-item>
+          </a-col>
+        </a-row>
+      </a-form>
+      <template slot="footer" >
+        <div style="display: flex;margin-left: 32px">
+          <a-button key="back" @click="cancelEditApply" style="margin-right: 32px">取消</a-button>
+          <a-button key="submit" type="primary" @click="saveEditApply">
+            <a-icon type="cloud-upload" /> 保存
+          </a-button>
+        </div>
+      </template>
+    </a-modal>
   </div>
 </template>
 
 <script>
 import CommonButton from '@/components/system/common-button'
+import AFormItem from 'ant-design-vue/es/form/FormItem'
+import ATextarea from 'ant-design-vue/es/input/TextArea'
 
 export default {
   components: {
+    ATextarea,
+    AFormItem,
     CommonButton
   },
   data () {
@@ -86,13 +270,19 @@ export default {
           name1: '1233',
           name2: 0
         }
-      ]
-
+      ],
+      showAddApply: false, // 添加应用
+      showEditApply: false,
+      form: this.$form.createForm(this),
+      form1: this.$form.createForm(this),
+      disable: false,
+      imageUrl: '',
+      loading: false
     }
   },
   methods: {
     addClick () {
-
+      this.showAddApply = true
     },
     deleteClick () {
 
@@ -102,10 +292,37 @@ export default {
     },
     onSelectChange (selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys
+    },
+    btnClickEdit () {
+      this.showEditApply = true
+    },
+    beforeUpload () {
+
+    },
+    customRequest () {
+
+    },
+    cancelAddApply () {
+      this.showAddApply = false
+    },
+    saveAddApply () {
+      this.showAddApply = false
+    },
+    cancelEditApply () {
+      this.showEditApply = false
+    },
+    saveEditApply () {
+      this.showEditApply = false
     }
   }
 }
 </script>
 
 <style scoped>
+ /* /deep/.form1-icon .ant-form-item-children{
+    display: flex;
+  }*/
+ /deep/.ant-form-item{
+   margin-bottom: 0;
+ }
 </style>
