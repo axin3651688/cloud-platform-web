@@ -280,15 +280,17 @@ export default {
         legend: {
           show: showLegend,
           orient: 'vertical',
-          x: 'right',
-          bottom: '20%',
+          // x: 'right',
+          // bottom: '20%',
+          left: '70%',
+          y: 'center',
           data: chartData[1]
         },
         series: [
           {
             name: '',
             type: 'pie',
-            radius: ['50%', '70%'],
+            radius: ['40%', '60%'],
             avoidLabelOverlap: false,
             label: {
               normal: {
@@ -308,7 +310,7 @@ export default {
                 show: false
               }
             },
-            center: ['50%', '50%'],
+            center: ['30%', '50%'],
             itemStyle: {
               normal: {
                 color: function (params) { // '#FFD16E', '#7AA2EA',
@@ -351,8 +353,11 @@ export default {
   #myChart{
     width: 80%;height: 300px;
   }
+  .myChart2{
+    width: 90%;height: 300px;
+  }
   #myChart2{
-    width: 80%;height: 300px;
+    width: 100%;height: 300px;
   }
   #myChart3{
     width: 70%;height: 100px;

@@ -2,8 +2,8 @@
   <!--角色授权-->
   <div>
     <!--头部-->
-    <div>
-      <div style="display: flex;justify-content: flex-end;">
+    <div style="background-color: white;padding: 20px;">
+      <div style="display: flex;justify-content: flex-end;border-bottom: 1px solid #EAEDF3">
         <common-button
           style="float: none;"
           :name1="name1"
@@ -34,9 +34,15 @@
         </a-select>
       </div>
     </div>
-    <!--中间-->
-    <div>
-      <role-node></role-node>
+    <!--中间**一二级节点**-->
+    <div style="display: flex;flex-direction: row;margin-top: 20px;">
+      <role-node :nodes="obj" @onChange="onchange"></role-node>
+    </div>
+    <div style="display: flex;flex-direction: row;margin: 20px;background-color: #fff;flex-wrap: wrap">
+      <div style="width: 150px;margin: 20px 0 20px 10px;" v-for="(item,index) in selectedList" :key="index">
+        <a-checkbox @change="onChange">{{ item }}</a-checkbox>
+      </div>
+
     </div>
   </div>
 </template>
@@ -44,17 +50,52 @@
 <script>
 import CommonButton from '@/components/system/common-button'
 import RoleNode from './role-node'
+import ACol from 'ant-design-vue/es/grid/Col'
 
 export default {
   name: 'RoleAccredit',
   components: {
+    ACol,
     RoleNode,
     CommonButton
   },
   data () {
     return {
       name1: '保存',
-      name2: '删除'
+      name2: '删除',
+      obj: [
+        {
+          plainOptions: ['Apple', 'Pear', 'Orange', 'Apple1', 'Pear1', 'Orange1', 'Orange2'], // 所有
+          checkedList: ['Apple', 'Orange'], // 默认选中
+          name: '系统',
+          type: '1'
+        },
+        {
+          plainOptions: ['Apple', 'Pear', 'Orange', 'Apple1', 'Pear1', 'Orange1', 'Orange2'], // 所有
+          checkedList: ['Apple', 'Orange'], // 默认选中
+          name: '产品',
+          type: '2'
+        },
+        {
+          plainOptions: ['Apple', 'Pear', 'Orange', 'Apple1', 'Pear1', 'Orange1', 'Orange2'], // 所有
+          checkedList: ['Apple', 'Orange'], // 默认选中
+          name: '官网',
+          type: '3'
+        },
+        {
+          plainOptions: ['Apple', 'Pear', 'Orange', 'Apple1', 'Pear1', 'Orange1', 'Orange2'], // 所有
+          checkedList: ['Apple', 'Orange'], // 默认选中
+          name: '设置',
+          type: '4'
+        }
+      ], // 节点数组
+      selectedNode: '1', // 点击的节点
+      selectedList: ['节点1-1', '节点1-2', '节点1-3', '节点1-4',
+        '节点1-5', '节点1-6', '节点1-7', '节点1-8',
+        '节点1-9', '节点1-10', '节点1-9', '节点1-10',
+        '节点1-9', '节点1-10', '节点1-9', '节点1-10',
+        '节点1-5', '节点1-6']
+
     }
   },
   methods: {
@@ -63,6 +104,9 @@ export default {
     },
     deleteClick () {
 
+    },
+    onchange (val) {
+      // this.selectedNode=val
     }
   }
 }

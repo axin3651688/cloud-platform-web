@@ -5,9 +5,11 @@
       <a-col :span="16" style="padding-left:28px;">
         <span>{{ item.companyName }}</span>
       </a-col>
-      <a-col :span="8" style="display: flex;flex-direction: column">
-        <span>{{ item.name }}</span>
-        <span>{{ item.phone }}</span>
+      <a-col :span="8" >
+        <div style="display: flex;flex-direction: column;">
+          <span class="people-info">{{ item.name }}</span>
+          <span class="people-info">{{ item.phone }}</span>
+        </div>
       </a-col>
     </a-row>
   </div>
@@ -27,4 +29,9 @@ export default {
   flex-direction: row;
   align-items: center;
 }
+  .people-info{
+    overflow:hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 </style>
