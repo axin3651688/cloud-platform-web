@@ -1,43 +1,60 @@
 <template>
-  <div >
-    <div style="width: 364px;border: 1px solid #000;margin: 10px">
-      <div
-        style="display: flex;flex-direction: row;align-items: center;
-      margin:24px 32px 16px 32px;border-bottom: 1px solid red">
-        <img src="../../../assets/icons/weizhi.svg">
-        <span style="margin-left: 16px;">系统</span>
-      </div>
-      <div style="margin: 20px 32px 32px 32px">
-        <a-row>
-          <a-col :span="8" v-for="(item,index) in plainOptions" :key="index" style="margin-bottom: 10px;">
-            <a-checkbox :defaultChecked="checkedList.indexOf(item)>-1" :value="item" @change="onChange">{{ item }}</a-checkbox>
-          </a-col>
-        </a-row>
-      </div>
-
+  <div style="display: flex;flex-direction: row;flex-wrap: wrap;">
+    <div class="node-content" v-for="(obj,index) in nodes" :key="index">
+      <a-row :gutter="8">
+        <a-col :span="24">
+          <a-row :gutter="24">
+            <a-col :span="24">
+              <div
+                class="content-header"
+                style="">
+                <img src="../../../assets/icons/weizhi.svg">
+                <span style="margin-left: 16px;">{{ obj.name }}</span>
+              </div>
+            </a-col>
+          </a-row>
+          <a-row :gutter="24">
+            <a-col :span="8" v-for="(item,index1) in obj.plainOptions" :key="index1" style="margin-top: 20px;">
+              <a-checkbox :defaultChecked="obj.checkedList.indexOf(item)>-1" :value="item" @change="onChange">{{ item }}</a-checkbox>
+            </a-col>
+          </a-row>
+        </a-col>
+      </a-row>
     </div>
   </div>
 </template>
 
 <script>
+import ACol from 'ant-design-vue/es/grid/Col'
 export default {
   name: 'RoleNode',
+  components: { ACol },
+  props: ['nodes'],
   data () {
     return {
-      plainOptions: ['Apple', 'Pear', 'Orange', 'Apple1', 'Pear1', 'Orange1'],
-      checkedList: ['Apple', 'Orange'],
-      indeterminate: false,
-      checkAll: false
     }
   },
   methods: {
-    onChange (checkedValues) {
-      debugger
+    onChange (checkedValues, event) {
+      this.$emit('onChange', checkedValues)
     }
   }
 }
 </script>
 
 <style scoped>
-
+.node-content{
+  width: 364px;
+  border: 1px solid #EAEDF3;
+  padding: 10px;
+  margin: 20px 0 20px 20px;
+  background-color: #fff;
+}
+  .content-header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-bottom: 1px solid #EAEDF3;
+    padding: 16px;
+  }
 </style>
