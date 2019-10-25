@@ -6,7 +6,7 @@ import {
   DELETE_RESOURCE,
   SAVE_RESOURCE,
   UPDATE_RESOURCE,
-  SEARCH_RESOURCES_CARD
+  SEARCH_RESOURCES
 } from '@/api/systemModule'
 /** 
 * @desc    : 该类为应用管理类，为了实现页面代码更加简单清晰而写的，
@@ -118,10 +118,11 @@ class CnbiApplyManagement {
    * @return  {} 
    * @update   by   
    */
-  async searchResourcesCard(field, value) {
-    let res = await SEARCH_RESOURCES_CARD({
+  async searchResources(field, value,type) {
+    let res = await SEARCH_RESOURCES({
       field: field,
-      value: value
+      value: value,
+      type:type
     })
     return res.data
   }

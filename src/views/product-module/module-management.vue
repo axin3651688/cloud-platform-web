@@ -11,7 +11,8 @@
         </common-drop-down>
         <!--搜索框-->
         <common-search :placeholder="version"
-                       style="width: 220px"></common-search>
+                       style="width: 220px"
+                       @inputHandler="inputHandler"></common-search>
       </div>
       <common-button @addClick="addClick"
                      @deleteClick="deleteClick"
@@ -23,8 +24,9 @@
     <a-table bordered
              :columns="columns"
              :dataSource="dataSource"
+             :rowKey="setKey"
              :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
-      <template slot="enable"
+      <template slot="zhuangtai"
                 slot-scope="text, record">
         <!--1代表开-->
         <a-switch :defaultChecked="record.enable==1?true:false"
@@ -265,7 +267,6 @@ export default {
   data () {
     return {
       editId: null,//点击编辑的时候该行数据对应的id
-      ids: [],// 根据勾选的，获得对应模块信息的id
       type: '',
       LicenseMObj: null,
       cardArr: [],//应用（功能）数组
@@ -335,7 +336,9 @@ export default {
         }
       ],
       dataSource: [],
+      dataOld: [],//拷贝获取的原有数据
       selectedRowKeys: [],
+      selectVal: '',//搜素时选择的值
       showAddModule: false,
       showEditModule: false,
       form: this.$form.createForm(this)
@@ -377,6 +380,9 @@ export default {
         item.updateTime = oTime
       })
       this.dataSource = data
+
+      //拷贝数据
+      this.dataOld = this.deepCopy(this.dataSource);
     },
     //添加按钮触发事件
     addClick () {
@@ -385,32 +391,46 @@ export default {
     //删除按钮触发事件
     async deleteClick () {
       //1.如果没有勾选就点击删除按钮，提示框
-      if (this.ids.length == 0) {
+      if (this.selectedRowKeys.length == 0) {
         confirm('请勾选要删除的模块')
         return
       }
-      if (this.ids.length > 0) {
+      if (this.selectedRowKeys.length > 0) {
         confirm('删除后可能会影响使用功能的使用，您确定继续？')
       }
       //2.如果勾选了，则获取勾选的id数组
       //3.调用删除接口，传入参数，删除
       debugger
-      await this.ModuleMObj.deleteResource(this.ids, 3)
+      await this.ModuleMObj.deleteResource(this.selectedRowKeys, 3)
       //4.删除成功后，及时更新数据，清除勾选图标
       await this.getData()
       this.selectedRowKeys = []
     },
 
     //模糊查询的第一个框的选择事件  
-    selectCell (val) {
+    selectCell (val1) {
+      this.selectVal = val1;
+    },
+
+    //点击搜索框的事件
+    async inputHandler (val2) {
+      if (!val2 || this.selectVal == 0) {
+        debugger
+        this.dataSource = this.dataOld
+      } else {
+        this.dataSource = await this.ModuleMObj.searchResources(this.selectVal, val2, 3);
+      }
+
     },
 
     //删除的勾选事件
     onSelectChange (selectedRowKeys, bb) {
       debugger
       this.selectedRowKeys = selectedRowKeys
-      this.ids = bb.map(d => d.id * 1)
-      console.log(this.ids, '323323232')
+    },
+    // 设置每行id为主键
+    setKey(record){
+      return record.id
     },
 
     //修改模块状态的点击事件
@@ -463,6 +483,26 @@ export default {
         }
         _this.showEditModule = false
       })
+    },
+    /**
+     * 深拷贝
+     */
+    deepCopy (obj) { //深拷贝
+      let result = Array.isArray(obj) ? [] : {};
+      for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          if (obj[key] == null) {
+            result[key] = null;
+          } else if (obj[key] == undefined) {
+            result[key] = undefined;
+          } else if (typeof obj[key] === 'object') {
+            result[key] = this.deepCopy(obj[key]); //递归复制
+          } else {
+            result[key] = obj[key];
+          }
+        }
+      }
+      return result;
     }
   }
 }

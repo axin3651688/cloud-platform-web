@@ -11,7 +11,7 @@ const api = {
   DELETE_RESOURCE: '/upm/resource/bat_delete/',
   SAVE_RESOURCE: '/upm/resource/save',
   UPDATE_RESOURCE: '/upm/resource/update',
-  SEARCH_RESOURCES_CARD: '/upm/resource/search_resources_card'
+  SEARCH_RESOURCES: '/upm/resource/search_resources'
 }
 export default api
 
@@ -116,9 +116,9 @@ export function UPDATE_RESOURCE(parameter) {
  * @return  {} 
  * @update   by   
  */
-export function SEARCH_RESOURCES_CARD(parameter) {
+export function SEARCH_RESOURCES(parameter) {
   return axios2({
-    url: api.SEARCH_RESOURCES_CARD,
+    url: api.SEARCH_RESOURCES,
     method: 'get',
     params: parameter
   })

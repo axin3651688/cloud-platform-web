@@ -26,6 +26,7 @@
              bordered
              :columns="columns"
              :dataSource="dataSource"
+             :rowKey="setKey"
              :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
       <template slot="caozuo"
                 slot-scope="text, record">
@@ -263,7 +264,6 @@ export default {
       active: '',
       applyState: false,
       editId: null,//点击编辑的时候该行数据对应的id
-      ids: [],//根据勾选的，获得对应牌照信息的id
       selectVal: '',
       dataOld: []//拷贝获取的原有数据
     }
@@ -290,7 +290,7 @@ export default {
       if (!val2) {
         this.dataSource = this.dataOld
       }
-      this.dataSource = await this.ApplyMObj.searchResourcesCard(this.selectVal || this.defaultValue, val2);
+      this.dataSource = await this.ApplyMObj.searchResources(this.selectVal || this.defaultValue, val2,2);
     },
     //点击服务设置按钮事件
     btnClick (record) {
@@ -310,21 +310,24 @@ export default {
     //勾选事件
     onSelectChange (selectedRowKeys, bb, cc) {
       this.selectedRowKeys = selectedRowKeys
-      this.ids = bb.map(d => d.id * 1)
+    },
+    // 设置每行id为主键
+    setKey(record){
+      return record.id
     },
     //删除按钮事件
     async deleteClick () {
       //1.如果没有勾选就点击删除按钮，提示框
-      if (this.ids.length == 0) {
+      if (this.selectedRowKeys.length == 0) {
         confirm('请勾选要删除的应用')
         return
       }
-      if (this.ids.length > 0) {
+      if (this.selectedRowKeys.length > 0) {
         confirm('删除后可能会影响使用功能的使用，您确定继续？')
       }
       //2.如果勾选了，则获取勾选的id数组
       //3.调用删除接口，传入参数，删除
-      await this.ApplyMObj.deleteResource(this.ids, 2)
+      await this.ApplyMObj.deleteResource(this.selectedRowKeys, 2)
       //4.删除成功后，及时更新数据，清除勾选图标
       await this.getData()
       this.selectedRowKeys = []

@@ -4,7 +4,8 @@ import {
   SAVE_RESOURCE,
   DELETE_RESOURCE,
   OPEN_RESOURCE,
-  UPDATE_RESOURCE
+  UPDATE_RESOURCE,
+  SEARCH_RESOURCES
 } from '@/api/productModule'
 
 /** 
@@ -92,6 +93,22 @@ class CnbiModuleManagement {
   async updateResource(resourceDto) {
     let res = await UPDATE_RESOURCE(resourceDto);
     return res
+  }
+   /** 
+   * @desc    : 搜索应用
+   * @author  : zj
+   * @date  : 2019/10/25
+   * @param   {} 
+   * @return  {} 
+   * @update   by   
+   */
+  async searchResources(field, value,type) {
+    let res = await SEARCH_RESOURCES({
+      field: field,
+      value: value,
+      type:type
+    })
+    return res.data
   }
 }
 export default CnbiModuleManagement

@@ -27,7 +27,8 @@ const api = {
   SAVE_RESOURCE: '/upm/resource/save',
   DELETE_RESOURCE: '/upm/resource/bat_delete',
   OPEN_RESOURCE: '/upm/resource/open_resource',
-  UPDATE_RESOURCE: '/upm/resource/update'
+  UPDATE_RESOURCE: '/upm/resource/update',
+  SEARCH_RESOURCES: '/upm/resource/search_resources'
 }
 
 export default api
@@ -303,7 +304,7 @@ export function SAVE_RESOURCE(parameter) {
  */
 export function DELETE_RESOURCE(parameter) {
   return axios2({
-    url: api.DELETE_RESOURCE +'/'+ parameter.type,
+    url: api.DELETE_RESOURCE + '/' + parameter.type,
     method: 'delete',
     data: parameter.ids
   })
@@ -336,5 +337,20 @@ export function UPDATE_RESOURCE(parameter) {
     url: api.UPDATE_RESOURCE,
     method: 'put',
     data: parameter
+  })
+}
+/** 
+ * @desc    : 搜索模块
+ * @author  : zj
+ * @date  : 2019/10/25
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function SEARCH_RESOURCES(parameter) {
+  return axios2({
+    url: api.SEARCH_RESOURCES,
+    method: 'get',
+    params: parameter
   })
 }
