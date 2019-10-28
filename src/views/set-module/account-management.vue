@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--头部-->
-    <div style="display: flex;flex-direction: row;justify-content: space-between">
+    <div style="display: flex;flex-direction: row;justify-content: space-between;background-color: #fff;padding: 16px 32px 0 32px">
       <div style="display: flex;flex-direction: row">
         <common-drop-down
           :result="result"
@@ -25,7 +25,7 @@
         :name2="name2">
       </common-button>
     </div>
-    <div>
+    <div style="background-color: #fff">
       <!--表格-->
       <a-table
         :pagination="pagination"

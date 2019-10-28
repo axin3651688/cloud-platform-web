@@ -19,15 +19,16 @@
     <!--:columns="columns"-->
     <!--:dataSource="data" />-->
     <a-table
-             size="small"
-             :dataSource="data"
-             :pagination="pagination"
-             :columns="columns"
-             :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
+      size="small"
+      :dataSource="data"
+      :pagination="pagination"
+      :columns="columns"
+      :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
 
-      <span slot="action"
-            slot-scope="text,record"
-            @click="btnclick(record )">详情</span>
+      <span
+        slot="action"
+        slot-scope="text,record"
+        @click="btnclick(record )">详情</span>
       <!--<p slot="expandedRowRender" slot-scope="record" style="margin: 0">{{ record.description }}</p>-->
 
       <!-- <template slot="name" slot-scope="text, record">
@@ -80,9 +81,9 @@ export default {
       // console.log('selectedRowKeys changed: ', selectedRowKeys)
       console.log(dd, '55555555555')
       this.selectedRowKeys = selectedRowKeys
-      let ids = dd.map(d => d.id * 1)
+      const ids = dd.map(d => d.id * 1)
       console.log(ids, '111111000000')
-      this.$emit('getIds', ids);
+      this.$emit('getIds', ids)
     },
     onCellChange (key, dataIndex, value) {
 

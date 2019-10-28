@@ -37,6 +37,7 @@ export default {
     }
   },
   created () {
+    debugger
     this.pages.push(this.$route)
     this.fullPathList.push(this.$route.fullPath)
     this.selectedLastPath()
@@ -54,6 +55,7 @@ export default {
       }
     },
     selectedLastPath () {
+      debugger
       this.activeKey = this.fullPathList[this.fullPathList.length - 1]
     },
 
