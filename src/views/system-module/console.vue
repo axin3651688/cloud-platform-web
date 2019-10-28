@@ -38,7 +38,7 @@
           <a-col :span="24" >
             <div id="myChart"></div>
             <div style="display: flex;justify-content: space-between;padding: 0 28px;">
-              <span style="color: #9EA0A5">
+              <span>
                 <a-icon type="edit" style="margin-right: 21px;"/>未处理商机
               </span>
               <span style="color:#1665D8">
