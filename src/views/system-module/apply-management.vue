@@ -18,6 +18,8 @@
       <common-button style="float: none;"
                      :name1="name1"
                      :name2="name2"
+                     :title="'删除后可能会影响使用功能的使用，您确定继续？'"
+                     :disabled="selectedRowKeys.length>0?true:false"
                      @addClick="addClick"
                      @deleteClick="deleteClick">
       </common-button>
@@ -323,14 +325,6 @@ export default {
     },
     //删除按钮事件
     async deleteClick () {
-      //1.如果没有勾选就点击删除按钮，提示框
-      if (this.selectedRowKeys.length == 0) {
-        confirm('请勾选要删除的应用')
-        return
-      }
-      if (this.selectedRowKeys.length > 0) {
-        confirm('删除后可能会影响使用功能的使用，您确定继续？')
-      }
       //2.如果勾选了，则获取勾选的id数组
       //3.调用删除接口，传入参数，删除
       await this.ApplyMObj.deleteResource(this.selectedRowKeys, 2)

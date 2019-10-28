@@ -19,6 +19,8 @@
       <common-button
         @addClick="addClick"
         @deleteClick="deleteClick"
+        :disabled="selectedRowKeys.length>0?true:false"
+        :title="'删除后可能会影响使用功能的使用，您确定继续？'"
         :name1="name1"
         :name2="name2">
       </common-button>

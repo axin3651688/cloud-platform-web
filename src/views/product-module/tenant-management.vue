@@ -19,6 +19,8 @@
         <common-button style="float: none;"
                        :name1="name1"
                        :name2="name2"
+                       :title="'删除后无法恢复，您确定继续？'"
+                       :disabled="tenancyIds.length>0?true:false"
                        @addClick="addClick"
                        @deleteClick="deleteClick">
         </common-button>
@@ -340,13 +342,6 @@ export default {
     async deleteClick () {
       const _this = this
       //2.根据传过来的id数组参数，传入，对应的删除接口中，完成删除操作（删除操作第二步）
-      if (_this.tenancyIds.length == 0) {
-        confirm('请勾选要删除的租户')
-        return
-      }
-      if (_this.tenancyIds.length > 0) {
-        confirm('删除后无法恢复，您确定继续？')
-      }
       await _this.TenantMObj.deleteTenancy(_this.tenancyIds)
 
       //重新加载最新的数据
