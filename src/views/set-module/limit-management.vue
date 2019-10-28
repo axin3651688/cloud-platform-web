@@ -20,10 +20,11 @@
       </common-button>
     </div>
     <!--表格-->
-    <a-table bordered
+    <a-table size="small"
              :columns="columns"
              :dataSource="dataSource"
              :rowKey="setKey"
+             :pagination="pagination"
              :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
       <template slot="zhuangtai"
                 slot-scope="text, record">
@@ -252,7 +253,22 @@ export default {
           title: '更新时间',
           dataIndex: 'updateTime',
           width: '12%',
-          key: 'updateTime'
+          key: 'updateTime',
+          customRender (text, record, index) {
+            var oDate = new Date(text * 1)
+            var oYear = oDate.getFullYear()
+            var oMonth = oDate.getMonth() + 1
+            var oDay = oDate.getDate()
+            if (oMonth < 10) {
+              oMonth = '0' + oMonth
+            }
+            if (oDay < 10) {
+              oDay = '0' + oDay
+            }
+            var oTime = oDay + '/' + oMonth + '/' + oYear
+            text = oTime
+            return text
+          }
         },
         {
           title: '状态',
@@ -268,7 +284,11 @@ export default {
           scopedSlots: { customRender: 'bianji' }
         }
       ],
-      dataSource: []
+      dataSource: [],
+      pagination: {
+        pageSize: 15,
+        hideOnSinglePage: true // 只有一页时是否隐藏分页器
+      }
     }
   },
   created () {
@@ -280,7 +300,7 @@ export default {
     //获取功能和模块的数组列表方法
     async getArrData () {
       //获取应用数组
-      this.moduleArr = await this.LimitMObj.getResourcesModule();
+      this.moduleArr = await this.LimitMObj.findSystemModule();
       //获取模块数组
       this.menuArr = await this.LimitMObj.getResourcesMenu();
 
@@ -292,20 +312,20 @@ export default {
     //加载页面 获取数据
     async getData () {
       const data = await this.LimitMObj.getResourcesTree();
-      data.forEach(item => {
-        var oDate = new Date(item.updateTime * 1)
-        var oYear = oDate.getFullYear()
-        var oMonth = oDate.getMonth() + 1
-        var oDay = oDate.getDate()
-        if (oMonth < 10) {
-          oMonth = '0' + oMonth
-        }
-        if (oDay < 10) {
-          oDay = '0' + oDay
-        }
-        var oTime = oDay + '/' + oMonth + '/' + oYear
-        item.updateTime = oTime
-      })
+      // data.forEach(item => {
+      //   var oDate = new Date(item.updateTime * 1)
+      //   var oYear = oDate.getFullYear()
+      //   var oMonth = oDate.getMonth() + 1
+      //   var oDay = oDate.getDate()
+      //   if (oMonth < 10) {
+      //     oMonth = '0' + oMonth
+      //   }
+      //   if (oDay < 10) {
+      //     oDay = '0' + oDay
+      //   }
+      //   var oTime = oDay + '/' + oMonth + '/' + oYear
+      //   item.updateTime = oTime
+      // })
       this.dataSource = data
 
       //拷贝数据

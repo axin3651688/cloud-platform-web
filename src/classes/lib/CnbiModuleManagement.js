@@ -7,7 +7,8 @@ import {
   UPDATE_RESOURCE,
   SEARCH_RESOURCES,
   GET_RESOURCES_TREE,
-  GET_RESOURCES_MENU
+  GET_RESOURCES_MENU,
+  FIND_SYSTEM_MODULE //权限管理用
 } from '@/api/productModule'
 
 /** 
@@ -144,6 +145,19 @@ class CnbiModuleManagement {
    */
   async getResourcesTree() {
     let res = await GET_RESOURCES_TREE();
+    return res.data
+  }
+
+  /** 
+  * @desc    : 查看后台管理的模块列表
+  * @author  : zj
+  * @date  : 2019/10/28
+  * @param   {} 
+  * @return  {} 
+  * @update   by   
+  */
+  async findSystemModule() {
+    let res = await FIND_SYSTEM_MODULE();
     return res.data
   }
 }

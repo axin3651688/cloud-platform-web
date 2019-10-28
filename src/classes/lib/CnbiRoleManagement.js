@@ -77,8 +77,9 @@ class CnbiRoleManagement {
    * @return  {} 
    * @update   by   
    */
-  async deleteRole(id) {
-    let res = await DELETE_ROLE(id);
+  async deleteRole(ids) {
+    let res = await DELETE_ROLE(ids);
+    return res
   }
 
   /** 

@@ -9,10 +9,11 @@
                      :name2="name2">
       </common-button>
     </div>
-    <a-table bordered
+    <a-table size="small"
              :columns="columns"
              :dataSource="dataSource"
              :rowKey="setKey"
+             :pagination="pagination"
              :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
       <template slot="zhuangtai"
                 slot-scope="text, record">
@@ -113,10 +114,40 @@ export default {
           dataIndex: 'note'
         },
         {          title: '创建时间',
-          dataIndex: 'createTime'
+          dataIndex: 'createTime',
+          customRender (text, record, index) {
+            var oDate = new Date(text * 1)
+            var oYear = oDate.getFullYear()
+            var oMonth = oDate.getMonth() + 1
+            var oDay = oDate.getDate()
+            if (oMonth < 10) {
+              oMonth = '0' + oMonth
+            }
+            if (oDay < 10) {
+              oDay = '0' + oDay
+            }
+            var oTime = oDay + '/' + oMonth + '/' + oYear
+            text = oTime
+            return text
+          }
         },
         {          title: '更新时间',
-          dataIndex: 'updateTime'
+          dataIndex: 'updateTime',
+          customRender (text, record, index) {
+            var oDate = new Date(text * 1)
+            var oYear = oDate.getFullYear()
+            var oMonth = oDate.getMonth() + 1
+            var oDay = oDate.getDate()
+            if (oMonth < 10) {
+              oMonth = '0' + oMonth
+            }
+            if (oDay < 10) {
+              oDay = '0' + oDay
+            }
+            var oTime = oDay + '/' + oMonth + '/' + oYear
+            text = oTime
+            return text
+          }
         },
         {          title: '状态',
           dataIndex: 'enable',
@@ -131,7 +162,11 @@ export default {
       showAddRole: false,
       showEditRole: false,
       form: this.$form.createForm(this),
-      form1: this.$form.createForm(this)
+      form1: this.$form.createForm(this),
+      pagination: {
+        pageSize: 15,
+        hideOnSinglePage: true // 只有一页时是否隐藏分页器
+      }
     }
   },
   created () {
@@ -142,33 +177,33 @@ export default {
     //进入页面加载数据
     async getData () {
       const data = await this.RoleMObj.findRoleList()
-      data.forEach(item => {
-        var oDate = new Date(item.updateTime * 1)
-        var oYear = oDate.getFullYear()
-        var oMonth = oDate.getMonth() + 1
-        var oDay = oDate.getDate()
-        if (oMonth < 10) {
-          oMonth = '0' + oMonth
-        }
-        if (oDay < 10) {
-          oDay = '0' + oDay
-        }
-        var oTime = oDay + '/' + oMonth + '/' + oYear
-        item.updateTime = oTime
+      // data.forEach(item => {
+      //   var oDate = new Date(item.updateTime * 1)
+      //   var oYear = oDate.getFullYear()
+      //   var oMonth = oDate.getMonth() + 1
+      //   var oDay = oDate.getDate()
+      //   if (oMonth < 10) {
+      //     oMonth = '0' + oMonth
+      //   }
+      //   if (oDay < 10) {
+      //     oDay = '0' + oDay
+      //   }
+      //   var oTime = oDay + '/' + oMonth + '/' + oYear
+      //   item.updateTime = oTime
 
-        var oDate1 = new Date(item.createTime * 1)
-        var oYear1 = oDate1.getFullYear()
-        var oMonth1 = oDate1.getMonth() + 1
-        var oDay1 = oDate1.getDate()
-        if (oMonth1 < 10) {
-          oMonth1 = '0' + oMonth1
-        }
-        if (oDay1 < 10) {
-          oDay1 = '0' + oDay1
-        }
-        var oTime1 = oDay1 + '/' + oMonth1 + '/' + oYear1
-        item.createTime = oTime1
-      })
+      //   var oDate1 = new Date(item.createTime * 1)
+      //   var oYear1 = oDate1.getFullYear()
+      //   var oMonth1 = oDate1.getMonth() + 1
+      //   var oDay1 = oDate1.getDate()
+      //   if (oMonth1 < 10) {
+      //     oMonth1 = '0' + oMonth1
+      //   }
+      //   if (oDay1 < 10) {
+      //     oDay1 = '0' + oDay1
+      //   }
+      //   var oTime1 = oDay1 + '/' + oMonth1 + '/' + oYear1
+      //   item.createTime = oTime1
+      // })
       this.dataSource = data
       console.log(data, '646464')
     },

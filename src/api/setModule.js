@@ -9,7 +9,7 @@ const api = {
   OPEN_ROLE: '/upm/role/open',
   UPDATE_ROLE: '/upm/role/update',
   SAVE_ROLE: '/upm/role/save',
-  DELETE_ROLE: '/upm/role/delete',
+  DELETE_ROLE: '/upm/role/bat_delete',
   LISTRESOURCE: '/upm/authority/listResource',
   AUTHORITY_ROLE: '/upm/authority/authority_role'
 }
@@ -90,7 +90,7 @@ export function DELETE_ROLE(parameter) {
   return axios2({
     url: api.DELETE_ROLE,
     method: 'delete',
-    params: parameter
+    data: parameter
   })
 }
 
