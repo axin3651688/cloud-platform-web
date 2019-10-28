@@ -4,64 +4,80 @@
     <div class="license">
       <!--表格-->
       <div class="license-header">
-        <common-button :name1="name1"
-                       :name2="name2"
-                       @addClick="addClick"
-                       @deleteClick="deleteClick">
+        <common-button
+          :name1="name1"
+          :name2="name2"
+          :title="'删除后无法恢复，您确定继续？'"
+          :disabled="selectedRowKeys.length>0?true:false"
+          @addClick="addClick"
+          @deleteClick="deleteClick">
         </common-button>
-        <a-table :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
-                 :dataSource="tableData"
-                 size="small"
-                 :rowKey="setKey"
-                 :expandRowByClick="true"
-                 :customRow="setRow"
-                 :expandedRowKeys="expandedRowKeys"
-                 :pagination="pagination">
-          <a-table-column title="版本"
-                          dataIndex="name"
-                          key="name">
+        <a-table
+          :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
+          :dataSource="tableData"
+          size="small"
+          :rowKey="setKey"
+          :expandRowByClick="true"
+          :customRow="setRow"
+          :expandedRowKeys="expandedRowKeys"
+          :pagination="pagination"
+        >
+          <a-table-column
+            title="版本"
+            dataIndex="name"
+            key="name">
             <template slot-scope="tags">
               <span>
-                <a-tag color="blue"
-                       :key="tags">{{ tags }}</a-tag>
+                <a-tag
+                  color="blue"
+                  :key="tags">{{ tags }}</a-tag>
               </span>
             </template>
           </a-table-column>
-          <a-table-column title="描述"
-                          key="note"
-                          width="30%">
+          <a-table-column
+            title="描述"
+            key="note"
+            width="30%">
             <template slot-scope="text, record">
               <span>{{ record.note }}</span>
             </template>
           </a-table-column>
-          <a-table-column title="价格"
-                          dataIndex="price"
-                          key="price" />
-          <a-table-column title="更新时间"
-                          dataIndex="updateTime"
-                          key="updateTime" />
-          <a-table-column title="状态"
-                          key="enable">
+          <a-table-column
+            title="价格"
+            dataIndex="price"
+            key="price" />
+          <a-table-column
+            title="更新时间"
+            dataIndex="updateTime"
+            key="updateTime" />
+          <a-table-column
+            title="状态"
+            key="enable">
             <template slot-scope="text, record">
               <!--1代表开-->
-              <a-switch :defaultChecked="record.enable==1?true:false"
-                        @change="onChange(record)" />
+              <a-switch
+                :defaultChecked="record.enable==1?true:false"
+                @change="onChange(record)" />
             </template>
           </a-table-column>
-          <a-table-column title="操作"
-                          key="action">
+          <a-table-column
+            title="操作"
+            key="action">
             <template slot-scope="text, record">
-              <span @click="btnClick(record)"
-                    title="编辑">
+              <span
+                @click="btnClick(record)"
+                title="编辑">
                 <a-icon type="edit" />
               </span>
             </template>
           </a-table-column>
           <template slot="expandedRowRender">
-            <div class="license-middle"
-                 v-if="expandedRowKeys.length>0">
-              <div style="display: flex;flex-direction: column;flex-grow: 1;margin-left: 30px;"
-                   v-if="info">
+            <div
+              class="license-middle"
+              v-if="expandedRowKeys.length>0">
+              <div
+                style="display: flex;flex-direction: column;flex-grow: 1;margin-left: 30px;"
+                v-if="info">
                 <div class="middle-a">
                   <span>创建公司最大个数：</span><span>{{ info.maxCompany }}</span>
                 </div>
@@ -94,17 +110,20 @@
                   </div>
                   <div style="display: flex;flex-direction: row;align-items: center;flex-grow: 1;justify-content: space-between;">
                     <div v-if="addressState">
-                      <img src="../../assets/icons/bianji.svg"
-                           @click="addressState=false">
+                      <img
+                        src="../../assets/icons/bianji.svg"
+                        @click="addressState=false">
                     </div>
                     <div v-if="!addressState">
-                      <a-button class="button_style_one"
-                                type="primary"
-                                @click.prevent="updateAddress()">
+                      <a-button
+                        class="button_style_one"
+                        type="primary"
+                        @click.prevent="updateAddress()">
                         <a-icon type="cloud-upload" />保存
                       </a-button>
-                      <a-button class="button_style_one"
-                                @click.prevent="cancelAddress()">
+                      <a-button
+                        class="button_style_one"
+                        @click.prevent="cancelAddress()">
                         取消
                       </a-button>
                     </div>
@@ -112,11 +131,13 @@
                 </div>
                 <div style="display: flex;flex-direction: row;overflow: hidden;flex-wrap:wrap;flex-grow: 1">
                   <!--info.dpTypes-->
-                  <div v-for="(item,index) in address"
-                       :key="index">
-                    <serve-address :src="item.src"
-                                   :name="item.name"
-                                   :addressState="addressState"></serve-address>
+                  <div
+                    v-for="(item,index) in address"
+                    :key="index">
+                    <serve-address
+                      :src="item.src"
+                      :name="item.name"
+                      :addressState="addressState"></serve-address>
                   </div>
                 </div>
               </div>
@@ -129,17 +150,20 @@
                   </div>
                   <div style="display: flex;flex-direction: row;align-items: center;flex-grow: 1;justify-content: space-between;">
                     <div v-if="dataSourceState">
-                      <img src="../../assets/icons/bianji.svg"
-                           @click="dataSourceState=false">
+                      <img
+                        src="../../assets/icons/bianji.svg"
+                        @click="dataSourceState=false">
                     </div>
                     <div v-if="!dataSourceState">
-                      <a-button class="button_style_one"
-                                type="primary"
-                                @click.prevent="updateDataSource()">
+                      <a-button
+                        class="button_style_one"
+                        type="primary"
+                        @click.prevent="updateDataSource()">
                         <a-icon type="cloud-upload" />保存
                       </a-button>
-                      <a-button class="button_style_one"
-                                @click.prevent="cancelDataSource()">
+                      <a-button
+                        class="button_style_one"
+                        @click.prevent="cancelDataSource()">
                         取消
                       </a-button>
                     </div>
@@ -148,11 +172,13 @@
                 <!--内容-->
                 <div style="display: flex;flex-direction: row;overflow: hidden;flex-wrap:wrap;flex-grow: 1">
                   <!--info.cards-->
-                  <div v-for="(item,index) in dataSource"
-                       :key="index">
-                    <data-source :src="item.src"
-                                 :name="item.name"
-                                 :dataSourceState="dataSourceState"></data-source>
+                  <div
+                    v-for="(item,index) in dataSource"
+                    :key="index">
+                    <data-source
+                      :src="item.src"
+                      :name="item.name"
+                      :dataSourceState="dataSourceState"></data-source>
                   </div>
                 </div>
 
@@ -163,175 +189,208 @@
       </div>
     </div>
     <!--添加牌照弹框-->
-    <a-modal v-model="showLicenseModal"
-             footer="">
-      <a-steps :current="current"
-               style="margin-top: 20px;"
-               size="small">
-        <a-step key="1"
-                title="创建牌照" />
-        <a-step key="2"
-                title="牌照参数" />
-        <a-step key="3"
-                title="相关功能" />
-        <a-step key="4"
-                title="完成" />
+    <a-modal
+      v-model="showLicenseModal"
+      :destroyOnClose="true"
+      footer="">
+      <a-steps
+        :current="current"
+        style="margin-top: 20px;"
+        size="small">
+        <a-step
+          key="1"
+          title="创建牌照" />
+        <a-step
+          key="2"
+          title="牌照参数" />
+        <a-step
+          key="3"
+          title="相关功能" />
+        <a-step
+          key="4"
+          title="完成" />
       </a-steps>
       <!-- 添加牌照步骤一 -->
-      <div class="steps-content"
-           style="display: flex;justify-content: center"
-           v-if="current==0">
-        <a-form :form="form"
-                @submit="oneSubmit">
+      <div
+        class="steps-content"
+        style="display: flex;justify-content: center"
+        v-if="current==0">
+        <a-form
+          :form="form"
+          @submit="oneSubmit">
           <a-form-item label="牌照名称:">
-            <a-input placeholder="请输入"
-                     v-decorator="[
+            <a-input
+              placeholder="请输入"
+              v-decorator="[
                 'name',
                 { rules: [{ required: true, message: '请输入牌照名称！' }] },
               ]" />
           </a-form-item>
           <a-form-item label="牌照描述:">
-            <a-textarea placeholder="请输入"
-                        :rows="4"
-                        v-decorator="[
+            <a-textarea
+              placeholder="请输入"
+              :rows="4"
+              v-decorator="[
                 'note',
                 { rules: [{ required: true, message: '请输入牌照描述！' }] },
               ]" />
           </a-form-item>
           <a-form-item>
-            <a-button type="primary"
-                      html-type="submit">
+            <a-button
+              type="primary"
+              html-type="submit">
               下一步
             </a-button>
           </a-form-item>
         </a-form>
       </div>
       <!-- 添加牌照步骤二 -->
-      <div class="steps-content"
-           style="display: flex;justify-content: center"
-           v-if="current==1">
-        <a-form :form="form1"
-                class="step1"
-                @submit="handleSubmit">
+      <div
+        class="steps-content"
+        style="display: flex;justify-content: center"
+        v-if="current==1">
+        <a-form
+          :form="form1"
+          class="step1"
+          @submit="handleSubmit">
           <a-form-item label="创建最大公司数:">
-            <a-input placeholder="请输入"
-                     v-decorator="[
+            <a-input
+              placeholder="请输入"
+              v-decorator="[
                 'maxCompany',
                 { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }] },
               ]" />个
           </a-form-item>
           <a-form-item label="最多用户数:">
-            <a-input placeholder="请输入"
-                     v-decorator="[
+            <a-input
+              placeholder="请输入"
+              v-decorator="[
                 'maxUser',
                 { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }] },
               ]" />个
           </a-form-item>
           <a-form-item label="创建最多资源数:">
-            <a-input placeholder="请输入"
-                     v-decorator="[
+            <a-input
+              placeholder="请输入"
+              v-decorator="[
                 'maxDesign',
                 { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }] },
               ]" />个
           </a-form-item>
           <a-form-item label="最大级别数:">
-            <a-input placeholder="请输入"
-                     v-decorator="[
+            <a-input
+              placeholder="请输入"
+              v-decorator="[
                 'maxLevel',
                 { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }] },
               ]" />级
           </a-form-item>
           <a-form-item label="最多可用空间:">
-            <a-input placeholder="请输入"
-                     v-decorator="[
+            <a-input
+              placeholder="请输入"
+              v-decorator="[
                 'maxMemory',
                 { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }] },
               ]" />MB
           </a-form-item>
           <a-form-item label="最多链接数:">
-            <a-input placeholder="请输入"
-                     v-decorator="[
+            <a-input
+              placeholder="请输入"
+              v-decorator="[
                 'maxConnect',
                 { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }] },
               ]" />个
           </a-form-item>
           <a-form-item>
-            <a-button type="primary"
-                      html-type="submit">
+            <a-button
+              type="primary"
+              html-type="submit">
               下一步
             </a-button>
           </a-form-item>
         </a-form>
       </div>
       <!-- 添加牌照步骤三 -->
-      <div class="steps-content"
-           style="display: flex;justify-content: center"
-           v-if="current==2">
-        <a-form :form="form2"
-                @submit="threeSubmit">
+      <div
+        class="steps-content"
+        style="display: flex;justify-content: center"
+        v-if="current==2">
+        <a-form
+          :form="form2"
+          @submit="threeSubmit">
           <a-form-item label="可用应用:">
-            <a-select v-decorator="[
+            <a-select
+              v-decorator="[
                 'cards',
                 { rules: [{ required: true, message: '请选择可用应用' }] },
               ]"
-                      placeholder="请选择"
-                      mode="multiple"
-                      @change="handleSelectChange">
+              placeholder="请选择"
+              mode="multiple"
+              @change="handleSelectChange">
 
-              <a-select-option v-for="(item,index) in cardArr"
-                               :key="index"
-                               :value="item.id">
+              <a-select-option
+                v-for="(item,index) in cardArr"
+                :key="index"
+                :value="item.id">
                 {{ item.name }}
               </a-select-option>
             </a-select>
           </a-form-item>
           <a-form-item label="可用模块:">
-            <a-select style="width: 100%;min-width: 200px;"
-                      v-decorator="[
+            <a-select
+              style="width: 100%;min-width: 200px;"
+              v-decorator="[
                 'modules',
                 { rules: [{ required: true, message: '请选择可用模块' }] },
               ]"
-                      placeholder="请选择"
-                      mode="multiple"
-                      @change="handleSelectChange">
-              <a-select-option v-for="(item,index) in moduleArr"
-                               :key="index"
-                               :value="item.id">
+              placeholder="请选择"
+              mode="multiple"
+              @change="handleSelectChange">
+              <a-select-option
+                v-for="(item,index) in moduleArr"
+                :key="index"
+                :value="item.id">
                 {{ item.name }}
               </a-select-option>
             </a-select>
           </a-form-item>
           <a-form-item>
-            <a-button type="primary"
-                      html-type="submit">
+            <a-button
+              type="primary"
+              html-type="submit">
               下一步
             </a-button>
           </a-form-item>
         </a-form>
       </div>
       <!-- 添加牌照步骤4 -->
-      <div class="steps-content"
-           style="display: flex;justify-content: center;flex-direction: column;align-items: center;"
-           v-if="current==3">
+      <div
+        class="steps-content"
+        style="display: flex;justify-content: center;flex-direction: column;align-items: center;"
+        v-if="current==3">
         <div style="display: flex;flex-direction: column;align-items: center; justify-content: center;margin-top: 50px">
-          <img style="width: 72px"
-               src="../../assets/icons/wancheng.svg">
+          <img
+            style="width: 72px"
+            src="../../assets/icons/wancheng.svg">
           <span>牌照创建成功</span>
         </div>
-        <a-button type="primary"
-                  style="width: 100px;margin-top: 50px"
-                  @click="saveLicense"> 保存牌照</a-button>
+        <a-button
+          type="primary"
+          style="width: 100px;margin-top: 50px"
+          @click="saveLicense"> 保存牌照</a-button>
       </div>
     </a-modal>
     <!--编辑牌照-->
-    <a-modal v-model="editState"
-             title="牌照编辑">
+    <a-modal
+      v-model="editState"
+      title="牌照编辑">
       <a-form :form="form3">
         <a-row :gutter="24">
           <a-col :span="12">
             <a-form-item label="牌照名称:">
-              <a-input placeholder="请输入牌照名称"
-                       v-decorator="[
+              <a-input
+                placeholder="请输入牌照名称"
+                v-decorator="[
                   'name',
                   { rules: [{ required: true, message: '请输入牌照名称！' }] },
                 ]" />
@@ -339,8 +398,9 @@
           </a-col>
           <a-col :span="12">
             <a-form-item label="最多创建资源数">
-              <a-input placeholder="请输入"
-                       v-decorator="[
+              <a-input
+                placeholder="请输入"
+                v-decorator="[
                   'maxDesign',
                   { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }] },
                 ]" />
@@ -350,9 +410,10 @@
         <a-row :gutter="24">
           <a-col :span="12">
             <a-form-item label="描述">
-              <a-textarea :rows="6"
-                          placeholder="请输入"
-                          v-decorator="[
+              <a-textarea
+                :rows="6"
+                placeholder="请输入"
+                v-decorator="[
                   'note',
                   { rules: [{ required: true, message: '请输入描述！' }] },
                 ]" />
@@ -360,15 +421,17 @@
           </a-col>
           <a-col :span="12">
             <a-form-item label="最多可用空间">
-              <a-input placeholder="请输入"
-                       v-decorator="[
+              <a-input
+                placeholder="请输入"
+                v-decorator="[
                   'maxMemory',
                   { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }] },
                 ]" />
             </a-form-item>
             <a-form-item label="最多用户数">
-              <a-input placeholder="请输入"
-                       v-decorator="[
+              <a-input
+                placeholder="请输入"
+                v-decorator="[
                   'maxUser',
                   { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }] },
                 ]" />
@@ -378,8 +441,9 @@
         <a-row :gutter="24">
           <a-col :span="12">
             <a-form-item label="服务价格:">
-              <a-input placeholder="请输入"
-                       v-decorator="[
+              <a-input
+                placeholder="请输入"
+                v-decorator="[
                   'price',
                   { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }] },
                 ]" />
@@ -387,8 +451,9 @@
           </a-col>
           <a-col :span="12">
             <a-form-item label="最大级别数">
-              <a-input placeholder="请输入"
-                       v-decorator="[
+              <a-input
+                placeholder="请输入"
+                v-decorator="[
                   'maxLevel',
                   { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }] },
                 ]" />
@@ -398,8 +463,9 @@
         <a-row :gutter="24">
           <a-col :span="12">
             <a-form-item label="创建最大公司数:">
-              <a-input placeholder="请输入"
-                       v-decorator="[
+              <a-input
+                placeholder="请输入"
+                v-decorator="[
                   'maxCompany',
                   { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }] },
                 ]" />
@@ -407,8 +473,9 @@
           </a-col>
           <a-col :span="12">
             <a-form-item label="最多链接数">
-              <a-input placeholder="请输入"
-                       v-decorator="[
+              <a-input
+                placeholder="请输入"
+                v-decorator="[
                   'maxConnect',
                   { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }] },
                 ]" />
@@ -417,11 +484,13 @@
         </a-row>
       </a-form>
       <template slot="footer">
-        <a-button key="back"
-                  @click="cancelEdit">取消</a-button>
-        <a-button key="submit"
-                  type="primary"
-                  @click="saveEdit">
+        <a-button
+          key="back"
+          @click="cancelEdit">取消</a-button>
+        <a-button
+          key="submit"
+          type="primary"
+          @click="saveEdit">
           <a-icon type="cloud-upload" /> 保存
         </a-button>
       </template>
@@ -582,14 +651,6 @@ export default {
       this.current = 0
     },
     async deleteClick () {
-      // 1.如果没有勾选就点击删除按钮，提示框
-      if (this.ids.length == 0) {
-        confirm('请勾选要删除的租户')
-        return
-      }
-      if (this.ids.length > 0) {
-        confirm('删除后无法恢复，您确定继续？')
-      }
       // 2.如果勾选了，则获取勾选的id数组
       // 3.调用删除接口，传入参数，删除
       await this.LicenseMObj.deleteLicense(this.ids)

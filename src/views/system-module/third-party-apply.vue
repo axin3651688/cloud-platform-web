@@ -6,6 +6,8 @@
         style="float: none;"
         :name1="name1"
         :name2="name2"
+        :disabled="selectedRowKeys.length>0?true:false"
+        :title="'删除后可能会影响使用功能的使用，您确定继续？'"
         @addClick="addClick"
         @deleteClick="deleteClick">
       </common-button>
@@ -30,7 +32,10 @@
         <a-switch :defaultChecked="record.name2==1?true:false" @click="changeState"/>
       </template>
     </a-table>
-    <a-modal title="添加接入" v-model="showAddApply">
+    <a-modal title="添加接入"
+             v-model="showAddApply"
+             :destroyOnClose="true"
+    >
       <a-form :form="form">
         <a-row :gutter="24">
           <a-col :span="12">

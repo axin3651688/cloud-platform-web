@@ -18,6 +18,8 @@
       <common-button
         @addClick="addClick"
         @deleteClick="deleteClick"
+        :title="'删除后会影响用户使用，请谨慎操作!'"
+        :disabled="selectedRowKeys.length>0?true:false"
         :name1="name1"
         :name2="name2">
       </common-button>
@@ -40,7 +42,11 @@
         </template>
       </a-table>
     </div>
-    <a-modal v-model="showAddUser" title="添加用户">
+    <a-modal
+      v-model="showAddUser"
+      title="添加用户"
+      :destroyOnClose="true"
+    >
       <a-form :form="form" class="addUser-table">
         <a-form-item label="昵称">
           <a-input
