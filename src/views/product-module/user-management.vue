@@ -25,7 +25,8 @@
     <div>
       <!--表格-->
       <a-table
-        bordered
+        :pagination="pagination"
+        size="small"
         :columns="columns"
         :dataSource="dataSource"
         :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}" >
@@ -120,6 +121,10 @@ export default {
   },
   data () {
     return {
+      pagination: {
+        pageSize: 15,
+        hideOnSinglePage: true // 只有一页时是否隐藏分页器
+      },
       version: '请输入',
       name1: '添加',
       name2: '删除',

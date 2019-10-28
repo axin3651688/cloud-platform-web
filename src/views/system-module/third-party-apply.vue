@@ -12,7 +12,8 @@
     </div>
     <a-table
       class="apply-table"
-      bordered
+      :pagination="pagination"
+      size="small"
       :columns="columns"
       :dataSource="dataSource"
       :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}" >
@@ -227,6 +228,10 @@ export default {
   },
   data () {
     return {
+      pagination: {
+        pageSize: 15,
+        hideOnSinglePage: true // 只有一页时是否隐藏分页器
+      },
       name1: '添加接入',
       name2: '删除',
       selectedRowKeys: [],

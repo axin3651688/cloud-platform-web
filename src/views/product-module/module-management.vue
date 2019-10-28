@@ -21,7 +21,9 @@
       </common-button>
     </div>
     <!--表格-->
-    <a-table bordered
+    <a-table
+             :pagination="pagination"
+             size="small"
              :columns="columns"
              :dataSource="dataSource"
              :rowKey="setKey"
@@ -265,6 +267,10 @@ export default {
   name: 'ModuleManagement',
   data () {
     return {
+      pagination: {
+        pageSize: 15,
+        hideOnSinglePage: true // 只有一页时是否隐藏分页器
+      },
       editId: null,//点击编辑的时候该行数据对应的id
       type: '',
       LicenseMObj: null,
@@ -406,7 +412,7 @@ export default {
       this.selectedRowKeys = []
     },
 
-    //模糊查询的第一个框的选择事件  
+    //模糊查询的第一个框的选择事件
     selectCell (val1) {
       this.selectVal = val1;
     },

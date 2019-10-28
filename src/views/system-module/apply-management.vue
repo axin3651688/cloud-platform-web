@@ -23,7 +23,8 @@
       </common-button>
     </div>
     <a-table class="apply-table"
-             bordered
+             :pagination="pagination"
+             size="small"
              :columns="columns"
              :dataSource="dataSource"
              :rowKey="setKey"
@@ -219,6 +220,10 @@ export default {
   name: 'ApplyManagement',
   data () {
     return {
+      pagination: {
+        pageSize: 15,
+        hideOnSinglePage: true // 只有一页时是否隐藏分页器
+      },
       ApplyMObj: null,
       version: '关键字搜索',
       defaultValue: 'name',

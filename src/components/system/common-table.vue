@@ -18,8 +18,10 @@
     <!--:rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"-->
     <!--:columns="columns"-->
     <!--:dataSource="data" />-->
-    <a-table bordered
+    <a-table
+             size="small"
              :dataSource="data"
+             :pagination="pagination"
              :columns="columns"
              :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
 
@@ -46,6 +48,10 @@ export default {
     return {
       // data,
       // columns,
+      pagination: {
+        pageSize: 15,
+        hideOnSinglePage: true // 只有一页时是否隐藏分页器
+      },
       hasSelected: false,
       selectedRowKeys: [], // Check here to configure the default column
       loading: false
