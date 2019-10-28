@@ -41,6 +41,7 @@
     </a-table>
     <!--添加模块-->
     <a-modal v-model="showAddModule"
+             :destroyOnClose="true"
              title="添加模块">
       <a-form :form="form">
         <a-row :gutter="24"

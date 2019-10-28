@@ -189,6 +189,7 @@
     <!--添加牌照弹框-->
     <a-modal
       v-model="showLicenseModal"
+      :destroyOnClose="true"
       footer="">
       <a-steps
         :current="current"

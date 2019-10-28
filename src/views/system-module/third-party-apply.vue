@@ -30,7 +30,10 @@
         <a-switch :defaultChecked="record.name2==1?true:false" @click="changeState"/>
       </template>
     </a-table>
-    <a-modal title="添加接入" v-model="showAddApply">
+    <a-modal title="添加接入"
+             v-model="showAddApply"
+             :destroyOnClose="true"
+    >
       <a-form :form="form">
         <a-row :gutter="24">
           <a-col :span="12">

@@ -43,6 +43,7 @@
     <!--添加员工-->
     <a-modal
       v-model="showAddAccount"
+      :destroyOnClose="true"
       title="添加员工"
       class="add-account"
       :width="350"

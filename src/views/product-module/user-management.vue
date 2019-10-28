@@ -40,7 +40,11 @@
         </template>
       </a-table>
     </div>
-    <a-modal v-model="showAddUser" title="添加用户">
+    <a-modal
+      v-model="showAddUser"
+      title="添加用户"
+      :destroyOnClose="true"
+    >
       <a-form :form="form" class="addUser-table">
         <a-form-item label="昵称">
           <a-input

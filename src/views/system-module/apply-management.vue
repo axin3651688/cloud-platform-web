@@ -104,6 +104,7 @@
       </form>
     </a-modal>
     <a-modal v-model="showAddApply"
+             :destroyOnClose="true"
              title="添加应用">
       <a-form :form="form1">
         <a-form-item label="名称">
