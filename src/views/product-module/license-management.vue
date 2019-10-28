@@ -7,7 +7,7 @@
         <common-button
           :name1="name1"
           :name2="name2"
-          :title="'删除后无法恢复，您确定继续？'"
+          :title="'删除/删除牌照将会影响所有使用当前牌照的租户，确定要继续？'"
           :disabled="selectedRowKeys.length>0?true:false"
           @addClick="addClick"
           @deleteClick="deleteClick">

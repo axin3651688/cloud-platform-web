@@ -32,9 +32,10 @@
         <a-switch :defaultChecked="record.name2==1?true:false" @click="changeState"/>
       </template>
     </a-table>
-    <a-modal title="添加接入"
-             v-model="showAddApply"
-             :destroyOnClose="true"
+    <a-modal
+      title="添加接入"
+      v-model="showAddApply"
+      :destroyOnClose="true"
     >
       <a-form :form="form">
         <a-row :gutter="24">
@@ -243,15 +244,18 @@ export default {
       columns: [
         {
           title: '应用名称',
-          dataIndex: 'name'
+          dataIndex: 'name',
+          width: '20%'
         },
         {
           title: '应用描述',
-          dataIndex: 'name1'
+          dataIndex: 'name1',
+          width: '50%'
         },
         {
           title: '状态',
           dataIndex: 'name2',
+          width: '20%',
           scopedSlots: { customRender: 'zhuangtai' }
         },
         { title: '操作',
