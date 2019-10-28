@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <div style="display: flex;justify-content: flex-end;">
+    <div style="display: flex;justify-content: flex-end;background-color: #fff;padding: 16px 32px 0 32px">
       <common-button
         style="float: none;"
         :name1="name1"
@@ -339,4 +339,7 @@ export default {
  /deep/.ant-form-item{
    margin-bottom: 0;
  }
+  .apply-table{
+    background-color: #fff;
+  }
 </style>

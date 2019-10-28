@@ -2,7 +2,7 @@
   <div>
     <!-- <h1>租户管理 TenantManagement</h1> -->
     <div>
-      <div style="display: flex;flex-direction: row;justify-content: space-between">
+      <div style="display: flex;flex-direction: row;justify-content: space-between;background-color: #fff;padding: 16px 32px 0 32px">
         <div style="display: flex;flex-direction: row;">
           <common-drop-down
             :result="result"
@@ -30,6 +30,7 @@
       </div>
       <!--表格-->
       <common-table
+        class="tencent-table"
         :columns="columns"
         :data="data"
         @getIds="getIds"
@@ -509,4 +510,7 @@ ant .tenantInput {
   flex-direction: row;
   align-items: center;
 }
+  .tencent-table{
+    background-color: #fff;
+  }
 </style>

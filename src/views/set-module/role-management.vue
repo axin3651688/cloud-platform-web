@@ -1,7 +1,7 @@
 <template>
   <!--角色管理-->
   <div>
-    <div style="display: flex;flex-direction: row;justify-content: flex-end">
+    <div style="display: flex;flex-direction: row;justify-content: flex-end;background-color: #fff;padding: 16px 32px 0 32px">
       <common-button
         style="float: none"
         @addClick="addClick"
@@ -12,6 +12,7 @@
     </div>
     <a-table
       size="small"
+      class="role-table"
       :columns="columns"
       :dataSource="dataSource"
       :rowKey="setKey"
@@ -337,4 +338,7 @@ form {
   flex-direction: column;
   margin: 0 32px;
 }
+  .role-table{
+    background-color: #fff;
+  }
 </style>

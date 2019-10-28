@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--头部-->
-    <div style="display: flex;flex-direction: row;justify-content: space-between">
+    <div style="display: flex;flex-direction: row;justify-content: space-between;background-color: #fff;padding: 16px 32px 0 32px">
       <div style="display: flex;flex-direction: row">
         <common-drop-down
           :result="result"
@@ -27,6 +27,7 @@
     <div>
       <!--表格-->
       <a-table
+        class="user-table"
         :pagination="pagination"
         size="small"
         :columns="columns"
@@ -309,5 +310,8 @@ export default {
   }
   .table-sex{
     display: flex;
+  }
+  .user-table{
+    background-color: #fff;
   }
 </style>

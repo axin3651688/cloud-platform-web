@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="display: flex;flex-direction: row;justify-content: space-between">
+    <div style="display: flex;flex-direction: row;justify-content: space-between;background-color: #fff;padding: 16px 32px 0 32px">
       <div style="display: flex;flex-direction: row;">
         <common-drop-down
           :result="result"
@@ -471,4 +471,7 @@ export default {
   display: flex;
   align-items: center;
 }
+  .apply-table{
+    background-color: #fff;
+  }
 </style>

@@ -821,10 +821,15 @@ export default {
 .middle-a {
   margin-bottom: 16px;
 }
+.license{
+  background-color: #fff;
+  padding-top: 16px;
+}
 .license-middle {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  background-color: #EAEDF3;
 }
 .license-foot-a {
   display: flex;
@@ -832,7 +837,6 @@ export default {
   margin-left: 30px;
   padding: 20px;
   width: 50%;
-  border: 1px solid #eaedf3;
 }
 .license-foot {
   display: flex;
