@@ -14,8 +14,8 @@
             </a-col>
           </a-row>
           <a-row :gutter="24">
-            <a-col :span="8" v-for="(item,index1) in obj.plainOptions" :key="index1" style="margin-top: 20px;">
-              <a-checkbox :defaultChecked="obj.checkedList.indexOf(item)>-1" :value="item" @change="onChange">{{ item }}</a-checkbox>
+            <a-col :span="8" v-for="(item,index1) in obj.children" :key="index1" style="margin-top: 20px;">
+              <a-checkbox :defaultChecked="obj.selectArr.indexOf(item.name)>-1" :value="item" @change="onChange">{{ item.name }}</a-checkbox>
             </a-col>
           </a-row>
         </a-col>

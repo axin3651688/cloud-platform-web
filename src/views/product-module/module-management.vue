@@ -21,8 +21,7 @@
       </common-button>
     </div>
     <!--表格-->
-    <a-table
-             :pagination="pagination"
+    <a-table :pagination="pagination"
              size="small"
              :columns="columns"
              :dataSource="dataSource"
@@ -83,7 +82,8 @@
           </a-col>
           <a-col :span="12">
             <a-form-item label="上级目录">
-              <a-select v-decorator="[
+              <a-select :defaultValue="0"
+                        v-decorator="[
                   'pid',
                   { rules: [{ required: true, message: '请选择上级目录' }] },
                 ]"
@@ -92,7 +92,10 @@
                   <img style="width: 12px;"
                        src="../../assets/icons/paixu.svg" />
                 </template>
-
+                <a-select-option :key="index"
+                                 :value="0">
+                  无
+                </a-select-option>
                 <!-- 模块的选择框 -->
                 <template v-if="type == 3">
                   <a-select-option v-for="(item,index) in cardArr"
@@ -324,7 +327,22 @@ export default {
           title: '更新时间',
           dataIndex: 'updateTime',
           width: '12%',
-          key: 'updateTime'
+          key: 'updateTime',
+          customRender (text, record, index) {
+            var oDate = new Date(text * 1)
+            var oYear = oDate.getFullYear()
+            var oMonth = oDate.getMonth() + 1
+            var oDay = oDate.getDate()
+            if (oMonth < 10) {
+              oMonth = '0' + oMonth
+            }
+            if (oDay < 10) {
+              oDay = '0' + oDay
+            }
+            var oTime = oDay + '/' + oMonth + '/' + oYear
+            text = oTime
+            return text
+          }
         },
         {
           title: '状态',
@@ -370,20 +388,6 @@ export default {
     //加载页面 获取数据
     async getData () {
       const data = await this.ModuleMObj.getResourcesModule();
-      data.forEach(item => {
-        var oDate = new Date(item.updateTime * 1)
-        var oYear = oDate.getFullYear()
-        var oMonth = oDate.getMonth() + 1
-        var oDay = oDate.getDate()
-        if (oMonth < 10) {
-          oMonth = '0' + oMonth
-        }
-        if (oDay < 10) {
-          oDay = '0' + oDay
-        }
-        var oTime = oDay + '/' + oMonth + '/' + oYear
-        item.updateTime = oTime
-      })
       this.dataSource = data
 
       //拷贝数据
@@ -434,7 +438,7 @@ export default {
       this.selectedRowKeys = selectedRowKeys
     },
     // 设置每行id为主键
-    setKey(record){
+    setKey (record) {
       return record.id
     },
 

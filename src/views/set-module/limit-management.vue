@@ -16,7 +16,9 @@
       <common-button @addClick="addClick"
                      @deleteClick="deleteClick"
                      :name1="name1"
-                     :name2="name2">
+                     :name2="name2"
+                     :title="'删除后可能会影响使用功能的使用，您确定继续？'"
+                     :disabled="selectedRowKeys.length>0?true:false">
       </common-button>
     </div>
     <!--表格-->
@@ -39,6 +41,7 @@
       </template>
     </a-table>
     <a-modal v-model="showAddLimit"
+             :destroyOnClose="true"
              title="新增权限"
              :width="350">
       <a-form :form="form">
@@ -312,20 +315,6 @@ export default {
     //加载页面 获取数据
     async getData () {
       const data = await this.LimitMObj.getResourcesTree();
-      // data.forEach(item => {
-      //   var oDate = new Date(item.updateTime * 1)
-      //   var oYear = oDate.getFullYear()
-      //   var oMonth = oDate.getMonth() + 1
-      //   var oDay = oDate.getDate()
-      //   if (oMonth < 10) {
-      //     oMonth = '0' + oMonth
-      //   }
-      //   if (oDay < 10) {
-      //     oDay = '0' + oDay
-      //   }
-      //   var oTime = oDay + '/' + oMonth + '/' + oYear
-      //   item.updateTime = oTime
-      // })
       this.dataSource = data
 
       //拷贝数据
@@ -355,16 +344,8 @@ export default {
     //删除按钮触发事件
     async deleteClick () {
       //1.如果没有勾选就点击删除按钮，提示框
-      if (this.selectedRowKeys.length == 0) {
-        confirm('请勾选要删除的权限')
-        return
-      }
-      if (this.selectedRowKeys.length > 0) {
-        confirm('删除后数据无法恢复，您确定继')
-      }
       //2.如果勾选了，则获取勾选的id数组
       //3.调用删除接口，传入参数，删除
-      debugger
       await this.LimitMObj.deleteResource(this.selectedRowKeys, 3)
       //4.删除成功后，及时更新数据，清除勾选图标
       await this.getData()
