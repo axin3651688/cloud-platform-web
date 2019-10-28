@@ -91,7 +91,7 @@ class CnbiRoleManagement {
    * @update   by   
    */
   async listresource(roleId) {
-    let res = await LISTRESOURCE(roleId);
+    let res = await LISTRESOURCE({roleId:roleId});
     return res
   }
 

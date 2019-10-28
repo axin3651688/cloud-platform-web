@@ -1,13 +1,16 @@
 <template>
   <!--角色管理-->
   <div>
-    <div style="display: flex;flex-direction: row;justify-content: flex-end;background-color: #fff;padding: 16px 32px 0 32px">
+
+    <div style="display: flex;flex-direction: row;justify-content: flex-end">
       <common-button
         style="float: none"
         @addClick="addClick"
         @deleteClick="deleteClick"
         :name1="name1"
-        :name2="name2">
+        :name2="name2"
+        :title="'删除后可能会影响使用功能的使用，您确定继续？'"
+        :disabled="selectedRowKeys.length>0?true:false">
       </common-button>
     </div>
     <a-table
@@ -41,6 +44,7 @@
     <a-modal
       v-model="showAddRole"
       title="添加角色"
+      :destroyOnClose="true"
       :width="350">
       <a-form :form="form">
         <a-form-item label="名称">
@@ -206,33 +210,6 @@ export default {
     // 进入页面加载数据
     async getData () {
       const data = await this.RoleMObj.findRoleList()
-      // data.forEach(item => {
-      //   var oDate = new Date(item.updateTime * 1)
-      //   var oYear = oDate.getFullYear()
-      //   var oMonth = oDate.getMonth() + 1
-      //   var oDay = oDate.getDate()
-      //   if (oMonth < 10) {
-      //     oMonth = '0' + oMonth
-      //   }
-      //   if (oDay < 10) {
-      //     oDay = '0' + oDay
-      //   }
-      //   var oTime = oDay + '/' + oMonth + '/' + oYear
-      //   item.updateTime = oTime
-
-      //   var oDate1 = new Date(item.createTime * 1)
-      //   var oYear1 = oDate1.getFullYear()
-      //   var oMonth1 = oDate1.getMonth() + 1
-      //   var oDay1 = oDate1.getDate()
-      //   if (oMonth1 < 10) {
-      //     oMonth1 = '0' + oMonth1
-      //   }
-      //   if (oDay1 < 10) {
-      //     oDay1 = '0' + oDay1
-      //   }
-      //   var oTime1 = oDay1 + '/' + oMonth1 + '/' + oYear1
-      //   item.createTime = oTime1
-      // })
       this.dataSource = data
       console.log(data, '646464')
     },
@@ -244,15 +221,9 @@ export default {
     // 删除按钮触发事件
     async deleteClick () {
       // 1.如果没有勾选就点击删除按钮，提示框
-      if (this.selectedRowKeys.length == 0) {
-        confirm('请勾选要删除的模块')
-        return
-      }
-      if (this.selectedRowKeys.length > 0) {
-        confirm('删除后可能会影响使用功能的使用，您确定继续？')
-      }
       // 2.如果勾选了，则获取勾选的id数组
       // 3.调用删除接口，传入参数，删除
+
       debugger
       await this.RoleMObj.deleteRole(this.selectedRowKeys)
       // 4.删除成功后，及时更新数据，清除勾选图标

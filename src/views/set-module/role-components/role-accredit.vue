@@ -4,43 +4,38 @@
     <!--头部-->
     <div style="background-color: white;padding: 20px;">
       <div style="display: flex;justify-content: flex-end;border-bottom: 1px solid #EAEDF3">
-        <common-button
-          style="float: none;"
-          :name1="name1"
-          :name2="name2"
-          @addClick="addClick"
-          @deleteClick="deleteClick">
+        <common-button style="float: none;"
+                       :name1="name1"
+                       :name2="name2"
+                       @addClick="addClick"
+                       @deleteClick="deleteClick">
         </common-button>
       </div>
       <div style="display: flex;flex-direction: column;width: 200px;">
         <span style="margin: 10px 0;">角色名称：</span>
-        <a-select
-          default-value="1"
-          v-decorator="['type',{rules: [{ required: true, message: '请选择角色名称!' }],}]">
+        <a-select @change="handleChange">
           <template slot="suffixIcon">
-            <img
-              style="width: 12px;"
-              src="../../../assets/icons/paixu.svg" />
+            <img style="width: 12px;"
+                 src="../../../assets/icons/paixu.svg" />
           </template>
-          <a-select-option value="1">
-            公共部署
-          </a-select-option>
-          <a-select-option value="2">
-            私有部署
-          </a-select-option>
-          <a-select-option value="3">
-            本地部署
+          <a-select-option v-for="(item,index) in roleArr"
+                           :key="index"
+                           :value="item.id">
+            {{item.name}}
           </a-select-option>
         </a-select>
       </div>
     </div>
     <!--中间**一二级节点**-->
     <div style="display: flex;flex-direction: row;margin-top: 20px;">
-      <role-node :nodes="obj" @onChange="onchange"></role-node>
+      <role-node :nodes="obj"
+                 @onChange="onchangeUp"></role-node>
     </div>
     <div style="display: flex;flex-direction: row;margin: 20px;background-color: #fff;flex-wrap: wrap">
-      <div style="width: 150px;margin: 20px 0 20px 10px;" v-for="(item,index) in selectedList" :key="index">
-        <a-checkbox @change="onChange">{{ item }}</a-checkbox>
+      <div style="width: 150px;margin: 20px 0 20px 10px;"
+           v-for="(item,index) in selectedList"
+           :key="index">
+        <a-checkbox @change="onChangeDown">{{ item }}</a-checkbox>
       </div>
 
     </div>
@@ -48,6 +43,8 @@
 </template>
 
 <script>
+import CnbiRoleManagement from '@/classes/lib/CnbiRoleManagement'
+import CnbiModuleManagement from '@/classes/lib/CnbiModuleManagement'
 import CommonButton from '@/components/system/common-button'
 import RoleNode from './role-node'
 import ACol from 'ant-design-vue/es/grid/Col'
@@ -61,8 +58,13 @@ export default {
   },
   data () {
     return {
+      LimitMObj: null,
+      RoleMObj: null,
+      roleArr: [],//角色列表
+      selectArr: [],//默认勾选的数组
       name1: '保存',
       name2: '删除',
+      roleId: null,//勾选的角色id
       obj: [
         {
           plainOptions: ['Apple', 'Pear', 'Orange', 'Apple1', 'Pear1', 'Orange1', 'Orange2'], // 所有
@@ -98,20 +100,65 @@ export default {
 
     }
   },
+  created () {
+    this.RoleMObj = new CnbiRoleManagement()//调用角色的接口
+    this.LimitMObj = new CnbiModuleManagement()//由于要查询权限列表
+    this.getData()
+  },
   methods: {
+    //获取数据
+    async getData () {
+      //角色列表数组
+      const data = await this.RoleMObj.findRoleList()
+      this.roleArr = data
+      //查询所有数据
+      const limitData = await this.LimitMObj.getResourcesTree();
+      limitData.forEach(item => {
+        console.log(item, '看撒谎的客家话的')
+        item.selectArr = this.selectArr
+      });
+      console.log(limitData, '死吧死吧死吧')
+      this.obj = limitData
+    },
     addClick () {
 
     },
     deleteClick () {
 
     },
+    onchangeUp (val) {
+      //中间层的勾选事件
+      console.log(val, '我有点坏')
+    },
     onchange (val) {
       // this.selectedNode=val
+    },
+    //选择角色的事件
+    async handleChange (val) {
+      //获取选择的角色id
+      this.roleId = val
+      //根据勾选的角色，查询改角色的所有资源
+      const resourceList = await this.RoleMObj.listresource(this.roleId);
+      console.log(resourceList, '卡萨绝好的卡JS号地块金黄色')
+      //该数组就是默认勾选的数组
+      this.selectArr = resourceList.data
+
+      //查询所有数据
+      const limitData = await this.LimitMObj.getResourcesTree();
+      limitData.forEach(item => {
+        console.log(item, '看撒谎的客家话的')
+        item.selectArr = this.selectArr
+      });
+      console.log(limitData, '死吧死吧死吧')
+      this.obj = limitData
+      // resourceList.data.forEach(item => {
+      //   console.log(item.name, '爱过的脚后跟点击行')
+      // })
+
     }
   }
 }
 </script>
 
 <style scoped>
-
 </style>
