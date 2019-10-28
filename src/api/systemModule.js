@@ -11,7 +11,12 @@ const api = {
   DELETE_RESOURCE: '/upm/resource/bat_delete/',
   SAVE_RESOURCE: '/upm/resource/save',
   UPDATE_RESOURCE: '/upm/resource/update',
-  SEARCH_RESOURCES: '/upm/resource/search_resources'
+  SEARCH_RESOURCES: '/upm/resource/search_resources',
+  //第三方的相关接口
+  GET_TP_APP: '/upm/tp_app', //分页查询第三方应用
+  POST_TP_APP: '/upm/tp_app', //保存第三方应用
+  DELETE_TP_APP: '/upm/tp_app', //批量删除第三方应用
+  PUT_TP_APP: '/upm/tp_app' //更新第三方应用
 }
 export default api
 
@@ -121,5 +126,71 @@ export function SEARCH_RESOURCES(parameter) {
     url: api.SEARCH_RESOURCES,
     method: 'get',
     params: parameter
+  })
+}
+
+/** 
+ * @desc    : 分页查询第三方应
+ * @author  : zj
+ * @date  : 2019/10/28
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function GET_TP_APP(parameter) {
+  return axios2({
+    url: api.GET_TP_APP +'\/'+ parameter.page + '\/' + parameter.size,
+    method: 'get',
+    params: parameter
+  })
+}
+// DELETE_TP_APP: '/upm/tp_app', //
+// PUT_TP_APP: '/upm/tp_app' //更新第三方应用
+
+/** 
+ * @desc    : 保存第三方应用
+ * @author  : zj
+ * @date  : 2019/10/28
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function POST_TP_APP(parameter) {
+  return axios2({
+    url: api.POST_TP_APP,
+    method: 'post',
+    data: parameter
+  })
+}
+
+/** 
+ * @desc    : 批量删除第三方应用
+ * @author  : zj
+ * @date  : 2019/10/28
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function DELETE_TP_APP(parameter) {
+  return axios2({
+    url: api.DELETE_TP_APP,
+    method: 'delete',
+    data: parameter.appIds
+  })
+}
+
+/** 
+ * @desc    : 更新第三方应用
+ * @author  : zj
+ * @date  : 2019/10/28
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function PUT_TP_APP(parameter) {
+  return axios2({
+    url: api.PUT_TP_APP,
+    method: 'put',
+    data: parameter
   })
 }

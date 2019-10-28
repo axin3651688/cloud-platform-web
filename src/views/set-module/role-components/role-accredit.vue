@@ -128,6 +128,7 @@ export default {
     },
     onchangeUp (val) {
       //中间层的勾选事件
+      debugger
       console.log(val, '我有点坏')
     },
     onchange (val) {

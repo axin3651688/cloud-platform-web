@@ -32,6 +32,12 @@ const api = {
   UPDATE_RESOURCE: '/upm/resource/update',
   SEARCH_RESOURCES: '/upm/resource/search_resources',
 
+  //用户模块的相关接口
+  // USER_SIMPLE_INFO_LIST: '/uc/user/user_simple_info_list',
+  ENABLE_USER: '/uc/user/enable_user',
+  FIND_USER_DETAIL_INFO: '/uc/user/find_user_detail_info',
+
+
   //权限管理的相关接口（除了查询接口不一致，其余用模块的接口）
   GET_RESOURCES_TREE: '/upm/resource/get_resources_tree',
   FIND_SYSTEM_MODULE: '/upm/resource/find_system_module'
@@ -381,5 +387,37 @@ export function FIND_SYSTEM_MODULE() {
   return axios2({
     url: api.FIND_SYSTEM_MODULE,
     method: 'get'
+  })
+}
+
+/** 
+* @desc    : 启用禁用用户
+* @author  : zj
+* @date  : 2019/10/28
+* @param   {} 
+* @return  {} 
+* @update   by   
+*/
+export function ENABLE_USER(parameter){
+  return axios2({
+    url: api.ENABLE_USER,
+    method: 'put',
+    data: parameter
+  })
+}
+
+/** 
+* @desc    : 查看用户详情
+* @author  : zj
+* @date  : 2019/10/28
+* @param   {} 
+* @return  {} 
+* @update   by   
+*/
+export function FIND_USER_DETAIL_INFO(parameter){
+  return axios2({
+    url: api.FIND_USER_DETAIL_INFO,
+    method: 'get',
+    params: parameter
   })
 }
