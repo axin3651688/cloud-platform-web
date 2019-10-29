@@ -271,8 +271,7 @@ export default {
       name2: '删除',
       result: [
         { name: '应用名称', key: 'name' },
-        { name: '应用描述', key: 'note' },
-        { name: '状态', key: 'enable' }
+        { name: '应用描述', key: 'note' }
       ],
       selectedRowKeys: [],
       columns: [
@@ -311,7 +310,7 @@ export default {
       active: '',
       applyState: false,
       editId: null, // 点击编辑的时候该行数据对应的id
-      selectVal: '',
+      selectVal: 'name',
       dataOld: []// 拷贝获取的原有数据
     }
   },
@@ -336,8 +335,9 @@ export default {
     async inputHandler (val2) {
       if (!val2) {
         this.dataSource = this.dataOld
+      } else {
+        this.dataSource = await this.ApplyMObj.searchResources(this.selectVal, val2, 2)
       }
-      this.dataSource = await this.ApplyMObj.searchResources(this.selectVal || this.defaultValue, val2, 2)
     },
     // 点击服务设置按钮事件
     btnClick (record) {

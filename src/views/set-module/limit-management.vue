@@ -46,9 +46,13 @@
         slot="bianji"
         slot-scope="text, record">
         <!--1代表开-->
-        <span @click="btnClick(record)">编辑</span>
+        <div style="display: flex;justify-content: space-around">
+          <span @click="btnClick(record)"><a-icon type="edit" title="编辑" style="cursor: pointer;"></a-icon></span>
+          <span @click="btnAddClick(record)"><a-icon type="plus" title="添加功能" style="cursor: pointer;"></a-icon></span>
+        </div>
       </template>
     </a-table>
+    <!--添加权限-->
     <a-modal
       v-model="showAddLimit"
       :destroyOnClose="true"
@@ -59,53 +63,6 @@
           <a-input
             placeholder="请输入名称"
             v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],}]" />
-        </a-form-item>
-        <a-form-item label="类型">
-          <a-select
-            style="width: 200px;"
-            @change="changeType"
-            v-decorator="['type',{rules: [{ required: true, message: '请选择类型!' }],}]">
-            <template slot="suffixIcon">
-              <img
-                style="width: 12px;"
-                src="../../assets/icons/paixu.svg" />
-            </template>
-            <a-select-option value="3">
-              模块
-            </a-select-option>
-            <a-select-option value="4">
-              功能
-            </a-select-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item label="上级目录">
-          <a-select
-            style="width: 200px;"
-            v-decorator="['pid',{rules: [{ required: true, message: '请选择目录!' }],}]">
-            <template slot="suffixIcon">
-              <img
-                style="width: 12px;"
-                src="../../assets/icons/paixu.svg" />
-            </template>
-            <!-- 菜单的选择框 -->
-            <template v-if="type == 3">
-              <a-select-option
-                v-for="(item,index) in menuArr"
-                :key="index"
-                :value="item.code">
-                {{ item.name }}
-              </a-select-option>
-            </template>
-            <!-- 模块的选择框 -->
-            <template v-else-if="type == 4">
-              <a-select-option
-                v-for="(item,index) in moduleArr"
-                :key="index"
-                :value="item.code">
-                {{ item.name }}
-              </a-select-option>
-            </template>
-          </a-select>
         </a-form-item>
         <a-form-item label="权限路由">
           <a-input
@@ -138,6 +95,7 @@
         </div>
       </template>
     </a-modal>
+    <!--编辑权限-->
     <a-modal
       v-model="showEditLimit"
       title="编辑权限"
@@ -147,54 +105,6 @@
           <a-input
             placeholder="请输入名称"
             v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],}]" />
-        </a-form-item>
-        <a-form-item label="类型">
-          <a-select
-            style="width: 200px;"
-            @change="changeType"
-            v-decorator="['type',{rules: [{ required: true, message: '请选择类型!' }],}]">
-            <template slot="suffixIcon">
-              <img
-                style="width: 12px;"
-                src="../../assets/icons/paixu.svg" />
-            </template>
-            <a-select-option value="3">
-              模块
-            </a-select-option>
-            <a-select-option value="4">
-              功能
-            </a-select-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item label="上级目录">
-          <a-select
-            style="width: 200px;"
-            default-value="1"
-            v-decorator="['type',{rules: [{ required: true, message: '请选择目录!' }],}]">
-            <template slot="suffixIcon">
-              <img
-                style="width: 12px;"
-                src="../../assets/icons/paixu.svg" />
-            </template>
-            <!-- 菜单的选择框 -->
-            <template v-if="type == 3">
-              <a-select-option
-                v-for="(item,index) in menuArr"
-                :key="index"
-                :value="item.code">
-                {{ item.name }}
-              </a-select-option>
-            </template>
-            <!-- 模块的选择框 -->
-            <template v-else-if="type == 4">
-              <a-select-option
-                v-for="(item,index) in moduleArr"
-                :key="index"
-                :value="item.code">
-                {{ item.name }}
-              </a-select-option>
-            </template>
-          </a-select>
         </a-form-item>
         <a-form-item label="权限路由">
           <a-input
@@ -222,6 +132,67 @@
         </div>
       </template>
     </a-modal>
+    <!--添加功能-->
+    <a-modal
+      v-model="showAddFeatures"
+      :destroyOnClose="true"
+      title="新增权限"
+      :width="350">
+      <a-form :form="form2">
+        <a-form-item label="名称">
+          <a-input
+            placeholder="请输入名称"
+            v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],}]" />
+        </a-form-item>
+        <a-form-item label="权限路由">
+          <a-input
+            placeholder="请输入权限路由"
+            v-decorator="['route',{rules: [{ required: true, message: '权限路由不能为空!' }],}]" />
+        </a-form-item>
+        <a-form-item label="访问路由">
+          <a-input
+            placeholder="请输入访问路由"
+            v-decorator="['url',{rules: [{ required: true, message: '访问路由不能为空!' }],}]" />
+        </a-form-item>
+        <a-form-item label="类型">
+          <a-select
+            style="width: 200px;"
+            @change="changeType"
+            v-decorator="['type',{rules: [{ required: true, message: '请选择类型!' }],}]">
+            <template slot="suffixIcon">
+              <img
+                style="width: 12px;"
+                src="../../assets/icons/paixu.svg" />
+            </template>
+            <a-select-option value="3">
+              目录
+            </a-select-option>
+            <a-select-option value="4">
+              功能
+            </a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item
+          label="状态"
+          style="display: flex">
+          <a-switch defaultChecked />
+        </a-form-item>
+      </a-form>
+      <template slot="footer">
+        <div style="display: flex;margin-left: 32px">
+          <a-button
+            key="back"
+            @click="cancelAddLimit"
+            style="margin-right: 32px;">取消</a-button>
+          <a-button
+            key="submit"
+            type="primary"
+            @click="saveAddLimit">
+            <a-icon type="cloud-upload" /> 保存
+          </a-button>
+        </div>
+      </template>
+    </a-modal>
   </div>
 </template>
 
@@ -244,23 +215,25 @@ export default {
       LimitMObj: null,
       selectedRowKeys: [],
       defaultValue: 'name',
+      selectVal: 'name',
       menuArr: [], // 应用（功能）数组
       moduleArr: [], // 模块数组
       type: '',
       editId: null, // 点击编辑的时候该行数据对应的id
       dataOld: [], // 拷贝获取的原有数据
-      showAddLimit: false,
-      showEditLimit: false,
+      showAddLimit: false, // 添加权限
+      showEditLimit: false, // 编辑权限
+      showAddFeatures: false, // 添加功能
       form: this.$form.createForm(this),
       form1: this.$form.createForm(this),
+      form2: this.$form.createForm(this),
       name1: '添加',
       name2: '删除',
       result: [
         { name: '名称', key: 'name' },
         { name: '类型', key: 'type' },
         { name: '权限路由', key: 'route' },
-        { name: '访问路由', key: 'url' },
-        { name: '状态', key: 'enable' }
+        { name: '访问路由', key: 'url' }
       ],
       columns: [
         {
@@ -376,10 +349,11 @@ export default {
 
     // 点击搜索框的事件
     async inputHandler (val2) {
-      if (!val2 || this.selectVal == 0) {
-        debugger
+      debugger
+      if (!val2) {
         this.dataSource = this.dataOld
       } else {
+        debugger
         this.dataSource = await this.LimitMObj.searchResources(this.selectVal, val2, 3)
       }
     },
@@ -387,6 +361,9 @@ export default {
     // 添加按钮的点击事件
     addClick () {
       this.showAddLimit = true
+    },
+    btnAddClick (record) {
+      this.showAddFeatures = true
     },
     // 删除按钮触发事件
     async deleteClick () {
@@ -439,8 +416,8 @@ export default {
           await _this.LimitMObj.saveResource(formData)
           // 重新加载最新的数据
           await _this.getData()
+          _this.showAddLimit = false
         }
-        _this.showAddLimit = false
       })
     },
     // 编辑弹框的取消事件

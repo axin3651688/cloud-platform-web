@@ -1,17 +1,20 @@
 <!--下拉框-->
 <template>
   <div>
-    <a-select @change="selectCell"
-              style="width: 100%"
-              :defaultValue="defaultValue"
-              allowClear>
+    <a-select
+      @change="selectCell"
+      style="width: 100%"
+      :defaultValue="defaultValue"
+    >
       <template slot="suffixIcon">
-        <img style="width: 12px;"
-             src="../../assets/icons/paixu.svg" />
+        <img
+          style="width: 12px;"
+          src="../../assets/icons/paixu.svg" />
       </template>
-      <a-select-option :value="item.key"
-                       v-for="item in result"
-                       :key="item.key">{{ item.name }}</a-select-option>
+      <a-select-option
+        :value="item.key"
+        v-for="item in result"
+        :key="item.key">{{ item.name }}</a-select-option>
     </a-select>
   </div>
 </template>

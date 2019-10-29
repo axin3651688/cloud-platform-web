@@ -165,10 +165,6 @@ export default {
         {
           name: '角色',
           key: '5'
-        },
-        {
-          name: '状态',
-          key: '6'
         }
       ],
       selectedRowKeys: [],

@@ -305,7 +305,7 @@ export default {
       previewVisible: false,
       fileList: ['https://tpc.googlesyndication.com/daca_images/simgad/17069283415306529692'],
       tenancyIds: [], // 勾选的要删除的租户id数组
-      selectVal: '',
+      selectVal: 'name',
       dataOld: []
     }
   },

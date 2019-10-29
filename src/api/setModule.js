@@ -11,17 +11,18 @@ const api = {
   SAVE_ROLE: '/upm/role/save',
   DELETE_ROLE: '/upm/role/bat_delete',
   LISTRESOURCE: '/upm/authority/listResource',
-  AUTHORITY_ROLE: '/upm/authority/authority_role'
+  AUTHORITY_ROLE: '/upm/authority/authority_role',
+  VALID_ROLE_NAME: '/upm/role/valid_role_name/'
 }
 export default api
 
-/** 
+/**
  * @desc    : 查询角色列表
  * @author  : zj
  * @date  : 2019/10/24
- * @param   {} 
- * @return  {} 
- * @update   by   
+ * @param   {}
+ * @return  {}
+ * @update   by
  */
 export function FIND_ROLE_LIST() {
   return axios2({
@@ -30,13 +31,13 @@ export function FIND_ROLE_LIST() {
   })
 }
 
-/** 
+/**
  * @desc    : 启用禁用角色
  * @author  : zj
  * @date  : 2019/10/24
- * @param   {} 
- * @return  {} 
- * @update   by   
+ * @param   {}
+ * @return  {}
+ * @update   by
  */
 export function OPEN_ROLE(parameter) {
   return axios2({
@@ -46,13 +47,13 @@ export function OPEN_ROLE(parameter) {
   })
 }
 
-/** 
+/**
  * @desc    : 编辑角色
  * @author  : zj
  * @date  : 2019/10/24
- * @param   {} 
- * @return  {} 
- * @update   by   
+ * @param   {}
+ * @return  {}
+ * @update   by
  */
 export function UPDATE_ROLE(parameter) {
   return axios2({
@@ -62,13 +63,13 @@ export function UPDATE_ROLE(parameter) {
   })
 }
 
-/** 
+/**
  * @desc    : 添加角色
  * @author  : zj
  * @date  : 2019/10/24
- * @param   {} 
- * @return  {} 
- * @update   by   
+ * @param   {}
+ * @return  {}
+ * @update   by
  */
 export function SAVE_ROLE(parameter) {
   return axios2({
@@ -78,13 +79,13 @@ export function SAVE_ROLE(parameter) {
   })
 }
 
-/** 
+/**
  * @desc    : 删除角色
  * @author  : zj
  * @date  : 2019/10/24
- * @param   {} 
- * @return  {} 
- * @update   by   
+ * @param   {}
+ * @return  {}
+ * @update   by
  */
 export function DELETE_ROLE(parameter) {
   return axios2({
@@ -94,13 +95,13 @@ export function DELETE_ROLE(parameter) {
   })
 }
 
-/** 
+/**
  * @desc    : 通过角色id获取资源列表
  * @author  : zj
  * @date  : 2019/10/24
- * @param   {} 
- * @return  {} 
- * @update   by   
+ * @param   {}
+ * @return  {}
+ * @update   by
  */
 export function LISTRESOURCE(parameter) {
   return axios2({
@@ -110,18 +111,33 @@ export function LISTRESOURCE(parameter) {
   })
 }
 
-/** 
+/**
  * @desc    : 角色授权
  * @author  : zj
  * @date  : 2019/10/25
- * @param   {} 
- * @return  {} 
- * @update   by   
+ * @param   {}
+ * @return  {}
+ * @update   by
  */
 export function AUTHORITY_ROLE(parameter) {
   return axios2({
     url: api.AUTHORITY_ROLE,
     method: 'put',
     params: parameter
+  })
+}
+
+/**
+ * @desc    : 校验角色名称
+ * @author  : zj
+ * @date  : 2019/10/24
+ * @param   {}
+ * @return  {}
+ * @update   by
+ */
+export function VALID_ROLE_NAME(parameter) {
+  return axios2({
+    url: api.VALID_ROLE_NAME + parameter.roleName,
+    method: 'get'
   })
 }
