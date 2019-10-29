@@ -380,6 +380,8 @@ export default {
 .tenant-detail {
   display: flex;
   flex-direction: column;
+  background-color: #fff;
+  padding: 16px 32px;
 }
 .tenant-detail-header {
   display: flex;

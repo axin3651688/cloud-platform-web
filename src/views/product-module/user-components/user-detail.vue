@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div class="user-detail">
     <a-row>
       <!--左侧-->
       <a-col :span="6" style="overflow: hidden;border-bottom: 1px solid #EAEDF3;">
 
         <div style="display: flex;flex-direction: column;border-bottom: 1px solid #EAEDF3;">
           <div style="display: flex;flex-direction: column;justify-content: center;align-items: center">
-            <img src="http://img5.imgtn.bdimg.com/it/u=2060010946,4257665237&fm=26&gp=0.jpg"/>
+            <img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1163926984,507042275&fm=26&gp=0.jpg"/>
           </div>
           <div style="padding-left: 32px;margin-top: 20px;">
             <h2>租户名称</h2>
@@ -210,5 +210,9 @@ export default {
   }
   .user-table{
     max-width: 500px;
+  }
+  .user-detail{
+    background-color: #fff;
+    padding: 16px 32px;
   }
 </style>
