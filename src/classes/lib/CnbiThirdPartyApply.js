@@ -3,7 +3,8 @@ import {
   GET_TP_APP,
   POST_TP_APP,
   DELETE_TP_APP,
-  PUT_TP_APP
+  PUT_TP_APP,
+  ENABLE_APP
 } from '@/api/systemModule'
 class CnbiThirdPartyApply {
   constructor(obj) {
@@ -63,6 +64,22 @@ class CnbiThirdPartyApply {
    */
   async putTpApp(appDto) {
     let res = await PUT_TP_APP(appDto);
+    return res
+  }
+
+  /** 
+   * @desc    : 开启关闭
+   * @author  : zj
+   * @date  : 2019/10/29
+   * @param   {} 
+   * @return  {} 
+   * @update   by   
+   */
+  async enableApp(id, enable) {
+    let res = await ENABLE_APP({
+      id: id,
+      enable: enable
+    });
     return res
   }
 }

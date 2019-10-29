@@ -46,7 +46,7 @@
     <a-modal v-model="showAddUser"
              title="添加用户"
              :destroyOnClose="true">
-      <a-form :form="form"
+      <a-form :form="form" 
               class="addUser-table">
         <a-form-item label="昵称">
           <a-input placeholder="请输入昵称"

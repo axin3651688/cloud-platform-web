@@ -16,7 +16,8 @@ const api = {
   GET_TP_APP: '/upm/tp_app', //分页查询第三方应用
   POST_TP_APP: '/upm/tp_app', //保存第三方应用
   DELETE_TP_APP: '/upm/tp_app', //批量删除第三方应用
-  PUT_TP_APP: '/upm/tp_app' //更新第三方应用
+  PUT_TP_APP: '/upm/tp_app', //更新第三方应用
+  ENABLE_APP:'/upm/tp_app/enable_app'//是否禁用
 }
 export default api
 
@@ -139,7 +140,7 @@ export function SEARCH_RESOURCES(parameter) {
  */
 export function GET_TP_APP(parameter) {
   return axios2({
-    url: api.GET_TP_APP +'\/'+ parameter.page + '\/' + parameter.size,
+    url: api.GET_TP_APP + '\/' + parameter.page + '\/' + parameter.size,
     method: 'get',
     params: parameter
   })
@@ -175,7 +176,7 @@ export function DELETE_TP_APP(parameter) {
   return axios2({
     url: api.DELETE_TP_APP,
     method: 'delete',
-    data: parameter.appIds
+    data: parameter
   })
 }
 
@@ -192,5 +193,13 @@ export function PUT_TP_APP(parameter) {
     url: api.PUT_TP_APP,
     method: 'put',
     data: parameter
+  })
+}
+
+export function ENABLE_APP(parameter){
+  return axios2({
+    url: api.ENABLE_APP,
+    method: 'put',
+    params: parameter
   })
 }

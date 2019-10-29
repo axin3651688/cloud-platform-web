@@ -336,7 +336,7 @@ export default {
       if (!val2) {
         this.dataSource = this.dataOld
       } else {
-        this.dataSource = await this.ApplyMObj.searchResources(this.selectVal, val2, 2)
+        this.dataSource = await this.ApplyMObj.searchResources(this.selectVal, val2, 3)
       }
     },
     // 点击服务设置按钮事件
@@ -366,7 +366,7 @@ export default {
     async deleteClick () {
       // 2.如果勾选了，则获取勾选的id数组
       // 3.调用删除接口，传入参数，删除
-      await this.ApplyMObj.deleteResource(this.selectedRowKeys, 2)
+      await this.ApplyMObj.deleteResource(this.selectedRowKeys, 3)
       // 4.删除成功后，及时更新数据，清除勾选图标
       await this.getData()
       this.selectedRowKeys = []
@@ -413,7 +413,7 @@ export default {
         if (!err) {
           const formData = JSON.parse(JSON.stringify(values))
           // t添加成功，更新数据
-          formData.type = 2
+          formData.type = 3
           await _this.ApplyMObj.saveResource(formData)
           _this.showAddApply = false
           // 重新加载最新的数据
@@ -429,7 +429,7 @@ export default {
           const formData = JSON.parse(JSON.stringify(values))
           // 添加成功，更新数据
           formData.id = this.editId
-          formData.type = 2
+          formData.type = 3
           await _this.ApplyMObj.updateResource(formData)
           // 重新加载最新的数据
           await _this.getData()

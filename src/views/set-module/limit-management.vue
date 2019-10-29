@@ -164,10 +164,10 @@
                 style="width: 12px;"
                 src="../../assets/icons/paixu.svg" />
             </template>
-            <a-select-option value="3">
+            <a-select-option value="1">
               目录
             </a-select-option>
-            <a-select-option value="4">
+            <a-select-option value="2">
               功能
             </a-select-option>
           </a-select>
@@ -354,7 +354,7 @@ export default {
         this.dataSource = this.dataOld
       } else {
         debugger
-        this.dataSource = await this.LimitMObj.searchResources(this.selectVal, val2, 3)
+        this.dataSource = await this.LimitMObj.searchResources(this.selectVal, val2, 4)
       }
     },
 

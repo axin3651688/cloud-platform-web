@@ -12,7 +12,11 @@ const api = {
   DELETE_ROLE: '/upm/role/bat_delete',
   LISTRESOURCE: '/upm/authority/listResource',
   AUTHORITY_ROLE: '/upm/authority/authority_role',
-  VALID_ROLE_NAME: '/upm/role/valid_role_name/'
+  VALID_ROLE_NAME: '/upm/role/valid_role_name/',
+
+  //账号管理的相关接口
+  ENABLE_ACCOUNT: '/upm/authorize/enable_account',
+  SAVE_ACCOUNT: '/upm/authorize/save_account'
 }
 export default api
 
