@@ -191,15 +191,15 @@
                 <a-col :span="12">
                   <a-form-item label="生效时间">
                     <a-date-picker
-                      @change="onChange"
-                      v-decorator="['beginTime',{rules: [{ required: true, message: '请选择牌照生效时间!' }],}]" />
+                      v-decorator="['beginTime',{rules: [{ required: true, message: '请选择牌照生效时间!' },{validator:checkBeginTime}],}]" />
                   </a-form-item>
                 </a-col>
                 <a-col :span="12">
                   <a-form-item label="失效时间">
                     <a-date-picker
-                      @change="onChange"
-                      v-decorator="['endTime',{rules: [{ required: true, message: '请选择牌照到期时间!' }],}]" />
+                      v-decorator="['endTime',
+                                    {rules: [{ required: true, message: '请选择牌照到期时间!' },{validator:checkEndTime}],}]" />
+
                   </a-form-item>
                 </a-col>
               </a-row>
@@ -260,6 +260,7 @@ export default {
   data () {
     return {
       form: this.$form.createForm(this),
+      confirmDirty: false,
       owners: [], // 从云智囊中查询的所有拥有者数组
       LicenseList: [], // 牌照列表数组
       TenantMObj: null,
@@ -292,7 +293,7 @@ export default {
       { title: '更多', dataIndex: '', key: 'x', scopedSlots: { customRender: 'action' } }
       ],
       data: [],
-      result: [{ name: '名称', key: 'name' }, { name: '拥有者', key: 'ownerName' }, { name: '所属牌照', key: 'licenseId' }, { name: '类型', key: 'type' }],
+      result: [{ name: '名称', key: 'name' }, { name: '拥有者', key: 'ownerName' }, { name: '所属牌照', key: 'licenseName' }, { name: '类型', key: 'type' }],
       name1: '添加租户',
       name2: '删除',
       placeholder: '关键词搜索',
@@ -358,7 +359,23 @@ export default {
       // 获取所有的牌照列表
       this.LicenseList = await this.TenantMObj.findLicenseList()
     },
-    onChange () { },
+    // 失效时间
+    checkEndTime (rule, value, callback) {
+      const beginTime = this.form.getFieldValue('beginTime')
+      if (typeof beginTime !== 'undefined') {
+        if (new Date(beginTime._d).getTime() > new Date(value._d).getTime()) {
+          callback('失效时间不能在生效时间之前')
+        }
+      }
+    },
+    checkBeginTime (rule, value, callback) {
+      const endTime = this.form.getFieldValue('endTime')
+      if (typeof endTime !== 'undefined') {
+        if (new Date(endTime._d).getTime() < new Date(value._d).getTime()) {
+          callback('生效时间不能再失效时间之后')
+        }
+      }
+    },
     // 添加按钮的点击事件
     addClick () {
       this.visible = true
@@ -376,20 +393,21 @@ export default {
       this.$refs.table.clearSelectedKey()
     },
     // 保存租户（保存按钮）
-    async handleOk () {
+    handleOk () {
       const _this = this
       _this.form.validateFields(async (err, values) => {
-        const serviceSign = values.serviceId
-        const res = await _this.TenantMObj.validServiceSign(serviceSign)
-        if (!res.data) {
-          const arr = [{
-            message: '服务标识重复!',
-            field: 'serviceId'
-          }]
-          this.form.setFields({ serviceId: { value: serviceSign, errors: arr } })
-          return
-        }
+        debugger
         if (!err) {
+          const serviceSign = values.serviceId
+          const service = await _this.TenantMObj.validServiceSign(serviceSign)
+          if (!service.data) {
+            const arr = [{
+              message: '服务标识重复!',
+              field: 'serviceId'
+            }]
+            this.form.setFields({ serviceId: { value: serviceSign, errors: arr } })
+            return
+          }
           const formData = JSON.parse(JSON.stringify(values))
           formData.beginTime = new Date(formData.beginTime).getTime()
           formData.endTime = new Date(formData.endTime).getTime()
