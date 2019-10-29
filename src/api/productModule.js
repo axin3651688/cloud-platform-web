@@ -37,6 +37,7 @@ const api = {
   // USER_SIMPLE_INFO_LIST: '/uc/user/user_simple_info_list',
   ENABLE_USER: '/uc/user/enable_user',
   FIND_USER_DETAIL_INFO: '/uc/user/find_user_detail_info',
+  ADMIN_SAVE: '/uc/user/admin_save',
 
 
   //权限管理的相关接口（除了查询接口不一致，其余用模块的接口）
@@ -134,7 +135,7 @@ export function UPDATE_TENANCY(parameter) {
  * @return  {}
  * @update   by
  */
-export function USER_SIMPLE_INFO_LIST (parameter) {
+export function USER_SIMPLE_INFO_LIST(parameter) {
   return axios2({
     url: api.USER_SIMPLE_INFO_LIST,
     method: 'post',
@@ -392,14 +393,14 @@ export function FIND_SYSTEM_MODULE() {
 }
 
 /**
-* @desc    : 启用禁用用户
-* @author  : zj
-* @date  : 2019/10/28
-* @param   {}
-* @return  {}
-* @update   by
-*/
-export function ENABLE_USER(parameter){
+ * @desc    : 启用禁用用户
+ * @author  : zj
+ * @date  : 2019/10/28
+ * @param   {}
+ * @return  {}
+ * @update   by
+ */
+export function ENABLE_USER(parameter) {
   return axios2({
     url: api.ENABLE_USER,
     method: 'put',
@@ -408,18 +409,34 @@ export function ENABLE_USER(parameter){
 }
 
 /**
-* @desc    : 查看用户详情
-* @author  : zj
-* @date  : 2019/10/28
-* @param   {}
-* @return  {}
-* @update   by
-*/
-export function FIND_USER_DETAIL_INFO(parameter){
+ * @desc    : 查看用户详情
+ * @author  : zj
+ * @date  : 2019/10/28
+ * @param   {}
+ * @return  {}
+ * @update   by
+ */
+export function FIND_USER_DETAIL_INFO(parameter) {
   return axios2({
     url: api.FIND_USER_DETAIL_INFO,
     method: 'get',
     params: parameter
+  })
+}
+
+/**
+ * @desc    : 管理员添加用户
+ * @author  : zj
+ * @date  : 2019/10/29
+ * @param   {}
+ * @return  {}
+ * @update   by
+ */
+export function ADMIN_SAVE(parameter) {
+  return axios2({
+    url: api.ADMIN_SAVE,
+    method: 'post',
+    data: parameter
   })
 }
 

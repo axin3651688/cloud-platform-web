@@ -2,7 +2,8 @@
 import {
   USER_SIMPLE_INFO_LIST,
   ENABLE_USER,
-  FIND_USER_DETAIL_INFO
+  FIND_USER_DETAIL_INFO,
+  ADMIN_SAVE
 } from '@/api/productModule'
 class CnbiUserManagement {
   constructor(obj) {
@@ -20,11 +21,13 @@ class CnbiUserManagement {
    * @return  {} 
    * @update   by   
    */
-  async getUserSimpleInfoList() {
-    let res = await USER_SIMPLE_INFO_LIST({
+  async getUserSimpleInfoList(otherParams) {
+    let params = {
       page: 1,
-      size: 15
-    })
+      size: 30
+    }
+    if (otherParams) params = Object.assign(params, otherParams)
+    let res = await USER_SIMPLE_INFO_LIST(params)
     debugger
     return res.data.data
   }
@@ -37,7 +40,7 @@ class CnbiUserManagement {
    * @return  {} 
    * @update   by   
    */
-  async ENABLE_USER(userId, enable) {
+  async enableUser(userId, enable) {
     let res = await ENABLE_USER({
       userId: userId,
       enable: enable
@@ -53,10 +56,23 @@ class CnbiUserManagement {
    * @return  {} 
    * @update   by   
    */
-  async FIND_USER_DETAIL_INFO(id) {
+  async findUserDetailInfo(id) {
     let res = await FIND_USER_DETAIL_INFO({
       userId: id
     })
+    return res
+  }
+
+  /** 
+   * @desc    : 管理员添加用户
+   * @author  : zj
+   * @date  : 2019/10/29
+   * @param   {} 
+   * @return  {} 
+   * @update   by   
+   */
+  async adminSave(userDto) {
+    let res = await ADMIN_SAVE(userDto)
     return res
   }
 }
