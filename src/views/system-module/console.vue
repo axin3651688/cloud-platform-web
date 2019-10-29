@@ -27,7 +27,7 @@
         </a-row>
       </a-col>
     </a-row>
-    <a-row :gutter="24" style="margin-top: 20px;">
+    <a-row :gutter="24" style="margin-top: 24px;">
       <a-col :span="6" style="background-color: white">
         <a-row :gutter="24" >
           <a-col :span="24" style="padding: 10px 38px;border-bottom: 1px solid #EAEDF3">
@@ -49,8 +49,8 @@
         </a-row>
         <business :businessList="businessList"></business>
       </a-col>
-      <a-col :span="1"></a-col>
-      <a-col :span="10">
+
+      <a-col :span="10" style="margin: 0px 12px 24px 12px">
         <div style="background-color: white">
           <a-row :gutter="24" >
             <a-col :span="24" style="padding: 10px 38px;border-bottom: 1px solid #EAEDF3">
@@ -98,7 +98,7 @@
           </a-row>
         </div>
       </a-col>
-      <a-col :span="1"></a-col>
+
       <a-col :span="6" style="background-color: #fff">
         <a-row :gutter="24" >
           <a-col :span="24" style="padding: 10px 38px;border-bottom: 1px solid #EAEDF3">

@@ -45,7 +45,7 @@
       <template
         slot="bianji"
         slot-scope="text, record">
-        <span @click="btnClick(record)">编辑</span>
+        <span @click="btnClick(record)"><a-icon type="edit" title="编辑" style="cursor: pointer"></a-icon></span>
       </template>
     </a-table>
     <!--添加模块-->
@@ -76,7 +76,7 @@
           :gutter="24"
           class="row2">
           <a-col :span="12">
-            <a-form-item label="类型">
+            <a-form-item label="所属应用">
               <a-select
                 v-decorator="[
                   'type',
@@ -205,7 +205,7 @@
           :gutter="24"
           class="row2">
           <a-col :span="12">
-            <a-form-item label="类型">
+            <a-form-item label="所属应用">
               <a-select
                 v-decorator="[
                   'type',
@@ -329,9 +329,8 @@ export default {
       version: '模块搜索',
       name1: '添加',
       name2: '删除',
-      defaultValue: '0',
+      defaultValue: 'name',
       result: [
-        { name: '全部', key: '0' },
         { name: '名称', key: 'name' },
         { name: '类型', key: 'type' },
         { name: '权限路由', key: 'route' },
@@ -346,7 +345,7 @@ export default {
           key: 'name'
         },
         {
-          title: '类型',
+          title: '所属应用',
           dataIndex: 'type',
           key: 'type',
           width: '12%'
@@ -391,7 +390,7 @@ export default {
       dataSource: [],
       dataOld: [], // 拷贝获取的原有数据
       selectedRowKeys: [],
-      selectVal: '', // 搜素时选择的值
+      selectVal: 'name', // 搜素时选择的值
       showAddModule: false,
       showEditModule: false,
       form: this.$form.createForm(this),
@@ -467,8 +466,7 @@ export default {
 
     // 点击搜索框的事件
     async inputHandler (val2) {
-      if (!val2 || this.selectVal == 0) {
-        debugger
+      if (!val2) {
         this.dataSource = this.dataOld
       } else {
         this.dataSource = await this.ModuleMObj.searchResources(this.selectVal, val2, 3)
@@ -500,7 +498,6 @@ export default {
       this.editId = record.id * 1
       this.editModuleInfo = record
     },
-
     // 添加弹框的确定按钮
     async saveModule () {
       const _this = this

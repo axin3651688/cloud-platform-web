@@ -138,13 +138,9 @@ export default {
       showAddUser: false,
       form: this.$form.createForm(this),
       confirmDirty: false,
-      defaultValue: '0',
+      defaultValue: '1',
       selectedRowKeys: [],
       result: [
-        {
-          name: '全部',
-          key: '0'
-        },
         {
           name: '用户姓名',
           key: '1'
@@ -160,10 +156,6 @@ export default {
         {
           name: '邮箱',
           key: '4'
-        },
-        {
-          name: '状态',
-          key: '5'
         }
       ],
       columns: [

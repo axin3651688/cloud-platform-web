@@ -2,7 +2,7 @@
   <!--角色管理-->
   <div>
 
-    <div style="display: flex;flex-direction: row;justify-content: flex-end">
+    <div style="display: flex;flex-direction: row;justify-content: flex-end;background-color: #fff;padding: 16px 32px 0 32px">
       <common-button
         style="float: none"
         @addClick="addClick"
@@ -50,7 +50,15 @@
         <a-form-item label="名称">
           <a-input
             placeholder="请输入名称"
-            v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],}]" />
+            v-decorator="['name',
+                          {
+                            rules: [
+                              { required: true, message: '名称不能为空!' },
+                              {validator:checkName}
+
+                            ],
+                            validateTrigger:'onblur'
+                          },]" />
         </a-form-item>
         <!--  v-decorator="['name',{rules: [{ required: true, message: '描述不能为空!' }],}]" />-->
         <a-form-item label="描述">
@@ -85,9 +93,7 @@
         <a-form-item label="名称">pattern: /^[0-9]*$/
           <a-input
             placeholder="请输入名称"
-            v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' },{
-              validator: checkName,
-            }],}]" />
+            v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],}]" />
         </a-form-item>
         <a-form-item label="描述">
           <a-textarea
@@ -298,6 +304,12 @@ export default {
         }
         _this.showEditRole = false
       })
+    },
+    async checkName (rule, value, callback) {
+      debugger
+      console.log('11111111111111')
+      // const st = await this.RoleMObj.validRoleName(value)
+      callback('1111')
     }
   }
 }
