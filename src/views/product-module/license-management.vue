@@ -383,8 +383,10 @@
     <!--编辑牌照-->
     <a-modal
       v-model="editState"
-      title="牌照编辑">
-      <a-form :form="form3">
+      title="牌照编辑"
+      :destroyOnClose="true"
+    >
+      <a-form :form="form3" v-if="editLicenseInfo">
         <a-row :gutter="24">
           <a-col :span="12">
             <a-form-item label="牌照名称:">
@@ -392,7 +394,7 @@
                 placeholder="请输入牌照名称"
                 v-decorator="[
                   'name',
-                  { rules: [{ required: true, message: '请输入牌照名称！' }] },
+                  { rules: [{ required: true, message: '请输入牌照名称！' }],initialValue: editLicenseInfo.name},
                 ]" />
             </a-form-item>
           </a-col>
@@ -402,7 +404,7 @@
                 placeholder="请输入"
                 v-decorator="[
                   'maxDesign',
-                  { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }] },
+                  { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }],initialValue: editLicenseInfo.maxDesign },
                 ]" />
             </a-form-item>
           </a-col>
@@ -415,7 +417,7 @@
                 placeholder="请输入"
                 v-decorator="[
                   'note',
-                  { rules: [{ required: true, message: '请输入描述！' }] },
+                  { rules: [{ required: true, message: '请输入描述！' }],initialValue: editLicenseInfo.note },
                 ]" />
             </a-form-item>
           </a-col>
@@ -425,7 +427,7 @@
                 placeholder="请输入"
                 v-decorator="[
                   'maxMemory',
-                  { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }] },
+                  { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }],initialValue: editLicenseInfo.maxMemory },
                 ]" />
             </a-form-item>
             <a-form-item label="最多用户数">
@@ -433,7 +435,7 @@
                 placeholder="请输入"
                 v-decorator="[
                   'maxUser',
-                  { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }] },
+                  { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }],initialValue: editLicenseInfo.maxUser },
                 ]" />
             </a-form-item>
           </a-col>
@@ -445,7 +447,7 @@
                 placeholder="请输入"
                 v-decorator="[
                   'price',
-                  { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }] },
+                  { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }],initialValue: editLicenseInfo.price },
                 ]" />
             </a-form-item>
           </a-col>
@@ -455,7 +457,7 @@
                 placeholder="请输入"
                 v-decorator="[
                   'maxLevel',
-                  { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }] },
+                  { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }],initialValue: editLicenseInfo.maxLevel },
                 ]" />
             </a-form-item>
           </a-col>
@@ -467,7 +469,7 @@
                 placeholder="请输入"
                 v-decorator="[
                   'maxCompany',
-                  { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }] },
+                  { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }],initialValue: editLicenseInfo.maxCompany },
                 ]" />
             </a-form-item>
           </a-col>
@@ -477,7 +479,7 @@
                 placeholder="请输入"
                 v-decorator="[
                   'maxConnect',
-                  { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }] },
+                  { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }],initialValue: editLicenseInfo.maxConnect },
                 ]" />
             </a-form-item>
           </a-col>
@@ -522,12 +524,10 @@ export default {
       pagination: {
         pageSize: 15,
         hideOnSinglePage: true // 只有一页时是否隐藏分页器
-        /* showSizeChange: true, // 是否可以改变 pageSize
-        pageSizeOptions: ['10', '20', '30', '40'], // 指定每页可以显示多少条
-        showQuickJumper: true // 是否可以快速跳转至某页 */
       },
       editId: null, // 点击编辑的时候该行数据对应的id
       info: null, // 要编辑的牌照所有详细信息
+      editLicenseInfo: null, // 弹框编辑牌照信息
       name1: '添加牌照',
       name2: '删除',
       editState: false, // 编辑状态
@@ -624,6 +624,7 @@ export default {
     // 编辑弹框的取消事件
     cancelEdit () {
       this.editState = false
+      this.editLicenseInfo = null
     },
 
     // 编辑弹框的保存事件
@@ -634,17 +635,20 @@ export default {
           const formData = JSON.parse(JSON.stringify(values))
           // 获取点击行对应的id
           formData.id = this.editId
-          await _this.LicenseMObj.updateLicense(formData)
+          const res = await _this.LicenseMObj.updateLicense(formData)
           // 重新加载最新的数据
-          await _this.refreshData()
+          if (res.code == 200) {
+            await _this.refreshData()
+            _this.editState = false
+          }
         }
-        _this.editState = false
       })
     },
     // 编辑按钮的点击事件
-    btnClick (record) {
+    async btnClick (record) {
       this.editState = true
       this.editId = record.id * 1
+      this.editLicenseInfo = await this.LicenseMObj.getLicenseId(record.id)
     },
     addClick () {
       this.showLicenseModal = true

@@ -46,13 +46,13 @@ const api = {
 
 export default api
 
-/** 
+/**
  * @desc    : 查询所有租户列表(至少需要传入分页查询的两个参数：page  size)
  * @author  : zj
  * @date  : 2019/10/14
- * @param   {} 
- * @return  {*} 
- * @update   by   
+ * @param   {}
+ * @return  {*}
+ * @update   by
  */
 export function GET_TENANCY_LIST(parameter) {
   return axios2({
@@ -62,13 +62,13 @@ export function GET_TENANCY_LIST(parameter) {
   })
 }
 
-/** 
+/**
  * @desc    : 保存租户
  * @author  : zj
  * @date  : 2019/10/14
- * @param   {} 
- * @return  {*} 
- * @update   by   
+ * @param   {}
+ * @return  {*}
+ * @update   by
  */
 export function SAVE_TENANCY(parameter) {
   return axios2({
@@ -77,13 +77,13 @@ export function SAVE_TENANCY(parameter) {
     data: parameter
   })
 }
-/** 
+/**
  * @desc    : 删除租户
  * @author  : zj
  * @date  : 2019/10/14
- * @param   {} 
- * @return  {*} 
- * @update   by   
+ * @param   {}
+ * @return  {*}
+ * @update   by
  */
 export function DELETE_TENANCY(parameter) {
   debugger
@@ -93,13 +93,13 @@ export function DELETE_TENANCY(parameter) {
     data: parameter
   })
 }
-/** 
+/**
  * @desc    : 根据传入的租户id，查询该租户的详细信息
  * @author  : zj
  * @date  : 2019/10/14
- * @param   {} 
- * @return  {} 
- * @update   by   
+ * @param   {}
+ * @return  {}
+ * @update   by
  */
 export function GET_TENANCY(parameter) {
   return axios2({
@@ -109,13 +109,13 @@ export function GET_TENANCY(parameter) {
   })
 }
 
-/** 
+/**
  * @desc    : 编辑租户基本信息
  * @author  : zj
  * @date  : 2019/10/14
- * @param   {} 
- * @return  {} 
- * @update   by   
+ * @param   {}
+ * @return  {}
+ * @update   by
  */
 export function UPDATE_TENANCY(parameter) {
   return axios2({
@@ -125,28 +125,28 @@ export function UPDATE_TENANCY(parameter) {
   })
 }
 
-/** 
+/**
  * @desc    : 分页查询所有的拥有者
  * @author  : zj
  * @date  : 2019/10/18
- * @param   {} 
- * @return  {} 
- * @update   by   
+ * @param   {}
+ * @return  {}
+ * @update   by
  */
-export function USER_SIMPLE_INFO_LIST(parameter) {
+export function USER_SIMPLE_INFO_LIST (parameter) {
   return axios2({
-    url: api.USER_SIMPLE_INFO_LIST + parameter.page + '\/' + parameter.size,
-    method: 'get',
-    params: parameter
+    url: api.USER_SIMPLE_INFO_LIST,
+    method: 'post',
+    data: parameter
   })
 }
-/** 
+/**
  * @desc    : 根据牌照id查询牌照信息
  * @author  : zj
  * @date  : 2019/10/14
- * @param   {} 
- * @return  {} 
- * @update   by   
+ * @param   {}
+ * @return  {}
+ * @update   by
  */
 export function GET_LICENSE_ID(parameter) {
   return axios2({
@@ -156,13 +156,13 @@ export function GET_LICENSE_ID(parameter) {
   })
 }
 
-/** 
+/**
  * @desc    : 查询牌照列表
  * @author  : zj
  * @date  : 2019/10/14
- * @param   {} 
- * @return  {} 
- * @update   by   
+ * @param   {}
+ * @return  {}
+ * @update   by
  */
 export function FIND_LICENSE_LIST() {
   return axios2({
@@ -171,13 +171,13 @@ export function FIND_LICENSE_LIST() {
   })
 }
 
-/** 
+/**
  * @desc    : 开启关闭牌照
  * @author  : zj
  * @date  : 2019/10/14
- * @param   {} 
- * @return  {} 
- * @update   by   
+ * @param   {}
+ * @return  {}
+ * @update   by
  */
 export function OPEN_LICENSE(parameter) {
   return axios2({
@@ -187,13 +187,13 @@ export function OPEN_LICENSE(parameter) {
   })
 }
 
-/** 
+/**
  * @desc    : 添加牌照
  * @author  : zj
  * @date  : 2019/10/14
- * @param   {} 
- * @return  {} 
- * @update   by   
+ * @param   {}
+ * @return  {}
+ * @update   by
  */
 export function SAVE_LICENSE(parameter) {
   return axios2({
@@ -203,13 +203,13 @@ export function SAVE_LICENSE(parameter) {
   })
 }
 
-/** 
+/**
  * @desc    : 删除牌照
  * @author  : zj
  * @date  : 2019/10/15
- * @param   {} 
- * @return  {} 
- * @update   by   
+ * @param   {}
+ * @return  {}
+ * @update   by
  */
 export function DELETE_LICENSE(parameter) {
   return axios2({
@@ -219,13 +219,13 @@ export function DELETE_LICENSE(parameter) {
   })
 }
 
-/** 
+/**
  * @desc    : 编辑牌照
  * @author  : zj
  * @date  : 2019/10/14
- * @param   {} 
- * @return  {} 
- * @update   by   
+ * @param   {}
+ * @return  {}
+ * @update   by
  */
 export function UPDATE_LICENSE(parameter) {
   return axios2({
@@ -235,13 +235,13 @@ export function UPDATE_LICENSE(parameter) {
   })
 }
 
-/** 
+/**
  * @desc    : 编辑牌照权限
  * @author  : zj
  * @date  : 2019/10/14
- * @param   {} 
- * @return  {} 
- * @update   by   
+ * @param   {}
+ * @return  {}
+ * @update   by
  */
 export function UPDATE_VAIL_LICENSE(parameter) {
   return axios2({
@@ -250,13 +250,13 @@ export function UPDATE_VAIL_LICENSE(parameter) {
     data: parameter
   })
 }
-/** 
+/**
  * @desc    : 查询应用列表（权限，模块都用）
  * @author  : zj
  * @date  : 2019/10/22
- * @param   {} 
- * @return  {} 
- * @update   by   
+ * @param   {}
+ * @return  {}
+ * @update   by
  */
 export function GET_RESOURCES_CARD() {
   return axios2({
@@ -264,13 +264,13 @@ export function GET_RESOURCES_CARD() {
     method: 'get'
   })
 }
-/** 
+/**
  * @desc    : 查询模块列表
  * @author  : zj
  * @date  : 2019/10/22
- * @param   {} 
- * @return  {} 
- * @update   by   
+ * @param   {}
+ * @return  {}
+ * @update   by
  */
 export function GET_RESOURCES_MODULE() {
   return axios2({
@@ -278,13 +278,13 @@ export function GET_RESOURCES_MODULE() {
     method: 'get'
   })
 }
-/** 
+/**
  * @desc    : 查询后台管理的菜单列表（权限管理用）
  * @author  : zj
  * @date  : 2019/10/25
- * @param   {} 
- * @return  {} 
- * @update   by   
+ * @param   {}
+ * @return  {}
+ * @update   by
  */
 export function GET_RESOURCES_MENU() {
   return axios2({
@@ -292,13 +292,13 @@ export function GET_RESOURCES_MENU() {
     method: 'get'
   })
 }
-/** 
+/**
  * @desc    : 添加权限（模块管理的）
  * @author  : zj
  * @date  : 2019/10/18
- * @param   {} 
- * @return  {} 
- * @update   by   
+ * @param   {}
+ * @return  {}
+ * @update   by
  */
 export function SAVE_RESOURCE(parameter) {
   return axios2({
@@ -307,13 +307,13 @@ export function SAVE_RESOURCE(parameter) {
     data: parameter
   })
 }
-/** 
+/**
  * @desc    : 删除权限（模块管理的）
  * @author  : zj
  * @date  : 2019/10/18
- * @param   {} 
- * @return  {} 
- * @update   by   
+ * @param   {}
+ * @return  {}
+ * @update   by
  */
 export function DELETE_RESOURCE(parameter) {
   return axios2({
@@ -322,13 +322,13 @@ export function DELETE_RESOURCE(parameter) {
     data: parameter.ids
   })
 }
-/** 
+/**
  * @desc    : 启用禁用权限(模块管理的)
  * @author  : zj
  * @date  : 2019/10/18
- * @param   {} 
- * @return  {} 
- * @update   by   
+ * @param   {}
+ * @return  {}
+ * @update   by
  */
 export function OPEN_RESOURCE(parameter) {
   return axios2({
@@ -337,13 +337,13 @@ export function OPEN_RESOURCE(parameter) {
     params: parameter
   })
 }
-/** 
+/**
  * @desc    : 编辑权限（模块管理的）
  * @author  : zj
  * @date  : 2019/10/18
- * @param   {} 
- * @return  {} 
- * @update   by   
+ * @param   {}
+ * @return  {}
+ * @update   by
  */
 export function UPDATE_RESOURCE(parameter) {
   return axios2({
@@ -352,13 +352,13 @@ export function UPDATE_RESOURCE(parameter) {
     data: parameter
   })
 }
-/** 
+/**
  * @desc    : 搜索模块
  * @author  : zj
  * @date  : 2019/10/25
- * @param   {} 
- * @return  {} 
- * @update   by   
+ * @param   {}
+ * @return  {}
+ * @update   by
  */
 export function SEARCH_RESOURCES(parameter) {
   return axios2({
@@ -368,13 +368,13 @@ export function SEARCH_RESOURCES(parameter) {
   })
 }
 
-/** 
+/**
  * @desc    : 获取权限列表（模块管理的）
  * @author  : zj
  * @date  : 2019/10/18
- * @param   {} 
- * @return  {} 
- * @update   by   
+ * @param   {}
+ * @return  {}
+ * @update   by
  */
 export function GET_RESOURCES_TREE() {
   return axios2({
@@ -390,13 +390,13 @@ export function FIND_SYSTEM_MODULE() {
   })
 }
 
-/** 
+/**
 * @desc    : 启用禁用用户
 * @author  : zj
 * @date  : 2019/10/28
-* @param   {} 
-* @return  {} 
-* @update   by   
+* @param   {}
+* @return  {}
+* @update   by
 */
 export function ENABLE_USER(parameter){
   return axios2({
@@ -406,13 +406,13 @@ export function ENABLE_USER(parameter){
   })
 }
 
-/** 
+/**
 * @desc    : 查看用户详情
 * @author  : zj
 * @date  : 2019/10/28
-* @param   {} 
-* @return  {} 
-* @update   by   
+* @param   {}
+* @return  {}
+* @update   by
 */
 export function FIND_USER_DETAIL_INFO(parameter){
   return axios2({

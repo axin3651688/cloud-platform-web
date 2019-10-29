@@ -81,7 +81,7 @@
                     v-for="(item,index) in owners"
                     :key="index"
                     :value="item.id">
-                    {{ item.trueName }}
+                    {{ item.nickName }}
                   </a-select-option>
                 </a-select>
               </a-form-item>
@@ -154,7 +154,7 @@
             <a-col :span="12">
               <a-form-item label="联系电话">
                 <a-input
-                  v-decorator="['tel',{rules: [{ required: true, message: 'Please input your phone number!' }],}]"
+                  v-decorator="['tel',{rules: [{ required: true, message: '电话不能为空!' }],}]"
                   style="width: 100%">
                   <a-select
                     slot="addonBefore"
@@ -356,7 +356,6 @@ export default {
       this.dataOld = this.deepCopy(this.data)
       // 获取所有的所属人
       this.owners = await this.TenantMObj.getUserSimpleInfoList()
-
       // 获取所有的牌照列表
       this.LicenseList = await this.TenantMObj.findLicenseList()
     },
@@ -387,10 +386,12 @@ export default {
           formData.endTime = new Date(formData.endTime).getTime()
           // formData.checkTime = 1
           // formData.checkerId = 2
-          await _this.TenantMObj.saveTenancy(formData)
-          _this.visible = false
-          // 重新加载最新的数据
-          await _this.refreshData()
+          const res = await _this.TenantMObj.saveTenancy(formData)
+          if (res.code == 200) {
+            _this.visible = false
+            // 重新加载最新的数据
+            await _this.refreshData()
+          }
         }
       })
     },
