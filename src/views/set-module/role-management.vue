@@ -53,12 +53,9 @@
             v-decorator="['name',
                           {
                             rules: [
-                              { required: true, message: '名称不能为空!' },
-                              {validator:checkName}
-
-                            ],
-                            validateTrigger:'onblur'
-                          },]" />
+                              {required: true, message: '名称不能为空!'},
+                            ]
+                          }]" />
         </a-form-item>
         <!--  v-decorator="['name',{rules: [{ required: true, message: '描述不能为空!' }],}]" />-->
         <a-form-item label="描述">
@@ -85,12 +82,13 @@
         </div>
       </template>
     </a-modal>
+    <!--角色信息编辑-->
     <a-modal
       v-model="showEditRole"
       title="角色信息编辑"
       :width="350">
       <a-form :form="form1">
-        <a-form-item label="名称">pattern: /^[0-9]*$/
+        <a-form-item label="名称">
           <a-input
             placeholder="请输入名称"
             v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],}]" />
@@ -202,6 +200,7 @@ export default {
       showEditRole: false,
       form: this.$form.createForm(this),
       form1: this.$form.createForm(this),
+      isNamerepeat: false, // 名字是否重复
       pagination: {
         pageSize: 15,
         hideOnSinglePage: true // 只有一页时是否隐藏分页器
@@ -270,13 +269,22 @@ export default {
     // 添加弹框的保存事件
     async saveAddRole () {
       const _this = this
+
       _this.form.validateFields(async (err, values) => {
-        debugger
+        const name = values.name
+        const res = await this.RoleMObj.validRoleName(name)
+        if (!res.data) {
+          const arr = [{
+            message: '名字重复!',
+            field: 'name'
+          }]
+          console.log('名字重复')
+          this.form.setFields({ name: { value: name, errors: arr } })
+          return
+        }
         if (!err) {
           const formData = JSON.parse(JSON.stringify(values))
           const st = await _this.RoleMObj.saveRole(formData)
-          debugger
-          console.log(st)
           if (st.code == 200) {
             await _this.getData()
             _this.showAddRole = false
@@ -295,6 +303,17 @@ export default {
     async saveEditRole () {
       const _this = this
       _this.form1.validateFields(async (err, values) => {
+        const name = values.name
+        const res = await this.RoleMObj.validRoleName(name)
+        if (!res.data) {
+          const arr = [{
+            message: '名字重复!',
+            field: 'name'
+          }]
+          console.log('名字重复')
+          this.form1.setFields({ name: { value: name, errors: arr } })
+          return
+        }
         if (!err) {
           const formData = JSON.parse(JSON.stringify(values))
           formData.id = this.editId
@@ -304,12 +323,6 @@ export default {
         }
         _this.showEditRole = false
       })
-    },
-    async checkName (rule, value, callback) {
-      debugger
-      console.log('11111111111111')
-      // const st = await this.RoleMObj.validRoleName(value)
-      callback('1111')
     }
   }
 }

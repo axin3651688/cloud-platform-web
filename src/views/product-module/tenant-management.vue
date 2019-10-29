@@ -112,8 +112,7 @@
             <a-col :span="12">
               <a-form-item label="租户类型">
                 <a-select
-                  default-value="1"
-                  v-decorator="['type',{rules: [{ required: true, message: '请选择租户类型!' }],}]">
+                  v-decorator="['type',{rules: [{ required: true, message: '请选择租户类型!' }],initialValue:'1'}]">
                   <template slot="suffixIcon">
                     <img
                       style="width: 12px;"
@@ -380,6 +379,16 @@ export default {
     async handleOk () {
       const _this = this
       _this.form.validateFields(async (err, values) => {
+        const serviceSign = values.serviceId
+        const res = await _this.TenantMObj.validServiceSign(serviceSign)
+        if (!res.data) {
+          const arr = [{
+            message: '服务标识重复!',
+            field: 'serviceId'
+          }]
+          this.form.setFields({ serviceId: { value: serviceSign, errors: arr } })
+          return
+        }
         if (!err) {
           const formData = JSON.parse(JSON.stringify(values))
           formData.beginTime = new Date(formData.beginTime).getTime()

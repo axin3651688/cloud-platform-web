@@ -7,10 +7,11 @@ import {
   GET_TENANCY,
   UPDATE_TENANCY,
   USER_SIMPLE_INFO_LIST,
-  FIND_LICENSE_LIST
+  FIND_LICENSE_LIST,
+  VALID_SERVICE_SIGN
 } from '@/api/productModule'
 
-/** 
+/**
 * @desc    : 该类为租户管理类，为了实现页面代码更加简单清晰而写的，
              其中有增加租户，删除租户，编辑租户，查询租户等其他操作，
              有租户的属性，在页面代码中只需引用该类，并创建一个租户
@@ -18,9 +19,9 @@ import {
              在组件中引用接口等，也便于后期维护......
 * @author  : zj
 * @date  : 2019/10/14
-* @param   {} 
-* @return  {} 
-* @update   by   
+* @param   {}
+* @return  {}
+* @update   by
 */
 class CnbiTenantManagement {
   //租户管理的相关属性，多为调用的方法需要传递的参数
@@ -49,13 +50,13 @@ class CnbiTenantManagement {
   test(data) {
     // console.log(data.data, "11112222");
   }
-  /** 
+  /**
    * @desc    : 租户页面的初始化方法
    * @author  : zj
    * @date  : 2019/10/14
-   * @param   {} 
-   * @return  {} 
-   * @update   by   
+   * @param   {}
+   * @return  {}
+   * @update   by
    */
   async init() {
     // debugger
@@ -66,7 +67,7 @@ class CnbiTenantManagement {
     // this.getTenancyList()
     // var id = 7
     // let data = await this.getTenancy(id)
-    // var tenancyDto = 
+    // var tenancyDto =
     //   {
     //     address: "87987987998798798",
     //     beginTime: 123123,
@@ -110,38 +111,38 @@ class CnbiTenantManagement {
     // var data = await this.findLicenseList()
     // this.test(data)
   }
-  /** 
+  /**
    * @desc    : 新增租户的方法
    * @author  : zj
    * @date  : 2019/10/14
-   * @param   {} 
-   * @return  {} 
-   * @update   by   
+   * @param   {}
+   * @return  {}
+   * @update   by
    */
   async saveTenancy(tenancyDto) {
     let res = await SAVE_TENANCY(tenancyDto);
     return res
   }
-  /** 
+  /**
    * @desc    : 删除租户的方法
    * @author  : zj
    * @date  : 2019/10/14
-   * @param   {} 
-   * @return  {} 
-   * @update   by   
+   * @param   {}
+   * @return  {}
+   * @update   by
    */
   async deleteTenancy(tenancyIds) {
     let res = await DELETE_TENANCY(tenancyIds);
     // debugger
     return res
   }
-  /** 
+  /**
    * @desc    : 获取租户列表的方法
    * @author  : zj
    * @date  : 2019/10/14
-   * @param   {} 
-   * @return  {} 
-   * @update   by   
+   * @param   {}
+   * @return  {}
+   * @update   by
    */
   async getTenancyList() {
     let res = await GET_TENANCY_LIST({
@@ -150,13 +151,13 @@ class CnbiTenantManagement {
     });
     return res.data.data
   }
-  /** 
+  /**
    * @desc    : 分页获取所有的拥有者
    * @author  : zj
    * @date  : 2019/10/18
-   * @param   {} 
-   * @return  {} 
-   * @update   by   
+   * @param   {}
+   * @return  {}
+   * @update   by
    */
   async getUserSimpleInfoList() {
     let res = await USER_SIMPLE_INFO_LIST({
@@ -166,13 +167,13 @@ class CnbiTenantManagement {
     debugger
     return res.data.data
   }
-  /** 
+  /**
    * @desc    : 根据传入的租户id，查询该租户的详细信息
    * @author  : zj
    * @date  : 2019/10/14
-   * @param   {} 
-   * @return  {} 
-   * @update   by   
+   * @param   {}
+   * @return  {}
+   * @update   by
    */
   async getTenancy(id) {
     let res = await GET_TENANCY({
@@ -180,31 +181,42 @@ class CnbiTenantManagement {
     });
     return res.data
   }
-  /** 
+  /**
    * @desc    : 编辑租户基本信息
    * @author  : zj
    * @date  : 2019/10/14
-   * @param   {} 
-   * @return  {} 
-   * @update   by   
+   * @param   {}
+   * @return  {}
+   * @update   by
    */
   async updateTenancy(tenancyEditDto) {
     let res = await UPDATE_TENANCY(tenancyEditDto);
     return res
   }
 
-  /** 
+  /**
    * @desc    : 查询牌照列表
    * @author  : zj
    * @date  : 2019/10/21
-   * @param   {} 
-   * @return  {} 
-   * @update   by   
+   * @param   {}
+   * @return  {}
+   * @update   by
    */
   async findLicenseList() {
     let res = await FIND_LICENSE_LIST();
     return res.data
   }
-
+  /**
+   * @desc    : 查询服务标识是否重复
+   * @author  : zj
+   * @date  : 2019/10/21
+   * @param   {}
+   * @return  {}
+   * @update   by
+   */
+  async validServiceSign(serviceSign) {
+    let res = await VALID_SERVICE_SIGN(serviceSign);
+    return res.data
+  }
 }
 export default CnbiTenantManagement
