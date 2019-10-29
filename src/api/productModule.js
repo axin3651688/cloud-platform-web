@@ -12,6 +12,7 @@ const api = {
   GET_TENANCY: '/tc/tenancy/get_tenancy_detail', //（同上）
   UPDATE_TENANCY: '/tc/tenancy/update_tenancy_info',
   USER_SIMPLE_INFO_LIST: '/uc/user/user_simple_info_list/',
+  VALID_SERVICE_SIGN:'/tc/tenancy/valid_service_sign/',
   //牌照管理相关接口
   GET_LICENSE_ID: '/upm/license/get_license_id',
   FIND_LICENSE_LIST: '/upm/license/find_list',
@@ -423,18 +424,33 @@ export function FIND_USER_DETAIL_INFO(parameter) {
   })
 }
 
-/** 
+/**
  * @desc    : 管理员添加用户
  * @author  : zj
  * @date  : 2019/10/29
- * @param   {} 
- * @return  {} 
- * @update   by   
+ * @param   {}
+ * @return  {}
+ * @update   by
  */
 export function ADMIN_SAVE(parameter) {
   return axios2({
     url: api.ADMIN_SAVE,
     method: 'post',
     data: parameter
+  })
+}
+
+/**
+ * @desc    : 校验服务标识是否重复
+ * @author  : zj
+ * @date  : 2019/10/28
+ * @param   {}
+ * @return  {}
+ * @update   by
+ */
+export function VALID_SERVICE_SIGN (parameter) {
+  return axios2({
+    url: api.VALID_SERVICE_SIGN + parameter.serviceSign,
+    method: 'get'
   })
 }
