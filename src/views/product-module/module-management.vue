@@ -103,7 +103,7 @@
               <a-select
                 v-decorator="[
                   'pid',
-                  { rules: [{ required: true, message: '请选择上级目录' }],initialValue:'0' }
+                  { rules: [{ required: true, message: '请选择上级目录' }]}
                 ]"
                 placeholder="请选择">
                 <template slot="suffixIcon">
@@ -112,10 +112,6 @@
                     src="../../assets/icons/paixu.svg" />
                 </template>
                 <template >
-                  <a-select-option
-                    value="0">
-                    无
-                  </a-select-option>
                 </template>
                 <!-- 模块的选择框 -->
                 <template v-if="type == 3">
@@ -183,8 +179,10 @@
     <!--编辑模块-->
     <a-modal
       v-model="showEditModule"
+      :destroyOnClose="true"
+      v-if="editModuleInfo"
       title="编辑">
-      <a-form :form="form">
+      <a-form :form="form1">
         <a-row
           :gutter="24"
           class="row1">
@@ -192,14 +190,14 @@
             <a-form-item label="名称">
               <a-input
                 placeholder="请输入名称"
-                v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],}]" />
+                v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],initialValue:editModuleInfo.name}]" />
             </a-form-item>
           </a-col>
           <a-col :span="12">
             <a-form-item label="服务标识">
               <a-input
                 placeholder="请输入服务标识"
-                v-decorator="['serviceId',{rules: [{ required: true, message: '服务标识不能为空!' }],}]" />
+                v-decorator="['serviceId',{rules: [{ required: true, message: '服务标识不能为空!' }],initialValue:editModuleInfo.serviceId}]" />
             </a-form-item>
           </a-col>
         </a-row>
@@ -211,7 +209,7 @@
               <a-select
                 v-decorator="[
                   'type',
-                  { rules: [{ required: true, message: '请选择类型' }] },
+                  { rules: [{ required: true, message: '请选择类型' }],initialValue:editModuleInfo.type },
                 ]"
                 placeholder="请选择"
                 @change="changeType">
@@ -234,7 +232,7 @@
               <a-select
                 v-decorator="[
                   'pid',
-                  { rules: [{ required: true, message: '请选择上级目录' }] },
+                  { rules: [{ required: true, message: '请选择上级目录' }],initialValue:editModuleInfo.pid },
                 ]"
                 placeholder="请选择">
                 <template slot="suffixIcon">
@@ -242,6 +240,7 @@
                     style="width: 12px;"
                     src="../../assets/icons/paixu.svg" />
                 </template>
+                <a-select-option value="0">无 </a-select-option>
                 <!-- 模块的选择框 -->
                 <template v-if="type == 3">
                   <a-select-option
@@ -271,14 +270,14 @@
             <a-form-item label="权限路由">
               <a-input
                 placeholder="请输入权限路由"
-                v-decorator="['route',{rules: [{ required: true, message: '权限路由不能为空!' }],}]" />
+                v-decorator="['route',{rules: [{ required: true, message: '权限路由不能为空!' }],initialValue:editModuleInfo.route}]" />
             </a-form-item>
           </a-col>
           <a-col :span="12">
             <a-form-item label="访问路由">
               <a-input
                 placeholder="请输入访问路由"
-                v-decorator="['url',{rules: [{ required: true, message: '访问路由不能为空!' }],}]" />
+                v-decorator="['url',{rules: [{ required: true, message: '访问路由不能为空!' }],initialValue:editModuleInfo.url}]" />
             </a-form-item>
           </a-col>
         </a-row>
@@ -320,6 +319,7 @@ export default {
         hideOnSinglePage: true // 只有一页时是否隐藏分页器
       },
       editId: null, // 点击编辑的时候该行数据对应的id
+      editModuleInfo: null, // 要编辑的模块信息
       type: '',
       LicenseMObj: null,
       cardArr: [], // 应用（功能）数组
@@ -394,7 +394,8 @@ export default {
       selectVal: '', // 搜素时选择的值
       showAddModule: false,
       showEditModule: false,
-      form: this.$form.createForm(this)
+      form: this.$form.createForm(this),
+      form1: this.$form.createForm(this)
     }
   },
   created () {
@@ -497,6 +498,7 @@ export default {
       // this.$message.success('操作成功')
       this.showEditModule = true
       this.editId = record.id * 1
+      this.editModuleInfo = record
     },
 
     // 添加弹框的确定按钮
@@ -533,8 +535,8 @@ export default {
           await _this.ModuleMObj.updateResource(formData)
           // 重新加载最新的数据
           await _this.getData()
+          _this.showEditModule = false
         }
-        _this.showEditModule = false
       })
     },
     /**
