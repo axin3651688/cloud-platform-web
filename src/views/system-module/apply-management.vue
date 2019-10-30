@@ -64,7 +64,8 @@
             <a-icon
               type="setting"
               style="margin-left: 4px;cursor: pointer;"
-              title="服务配置" /></span>
+              title="服务配置" />
+          </span>
         </div>
 
       </template>
@@ -117,6 +118,7 @@
       </template>
 
     </a-table>
+    <!--服务设置-->
     <a-modal
       v-model="ServiceSetting"
       :title="title">
@@ -141,6 +143,7 @@
         </a-row>
       </form>
     </a-modal>
+    <!--添加应用-->
     <a-modal
       v-model="showAddApply"
       :destroyOnClose="true"
@@ -197,8 +200,10 @@
         </a-button>
       </template>
     </a-modal>
+    <!--编辑应用-->
     <a-modal
       v-model="showEditApply"
+      v-if="editApply"
       title="编辑应用">
       <a-form :form="form1">
         <a-form-item label="名称">
@@ -206,13 +211,13 @@
             placeholder="请输入"
             v-decorator="[
               'name',
-              { rules: [{ required: true, message: '请输入牌照名称！' }] },
+              { rules: [{ required: true, message: '请输入牌照名称！' }],initialValue: editApply.name},
             ]" />
         </a-form-item>
         <a-form-item label="描述">
           <a-textarea
             placeholder="请输入描述"
-            v-decorator="['note']" />
+            v-decorator="['note',{initialValue: editApply.note}]" />
         </a-form-item>
         <a-form-item
           label="图标"
@@ -320,6 +325,7 @@ export default {
       ServiceSetting: false, // 服务配置
       showAddApply: false, // 添加应用
       showEditApply: false, // 编辑应用
+      editApply: null, // 要编辑的应用信息
       form: this.$form.createForm(this), // 服务配置弹框
       form1: this.$form.createForm(this), // 添加应用弹框
       active: '',
@@ -364,13 +370,18 @@ export default {
       this.title = 'XX应用服务配置'
     },
     btnClickEdit (record) {
+      this.fileList.iconId = record.iconId
+      this.fileList.url = record.iconUrl
       this.showEditApply = true
       this.editId = record.id * 1
+      this.editApply = record
     },
 
     // 添加按钮事件
     addClick () {
       this.showAddApply = true
+      this.fileList.iconId = ''
+      this.fileList.url = ''
     },
 
     // 勾选事件
@@ -473,6 +484,9 @@ export default {
           // 添加成功，更新数据
           formData.id = this.editId
           formData.type = 3
+          if (formData.iconId) {
+            formData.iconId = _this.fileList.iconId
+          }
           await _this.ApplyMObj.updateResource(formData)
           // 重新加载最新的数据
           await _this.getData()

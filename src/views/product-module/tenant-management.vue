@@ -69,7 +69,7 @@
           <!-- 表单第二行 -->
           <a-row :gutter="24">
             <a-col :span="12">
-              <a-form-item label="所属人">
+              <a-form-item label="拥有者">
                 <a-select v-decorator="['ownerId',{rules: [{ required: true, message: '请选择所属人!' }],}]">
                   <template slot="suffixIcon">
                     <img
@@ -469,7 +469,7 @@ export default {
       const fileType = ['image/jpeg', 'image/png', 'image/bmp']
       const isImg = fileType.indexOf(file.type) > -1
       if (!isImg) {
-        this.$message.error('只能jpec、png、bmp图片！')
+        this.$message.error('只能jpg、png、svg图片！')
       }
       const isLt5M = file.size / 1024 / 1024 < 5
       if (!isLt5M) {
