@@ -332,8 +332,8 @@ export default {
           await _this.UserMObj.adminSave(formData)
           // 重新加载最新的数据
           await _this.getData()
+          _this.showAddUser = false
         }
-        _this.showAddUser = false
       })
     },
     /**

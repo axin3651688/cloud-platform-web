@@ -450,7 +450,7 @@ export function ADMIN_SAVE(parameter) {
  */
 export function VALID_SERVICE_SIGN (parameter) {
   return axios2({
-    url: api.VALID_SERVICE_SIGN + parameter.serviceSign,
+    url: api.VALID_SERVICE_SIGN + parameter,
     method: 'get'
   })
 }

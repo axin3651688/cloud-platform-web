@@ -510,8 +510,8 @@ export default {
 
           // 重新加载最新的数据
           await _this.getData()
+          _this.showAddModule = false
         }
-        _this.showAddModule = false
       })
     },
     // 添加弹框的取消事件
