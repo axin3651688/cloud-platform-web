@@ -432,10 +432,23 @@ export default {
     },
     // 取消保存（取消按钮）
     handleCancel (e) {
-      if (this.form) {
-        alert('您还未完成添加租户，您确定取消？')
+      const _this = this
+      if (_this.form) {
+        _this.$confirm({
+          title: '您还未完成添加租户，您确定取消？',
+          content: '',
+          onOk () {
+            _this.visible = false
+            console.log('确定')
+          },
+          onCancel () {
+            console.log('Cancel')
+          },
+          class: 'test'
+        })
+
+        // alert('您还未完成添加租户，您确定取消？')
       }
-      this.visible = false
     },
     // 以下几个方法都是处理文件，图像上传的方法
     customRequest (data) {
