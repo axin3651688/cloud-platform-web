@@ -7,7 +7,14 @@ import {
   DELETE_ROLE,
   LISTRESOURCE,
   AUTHORITY_ROLE,
-  VALID_ROLE_NAME
+  VALID_ROLE_NAME,
+
+  //以下为账号管理的
+  ENABLE_ACCOUNT,
+  SAVE_ACCOUNT,
+  DELETE_ACCOUNT,
+  ACCOUNT_PAGE,
+  UPDATE_ACCOUNT
 } from '@/api/setModule'
 class CnbiRoleManagement {
   constructor(obj) {
@@ -92,7 +99,9 @@ class CnbiRoleManagement {
    * @update   by
    */
   async listresource(roleId) {
-    let res = await LISTRESOURCE({roleId:roleId});
+    let res = await LISTRESOURCE({
+      roleId: roleId
+    });
     return res
   }
 
@@ -125,6 +134,77 @@ class CnbiRoleManagement {
     let res = await VALID_ROLE_NAME({
       roleName: name
     });
+    return res
+  }
+
+  /** 
+   * @desc    : 启用禁用账号
+   * @author  : zj
+   * @date  : 2019/10/30
+   * @param   {} 
+   * @return  {} 
+   * @update   by   
+   */
+  async enableAccount(userId, enable) {
+    let res = await ENABLE_ACCOUNT({
+      userId: userId,
+      enable: enable
+    });
+    return res
+  }
+
+  /** 
+   * @desc    : 保存账户
+   * @author  : zj
+   * @date  : 2019/10/30
+   * @param   {} 
+   * @return  {} 
+   * @update   by   
+   */
+  async saveAccount(authorizeBatchDto) {
+    let res = await SAVE_ACCOUNT(authorizeBatchDto);
+    return res
+  }
+
+  /** 
+   * @desc    : 删除账号
+   * @author  : zj
+   * @date  : 2019/10/30
+   * @param   {} 
+   * @return  {} 
+   * @update   by   
+   */
+  async deleteAccount(userIds) {
+    let res = await DELETE_ACCOUNT(userIds);
+    return res
+  }
+
+  /** 
+   * @desc    : 分页查询SUPER角色的账户列表
+   * @author  : zj
+   * @date  : 2019/10/30
+   * @param   {} 
+   * @return  {} 
+   * @update   by   
+   */
+  async accountPage() {
+    let res = await ACCOUNT_PAGE({
+      page: 1,
+      size: 15
+    });
+    return res.data.data
+  }
+
+  /** 
+  * @desc    : 修改账号拥有的角色
+  * @author  : zj
+  * @date  : 2019/10/30
+  * @param   {} 
+  * @return  {} 
+  * @update   by   
+  */
+  async updateAccount(authorizeBatchDto) {
+    let res = await UPDATE_ACCOUNT(authorizeBatchDto);
     return res
   }
 }

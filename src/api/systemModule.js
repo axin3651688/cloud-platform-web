@@ -4,6 +4,11 @@ import {
 } from '@/utils/request'
 
 const api = {
+  //控制台的相关接口
+  FIND_USER_COUNT: '/uc/user/find_user_count',
+  FIND_TENANCY_COUNT: '/tc/tenancy/find_tenancy_count',
+  FIND_TENANCY_EXPIRE_COUNT: '/tc/tenancy/find_tenancy_expire_count',
+  FIND_DEPLOY_TYPE_COUNT: '/tc/tenancy/find_deploy_type_count',
   // 应用管理相关接口
   GET_RESOURCES_CARD: '/upm/resource/get_resources_card',
   OPEN_RESOURCE: '/upm/resource/open_resource',
@@ -20,6 +25,67 @@ const api = {
   ENABLE_APP: '/upm/tp_app/enable_app' //是否禁用
 }
 export default api
+
+/** 
+ * @desc    : 查询用户总数
+ * @author  : zj
+ * @date  : 2019/10/30
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function FIND_USER_COUNT() {
+  return axios2({
+    url: api.FIND_USER_COUNT,
+    method: 'get'
+  })
+}
+
+/** 
+ * @desc    : 查询租户总数
+ * @author  : zj
+ * @date  : 2019/10/30
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function FIND_TENANCY_COUNT() {
+  return axios2({
+    url: api.FIND_TENANCY_COUNT,
+    method: 'get'
+  })
+}
+
+/** 
+ * @desc    : 查询租户即将到期数
+ * @author  : zj
+ * @date  : 2019/10/30
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function FIND_TENANCY_EXPIRE_COUNT() {
+  return axios2({
+    url: api.FIND_TENANCY_EXPIRE_COUNT,
+    method: 'get'
+  })
+}
+
+/** 
+* @desc    : 查询租户部署情况
+* @author  : zj
+* @date  : 2019/10/30
+* @param   {} 
+* @return  {} 
+* @update   by   
+*/
+export function FIND_DEPLOY_TYPE_COUNT() {
+  return axios2({
+    url: api.FIND_DEPLOY_TYPE_COUNT,
+    method: 'get'
+  })
+}
+
 
 /** 
  * @desc    : 应用列表

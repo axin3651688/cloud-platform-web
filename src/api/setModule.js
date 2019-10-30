@@ -14,11 +14,12 @@ const api = {
   AUTHORITY_ROLE: '/upm/authority/authority_role',
   VALID_ROLE_NAME: '/upm/role/valid_role_name/',
 
-  //账号管理的相关接口
+  //账号管理的相关接口--*********相关的js在角色管理中*************
   ENABLE_ACCOUNT: '/upm/authorize/enable_account',
-  SAVE_ACCOUNT: '/upm/authorize/save_account',
-  DELETE_ACCOUNT:'/upm/authorize/delete_account',
-  ACCOUNT_PAGE:'/upm/authorize/account_page',
+  SAVE_ACCOUNT: '/upm/authorize/batch',
+  DELETE_ACCOUNT: '/upm/authorize/delete_account',
+  ACCOUNT_PAGE: '/upm/authorize/account_page',
+  UPDATE_ACCOUNT: '/upm/authorize/update_account'
 
 }
 export default api
@@ -150,14 +151,14 @@ export function VALID_ROLE_NAME(parameter) {
 }
 
 /** 
-* @desc    : 启用禁用账号
-* @author  : zj
-* @date  : 2019/10/30
-* @param   {} 
-* @return  {} 
-* @update   by   
-*/
-export function ENABLE_ACCOUNT(parameter){
+ * @desc    : 启用禁用账号
+ * @author  : zj
+ * @date  : 2019/10/30
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function ENABLE_ACCOUNT(parameter) {
   return axios2({
     url: api.ENABLE_ACCOUNT,
     method: 'put',
@@ -166,14 +167,14 @@ export function ENABLE_ACCOUNT(parameter){
 }
 
 /** 
-* @desc    : 分页查询SUPER角色的账户列表
-* @author  : zj
-* @date  : 2019/10/30
-* @param   {} 
-* @return  {} 
-* @update   by   
-*/
-export function ACCOUNT_PAGE(parameter){
+ * @desc    : 分页查询SUPER角色的账户列表
+ * @author  : zj
+ * @date  : 2019/10/30
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function ACCOUNT_PAGE(parameter) {
   return axios2({
     url: api.ACCOUNT_PAGE + '\/' + parameter.page + '\/' + parameter.size,
     method: 'get',
@@ -182,17 +183,49 @@ export function ACCOUNT_PAGE(parameter){
 }
 
 /** 
-* @desc    : 删除账号
+ * @desc    : 删除账号
+ * @author  : zj
+ * @date  : 2019/10/30
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function DELETE_ACCOUNT(parameter) {
+  return axios2({
+    url: api.DELETE_ACCOUNT,
+    method: 'delete',
+    data: parameter
+  })
+}
+
+/** 
+ * @desc    : 保存账户
+ * @author  : zj
+ * @date  : 2019/10/30
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function SAVE_ACCOUNT(parameter) {
+  return axios2({
+    url: api.SAVE_ACCOUNT,
+    method: 'post',
+    data: parameter
+  })
+}
+
+/** 
+* @desc    : 修改账号拥有的角色
 * @author  : zj
 * @date  : 2019/10/30
 * @param   {} 
 * @return  {} 
 * @update   by   
 */
-export function DELETE_ACCOUNT(parameter){
+export function UPDATE_ACCOUNT(parameter) {
   return axios2({
-    url: api.DELETE_ACCOUNT,
-    method: 'delete',
-    params: parameter
+    url: api.UPDATE_ACCOUNT,
+    method: 'put',
+    data: parameter
   })
 }
