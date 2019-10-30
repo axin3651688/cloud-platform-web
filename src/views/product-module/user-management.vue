@@ -3,69 +3,82 @@
     <!--头部-->
     <div style="display: flex;flex-direction: row;justify-content: space-between;background-color: #fff;padding: 16px 32px 0 32px">
       <div style="display: flex;flex-direction: row">
-        <common-drop-down :result="result"
-                          :defaultValue="defaultValue"
-                          @selectCell="selectCell"
-                          class="com-drop-down">
+        <common-drop-down
+          :result="result"
+          :defaultValue="'nickName'"
+          @selectCell="selectCell"
+          class="com-drop-down">
         </common-drop-down>
         <!--搜索框-->
-        <common-search :placeholder="version"
-                       style="width: 220px"
-                       @inputHandler="inputHandler"></common-search>
+        <common-search
+          :placeholder="version"
+          style="width: 220px"
+          @inputHandler="inputHandler"></common-search>
       </div>
-      <common-button @addClick="addClick"
-                     @deleteClick="deleteClick"
-                     :title="'删除后会影响用户使用，请谨慎操作!'"
-                     :disabled="selectedRowKeys.length>0?true:false"
-                     :name1="name1"
-                     :name2="name2">
+      <common-button
+        @addClick="addClick"
+        @deleteClick="deleteClick"
+        :title="'删除后会影响用户使用，请谨慎操作!'"
+        :disabled="selectedRowKeys.length>0?true:false"
+        :name1="name1"
+        :name2="name2">
       </common-button>
     </div>
     <div>
       <!--表格-->
-      <a-table class="user-table"
-               :pagination="pagination"
-               size="small"
-               :columns="columns"
-               :dataSource="dataSource"
-               :rowKey="setKey"
-               :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
-        <template slot="zhuangtai"
-                  slot-scope="text, record">
+      <a-table
+        class="user-table"
+        :pagination="pagination"
+        size="small"
+        :columns="columns"
+        :dataSource="dataSource"
+        :rowKey="setKey"
+        :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
+        <template
+          slot="zhuangtai"
+          slot-scope="text, record">
           <!--1代表开-->
-          <a-switch :defaultChecked="record.enable==1?true:false"
-                    @change="updataState(record)" />
+          <a-switch
+            :defaultChecked="record.enable==1?true:false"
+            @change="updataState(record)" />
         </template>
-        <template slot="xiangqing"
-                  slot-scope="text, record">
+        <template
+          slot="xiangqing"
+          slot-scope="text, record">
           <!--1代表开-->
           <span @click="btnClick(record)">详情</span>
         </template>
       </a-table>
     </div>
-    <a-modal v-model="showAddUser"
-             title="添加用户"
-             :destroyOnClose="true">
-      <a-form :form="form" 
-              class="addUser-table">
+    <a-modal
+      v-model="showAddUser"
+      title="添加用户"
+      :destroyOnClose="true">
+      <a-form
+        :form="form"
+        class="addUser-table">
         <a-form-item label="昵称">
-          <a-input placeholder="请输入昵称"
-                   v-decorator="[
+          <a-input
+            placeholder="请输入昵称"
+            v-decorator="[
               'nickname',
               { rules: [{ required: true, message: '请输入昵称！' }] },
             ]" />
         </a-form-item>
-        <a-form-item label="性别"
-                     class="table-sex">
-          <a-radio-group name="sex "
-                         :defaultValue="0"
-                         v-decorator="['sex']">
+        <a-form-item
+          label="性别"
+          class="table-sex">
+          <a-radio-group
+            name="sex "
+            :defaultValue="0"
+            v-decorator="['sex']">
             <a-radio :value="0">男</a-radio>
             <a-radio :value="1">女</a-radio>
           </a-radio-group>
         </a-form-item>
         <a-form-item label="密码">
-          <a-input v-decorator="['password',
+          <a-input
+            v-decorator="['password',
                           { rules: [ { required: true,
                                        message: '请输入密码!',
                                      },
@@ -74,10 +87,11 @@
                                      },
                           ],},
             ]"
-                   type="password" />
+            type="password" />
         </a-form-item>
         <a-form-item label="再次输入密码">
-          <a-input v-decorator="['confirm',
+          <a-input
+            v-decorator="['confirm',
                           {rules: [ {
                                       required: true,
                                       message: '请确认你的密码!',
@@ -87,24 +101,28 @@
                                     },
                           ],},
             ]"
-                   type="password"
-                   @blur="handleConfirmBlur" />
+            type="password"
+            @blur="handleConfirmBlur" />
         </a-form-item>
         <a-form-item label="邮箱">
           <a-input placeholder="请输入" />
         </a-form-item>
         <a-form-item label="手机号">
-          <a-input placeholder="请输入"
-                   v-decorator="['phone',{rules: [{ required: true, message: '请输入正确的手机号' }]}]" />
+          <a-input
+            placeholder="请输入"
+            v-decorator="['phone',{rules: [{ required: true, message: '请输入正确的手机号' }]}]" />
         </a-form-item>
       </a-form>
-      <template slot="footer"
-                style="display: flex">
-        <a-button key="back"
-                  @click="cancelAddUser">取消</a-button>
-        <a-button key="submit"
-                  type="primary"
-                  @click="saveAddUser">
+      <template
+        slot="footer"
+        style="display: flex">
+        <a-button
+          key="back"
+          @click="cancelAddUser">取消</a-button>
+        <a-button
+          key="submit"
+          type="primary"
+          @click="saveAddUser">
           <a-icon type="cloud-upload" /> 保存
         </a-button>
       </template>
@@ -125,7 +143,7 @@ export default {
     CommonSearch,
     CommonDropDown
   },
-  name: "UserManagement",
+  name: 'UserManagement',
   data () {
     return {
       UserMObj: null,
@@ -140,13 +158,8 @@ export default {
       showAddUser: false,
       form: this.$form.createForm(this),
       confirmDirty: false,
-      defaultValue: '0',
       selectedRowKeys: [],
       result: [
-        {
-          name: '全部',
-          key: '0'
-        },
         {
           name: '用户姓名',
           key: 'nickName'
@@ -165,19 +178,19 @@ export default {
         }
       ],
       columns: [
-        {          title: '用户姓名',
+        { title: '用户姓名',
           dataIndex: 'nickName'
         },
-        {          title: '用户名',
+        { title: '用户名',
           dataIndex: 'username'
         },
-        {          title: '手机号',
+        { title: '手机号',
           dataIndex: 'phone'
         },
-        {          title: '邮箱',
+        { title: '邮箱',
           dataIndex: 'email'
         },
-        {          title: '创建时间',
+        { title: '创建时间',
           dataIndex: 'createTime',
           customRender (text, record, index) {
             var oDate = new Date(text * 1)
@@ -195,7 +208,7 @@ export default {
             return text
           }
         },
-        {          title: '更新时间',
+        { title: '更新时间',
           dataIndex: 'updateTime',
           customRender (text, record, index) {
             var oDate = new Date(text * 1)
@@ -213,16 +226,17 @@ export default {
             return text
           }
         },
-        {          title: '状态',
+        { title: '状态',
           dataIndex: 'enable',
           scopedSlots: { customRender: 'zhuangtai' }
         },
-        {          title: '操作',
+        { title: '操作',
           dataIndex: 'name7',
           scopedSlots: { customRender: 'xiangqing' }
         }
       ],
-      dataSource: []
+      dataSource: [],
+      selectVal: 'nickName'
     }
   },
   created () {
@@ -230,23 +244,27 @@ export default {
     this.getData()
   },
   methods: {
-    //加载页面 获取数据
-    async getData () {      debugger
-      const data = await this.UserMObj.getUserSimpleInfoList();
+    // 加载页面 获取数据
+    async getData () {
+      debugger
+      const data = await this.UserMObj.getUserSimpleInfoList()
       this.dataSource = data
 
       // 拷贝数据
       this.dataOld = this.deepCopy(this.dataSource)
     },
-    //添加按钮的点击事件
+    // 添加按钮的点击事件
     addClick () {
       this.showAddUser = true
     },
-    //删除按钮
+    // 删除按钮
     deleteClick () {
 
     },
-    //模糊查询第一个框的选择事件
+    setKey (record) {
+      return record.id
+    },
+    // 模糊查询第一个框的选择事件
     selectCell (val1) {
       this.selectVal = val1
     },
@@ -267,11 +285,11 @@ export default {
       await this.getData()
     },
 
-    //删除的勾选事件
+    // 删除的勾选事件
     onSelectChange (selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys
     },
-    //详情按钮的点击事件
+    // 详情按钮的点击事件
     btnClick (key) {
       this.$router.push({
         name: 'UserDetail',
@@ -300,12 +318,12 @@ export default {
       callback()
     },
 
-    //添加弹框的取消按钮事件
+    // 添加弹框的取消按钮事件
     cancelAddUser () {
       this.showAddUser = false
     },
 
-    //添加弹框的确定按钮事件
+    // 添加弹框的确定按钮事件
     async saveAddUser () {
       const _this = this
       this.form.validateFields(async (err, values) => {

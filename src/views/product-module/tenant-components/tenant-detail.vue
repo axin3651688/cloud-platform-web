@@ -16,7 +16,7 @@
           </div>
           <div style="display: flex;flex-direction: row;">
             <div>
-              <p>编号：<span>{{ info.id }}</span></p>
+              <p>编号：<span>{{ info.code }}</span></p>
             </div>
             <div style="margin-left: 100px;">
               <p>拥有者：<span>{{ info.ownerName }}</span></p>

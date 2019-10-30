@@ -127,6 +127,7 @@
                   <a-select-option
                     v-for="(item,index) in moduleArr"
                     :key="index"
+                    v-if="item.enable==1"
                     :value="item.code">
                     {{ item.name }}
                   </a-select-option>
@@ -246,6 +247,7 @@
                   <a-select-option
                     v-for="(item,index) in cardArr"
                     :key="index"
+                    v-if="item.enable==1"
                     :value="item.code">
                     {{ item.name }}
                   </a-select-option>
