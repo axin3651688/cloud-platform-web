@@ -62,13 +62,17 @@
         </a-form-item>
         <!--  v-decorator="['name',{rules: [{ required: true, message: '描述不能为空!' }],}]" />-->
         <a-form-item label="分配角色">
-          <a-auto-complete
-            :dataSource="roleSource"
+          <a-select
+            mode="tags"
+            size="default"
             style="width: 200px"
-            @select="selectRole"
-            @search="handleSearchRole"
+            @change="handleChange"
             v-decorator="['role',{rules: [{ required: true, message: '角色不能为空!' }],}]"
-          />
+          >
+            <a-select-option v-for="i in 25" :key="(i + 9).toString(36) + i">
+              {{ (i + 9).toString(36) + i }}
+            </a-select-option>
+          </a-select>
         </a-form-item>
       </a-form>
       <template slot="footer" >
@@ -98,13 +102,17 @@
           />
         </a-form-item>
         <a-form-item label="分配角色">
-          <a-auto-complete
-            :dataSource="roleSource"
+          <a-select
+            mode="tags"
+            size="default"
             style="width: 200px"
-            @select="selectRole"
-            @search="handleSearchRole"
+            @change="handleChange"
             v-decorator="['role',{rules: [{ required: true, message: '角色不能为空!' }],}]"
-          />
+          >
+            <a-select-option v-for="i in 25" :key="(i + 9).toString(36) + i">
+              {{ (i + 9).toString(36) + i }}
+            </a-select-option>
+          </a-select>
         </a-form-item>
       </a-form>
       <template slot="footer" >
@@ -297,11 +305,8 @@ export default {
     handleSearchUser (value) {
       this.userSource = !value ? [] : [value, value + value, value + value + value]
     },
-    selectRole (value) {
-      console.log('onSelect', value)
-    },
-    handleSearchRole (value) {
-      this.roleSource = !value ? [] : [value, value + value, value + value + value]
+    handleChange (value) {
+      console.log(`Selected: ${value}`)
     },
     cancelEditAccount () {
       this.showEditAccount = false
