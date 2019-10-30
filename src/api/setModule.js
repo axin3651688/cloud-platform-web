@@ -16,7 +16,10 @@ const api = {
 
   //账号管理的相关接口
   ENABLE_ACCOUNT: '/upm/authorize/enable_account',
-  SAVE_ACCOUNT: '/upm/authorize/save_account'
+  SAVE_ACCOUNT: '/upm/authorize/save_account',
+  DELETE_ACCOUNT:'/upm/authorize/delete_account',
+  ACCOUNT_PAGE:'/upm/authorize/account_page',
+
 }
 export default api
 
@@ -143,5 +146,53 @@ export function VALID_ROLE_NAME(parameter) {
   return axios2({
     url: api.VALID_ROLE_NAME + parameter.roleName,
     method: 'get'
+  })
+}
+
+/** 
+* @desc    : 启用禁用账号
+* @author  : zj
+* @date  : 2019/10/30
+* @param   {} 
+* @return  {} 
+* @update   by   
+*/
+export function ENABLE_ACCOUNT(parameter){
+  return axios2({
+    url: api.ENABLE_ACCOUNT,
+    method: 'put',
+    params: parameter
+  })
+}
+
+/** 
+* @desc    : 分页查询SUPER角色的账户列表
+* @author  : zj
+* @date  : 2019/10/30
+* @param   {} 
+* @return  {} 
+* @update   by   
+*/
+export function ACCOUNT_PAGE(parameter){
+  return axios2({
+    url: api.ACCOUNT_PAGE + '\/' + parameter.page + '\/' + parameter.size,
+    method: 'get',
+    params: parameter
+  })
+}
+
+/** 
+* @desc    : 删除账号
+* @author  : zj
+* @date  : 2019/10/30
+* @param   {} 
+* @return  {} 
+* @update   by   
+*/
+export function DELETE_ACCOUNT(parameter){
+  return axios2({
+    url: api.DELETE_ACCOUNT,
+    method: 'delete',
+    params: parameter
   })
 }

@@ -3,7 +3,7 @@ import {
   GET_RESOURCES_CARD,
   OPEN_RESOURCE,
   GET_CARD_CONFIG,
-  DELETE_RESOURCE,
+  BAT_DELETE_APP,
   SAVE_RESOURCE,
   UPDATE_RESOURCE,
   SEARCH_RESOURCES
@@ -76,12 +76,9 @@ class CnbiApplyManagement {
    * @return  {} 
    * @update   by   
    */
-  async deleteResource(ids, type) {
-    debugger
-    let res = await DELETE_RESOURCE({
-      ids: ids,
-      type: type
-    });
+  async batDeleteApp(ids) {
+    let res = await BAT_DELETE_APP(ids);
+    return res
   }
 
   /** 
@@ -118,11 +115,11 @@ class CnbiApplyManagement {
    * @return  {} 
    * @update   by   
    */
-  async searchResources(field, value,type) {
+  async searchResources(field, value, type) {
     let res = await SEARCH_RESOURCES({
       field: field,
       value: value,
-      type:type
+      type: type
     })
     return res.data
   }

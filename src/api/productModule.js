@@ -12,7 +12,7 @@ const api = {
   GET_TENANCY: '/tc/tenancy/get_tenancy_detail', //（同上）
   UPDATE_TENANCY: '/tc/tenancy/update_tenancy_info',
   USER_SIMPLE_INFO_LIST: '/uc/user/user_simple_info_list/',
-  VALID_SERVICE_SIGN:'/tc/tenancy/valid_service_sign/',
+  VALID_SERVICE_SIGN: '/tc/tenancy/valid_service_sign/',
   //牌照管理相关接口
   GET_LICENSE_ID: '/upm/license/get_license_id',
   FIND_LICENSE_LIST: '/upm/license/find_list',
@@ -28,7 +28,7 @@ const api = {
   //模块管理相关接口
   // GET_RESOURCES_MODULE: '/upm/resource/get_resources_module',
   SAVE_RESOURCE: '/upm/resource/save',
-  DELETE_RESOURCE: '/upm/resource/bat_delete',
+  BAT_DELETE_MODEL: '/upm/resource/bat_delete_model',
   OPEN_RESOURCE: '/upm/resource/open_resource',
   UPDATE_RESOURCE: '/upm/resource/update',
   SEARCH_RESOURCES: '/upm/resource/search_resources',
@@ -39,10 +39,10 @@ const api = {
   FIND_USER_DETAIL_INFO: '/uc/user/find_user_detail_info',
   ADMIN_SAVE: '/uc/user/admin_save',
 
-
   //权限管理的相关接口（除了查询接口不一致，其余用模块的接口）
   GET_RESOURCES_TREE: '/upm/resource/get_resources_tree',
-  FIND_SYSTEM_MODULE: '/upm/resource/find_system_module'
+  FIND_SYSTEM_MODULE: '/upm/resource/find_system_module',
+  BAT_DELETE_AUTHORITY: '/upm/resource/bat_delete_authority',
 
 }
 
@@ -317,11 +317,11 @@ export function SAVE_RESOURCE(parameter) {
  * @return  {}
  * @update   by
  */
-export function DELETE_RESOURCE(parameter) {
+export function BAT_DELETE_MODEL(parameter) {
   return axios2({
-    url: api.DELETE_RESOURCE + '/' + parameter.type,
+    url: api.BAT_DELETE_MODEL,
     method: 'delete',
-    data: parameter.ids
+    data: parameter
   })
 }
 /**
@@ -392,6 +392,23 @@ export function FIND_SYSTEM_MODULE() {
   })
 }
 
+
+/** 
+ * @desc    : 批量删除权限
+ * @author  : zj
+ * @date  : 2019/10/30
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function BAT_DELETE_AUTHORITY(parameter) {
+  return axios2({
+    url: api.BAT_DELETE_AUTHORITY,
+    method: 'delete',
+    data: parameter
+  })
+}
+
 /**
  * @desc    : 启用禁用用户
  * @author  : zj
@@ -448,7 +465,7 @@ export function ADMIN_SAVE(parameter) {
  * @return  {}
  * @update   by
  */
-export function VALID_SERVICE_SIGN (parameter) {
+export function VALID_SERVICE_SIGN(parameter) {
   return axios2({
     url: api.VALID_SERVICE_SIGN + parameter,
     method: 'get'
