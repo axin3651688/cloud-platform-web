@@ -453,7 +453,7 @@ export default {
       // 2.如果勾选了，则获取勾选的id数组
       // 3.调用删除接口，传入参数，删除
       debugger
-      await this.ModuleMObj.deleteResource(this.selectedRowKeys, 3)
+      await this.ModuleMObj.deleteResource(this.selectedRowKeys)
       // 4.删除成功后，及时更新数据，清除勾选图标
       await this.getData()
       this.selectedRowKeys = []

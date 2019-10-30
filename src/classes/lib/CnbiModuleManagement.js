@@ -87,11 +87,10 @@ class CnbiModuleManagement {
    * @return  {} 
    * @update   by   
    */
-  async deleteResource(ids, type) {
+  async deleteResource(ids) {
     debugger
     let res = await DELETE_RESOURCE({
-      ids: ids,
-      type: type
+      ids: ids
     });
   }
   /** 
@@ -149,13 +148,13 @@ class CnbiModuleManagement {
   }
 
   /** 
-  * @desc    : 查看后台管理的模块列表
-  * @author  : zj
-  * @date  : 2019/10/28
-  * @param   {} 
-  * @return  {} 
-  * @update   by   
-  */
+   * @desc    : 查看后台管理的模块列表
+   * @author  : zj
+   * @date  : 2019/10/28
+   * @param   {} 
+   * @return  {} 
+   * @update   by   
+   */
   async findSystemModule() {
     let res = await FIND_SYSTEM_MODULE();
     return res.data

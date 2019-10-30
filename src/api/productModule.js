@@ -12,7 +12,7 @@ const api = {
   GET_TENANCY: '/tc/tenancy/get_tenancy_detail', //（同上）
   UPDATE_TENANCY: '/tc/tenancy/update_tenancy_info',
   USER_SIMPLE_INFO_LIST: '/uc/user/user_simple_info_list/',
-  VALID_SERVICE_SIGN:'/tc/tenancy/valid_service_sign/',
+  VALID_SERVICE_SIGN: '/tc/tenancy/valid_service_sign/',
   //牌照管理相关接口
   GET_LICENSE_ID: '/upm/license/get_license_id',
   FIND_LICENSE_LIST: '/upm/license/find_list',
@@ -319,7 +319,8 @@ export function SAVE_RESOURCE(parameter) {
  */
 export function DELETE_RESOURCE(parameter) {
   return axios2({
-    url: api.DELETE_RESOURCE + '/' + parameter.type,
+    // url: api.DELETE_RESOURCE + '/' + parameter.type,
+    url: api.DELETE_RESOURCE,
     method: 'delete',
     data: parameter.ids
   })
@@ -448,7 +449,7 @@ export function ADMIN_SAVE(parameter) {
  * @return  {}
  * @update   by
  */
-export function VALID_SERVICE_SIGN (parameter) {
+export function VALID_SERVICE_SIGN(parameter) {
   return axios2({
     url: api.VALID_SERVICE_SIGN + parameter.serviceSign,
     method: 'get'

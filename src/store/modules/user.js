@@ -1,9 +1,22 @@
 import Vue from 'vue'
-import { login, logout, refreshToken, getUserInfo, getUserAllResource } from '@/api/mylogin'
-import { ACCESS_TOKEN, TOKEN_INFO } from '@/store/mutation-types'
-import { welcome } from '@/utils/util'
+import {
+  login,
+  logout,
+  refreshToken,
+  getUserInfo,
+  getUserAllResource
+} from '@/api/mylogin'
+import {
+  ACCESS_TOKEN,
+  TOKEN_INFO
+} from '@/store/mutation-types'
+import {
+  welcome
+} from '@/utils/util'
 import notification from 'ant-design-vue/es/notification'
-import {TIME_SETTING} from '@/config/projectSetting'
+import {
+  TIME_SETTING
+} from '@/config/projectSetting'
 
 const user = {
   state: {
@@ -18,7 +31,10 @@ const user = {
   },
 
   mutations: {
-    SET_NAME: (state, { name, welcome }) => {
+    SET_NAME: (state, {
+      name,
+      welcome
+    }) => {
       state.name = name
       state.welcome = welcome
     },
@@ -41,13 +57,16 @@ const user = {
 
   actions: {
     // 登录
-    Login ({ commit, dispatch }, userInfo) {
+    Login({
+      commit,
+      dispatch
+    }, userInfo) {
       return new Promise((resolve, reject) => {
         login(userInfo).then(response => {
           Vue.ls.set(ACCESS_TOKEN, response['token_type'] + ' ' + response['access_token'])
           Vue.ls.set(TOKEN_INFO, JSON.stringify(response))
           // 剩余时间小于三小时必须再重新登陆一下，这里可以异步也可以同步
-          if(response.expires_in < TIME_SETTING.reLoginTime) {
+          if (response.expires_in < TIME_SETTING.reLoginTime) {
             dispatch('RefreshToken')
           }
           resolve()
@@ -58,7 +77,9 @@ const user = {
     },
 
     // 获取用户信息
-    GetInfo ({ commit }) {
+    GetInfo({
+      commit
+    }) {
       return new Promise((resolve, reject) => {
         // 用户信息先注释了
         // 获取用户基本信息，填充名称，头像。
@@ -72,19 +93,24 @@ const user = {
               throw new Error('用户已被禁用')
             }
             commit('SET_INFO', user)
-            commit('SET_NAME', { name: user.trueName, welcome: welcome() })
+            commit('SET_NAME', {
+              name: user.trueName,
+              welcome: welcome()
+            })
             commit('SET_AVATAR', user.thumbnail)
             // 查询用户所有权限塞进去
-            const res = await getUserAllResource({ id: user.id })
+            const res = await getUserAllResource({
+              id: user.id
+            })
             if (res.code !== 200) {
               throw new Error('获取资源信息失败!')
             }
             const components = res.data.map(function (ele) {
               return ele.component
             })
-            if (res.data.length === 0) {
-              throw new Error('资源信息为空!')
-            }
+            // if (res.data.length === 0) {
+            //   throw new Error('资源信息为空!')
+            // }
             commit('SET_RESOURCE', res.data)
             commit('SET_RESOURCE_CODE', components)
             resolve(response)
@@ -98,10 +124,16 @@ const user = {
     },
 
     // 登出
-    Logout ({ commit, state }) {
+    Logout({
+      commit,
+      state
+    }) {
       return new Promise((resolve) => {
         const tokenInfo = JSON.parse(Vue.ls.get(TOKEN_INFO))
-        logout({ access_token: tokenInfo['access_token'], client_id: 'browser' }).then(() => {
+        logout({
+          access_token: tokenInfo['access_token'],
+          client_id: 'browser'
+        }).then(() => {
           // commit('SET_TOKEN', {})
           commit('SET_ROLES', [])
           commit('SET_RESOURCE', [])
@@ -115,7 +147,9 @@ const user = {
       })
     },
 
-    RefreshToken ({ dispatch }) {
+    RefreshToken({
+      dispatch
+    }) {
       return new Promise((resolve) => {
         refreshToken().then(function (res) {
           // 设置token
