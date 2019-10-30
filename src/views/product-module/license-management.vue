@@ -7,7 +7,7 @@
         <common-button
           :name1="name1"
           :name2="name2"
-          :title="'删除/删除牌照将会影响所有使用当前牌照的租户，确定要继续？'"
+          :title="'删除牌照将会影响所有使用当前牌照的租户，确定要继续？'"
           :disabled="selectedRowKeys.length>0?true:false"
           @addClick="addClick"
           @deleteClick="deleteClick">
@@ -349,6 +349,7 @@
               <a-select-option
                 v-for="(item,index) in moduleArr"
                 :key="index"
+                v-if="item.enable==1"
                 :value="item.id">
                 {{ item.name }}
               </a-select-option>
@@ -646,9 +647,22 @@ export default {
     },
     // 编辑按钮的点击事件
     async btnClick (record) {
-      this.editState = true
-      this.editId = record.id * 1
-      this.editLicenseInfo = await this.LicenseMObj.getLicenseId(record.id)
+      const _this = this
+      _this.$confirm({
+        title: '编辑会影响所有使用当前牌照的租户，确认进行编辑？',
+        content: '',
+        onOk () {
+          setTimeout(async () => {
+            _this.editState = true
+            _this.editId = record.id * 1
+            _this.editLicenseInfo = await _this.LicenseMObj.getLicenseId(record.id)
+          }, 100)
+        },
+        onCancel () {
+          console.log('Cancel')
+        },
+        class: 'editBtn'
+      })
     },
     addClick () {
       this.showLicenseModal = true

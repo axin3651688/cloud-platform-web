@@ -131,6 +131,7 @@
     <!--修改基本信息-->
     <a-modal
       v-model="showUpdataInfo"
+      :destroyOnClose="true"
       @ok="UpdataInfo"
       okText="保存"
       cancelText="取消"
@@ -147,7 +148,7 @@
                 placeholder="请输入"
                 v-decorator="[
                   'societyCode',
-                  { rules: [{ required: true, message: '请输入营业执照！' }] },
+                  { rules: [{ required: true, message: '请输入营业执照！' }] ,initialValue:info.societyCode},
                 ]"
                 class="item2-input" />
             </a-form-item>
@@ -156,7 +157,7 @@
               class="item2">
               <a-select
                 default-value="1"
-                v-decorator="['licenseId',{rules: [{ required: true, message: '请选择所属牌照!' }],}]">
+                v-decorator="['licenseId',{rules: [{ required: true, message: '请选择所属牌照!' }],initialValue:info.licenseId}]">
                 <template slot="suffixIcon">
                   <img
                     style="width: 12px;"
@@ -165,6 +166,7 @@
                 <a-select-option
                   v-for="(item,index) in LicenseList"
                   :key="index"
+                  v-if="item.enable==1"
                   :value="item.id">
                   {{ item.name }}
                 </a-select-option>
@@ -175,7 +177,7 @@
               class="item2">
               <a-input
                 placeholder="请输入服务标识"
-                v-decorator="['service',{rules: [{ required: true, message: '服务标识不能为空!' }],}]" />
+                v-decorator="['service',{rules: [{ required: true, message: '服务标识不能为空!' }],initialValue:info.service}]" />
             </a-form-item>
             <a-form-item
               label="访问网址:"
@@ -183,17 +185,18 @@
               <!--  pattern: /^http:\/\/([\w-]+.)+[\w-]+(\/[\w-./?%&=]*)?$/, 验证方式 -->
               <a-input
                 placeholder="请输入"
-                v-decorator="['url',{rules: [{ required: true, message: '请输入正确的网址' }]}]"
+                v-decorator="['url',{rules: [{ required: true, message: '请输入正确的网址' }],initialValue:info.url}]"
                 class="item2-input" />
             </a-form-item>
             <a-form-item
               label="生效日期："
               class="item2">
+              <!--info.beginTime-->
               <a-date-picker
                 @change="onChange"
-                v-decorator="['beginTime',{rules: [{ required: true, message: '请选择生效日期!' }],}]" />
-            </a-form-item>
-          </a-col>
+                v-decorator="['beginTime',{rules: [{ required: true, message: '请选择生效日期!' }],
+                                           initialValue:this.$moment(info.beginTime, 'YYYY-MM-DD')}]"></a-date-picker>
+            </a-form-item></a-col>
           <a-col :span="12">
             <a-form-item
               label="联系电话:"
@@ -201,7 +204,7 @@
               <!--  pattern: /^1[34578]\d{9}$/,  验证方式 -->
               <a-input
                 placeholder="请输入"
-                v-decorator="['tel',{rules: [{ required: true, message: '请输入正确的手机号' }]}]"
+                v-decorator="['tel',{rules: [{ required: true, message: '请输入正确的手机号' }],initialValue:info.tel}]"
                 class="item2-input" />
             </a-form-item>
             <a-form-item
@@ -209,7 +212,7 @@
               class="item2">
               <a-select
                 default-value="1"
-                v-decorator="['type',{rules: [{ required: true, message: '请选择租户类型!' }],}]">
+                v-decorator="['type',{rules: [{ required: true, message: '请选择租户类型!' }],initialValue:info.type}]">
                 <template slot="suffixIcon">
                   <img
                     style="width: 12px;"
@@ -229,7 +232,7 @@
             <a-form-item
               label="所属人："
               class="item2">
-              <a-select v-decorator="['ownerId',{rules: [{ required: true, message: '请选择所属人!' }],}]">
+              <a-select v-decorator="['ownerId',{rules: [{ required: true, message: '请选择所属人!' }],initialValue:info.ownerId}]">
                 <template slot="suffixIcon">
                   <img
                     style="width: 12px;"
@@ -237,8 +240,9 @@
                 </template>
                 <a-select-option
                   v-for="(item,index) in owners"
+                  :value="item.id"
                   :key="index">
-                  {{ item }}
+                  {{ item.nickName }}
                 </a-select-option>
               </a-select>
             </a-form-item>
@@ -249,7 +253,7 @@
                 placeholder="请输入"
                 v-decorator="[
                   'address',
-                  { rules: [{ required: true, message: '请输入所属牌照！' }] },
+                  { rules: [{ required: true, message: '请输入所属牌照！' }],initialValue:info.address },
                 ]"
                 class="item2-input" />
             </a-form-item>
@@ -258,7 +262,8 @@
               class="item2">
               <a-date-picker
                 @change="onChange"
-                v-decorator="['endTime',{rules: [{ required: true, message: '请选择到期日期!' }],}]" />
+                v-decorator="['endTime',{rules: [{ required: true, message: '请选择到期日期!' }]
+                                         ,initialValue:this.$moment(info.endTime, 'YYYY-MM-DD')}]" />
             </a-form-item>
           </a-col>
         </a-row>
@@ -303,24 +308,26 @@ export default {
       this.id = this.$route.query.id
       this.showInfo()
     },
-    showModal () {
-      this.visible = true
-    },
     // 点击详情  查询信息
     async showInfo () {
       var info = await this.TenantMObj.getTenancy(this.id)
-      info.beginTime = new Date(info.beginTime * 1).toLocaleString()
-      info.createTime = new Date(info.createTime * 1).toLocaleString()
-      info.endTime = new Date(info.endTime * 1).toLocaleString()
-      info.updateTime = new Date(info.updateTime * 1).toLocaleString()
+      // info.beginTime = new Date(info.beginTime * 1).toLocaleString()
+      // info.createTime = new Date(info.createTime * 1).toLocaleString()
+      // info.endTime = new Date(info.endTime * 1).toLocaleString()
+      // info.updateTime = new Date(info.updateTime * 1).toLocaleString()
+      info.beginTime = this.getYearMonthDay(info.beginTime)
+      info.createTime = this.getYearMonthDay(info.createTime)
+      info.endTime = this.getYearMonthDay(info.endTime)
+      info.updateTime = this.getYearMonthDay(info.updateTime)
       this.info = info
 
       // 获取所有的所属人
       const owners = await this.TenantMObj.getUserSimpleInfoList()
-      this.owners = owners.map(item => item.trueName)
-
+      // this.owners = owners.map(item => {item.nickName})
+      this.owners = owners
       // 获取所有的牌照列表
       const LicenseList = await this.TenantMObj.findLicenseList()
+      this.LicenseList = LicenseList
     },
     callback (key) {
       this.tabKey = key
@@ -328,22 +335,22 @@ export default {
     // 修改按钮点击事件
     editClick () {
       const _this = this
-      this.showModal()
       // 1.打开弹框
       _this.showUpdataInfo = true
       // 2.让原有的信息呈现在弹框中
-      this.$nextTick(() => {
-        _this.form.setFieldsValue({ 'societyCode': _this.info.societyCode })// 营业执照
-        _this.form.setFieldsValue({ 'licenseId': _this.info.licenseId })// 所属牌照
-        _this.form.setFieldsValue({ 'service': _this.info.serviceId })// 服务标识
-        _this.form.setFieldsValue({ 'url': _this.info.url })// 访问网址
-        _this.form.setFieldsValue({ 'beginTime': _this.info.beginTime })// 生效时间
-        _this.form.setFieldsValue({ 'tel': _this.info.tel })// 联系电话
-        _this.form.setFieldsValue({ 'type': _this.info.type })// 租户类型
-        _this.form.setFieldsValue({ 'ownerId': _this.info.ownerId })// 所属人
-        _this.form.setFieldsValue({ 'address': _this.info.address })// 租户地址
-        _this.form.setFieldsValue({ 'endTime': _this.info.endTime })// 到期日期
-      })
+      // this.$nextTick(() => {
+      //   debugger
+      //   _this.form.setFieldsValue({ 'societyCode': _this.info.societyCode })// 营业执照
+      //   _this.form.setFieldsValue({ 'licenseId': _this.info.licenseId })// 所属牌照
+      //   _this.form.setFieldsValue({ 'service': _this.info.serviceId })// 服务标识
+      //   _this.form.setFieldsValue({ 'url': _this.info.url })// 访问网址
+      //   _this.form.setFieldsValue({ 'beginTime': _this.info.beginTime })// 生效时间
+      //   _this.form.setFieldsValue({ 'tel': _this.info.tel })// 联系电话
+      //   _this.form.setFieldsValue({ 'type': _this.info.type })// 租户类型
+      //   _this.form.setFieldsValue({ 'ownerId': _this.info.ownerId })// 所属人
+      //   _this.form.setFieldsValue({ 'address': _this.info.address })// 租户地址
+      //   _this.form.setFieldsValue({ 'endTime': _this.info.endTime })// 到期日期
+      // })
     },
     async UpdataInfo () {
       const _this = this
@@ -360,17 +367,25 @@ export default {
 
           // 重新加载最新的数据
           var info = await _this.TenantMObj.getTenancy(this.id)
-          info.beginTime = new Date(info.beginTime * 1).toLocaleString()
-          info.createTime = new Date(info.createTime * 1).toLocaleString()
-          info.endTime = new Date(info.endTime * 1).toLocaleString()
-          info.updateTime = new Date(info.updateTime * 1).toLocaleString()
+          info.beginTime = this.getYearMonthDay(info.beginTime)
+          info.createTime = this.getYearMonthDay(info.createTime)
+          info.endTime = this.getYearMonthDay(info.endTime)
+          info.updateTime = this.getYearMonthDay(info.updateTime)
           _this.info = info
+          _this.showUpdataInfo = false
         }
-        _this.showUpdataInfo = false
       })
     },
     onChange () {
 
+    },
+    getYearMonthDay (time) {
+      const year = new Date(time * 1).getFullYear()
+      let month = new Date(time * 1).getMonth() + 1// 9
+      month = month < 10 ? '0' + month : month
+      let date = new Date(time * 1).getDate()
+      date = date < 10 ? '0' + date : date
+      return year + '-' + month + '-' + date
     }
   }
 }

@@ -37,15 +37,14 @@
         ref="table"></common-table>
     </div>
     <!--添加租户弹框-->
+    <!--  @ok="handleOk"
+        @cancel="handleCancel"
+        okText="保存"
+        cancelText="取消"-->
     <div v-if="visible">
       <a-modal
         title="添加租户"
         :visible="visible"
-        @ok="handleOk"
-        @cancel="handleCancel"
-        okText="保存"
-        cancelText="取消"
-        :destroyOnClose="true"
         :width="730">
         <a-form :form="form">
           <!-- 表单第一行 -->
@@ -56,7 +55,7 @@
               <a-form-item label="名称">
                 <a-input
                   placeholder="请输入名称"
-                  v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],}]" />
+                  v-decorator="['name',{rules: [{ required: true, message: '名称不能为空' }]}]" />
               </a-form-item>
             </a-col>
             <a-col :span="12">
@@ -70,7 +69,7 @@
           <!-- 表单第二行 -->
           <a-row :gutter="24">
             <a-col :span="12">
-              <a-form-item label="所属人">
+              <a-form-item label="拥有者">
                 <a-select v-decorator="['ownerId',{rules: [{ required: true, message: '请选择所属人!' }],}]">
                   <template slot="suffixIcon">
                     <img
@@ -89,7 +88,6 @@
             <a-col :span="12">
               <a-form-item label="所属牌照">
                 <a-select
-                  default-value="1"
                   v-decorator="['licenseId',{rules: [{ required: true, message: '请选择所属牌照!' }],}]">>
                   <template slot="suffixIcon">
                     <img
@@ -157,7 +155,6 @@
                   style="width: 100%">
                   <a-select
                     slot="addonBefore"
-                    default-value="86"
                     v-decorator="['prefix', { initialValue: '86' }]"
                     style="width: 70px">
                     <template slot="suffixIcon">
@@ -191,14 +188,14 @@
                 <a-col :span="12">
                   <a-form-item label="生效时间">
                     <a-date-picker
-                      v-decorator="['beginTime',{rules: [{ required: true, message: '请选择牌照生效时间!' },{validator:checkBeginTime}],}]" />
+                      v-decorator="['beginTime',{rules: [{ required: true, message: '请选择牌照生效时间!' }] }]" />
                   </a-form-item>
                 </a-col>
                 <a-col :span="12">
                   <a-form-item label="失效时间">
                     <a-date-picker
                       v-decorator="['endTime',
-                                    {rules: [{ required: true, message: '请选择牌照到期时间!' },{validator:checkEndTime}],}]" />
+                                    {rules: [{ required: true, message: '请选择牌照到期时间!' }]}]" />
 
                   </a-form-item>
                 </a-col>
@@ -216,12 +213,14 @@
                   listType="picture-card"
                   class="avatar-uploader"
                   :customRequest="customRequest"
-                  :disabled="disable">
+                  :disabled="disable"
+                  v-decorator="['logoId']"
+                >
                   <img
-                    v-if="imageUrl"
-                    :src="imageUrl"
+                    v-if="fileList.url"
+                    :src="fileList.url"
                     alt="avatar"
-                    v-decorator="['logoId']" />
+                  />
                   <div v-else>
                     <a-icon :type="loading ? 'loading' : 'plus'" />
                     <div class="ant-upload-text">点击上传</div>
@@ -232,6 +231,17 @@
             </a-col>
           </a-row>
         </a-form>
+        <template slot="footer">
+          <a-button
+            key="back"
+            @click="handleCancel">取消</a-button>
+          <a-button
+            key="submit"
+            type="primary"
+            @click="handleOk">
+            <a-icon type="cloud-upload" /> 保存
+          </a-button>
+        </template>
       </a-modal>
     </div>
   </div>
@@ -265,6 +275,10 @@ export default {
       LicenseList: [], // 牌照列表数组
       TenantMObj: null,
       url: '',
+      fileList: {
+        url: '',
+        logoId: ''
+      }, // 上传图片集合
       disable: false,
       loading: false,
       imageUrl: '',
@@ -303,7 +317,6 @@ export default {
       visible: false, // 判断是否显示弹框的属性
       previewImage: '',
       previewVisible: false,
-      fileList: ['https://tpc.googlesyndication.com/daca_images/simgad/17069283415306529692'],
       tenancyIds: [], // 勾选的要删除的租户id数组
       selectVal: 'name',
       dataOld: []
@@ -359,26 +372,11 @@ export default {
       // 获取所有的牌照列表
       this.LicenseList = await this.TenantMObj.findLicenseList()
     },
-    // 失效时间
-    checkEndTime (rule, value, callback) {
-      const beginTime = this.form.getFieldValue('beginTime')
-      if (typeof beginTime !== 'undefined') {
-        if (new Date(beginTime._d).getTime() > new Date(value._d).getTime()) {
-          callback('失效时间不能在生效时间之前')
-        }
-      }
-    },
-    checkBeginTime (rule, value, callback) {
-      const endTime = this.form.getFieldValue('endTime')
-      if (typeof endTime !== 'undefined') {
-        if (new Date(endTime._d).getTime() < new Date(value._d).getTime()) {
-          callback('生效时间不能再失效时间之后')
-        }
-      }
-    },
     // 添加按钮的点击事件
     addClick () {
       this.visible = true
+      this.fileList.url = ''
+      this.fileList.logoId = ''
     },
     // 删除按钮的点击事件
     async deleteClick () {
@@ -396,11 +394,10 @@ export default {
     handleOk () {
       const _this = this
       _this.form.validateFields(async (err, values) => {
-        debugger
         if (!err) {
           const serviceSign = values.serviceId
           const service = await _this.TenantMObj.validServiceSign(serviceSign)
-          if (!service.data) {
+          if (!service) {
             const arr = [{
               message: '服务标识重复!',
               field: 'serviceId'
@@ -411,8 +408,19 @@ export default {
           const formData = JSON.parse(JSON.stringify(values))
           formData.beginTime = new Date(formData.beginTime).getTime()
           formData.endTime = new Date(formData.endTime).getTime()
+          if (formData.beginTime > formData.endTime) {
+            const arr = [{
+              message: '失效时间不能再生效时间之前!',
+              field: 'endTime'
+            }]
+            this.form.setFields({ endTime: { value: formData.beginTime, errors: arr } })
+            return
+          }
           // formData.checkTime = 1
           // formData.checkerId = 2
+          if (formData.logoId) {
+            formData.logoId = _this.fileList.logoId
+          }
           const res = await _this.TenantMObj.saveTenancy(formData)
           if (res.code == 200) {
             _this.visible = false
@@ -424,18 +432,25 @@ export default {
     },
     // 取消保存（取消按钮）
     handleCancel (e) {
-      if (this.form) {
-        alert('您还未完成添加租户，您确定取消？')
+      const _this = this
+      if (_this.form) {
+        _this.$confirm({
+          title: '您还未完成添加租户，您确定取消？',
+          content: '',
+          onOk () {
+            _this.visible = false
+            console.log('确定')
+          },
+          onCancel () {
+            console.log('Cancel')
+          },
+          class: 'test'
+        })
+
+        // alert('您还未完成添加租户，您确定取消？')
       }
-      this.visible = false
     },
     // 以下几个方法都是处理文件，图像上传的方法
-    handlePreview (file) {
-      this.previewImage = file.url || file.thumbUrl
-      this.previewVisible = true
-    },
-    handleChange ({ fileList }) {
-    },
     customRequest (data) {
       const _this = this
       const formData = new FormData()
@@ -445,10 +460,8 @@ export default {
       formData.append('bizCode', 'cs')
       uploadFile(formData).then(function (res) {
         if (res.code === 200) {
-          _this.imageUrl = res.data.thumbUrl
-          _this.$emit('success', res.data)
-        } else {
-          _this.$emit('fail', res)
+          _this.fileList.url = res.data.thumbUrl
+          _this.fileList.logoId = res.data.id
         }
       })
     },
@@ -456,7 +469,7 @@ export default {
       const fileType = ['image/jpeg', 'image/png', 'image/bmp']
       const isImg = fileType.indexOf(file.type) > -1
       if (!isImg) {
-        this.$message.error('只能jpec、png、bmp图片！')
+        this.$message.error('只能jpg、png、svg图片！')
       }
       const isLt5M = file.size / 1024 / 1024 < 5
       if (!isLt5M) {
