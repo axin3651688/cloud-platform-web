@@ -349,6 +349,7 @@
               <a-select-option
                 v-for="(item,index) in moduleArr"
                 :key="index"
+                v-if="item.enable==1"
                 :value="item.id">
                 {{ item.name }}
               </a-select-option>
@@ -650,10 +651,12 @@ export default {
       _this.$confirm({
         title: '编辑会影响所有使用当前牌照的租户，确认进行编辑？',
         content: '',
-        async onOk () {
-          _this.editState = true
-          _this.editId = record.id * 1
-          _this.editLicenseInfo = await _this.LicenseMObj.getLicenseId(record.id)
+        onOk () {
+          setTimeout(async () => {
+            _this.editState = true
+            _this.editId = record.id * 1
+            _this.editLicenseInfo = await _this.LicenseMObj.getLicenseId(record.id)
+          }, 100)
         },
         onCancel () {
           console.log('Cancel')

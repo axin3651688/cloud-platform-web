@@ -55,7 +55,7 @@
               <a-form-item label="名称">
                 <a-input
                   placeholder="请输入名称"
-                  v-decorator="['name',{rules: [{ required: true, message: '请选择类型' }]}]" />
+                  v-decorator="['name',{rules: [{ required: true, message: '名称不能为空' }]}]" />
               </a-form-item>
             </a-col>
             <a-col :span="12">
