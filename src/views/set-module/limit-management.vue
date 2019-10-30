@@ -351,7 +351,7 @@ export default {
       // 1.如果没有勾选就点击删除按钮，提示框
       // 2.如果勾选了，则获取勾选的id数组
       // 3.调用删除接口，传入参数，删除
-      await this.LimitMObj.deleteResource(this.selectedRowKeys)
+      await this.LimitMObj.batDeleteAuthority(this.selectedRowKeys)
       // 4.删除成功后，及时更新数据，清除勾选图标
       await this.getData()
       this.selectedRowKeys = []
@@ -392,6 +392,7 @@ export default {
       _this.form.validateFields(async (err, values) => {
         if (!err) {
           const formData = JSON.parse(JSON.stringify(values))
+          formData.type = 1
           await _this.LimitMObj.saveResource(formData)
           // 重新加载最新的数据
           await _this.getData()

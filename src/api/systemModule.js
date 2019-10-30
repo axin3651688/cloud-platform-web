@@ -8,7 +8,7 @@ const api = {
   GET_RESOURCES_CARD: '/upm/resource/get_resources_card',
   OPEN_RESOURCE: '/upm/resource/open_resource',
   GET_CARD_CONFIG: '/upm/resource/get_card_config',
-  DELETE_RESOURCE: '/upm/resource/bat_delete/',
+  BAT_DELETE_APP: '/upm/resource/bat_delete_app',
   SAVE_RESOURCE: '/upm/resource/save',
   UPDATE_RESOURCE: '/upm/resource/update',
   SEARCH_RESOURCES: '/upm/resource/search_resources',
@@ -17,7 +17,7 @@ const api = {
   POST_TP_APP: '/upm/tp_app', //保存第三方应用
   DELETE_TP_APP: '/upm/tp_app', //批量删除第三方应用
   PUT_TP_APP: '/upm/tp_app', //更新第三方应用
-  ENABLE_APP:'/upm/tp_app/enable_app'//是否禁用
+  ENABLE_APP: '/upm/tp_app/enable_app' //是否禁用
 }
 export default api
 
@@ -76,11 +76,11 @@ export function GET_CARD_CONFIG(parameter) {
  * @return  {} 
  * @update   by   
  */
-export function DELETE_RESOURCE(parameter) {
+export function BAT_DELETE_APP(parameter) {
   return axios2({
-    url: api.DELETE_RESOURCE + parameter.type,
+    url: api.BAT_DELETE_APP,
     method: 'delete',
-    data: parameter.ids
+    data: parameter
   })
 }
 
@@ -196,7 +196,7 @@ export function PUT_TP_APP(parameter) {
   })
 }
 
-export function ENABLE_APP(parameter){
+export function ENABLE_APP(parameter) {
   return axios2({
     url: api.ENABLE_APP,
     method: 'put',

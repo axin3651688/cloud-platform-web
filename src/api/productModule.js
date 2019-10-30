@@ -28,7 +28,7 @@ const api = {
   //模块管理相关接口
   // GET_RESOURCES_MODULE: '/upm/resource/get_resources_module',
   SAVE_RESOURCE: '/upm/resource/save',
-  DELETE_RESOURCE: '/upm/resource/bat_delete',
+  BAT_DELETE_MODEL: '/upm/resource/bat_delete_model',
   OPEN_RESOURCE: '/upm/resource/open_resource',
   UPDATE_RESOURCE: '/upm/resource/update',
   SEARCH_RESOURCES: '/upm/resource/search_resources',
@@ -39,10 +39,10 @@ const api = {
   FIND_USER_DETAIL_INFO: '/uc/user/find_user_detail_info',
   ADMIN_SAVE: '/uc/user/admin_save',
 
-
   //权限管理的相关接口（除了查询接口不一致，其余用模块的接口）
   GET_RESOURCES_TREE: '/upm/resource/get_resources_tree',
-  FIND_SYSTEM_MODULE: '/upm/resource/find_system_module'
+  FIND_SYSTEM_MODULE: '/upm/resource/find_system_module',
+  BAT_DELETE_AUTHORITY: '/upm/resource/bat_delete_authority',
 
 }
 
@@ -317,12 +317,11 @@ export function SAVE_RESOURCE(parameter) {
  * @return  {}
  * @update   by
  */
-export function DELETE_RESOURCE(parameter) {
+export function BAT_DELETE_MODEL(parameter) {
   return axios2({
-    // url: api.DELETE_RESOURCE + '/' + parameter.type,
-    url: api.DELETE_RESOURCE,
+    url: api.BAT_DELETE_MODEL,
     method: 'delete',
-    data: parameter.ids
+    data: parameter
   })
 }
 /**
@@ -390,6 +389,23 @@ export function FIND_SYSTEM_MODULE() {
   return axios2({
     url: api.FIND_SYSTEM_MODULE,
     method: 'get'
+  })
+}
+
+
+/** 
+ * @desc    : 批量删除权限
+ * @author  : zj
+ * @date  : 2019/10/30
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function BAT_DELETE_AUTHORITY(parameter) {
+  return axios2({
+    url: api.BAT_DELETE_AUTHORITY,
+    method: 'delete',
+    data: parameter
   })
 }
 

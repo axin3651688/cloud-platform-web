@@ -2,12 +2,13 @@
 import {
   GET_RESOURCES_MODULE,
   SAVE_RESOURCE,
-  DELETE_RESOURCE,
+  BAT_DELETE_MODEL,
   OPEN_RESOURCE,
   UPDATE_RESOURCE,
   SEARCH_RESOURCES,
   GET_RESOURCES_TREE,
   GET_RESOURCES_MENU,
+  BAT_DELETE_AUTHORITY,
   FIND_SYSTEM_MODULE //权限管理用
 } from '@/api/productModule'
 
@@ -80,18 +81,29 @@ class CnbiModuleManagement {
     return res
   }
   /** 
-   * @desc    : 删除应用
+   * @desc    : 删除模块
    * @author  : zj
    * @date  : 2019/10/23
    * @param   {} 
    * @return  {} 
    * @update   by   
    */
-  async deleteResource(ids) {
-    debugger
-    let res = await DELETE_RESOURCE({
-      ids: ids
-    });
+  async batDeleteModel(ids) {
+    let res = await BAT_DELETE_MODEL(ids);
+    return res
+  }
+
+  /** 
+  * @desc    : 批量删除权限
+  * @author  : zj
+  * @date  : 2019/10/30
+  * @param   {} 
+  * @return  {} 
+  * @update   by   
+  */
+  async batDeleteAuthority(ids) {
+    let res = await BAT_DELETE_AUTHORITY(ids);
+    return res
   }
   /** 
    * @desc    : 添加应用
