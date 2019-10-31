@@ -2,230 +2,272 @@
   <div>
 
     <div style="display: flex;justify-content: flex-end;background-color: #fff;padding: 16px 32px 0 32px">
-      <common-button style="float: none;"
-                     :name1="name1"
-                     :name2="name2"
-                     :disabled="selectedRowKeys.length>0?true:false"
-                     :title="'删除后可能会影响使用功能的使用，您确定继续？'"
-                     @addClick="addClick"
-                     @deleteClick="deleteClick">
+      <common-button
+        style="float: none;"
+        :name1="name1"
+        :name2="name2"
+        :disabled="selectedRowKeys.length>0?true:false"
+        :title="'删除后可能会影响使用功能的使用，您确定继续？'"
+        @addClick="addClick"
+        @deleteClick="deleteClick">
       </common-button>
     </div>
-    <a-table class="apply-table"
-             :pagination="pagination"
-             size="small"
-             :columns="columns"
-             :dataSource="dataSource"
-             :rowKey="setKey"
-             :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
-      <template slot="caozuo"
-                slot-scope="text, record">
+    <a-table
+      class="apply-table"
+      :pagination="pagination"
+      size="small"
+      :columns="columns"
+      :dataSource="dataSource"
+      :rowKey="setKey"
+      :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
+      <template
+        slot="caozuo"
+        slot-scope="text, record">
         <div style="display: flex;flex-direction: row;justify-content: space-around;align-items: center;">
-          <span @click="btnClickEdit(record)"
-                style="cursor: pointer">
+          <span
+            @click="btnClickEdit(record)"
+            style="cursor: pointer">
             <a-icon type="edit" />
           </span>
         </div>
       </template>
-      <template slot="zhuangtai"
-                slot-scope="text, record">
+      <template
+        slot="zhuangtai"
+        slot-scope="text, record">
         <!--1代表开-->
         <span style="margin-right: 4px">{{ record.enable==1?'启用':'禁用' }}</span>
-        <a-switch :defaultChecked="record.enable==1?true:false"
-                  @click="changeState(record)" />
+        <a-switch
+          :defaultChecked="record.enable==1?true:false"
+          @click="changeState(record)" />
       </template>
     </a-table>
-    <a-modal title="添加接入"
-             v-model="showAddApply"
-             :destroyOnClose="true">
+    <a-modal
+      title="添加接入"
+      v-model="showAddApply"
+      :destroyOnClose="true">
       <a-form :form="form">
         <a-row :gutter="24">
           <a-col :span="12">
             <a-form-item label="名称">
-              <a-input placeholder="请输入"
-                       v-decorator="['name',{ rules: [{ required: true, message: '请输入名称！' }] }]" />
+              <a-input
+                placeholder="请输入"
+                v-decorator="['name',{ rules: [{ required: true, message: '请输入名称！' }] }]" />
             </a-form-item>
           </a-col>
           <a-col :span="12">
             <a-form-item label="回调地址">
-              <a-input placeholder="请输入"
-                       v-decorator="['redirectUri',{ rules: [{ required: true, message: '请输入回调地址！' }] }]" />
+              <a-input
+                placeholder="请输入"
+                v-decorator="['redirectUri',{ rules: [{ required: true, message: '请输入回调地址！' }] }]" />
             </a-form-item>
           </a-col>
         </a-row>
         <a-row :gutter="24">
           <a-col :span="12">
             <a-form-item label="TOKEN">
-              <a-input placeholder="请输入"
-                       v-decorator="['appId',{ rules: [{ required: true, message: '请输入TOKEN！' }] }]" />
+              <a-input
+                placeholder="请输入"
+                v-decorator="['appId',{ rules: [{ required: true, message: '请输入TOKEN！' }] }]" />
             </a-form-item>
           </a-col>
           <a-col :span="12">
             <a-form-item label="APIKEY">
-              <a-input placeholder="请输入"
-                       v-decorator="['appKey',{ rules: [{ required: true, message: '请输入APIKEY！' }] }]" />
+              <a-input
+                placeholder="请输入"
+                v-decorator="['appKey',{ rules: [{ required: true, message: '请输入APIKEY！' }] }]" />
             </a-form-item>
           </a-col>
         </a-row>
         <a-row :gutter="24">
           <a-col :span="12">
             <a-row :gutter="24">
-              <a-form-item label="类型">
-                <a-select style="width: 200px;"
-                          @change="changeType"
-                          v-decorator="['type',{rules: [{ required: true, message: '请选择类型!' }],}]">
-                  <template slot="suffixIcon">
-                    <img style="width: 12px;"
-                         src="../../assets/icons/paixu.svg" />
-                  </template>
-                  <a-select-option :value="item.value"
-                                   v-for="(item ,index) in typeArr"
-                                   :key='index'>
-                    {{item.name}}
-                  </a-select-option>
-                </a-select>
-              </a-form-item>
+              <a-col :span="12">
+                <a-form-item label="类型">
+                  <a-select
+                    style="width: 200px;"
+                    @change="changeType"
+                    v-decorator="['type',{rules: [{ required: true, message: '请选择类型!' }],}]">
+                    <template slot="suffixIcon">
+                      <img
+                        style="width: 12px;"
+                        src="../../assets/icons/paixu.svg" />
+                    </template>
+                    <a-select-option
+                      :value="item.value"
+                      v-for="(item ,index) in typeArr"
+                      :key="index">
+                      {{ item.name }}
+                    </a-select-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
             </a-row>
             <a-row :gutter="24">
-              <a-form-item label="图标"
-                           class="form1-icon">
-                <a-upload name="file"
-                          :beforeUpload="beforeUpload"
-                          :showUploadList="false"
-                          listType="picture-card"
-                          class="avatar-uploader"
-                          :customRequest="customRequest"
-                          :disabled="disable"
-                          v-decorator="['icon']">
-                  <img v-if="imageUrl"
-                       :src="imageUrl"
-                       alt="avatar"
-                       v-decorator="['logoId']" />
-                  <div v-else>
-                    <a-icon :type="loading ? 'loading' : 'plus'" />
-                    <div class="ant-upload-text">点击上传</div>
-                  </div>
+              <a-col :span="24">
+                <a-form-item
+                  label="图标"
+                  class="form1-icon">
+                  <a-upload
+                    name="file"
+                    :beforeUpload="beforeUpload"
+                    :showUploadList="false"
+                    listType="picture-card"
+                    class="avatar-uploader"
+                    :customRequest="customRequest"
+                    :disabled="disable"
+                    v-decorator="['iconId']">
+                    <img
+                      v-if="fileList.url"
+                      :src="fileList.url"
+                      alt="avatar"
+                    />
+                    <div v-else>
+                      <a-icon :type="loading ? 'loading' : 'plus'" />
+                      <div class="ant-upload-text">点击上传</div>
+                    </div>
 
-                </a-upload>
-                <span>只能上传jpg/png文件， 且不超过500kb</span>
-              </a-form-item>
+                  </a-upload>
+                  <span>只能上传jpg/png文件， 且不超过500kb</span>
+                </a-form-item>
+              </a-col>
             </a-row>
           </a-col>
           <a-col :span="12">
             <a-form-item label="描述">
-              <a-textarea :rows="6"
-                          placeholder="请输入"
-                          v-decorator="['note',{ rules: [{ required: true, message: '请输入名称' }] }]" />
+              <a-textarea
+                :rows="6"
+                placeholder="请输入"
+                v-decorator="['note',{ rules: [{ required: true, message: '请输入名称' }] }]" />
             </a-form-item>
           </a-col>
         </a-row>
       </a-form>
       <template slot="footer">
         <div style="display: flex;margin-left: 32px">
-          <a-button key="back"
-                    @click="cancelAddApply"
-                    style="margin-right: 32px">取消</a-button>
-          <a-button key="submit"
-                    type="primary"
-                    @click="saveAddApply">
+          <a-button
+            key="back"
+            @click="cancelAddApply"
+            style="margin-right: 32px">取消</a-button>
+          <a-button
+            key="submit"
+            type="primary"
+            @click="saveAddApply">
             <a-icon type="cloud-upload" /> 保存
           </a-button>
         </div>
       </template>
     </a-modal>
-    <a-modal title="编辑应用"
-             v-model="showEditApply">
+    <a-modal
+      title="编辑应用"
+      v-model="showEditApply">
       <a-form :form="form1">
         <a-row :gutter="24">
           <a-col :span="12">
             <a-form-item label="名称">
-              <a-input placeholder="请输入"
-                       v-decorator="['name',{ rules: [{ required: true, message: '请输入名称！' }] }]" />
+              <a-input
+                placeholder="请输入"
+                v-decorator="['name',{ rules: [{ required: true, message: '请输入名称！' }] }]" />
             </a-form-item>
           </a-col>
           <a-col :span="12">
             <a-form-item label="回调地址">
-              <a-input placeholder="请输入"
-                       v-decorator="['redirectUri',{ rules: [{ required: true, message: '请输入回调地址！' }] }]" />
+              <a-input
+                placeholder="请输入"
+                v-decorator="['redirectUri',{ rules: [{ required: true, message: '请输入回调地址！' }] }]" />
             </a-form-item>
           </a-col>
         </a-row>
         <a-row :gutter="24">
           <a-col :span="12">
             <a-form-item label="TOKEN">
-              <a-input placeholder="请输入"
-                       v-decorator="['appId',{ rules: [{ required: true, message: '请输入TOKEN！' }] }]" />
+              <a-input
+                placeholder="请输入"
+                v-decorator="['appId',{ rules: [{ required: true, message: '请输入TOKEN！' }] }]" />
             </a-form-item>
           </a-col>
           <a-col :span="12">
             <a-form-item label="APIKEY">
-              <a-input placeholder="请输入"
-                       v-decorator="['appKey',{ rules: [{ required: true, message: '请输入APIKEY！' }] }]" />
+              <a-input
+                placeholder="请输入"
+                v-decorator="['appKey',{ rules: [{ required: true, message: '请输入APIKEY！' }] }]" />
             </a-form-item>
           </a-col>
         </a-row>
         <a-row :gutter="24">
           <a-col :span="12">
             <a-row :gutter="24">
-              <a-form-item label="类型">
+              <a-col :span="24">
+                <a-form-item label="类型">
 
-                <a-select style="width: 200px;"
-                          @change="changeType"
-                          v-decorator="['type',{rules: [{ required: true, message: '请选择类型!' }],}]">
-                  <template slot="suffixIcon">
-                    <img style="width: 12px;"
-                         src="../../assets/icons/paixu.svg" />
-                  </template>
-                  <a-select-option :value="item.value"
-                                   v-for="(item ,index) in typeArr"
-                                   :key='index'>
-                    {{item.name}}
-                  </a-select-option>
-                </a-select>
-              </a-form-item>
+                  <a-select
+                    style="width: 200px;"
+                    @change="changeType"
+                    v-decorator="['type',{rules: [{ required: true, message: '请选择类型!' }],}]">
+                    <template slot="suffixIcon">
+                      <img
+                        style="width: 12px;"
+                        src="../../assets/icons/paixu.svg" />
+                    </template>
+                    <a-select-option
+                      :value="item.value"
+                      v-for="(item ,index) in typeArr"
+                      :key="index">
+                      {{ item.name }}
+                    </a-select-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
             </a-row>
             <a-row :gutter="24">
-              <a-form-item label="图标"
-                           class="form1-icon">
-                <a-upload name="file"
-                          :beforeUpload="beforeUpload"
-                          :showUploadList="false"
-                          listType="picture-card"
-                          class="avatar-uploader"
-                          :customRequest="customRequest"
-                          :disabled="disable"
-                          v-decorator="['icon']">
-                  <img v-if="imageUrl"
-                       :src="imageUrl"
-                       alt="avatar"
-                       v-decorator="['logoId']" />
-                  <div v-else>
-                    <a-icon :type="loading ? 'loading' : 'plus'" />
-                    <div class="ant-upload-text">点击上传</div>
-                  </div>
+              <a-col :span="24">
+                <a-form-item
+                  label="图标"
+                  class="form1-icon">
+                  <a-upload
+                    name="file"
+                    :beforeUpload="beforeUpload"
+                    :showUploadList="false"
+                    listType="picture-card"
+                    class="avatar-uploader"
+                    :customRequest="customRequest"
+                    :disabled="disable"
+                    v-decorator="['iconId']">
+                    <img
+                      v-if="fileList.url"
+                      :src="fileList.url"
+                      alt="avatar"
+                    />
+                    <div v-else>
+                      <a-icon :type="loading ? 'loading' : 'plus'" />
+                      <div class="ant-upload-text">点击上传</div>
+                    </div>
 
-                </a-upload>
-                <span>只能上传jpg/png文件， 且不超过500kb</span>
-              </a-form-item>
+                  </a-upload>
+                  <span>只能上传jpg/png文件， 且不超过500kb</span>
+                </a-form-item>
+              </a-col>
             </a-row>
           </a-col>
           <a-col :span="12">
             <a-form-item label="描述">
-              <a-textarea :rows="6"
-                          placeholder="请输入"
-                          v-decorator="['note',{ rules: [{ required: true, message: '请输入名称！' }] }]" />
+              <a-textarea
+                :rows="6"
+                placeholder="请输入"
+                v-decorator="['note',{ rules: [{ required: true, message: '请输入名称！' }] }]" />
             </a-form-item>
           </a-col>
         </a-row>
       </a-form>
       <template slot="footer">
         <div style="display: flex;margin-left: 32px">
-          <a-button key="back"
-                    @click="cancelEditApply"
-                    style="margin-right: 32px">取消</a-button>
-          <a-button key="submit"
-                    type="primary"
-                    @click="saveEditApply">
+          <a-button
+            key="back"
+            @click="cancelEditApply"
+            style="margin-right: 32px">取消</a-button>
+          <a-button
+            key="submit"
+            type="primary"
+            @click="saveEditApply">
             <a-icon type="cloud-upload" /> 保存
           </a-button>
         </div>
@@ -239,9 +281,11 @@ import CnbiThirdPartyApply from '@/classes/lib/CnbiThirdPartyApply'
 import CommonButton from '@/components/system/common-button'
 import AFormItem from 'ant-design-vue/es/form/FormItem'
 import ATextarea from 'ant-design-vue/es/input/TextArea'
-
+import { uploadFile } from '@/api/common'
+import ACol from 'ant-design-vue/es/grid/Col'
 export default {
   components: {
+    ACol,
     ATextarea,
     AFormItem,
     CommonButton
@@ -311,7 +355,7 @@ export default {
           width: '10%',
           scopedSlots: { customRender: 'zhuangtai' }
         },
-        {          title: '操作',
+        { title: '操作',
           dataIndex: '',
           key: 'x',
           width: '10%',
@@ -327,6 +371,10 @@ export default {
       imageUrl: '',
       loading: false,
       editId: null, // 点击编辑的时候该行数据对应的id
+      fileList: {
+        url: '',
+        iconId: ''
+      } // 图片上传
     }
   },
   created () {
@@ -342,6 +390,8 @@ export default {
     },
     addClick () {
       this.showAddApply = true
+      this.fileList.url = ''
+      this.fileList.iconId = ''
     },
     // 删除按钮的点击事件
     async  deleteClick () {
@@ -373,12 +423,34 @@ export default {
     btnClickEdit (record) {
       this.showEditApply = true
       this.editId = record.id * 1
+      this.fileList.url = record.iconId
+      this.fileList.iconId = record.iconUrl
     },
-    beforeUpload () {
-
+    beforeUpload (file) {
+      const fileType = ['image/jpeg', 'image/png', 'image/svg+xml']
+      const isImg = fileType.indexOf(file.type) > -1
+      if (!isImg) {
+        this.$message.error('只能jpg、png、svg图片！')
+      }
+      const isLt500kb = file.size / 1024 < 500
+      if (!isLt500kb) {
+        this.$message.error('图片不能超过500kb！')
+      }
+      return isLt500kb && isImg
     },
-    customRequest () {
-
+    customRequest (data) {
+      const _this = this
+      const formData = new FormData()
+      formData.append('file', data.file)
+      formData.append('playtime', '0')
+      formData.append('bizId', 'cs')
+      formData.append('bizCode', 'cs')
+      uploadFile(formData).then(function (res) {
+        if (res.code === 200) {
+          _this.fileList.url = res.data.thumbUrl
+          _this.fileList.iconId = res.data.id
+        }
+      })
     },
     // 添加弹框的取消按钮事件
     cancelAddApply () {
@@ -389,14 +461,16 @@ export default {
       const _this = this
       _this.form.validateFields(async (err, values) => {
         if (!err) {
-          debugger
           const formData = JSON.parse(JSON.stringify(values))
+          if (formData.iconId) {
+            formData.iconId = _this.fileList.iconId
+          }
           // t添加成功，更新数据
           await _this.ThirdPartyApplyObj.postTpApp(formData)
           // 重新加载最新的数据
           await _this.getData()
+          _this.showAddApply = false
         }
-        _this.showAddApply = false
       })
     },
 
@@ -409,15 +483,17 @@ export default {
       const _this = this
       _this.form1.validateFields(async (err, values) => {
         if (!err) {
-          debugger
           const formData = JSON.parse(JSON.stringify(values))
           formData.id = this.editId
+          if (_this.fileList.iconId) {
+            formData.iconId = _this.fileList.iconId
+          }
           // 添加成功，更新数据
           await _this.ThirdPartyApplyObj.putTpApp(formData)
           // 重新加载最新的数据
           await _this.getData()
+          _this.showEditApply = false
         }
-        _this.showEditApply = false
       })
     }
   }

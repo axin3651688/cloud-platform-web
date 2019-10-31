@@ -54,8 +54,8 @@
       <template
         slot="caozuo"
         slot-scope="text, record">
-        <div style="display: flex;flex-direction: row;justify-content: space-around;align-items: center;">
-          <span @click="btnClickEdit(record)">
+        <div style="display: flex;flex-direction: row;align-items: center;">
+          <span @click="btnClickEdit(record)" style="margin: 0 4px;">
             <a-icon
               type="edit"
               style="margin-left: 4px;cursor: pointer;"
@@ -149,7 +149,7 @@
       :destroyOnClose="true"
       :width="350"
       title="添加应用">
-      <a-form :form="form1">
+      <a-form :form="form1" autocomplete="off">
         <a-form-item label="名称">
           <a-input
             placeholder="请输入"
@@ -243,7 +243,7 @@
               <div class="ant-upload-text">点击上传</div>
             </div>
           </a-upload>
-          <span>只能上传jpg/png文件， 且不超过500kb</span>
+          <span>只能上传jpg/png/svg文件， 且不超过500kb</span>
         </a-form-item>
       </a-form>
       <template slot="footer">
@@ -309,12 +309,12 @@ export default {
           title: '状态',
           dataIndex: 'enable',
           scopedSlots: { customRender: 'zhuangtai' },
-          width: '10%'
+          width: '20%'
         },
         { title: '操作',
           dataIndex: '',
           key: 'x',
-          width: '20%',
+          width: '10%',
           scopedSlots: { customRender: 'caozuo' }
         }
       ],
@@ -422,16 +422,16 @@ export default {
       this.active = record.id
     },
     beforeUpload (file) {
-      const fileType = ['image/jpeg', 'image/png', 'image/bmp']
+      const fileType = ['image/jpeg', 'image/png', 'image/svg+xml']
       const isImg = fileType.indexOf(file.type) > -1
       if (!isImg) {
-        this.$message.error('只能jpec、png、bmp图片！')
+        this.$message.error('只能jpg、png、svg图片！')
       }
-      const isLt5M = file.size / 1024 / 1024 < 5
-      if (!isLt5M) {
-        this.$message.error('图片不能超过5MB！')
+      const isLt500kb = file.size / 1024 < 500
+      if (!isLt500kb) {
+        this.$message.error('图片不能超过500kb！')
       }
-      return isLt5M && isImg
+      return isLt500kb && isImg
     },
     customRequest (data) {
       const _this = this
@@ -462,7 +462,6 @@ export default {
       _this.form1.validateFields(async (err, values) => {
         if (!err) {
           const formData = JSON.parse(JSON.stringify(values))
-          debugger
           if (formData.iconId) {
             formData.iconId = _this.fileList.iconId
           }
@@ -484,7 +483,7 @@ export default {
           // 添加成功，更新数据
           formData.id = this.editId
           formData.type = 3
-          if (formData.iconId) {
+          if (_this.fileList.iconId) {
             formData.iconId = _this.fileList.iconId
           }
           await _this.ApplyMObj.updateResource(formData)
