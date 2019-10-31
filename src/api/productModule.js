@@ -421,7 +421,7 @@ export function ENABLE_USER(parameter) {
   return axios2({
     url: api.ENABLE_USER,
     method: 'put',
-    data: parameter
+    params: parameter
   })
 }
 
