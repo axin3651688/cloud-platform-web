@@ -19,7 +19,28 @@
       :columns="columns"
       :dataSource="dataSource"
       :rowKey="setKey"
+      :rowClassName="setStyle"
       :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
+      <!--应用名称-->
+      <template
+        slot="thirdPartyName"
+        slot-scope="text, record">
+        <div style="display: flex;flex-direction: row;align-items: center">
+
+          <span v-if="record.iconFile" style="margin-right: 18px;">
+            <img :src="record.iconFile.url" style="width:64px;height: 64px;border-radius: 4px;background:rgba(112,55,55,1);opacity:1;"/>
+          </span>
+          <span v-else style="margin-right: 18px;">
+            <img
+              src=" https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3255435584,2194151633&fm=111&gp=0.jpg"
+              style="width:64px;height: 64px;border-radius: 4px;background:rgba(112,55,55,1);opacity:1;"/>
+          </span>
+          <span >
+            {{ text }}
+          </span>
+        </div>
+      </template>
+      <!--编辑-->
       <template
         slot="caozuo"
         slot-scope="text, record">
@@ -29,16 +50,18 @@
           </span>
         </div>
       </template>
+      <!--状态-->
       <template
         slot="zhuangtai"
         slot-scope="text, record">
         <!--1代表开-->
-        <span style="margin-right: 4px">{{ record.enable==1?'启用':'禁用' }}</span>
+        <span style="margin-right: 15px">{{ record.enable==1?'启用':'禁用' }}</span>
         <a-switch
           :defaultChecked="record.enable==1?true:false"
           @click="changeState(record)" />
       </template>
     </a-table>
+    <!--添加接入-->
     <a-modal
       title="添加接入"
       v-model="showAddApply"
@@ -82,8 +105,7 @@
               <a-col :span="12">
                 <a-form-item label="类型">
                   <a-select
-                    style="width: 200px;"
-                    @change="changeType"
+                    style="width: 224px;"
                     v-decorator="['type',{rules: [{ required: true, message: '请选择类型!' }],}]">
                     <template slot="suffixIcon">
                       <img src="@icons/sort.svg" />
@@ -139,11 +161,11 @@
         </a-row>
       </a-form>
       <template slot="footer">
-        <div style="display: flex;margin-left: 32px">
+        <div style="display: flex;padding: 0 8px;">
           <a-button
             key="back"
             @click="cancelAddApply"
-            style="margin-right: 32px">取消</a-button>
+            style="margin-right: 16px">取消</a-button>
           <a-button
             key="submit"
             type="primary"
@@ -196,8 +218,7 @@
                 <a-form-item label="类型">
 
                   <a-select
-                    style="width: 200px;"
-                    @change="changeType"
+                    style="width: 224px;"
                     v-decorator="['type',{rules: [{ required: true, message: '请选择类型!' }],}]">
                     <template slot="suffixIcon">
                       <img src="@icons/sort.svg" />
@@ -253,11 +274,11 @@
         </a-row>
       </a-form>
       <template slot="footer">
-        <div style="display: flex;margin-left: 32px">
+        <div style="display: flex;padding: 0 8px;">
           <a-button
             key="back"
             @click="cancelEditApply"
-            style="margin-right: 32px">取消</a-button>
+            style="margin-right: 16px">取消</a-button>
           <a-button
             key="submit"
             type="primary"
@@ -315,7 +336,8 @@ export default {
         {
           title: '名称',
           dataIndex: 'name',
-          width: '20%'
+          width: '20%',
+          scopedSlots: { customRender: 'thirdPartyName' }
         },
         {
           title: '描述',
@@ -413,6 +435,10 @@ export default {
     setKey (record) {
       return record.id
     },
+    // 设置每行class名称
+    setStyle () {
+      return 'table-row'
+    },
     // 编辑按钮的点击事件
     btnClickEdit (record) {
       this.showEditApply = true
@@ -503,5 +529,14 @@ export default {
 }
 .apply-table {
   background-color: #fff;
+}
+/deep/.table-row{
+  height: 87px;
+}
+/deep/.ant-table-thead>tr>th{
+  height: 47px;
+}
+form .ant-form-item{
+  margin-bottom: 0;
 }
 </style>
