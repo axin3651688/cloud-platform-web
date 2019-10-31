@@ -124,24 +124,6 @@
                   {{ item.name }}
                 </a-select-option>
 
-                <!-- 模块的选择框 -->
-                <!-- <template v-if="type == 3">
-                  <a-select-option v-for="(item,index) in cardArr"
-                                   :key="index"
-                                   :value="item.code">
-                    {{ item.name }}
-                  </a-select-option>
-                </template> -->
-                <!-- 功能的选择框 -->
-                <!-- <template v-else-if="type == 4">
-                  <a-select-option v-for="(item,index) in moduleArr"
-                                   :key="index"
-                                   v-if="item.enable==1"
-                                   :value="item.code">
-                    {{ item.name }}
-                  </a-select-option>
-                </template> -->
-
               </a-select>
             </a-form-item>
           </a-col>
@@ -216,6 +198,7 @@
           class="row2">
           <a-col :span="12">
             <a-form-item label="所属应用">
+<<<<<<< HEAD
               <a-select
                 v-decorator="[
                   'type',
@@ -223,14 +206,21 @@
                 ]"
                 placeholder="请选择"
                 @change="selectApply">
+=======
+              <a-select v-decorator="[
+                  'serviceName',
+                  { rules: [{ required: true, message: '请选择所属应用' }],initialValue:editModuleInfo.serviceName },
+                ]"
+                        placeholder="请选择所属应用"
+                        @change="selectApply">
+>>>>>>> fa785c5f83cf23e3e65bdc7df6c9138fce310fb4
                 <template slot="suffixIcon">
                   <img src="@icons/sort.svg" />
                 </template>
-                <a-select-option value="3">
-                  模块
-                </a-select-option>
-                <a-select-option value="4">
-                  功能
+                <a-select-option v-for="(item,index) in cardArr"
+                                 :key="index"
+                                 :value="item.serviceId">
+                  {{ item.name }}
                 </a-select-option>
               </a-select>
             </a-form-item>
@@ -249,6 +239,7 @@
                 <template>
                   <a-select-option value="0">无 </a-select-option>
                 </template>
+<<<<<<< HEAD
                 <!-- 模块的选择框 -->
                 <template v-if="type == 3">
                   <a-select-option
@@ -268,6 +259,13 @@
                     {{ item.name }}
                   </a-select-option>
                 </template>
+=======
+                <a-select-option v-for="(item,index) in byServiceIdModuleArr"
+                                 :key="index"
+                                 :value="item.code">
+                  {{ item.name }}
+                </a-select-option>
+>>>>>>> fa785c5f83cf23e3e65bdc7df6c9138fce310fb4
               </a-select>
             </a-form-item>
           </a-col>
@@ -329,9 +327,15 @@ export default {
       },
       editId: null, // 点击编辑的时候该行数据对应的id
       editModuleInfo: null, // 要编辑的模块信息
+<<<<<<< HEAD
       serviceId: '', // 选择的所属应用对应的编码
 
       byServiceIdModuleArr: [], // 通过选择的应用查询出来的模块数组
+=======
+      serviceId: '',//选择的所属应用对应的编码
+      selectApplyCode: null,//选择的所属应用对应的code
+      byServiceIdModuleArr: [],//通过选择的应用查询出来的模块数组
+>>>>>>> fa785c5f83cf23e3e65bdc7df6c9138fce310fb4
       LicenseMObj: null,
       cardArr: [], // 应用（功能）数组
       moduleArr: [], // 模块数组
@@ -433,10 +437,19 @@ export default {
 
     // 根据选择的应用 查询对应的上级目录 列表
     async selectApply (serviceName) {
-      debugger
       this.serviceId = serviceName
+<<<<<<< HEAD
       // 查询应用下的模块
       const data = await this.ModuleMObj.findCardResources(this.serviceId)
+=======
+      //根据应用的serviceId，获取应用的code 
+      debugger
+      let record = this.cardArr.filter(item => item.serviceId == this.serviceId)[0]
+      this.selectApplyCode = record.code
+      console.log(this.selectApplyCode, 'this.selectApplyCode11111111111')
+      //查询应用下的模块
+      const data = await this.ModuleMObj.findCardResources(this.serviceId);
+>>>>>>> fa785c5f83cf23e3e65bdc7df6c9138fce310fb4
       this.byServiceIdModuleArr = data
       console.log(data, '黄河入海流')
     },
@@ -450,7 +463,6 @@ export default {
     // 加载页面 获取数据
     async getData () {
       const data = await this.ModuleMObj.getResourcesModule()
-      console.log(data, '色字头上一把刀')
       this.dataSource = data
 
       // 拷贝数据
@@ -521,8 +533,16 @@ export default {
     async saveModule () {
       const _this = this
       _this.form.validateFields(async (err, values) => {
+        debugger
         if (!err) {
           const formData = JSON.parse(JSON.stringify(values))
+          if (formData.pid == '0') {
+            formData.pid = this.selectApplyCode
+            // console.log(formData.pid, '--formData.pid')
+            // console.log(this.selectApplyCode, 'this.selectApplyCode2122222222222')
+          }
+          // console.log(formData, 'formData------')
+          formData['type'] = 4
           await _this.ModuleMObj.saveResource(formData)
 
           // 重新加载最新的数据
@@ -546,8 +566,11 @@ export default {
       _this.form.validateFields(async (err, values) => {
         if (!err) {
           const formData = JSON.parse(JSON.stringify(values))
+          if (formData.pid == '0') {
+            formData.pid = this.selectApplyCode
+          }
           formData.id = this.editId
-          // formData.type = 3
+          formData.type = 4
           await _this.ModuleMObj.updateResource(formData)
           // 重新加载最新的数据
           await _this.getData()
