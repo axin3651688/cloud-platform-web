@@ -7,9 +7,7 @@
       :defaultValue="defaultValue"
     >
       <template slot="suffixIcon">
-        <img
-          style="width: 12px;"
-          src="../../assets/icons/paixu.svg" />
+        <img src="@icons/sort.svg" />
       </template>
       <a-select-option
         :value="item.key"

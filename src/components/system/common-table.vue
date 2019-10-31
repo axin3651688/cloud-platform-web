@@ -28,7 +28,7 @@
       <span
         slot="action"
         slot-scope="text,record"
-        @click="btnclick(record )">详情</span>
+        @click="btnclick(record )"><img style="cursor: pointer;" src="@icons/xiangqing.svg" title="详情"></span>
       <!--<p slot="expandedRowRender" slot-scope="record" style="margin: 0">{{ record.description }}</p>-->
 
       <!-- <template slot="name" slot-scope="text, record">
@@ -94,7 +94,7 @@ export default {
       this.$router.push({ name: 'TenantDetail', query: { id: key.id } })
       // this.$router.push({ name: 'TenantDetail' })
     },
-    //清楚勾选的id
+    // 清楚勾选的id
     clearSelectedKey () {
       this.selectedRowKeys = []
     }

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 20 20">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #9ea0a5;
+      }
+
+      .cls-2 {
+        clip-path: url(#clip-path);
+      }
+    </style>
+    <clipPath id="clip-path">
+      <rect id="矩形_227" data-name="矩形 227" class="cls-1" width="20" height="20" transform="translate(24 351)"/>
+    </clipPath>
+  </defs>
+  <g id="蒙版组_9" data-name="蒙版组 9" class="cls-2" transform="translate(-24 -351)">
+    <path id="反馈_1_" data-name="反馈(1)" class="cls-1" d="M7,0a7,7,0,1,0,7,7A7,7,0,0,0,7,0ZM8.337,10.18c-.654.973-1.32,1.723-2.44,1.723-.764-.123-1.078-.666-.912-1.219L6.425,5.957a.223.223,0,0,0-.13-.277c-.107-.037-.315.1-.5.3L4.929,7.013a4.724,4.724,0,0,1,0-.579A3.718,3.718,0,0,1,7.385,4.694a.972.972,0,0,1,.9,1.222l-1.451,4.75a.221.221,0,0,0,.136.25c.107.037.331-.1.511-.3l.87-1.038a4.662,4.662,0,0,1-.015.6ZM8.084,4.063a.964.964,0,0,1-1-.983,1,1,0,0,1,2,0,.964.964,0,0,1-1,.983Z" transform="translate(24 351)"/>
+  </g>
+</svg>

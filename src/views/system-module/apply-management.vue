@@ -56,15 +56,10 @@
         slot-scope="text, record">
         <div style="display: flex;flex-direction: row;align-items: center;">
           <span @click="btnClickEdit(record)" style="margin: 0 4px;">
-            <a-icon
-              type="edit"
-              style="margin-left: 4px;cursor: pointer;"
-              title="编辑" /></span>
+            <img style="margin-left: 16px;cursor: pointer;" src="@icons/Icon.svg" title="编辑">
+          </span>
           <span @click="btnClick(record)">
-            <a-icon
-              type="setting"
-              style="margin-left: 4px;cursor: pointer;"
-              title="服务配置" />
+            <img style="margin-left: 16px;cursor: pointer;" src="@icons/peizhi.svg" title="服务配置">
           </span>
         </div>
 
@@ -211,7 +206,7 @@
             placeholder="请输入"
             v-decorator="[
               'name',
-              { rules: [{ required: true, message: '请输入牌照名称！' }],initialValue: editApply.name},
+              { rules: [{ required: true, message: '请输入名称！' }],initialValue: editApply.name},
             ]" />
         </a-form-item>
         <a-form-item label="描述">

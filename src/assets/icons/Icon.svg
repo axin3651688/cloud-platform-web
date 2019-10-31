@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #cecfd2;
+      }
+    </style>
+  </defs>
+  <path id="Icon" class="cls-1" d="M865,229.645,860.364,225l-10.456,9.688v5.417h5.364Zm-4.529-2,1.728,1.718-1.346,1.424-1.8-1.794Zm-8.6,10.5v-2.633l5.6-5.17,1.955,2.15-4.994,5.653ZM845,245h19.635v-1.958H845Z" transform="translate(-845 -225)"/>
+</svg>

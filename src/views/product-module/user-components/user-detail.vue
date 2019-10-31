@@ -15,8 +15,7 @@
                       placeholder="租户的状态"
                       @change="handleChange">
               <template slot="suffixIcon">
-                <img style="width: 12px;"
-                     src="../../../assets/icons/paixu.svg" />
+                <img src="@icons/sort.svg" />
               </template>
               <a-select-option value="male">
                 male

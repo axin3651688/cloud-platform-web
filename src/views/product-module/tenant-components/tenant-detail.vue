@@ -19,7 +19,7 @@
               <p>编号：<span>{{ info.code }}</span></p>
             </div>
             <div style="margin-left: 100px;">
-              <p>拥有者：<span>{{ info.ownerName }}</span></p>
+              <p>公司名称：<span>{{ info.tenancyName }}</span></p>
             </div>
           </div>
         </div>
@@ -41,7 +41,7 @@
       v-if="tabKey==1">
       <div style="display: flex;justify-content: space-between;padding: 10px 30px">
         <span>
-          <img src="../../../assets/icons/wendang.svg">
+          <img src="@icons/jbxx.svg">
           基本信息
         </span>
         <a-button
@@ -82,7 +82,7 @@
               </a-form-item>
             </a-col>
             <a-col :span="12">
-              <a-form-item label="所属人">
+              <a-form-item label="拥有者">
                 {{ info.ownerName }}
               </a-form-item>
               <a-form-item label="租户类型">
@@ -159,9 +159,7 @@
                 default-value="1"
                 v-decorator="['licenseId',{rules: [{ required: true, message: '请选择所属牌照!' }],initialValue:info.licenseId}]">
                 <template slot="suffixIcon">
-                  <img
-                    style="width: 12px;"
-                    src="../../../assets/icons/paixu.svg" />
+                  <img src="@icons/sort.svg" />
                 </template>
                 <a-select-option
                   v-for="(item,index) in LicenseList"
@@ -214,9 +212,7 @@
                 default-value="1"
                 v-decorator="['type',{rules: [{ required: true, message: '请选择租户类型!' }],initialValue:info.type}]">
                 <template slot="suffixIcon">
-                  <img
-                    style="width: 12px;"
-                    src="../../../assets/icons/paixu.svg" />
+                  <img src="@icons/sort.svg" />
                 </template>
                 <a-select-option value="1">
                   公共部署
@@ -230,13 +226,11 @@
               </a-select>
             </a-form-item>
             <a-form-item
-              label="所属人："
+              label="拥有者："
               class="item2">
               <a-select v-decorator="['ownerId',{rules: [{ required: true, message: '请选择所属人!' }],initialValue:info.ownerId}]">
                 <template slot="suffixIcon">
-                  <img
-                    style="width: 12px;"
-                    src="../../../assets/icons/paixu.svg" />
+                  <img src="@icons/sort.svg" />
                 </template>
                 <a-select-option
                   v-for="(item,index) in owners"

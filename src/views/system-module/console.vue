@@ -1,62 +1,75 @@
 <template>
   <div>
-    <a-row :gutter="24"
-           style="background-color: white;padding: 10px 0">
-      <a-col :span="24"
-             style="border-bottom: 1px solid #EAEDF3">
+    <a-row
+      :gutter="24"
+      style="background-color: white;padding: 10px 0">
+      <a-col
+        :span="24"
+        style="border-bottom: 1px solid #EAEDF3">
         <div style="margin-left: 38px;margin-bottom: 10px;">
-          <a-icon type="edit" /><span style="margin-left: 21px;">服务地址</span>
+          <div class="icon-text">
+            <img src="@icons/dingwei.svg" alt=""><span style="margin-left: 16px;">服务地址</span>
+          </div>
         </div>
       </a-col>
-      <a-col :span="24"
-             style="margin-top: 10px;">
+      <a-col
+        :span="24"
+        style="margin-top: 10px;">
         <a-row :gutter="24">
-          <a-col :span="6"
-                 style="display: flex;flex-direction: column;padding-left: 38px;">
+          <a-col
+            :span="6"
+            style="display: flex;flex-direction: column;padding-left: 38px;">
             <span class="header-name">用户数</span>
-            <span class="header-value">{{totalUserCount}}</span>
+            <span class="header-value">{{ totalUserCount }}<img class="icon-console" src="@icons/Tag.svg" alt=""></span>
           </a-col>
-          <a-col :span="6"
-                 style="display: flex;flex-direction: column">
+          <a-col
+            :span="6"
+            style="display: flex;flex-direction: column">
             <span class="header-name">租户数</span>
-            <span class="header-value">{{totalTenancyCount}}</span>
+            <span class="header-value">{{ totalTenancyCount }}<img class="icon-console" src="@icons/Tag(1).svg" alt=""></span>
           </a-col>
-          <a-col :span="6"
-                 style="display: flex;flex-direction: column">
+          <a-col
+            :span="6"
+            style="display: flex;flex-direction: column">
             <span class="header-name">即将到期</span>
-            <span class="header-value">{{tenancyExpireCount}}</span>
+            <span class="header-value">{{ tenancyExpireCount }}<img class="icon-console" src="@icons/Tag(2).svg" alt=""></span>
           </a-col>
-          <a-col :span="6"
-                 style="display: flex;flex-direction: column">
-            <span class="header-name">商机数</span>
-            <span class="header-value">0</span>
+          <a-col
+            :span="6"
+            style="display: flex;flex-direction: column">
+            <span class="header-name">商机数 </span>
+            <span class="header-value">0 <img class="icon-console" src="@icons/Tag(3).svg" alt=""></span>
           </a-col>
         </a-row>
       </a-col>
     </a-row>
-    <a-row :gutter="24"
-           style="margin-top: 24px;">
-      <a-col :span="6"
-             style="background-color: white">
+    <a-row
+      :gutter="24"
+      style="margin-top: 24px;">
+      <a-col
+        :span="6"
+        style="background-color: white">
         <a-row :gutter="24">
-          <a-col :span="24"
-                 style="padding: 10px 38px;border-bottom: 1px solid #EAEDF3">
-            <a-icon type="edit" /><span style="margin-left: 21px;">商机数据</span>
+          <a-col
+            :span="24"
+            style="padding: 10px 38px;border-bottom: 1px solid #EAEDF3">
+            <div class="icon-text">
+              <img src="@icons/info-logo.svg" alt=""/>
+              <span style="margin-left: 16px;">商机数据</span>
+            </div>
           </a-col>
         </a-row>
-        <a-row :gutter="24"
-               style="border-bottom: 1px solid #EAEDF3;padding-bottom: 10px;">
+        <a-row
+          :gutter="24"
+          style="border-bottom: 1px solid #EAEDF3;padding-bottom: 10px;">
           <a-col :span="24">
             <div id="myChart"></div>
             <div style="display: flex;justify-content: space-between;padding: 0 28px;">
-              <span>
-                <a-icon type="edit"
-                        style="margin-right: 21px;" />未处理商机
+              <span class="icon-text">
+                <img src="@icons/info-logo.svg" alt="" style="margin-right: 16px;">未处理商机
               </span>
-              <span style="color:#1665D8">
-                查看全部
-                <a-icon type="edit"
-                        style="margin-left: 21px;" />
+              <span style="color:#1665D8;cursor: pointer;">
+                查看全部  →
               </span>
             </div>
           </a-col>
@@ -64,13 +77,17 @@
         <business :businessList="businessList"></business>
       </a-col>
 
-      <a-col :span="10"
-             style="margin: 0px 12px 24px 12px">
+      <a-col
+        :span="10"
+        style="margin: 0px 12px 24px 12px">
         <div style="background-color: white">
           <a-row :gutter="24">
-            <a-col :span="24"
-                   style="padding: 10px 38px;border-bottom: 1px solid #EAEDF3">
-              <a-icon type="edit" /><span style="margin-left: 21px;">租户数据</span>
+            <a-col
+              :span="24"
+              style="padding: 10px 38px;border-bottom: 1px solid #EAEDF3">
+              <div class="icon-text">
+                <img src="@icons/info-logo.svg" alt=""><span style="margin-left: 16px;">租户数据</span>
+              </div>
             </a-col>
           </a-row>
           <a-row :gutter="24">
@@ -83,31 +100,38 @@
           <a-row :gutter="24">
             <a-col :span="24">
               <a-row :gutter="24">
-                <a-col :span="24"
-                       style="padding: 10px 38px;border-bottom: 1px solid #EAEDF3">
-                  <a-icon type="edit" /><span style="margin-left: 21px;">系统数据</span>
+                <a-col
+                  :span="24"
+                  style="padding: 10px 38px;border-bottom: 1px solid #EAEDF3">
+                  <div class="icon-text">
+                    <img src="@icons/info-logo.svg" alt=""><span style="margin-left: 16px;">系统数据</span>
+                  </div>
                 </a-col>
               </a-row>
-              <a-row :gutter="24"
-                     style="padding: 20px;">
-                <a-col :span="8"
-                       style="display: flex;flex-direction: row;align-items: center">
+              <a-row
+                :gutter="24"
+                style="padding: 20px;">
+                <a-col
+                  :span="8"
+                  style="display: flex;flex-direction: row;align-items: center">
                   <div style="display: flex;flex-direction: column">
                     <span>CPU占用</span>
                     <span>23%</span>
                   </div>
                   <div id="myChart3"></div>
                 </a-col>
-                <a-col :span="8"
-                       style="display: flex;flex-direction: row;align-items: center">
+                <a-col
+                  :span="8"
+                  style="display: flex;flex-direction: row;align-items: center">
                   <div style="display: flex;flex-direction: column">
                     <span>主进程占用</span>
                     <span>56%</span>
                   </div>
                   <div id="myChart4"></div>
                 </a-col>
-                <a-col :span="8"
-                       style="display: flex;flex-direction: row;align-items: center">
+                <a-col
+                  :span="8"
+                  style="display: flex;flex-direction: row;align-items: center">
                   <div style="display: flex;flex-direction: column">
                     <span>内存占用</span>
                     <span>93%</span>
@@ -120,21 +144,24 @@
         </div>
       </a-col>
 
-      <a-col :span="6"
-             style="background-color: #fff">
+      <a-col
+        :span="6"
+        style="background-color: #fff">
         <a-row :gutter="24">
-          <a-col :span="24"
-                 style="padding: 10px 38px;border-bottom: 1px solid #EAEDF3">
-            <a-icon type="edit" /><span style="margin-left: 21px;">未初始化租户</span>
+          <a-col
+            :span="24"
+            style="padding: 10px 38px;border-bottom: 1px solid #EAEDF3">
+            <div class="icon-text">
+              <img src="@icons/info-logo.svg" alt=""><span style="margin-left: 16px;">未初始化租户</span>
+            </div>
           </a-col>
         </a-row>
         <business :businessList="businessList"></business>
         <a-row :gutter="24">
-          <a-col :span="24"
-                 style="padding: 10px 38px;display: flex;justify-content: flex-end;">
-            <span>查看更多</span>
-            <a-icon type="
-            edit" />
+          <a-col
+            :span="24"
+            style="padding: 10px 38px;display: flex;justify-content: flex-end;">
+            <span>查看更多  →</span>
           </a-col>
         </a-row>
       </a-col>
@@ -156,13 +183,13 @@ require('echarts/lib/component/legend')
 require('echarts/lib/component/title')
 export default {
   components: { Business, ACol },
-  name: "Console",
+  name: 'Console',
   data () {
     return {
-      totalUserCount: null,//用户总数
-      totalTenancyCount: null,//租户总数
-      tenancyExpireCount: null,//租户即将到期数
-      deployTypeCount: null,//租户部署情况
+      totalUserCount: null, // 用户总数
+      totalTenancyCount: null, // 租户总数
+      tenancyExpireCount: null, // 租户即将到期数
+      deployTypeCount: null, // 租户部署情况
       ConsoleObj: null,
       barData: [50, 200, 500],
       businessList: [
@@ -235,26 +262,26 @@ export default {
     this.getPie() // 环形图
   },
   methods: {
-    //进入界面 加载数据
+    // 进入界面 加载数据
     async getData () {
-      //查询用户总数
-      this.totalUserCount = await this.ConsoleObj.findUserCount();
+      // 查询用户总数
+      this.totalUserCount = await this.ConsoleObj.findUserCount()
       console.log(this.totalUserCount, '用户总数')
-      //查询租户总数
-      this.totalTenancyCount = await this.ConsoleObj.findTenancyCount();
+      // 查询租户总数
+      this.totalTenancyCount = await this.ConsoleObj.findTenancyCount()
       console.log(this.totalTenancyCount, '租户总数')
-      //查询租户即将到期数
-      this.tenancyExpireCount = await this.ConsoleObj.findTenancyExpireCount();
+      // 查询租户即将到期数
+      this.tenancyExpireCount = await this.ConsoleObj.findTenancyExpireCount()
       console.log(this.tenancyExpireCount, '租户即将到期数')
-      //查询租户部署情况
-      this.deployTypeCount = await this.ConsoleObj.findDeployTypeCount();
-      let datas = this.deployTypeCount.data;
-      let arr = [];
-      let legendDatas = []
+      // 查询租户部署情况
+      this.deployTypeCount = await this.ConsoleObj.findDeployTypeCount()
+      const datas = this.deployTypeCount.data
+      const arr = []
+      const legendDatas = []
       datas.forEach(item => {
-        let obj = {};
-        obj['value'] = item.num;
-        obj['name'] = item.name;
+        const obj = {}
+        obj['value'] = item.num
+        obj['name'] = item.name
         arr.push(obj)
         legendDatas.push(item.name)
       })
@@ -412,6 +439,8 @@ export default {
   font-size: 24px;
   font-weight: 400;
   color: #3e3f42;
+  align-items: center;
+  display: flex;
 }
 #myChart {
   width: 80%;
@@ -437,4 +466,13 @@ export default {
   width: 70%;
   height: 100px;
 }
+  .icon-console{
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+  }
+  .icon-text{
+    display: flex;
+    align-items: center;
+  }
 </style>
