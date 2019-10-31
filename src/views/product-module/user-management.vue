@@ -3,41 +3,48 @@
     <!--头部-->
     <div style="display: flex;flex-direction: row;justify-content: space-between;background-color: #fff;padding: 16px 32px 0 32px">
       <div style="display: flex;flex-direction: row">
-        <common-drop-down :result="result"
-                          :defaultValue="'nickName'"
-                          @selectCell="selectCell"
-                          class="com-drop-down">
+        <common-drop-down
+          :result="result"
+          :defaultValue="'nickName'"
+          @selectCell="selectCell"
+          class="com-drop-down">
         </common-drop-down>
         <!--搜索框-->
-        <common-search :placeholder="version"
-                       style="width: 220px"
-                       @inputHandler="inputHandler"></common-search>
+        <common-search
+          :placeholder="version"
+          style="width: 220px"
+          @inputHandler="inputHandler"></common-search>
       </div>
-      <common-button @addClick="addClick"
-                     @deleteClick="deleteClick"
-                     :title="'删除操作风险过大，暂不支持删除!'"
-                     :disabled="selectedRowKeys.length>0?true:false"
-                     :name1="name1"
-                     :name2="name2">
+      <common-button
+        @addClick="addClick"
+        @deleteClick="deleteClick"
+        :title="'删除操作风险过大，暂不支持删除!'"
+        :disabled="selectedRowKeys.length>0?true:false"
+        :name1="name1"
+        :name2="name2">
       </common-button>
     </div>
     <div>
       <!--表格-->
-      <a-table class="user-table"
-               :pagination="pagination"
-               size="small"
-               :columns="columns"
-               :dataSource="dataSource"
-               :rowKey="setKey"
-               :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
-        <template slot="zhuangtai"
-                  slot-scope="text, record">
+      <a-table
+        class="user-table"
+        :pagination="pagination"
+        size="small"
+        :columns="columns"
+        :dataSource="dataSource"
+        :rowKey="setKey"
+        :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
+        <template
+          slot="zhuangtai"
+          slot-scope="text, record">
           <!--1代表开-->
-          <a-switch :defaultChecked="record.enable==1?true:false"
-                    @change="updataState(record)" />
+          <a-switch
+            :defaultChecked="record.enable==1?true:false"
+            @change="updataState(record)" />
         </template>
-        <template slot="xiangqing"
-                  slot-scope="text, record">
+        <template
+          slot="xiangqing"
+          slot-scope="text, record">
           <!--1代表开-->
           <span @click="btnClick(record)">
             <img style="margin-left: 16px;cursor: pointer;" src="@icons/xiangqing.svg" title="详情">
@@ -45,29 +52,34 @@
         </template>
       </a-table>
     </div>
-    <a-modal v-model="showAddUser"
-             title="添加用户"
-             :destroyOnClose="true">
-      <a-form :form="form"
-              class="addUser-table">
+    <a-modal
+      v-model="showAddUser"
+      title="添加用户"
+      :destroyOnClose="true">
+      <a-form
+        :form="form"
+        class="addUser-table">
         <a-form-item label="昵称">
-          <a-input placeholder="请输入昵称"
-                   v-decorator="[
+          <a-input
+            placeholder="请输入昵称"
+            v-decorator="[
               'nickname',
               { rules: [{ required: true, message: '请输入昵称！' }] },
             ]" />
         </a-form-item>
-        <a-form-item label="性别"
-                     class="table-sex">
-          <a-radio-group name="sex "
-                         :defaultValue="54"
-                         v-decorator="['sex']">
+        <a-form-item
+          label="性别"
+          class="table-sex">
+          <a-radio-group
+            name="sex "
+            v-decorator="['sex',{ initialValue: 54 }]">
             <a-radio :value="54">男</a-radio>
             <a-radio :value="55">女</a-radio>
           </a-radio-group>
         </a-form-item>
         <a-form-item label="密码">
-          <a-input v-decorator="['password',
+          <a-input
+            v-decorator="['password',
                           { rules: [ { required: true,
                                        message: '请输入密码!',
                                      },
@@ -76,10 +88,11 @@
                                      },
                           ],},
             ]"
-                   type="password" />
+            type="password" />
         </a-form-item>
         <a-form-item label="再次输入密码">
-          <a-input v-decorator="['confirm',
+          <a-input
+            v-decorator="['confirm',
                           {rules: [ {
                                       required: true,
                                       message: '请确认你的密码!',
@@ -89,25 +102,30 @@
                                     },
                           ],},
             ]"
-                   type="password"
-                   @blur="handleConfirmBlur" />
+            type="password"
+            @blur="handleConfirmBlur" />
         </a-form-item>
         <a-form-item label="邮箱">
-          <a-input placeholder="请输入"
-                   v-decorator="['email',{rules:[{pattern:/^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,message: '请输入正确的邮箱'}]}]" />
+          <a-input
+            placeholder="请输入"
+            v-decorator="['email',{rules:[{pattern:/^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,message: '请输入正确的邮箱'}]}]" />
         </a-form-item>
         <a-form-item label="手机号">
-          <a-input placeholder="请输入"
-                   v-decorator="['phone',{rules: [{ required: true,pattern:/^[1][3,4,5,7,6,8][0-9]{9}$/, message: '请输入正确的手机号' }]}]" />
+          <a-input
+            placeholder="请输入"
+            v-decorator="['phone',{rules: [{ required: true,pattern:/^[1][3,4,5,7,6,8][0-9]{9}$/, message: '请输入正确的手机号' }]}]" />
         </a-form-item>
       </a-form>
-      <template slot="footer"
-                style="display: flex">
-        <a-button key="back"
-                  @click="cancelAddUser">取消</a-button>
-        <a-button key="submit"
-                  type="primary"
-                  @click="saveAddUser">
+      <template
+        slot="footer"
+        style="display: flex">
+        <a-button
+          key="back"
+          @click="cancelAddUser">取消</a-button>
+        <a-button
+          key="submit"
+          type="primary"
+          @click="saveAddUser">
           <a-icon type="cloud-upload" /> 保存
         </a-button>
       </template>
@@ -163,19 +181,19 @@ export default {
         }
       ],
       columns: [
-        {          title: '用户姓名',
+        { title: '用户姓名',
           dataIndex: 'nickName'
         },
-        {          title: '用户名',
+        { title: '用户名',
           dataIndex: 'username'
         },
-        {          title: '手机号',
+        { title: '手机号',
           dataIndex: 'phone'
         },
-        {          title: '邮箱',
+        { title: '邮箱',
           dataIndex: 'email'
         },
-        {          title: '创建时间',
+        { title: '创建时间',
           dataIndex: 'createTime',
           customRender (text, record, index) {
             var oDate = new Date(text * 1)
@@ -193,7 +211,7 @@ export default {
             return text
           }
         },
-        {          title: '更新时间',
+        { title: '更新时间',
           dataIndex: 'updateTime',
           customRender (text, record, index) {
             var oDate = new Date(text * 1)
@@ -211,11 +229,11 @@ export default {
             return text
           }
         },
-        {          title: '状态',
+        { title: '状态',
           dataIndex: 'enable',
           scopedSlots: { customRender: 'zhuangtai' }
         },
-        {          title: '操作',
+        { title: '操作',
           dataIndex: 'name7',
           scopedSlots: { customRender: 'xiangqing' }
         }

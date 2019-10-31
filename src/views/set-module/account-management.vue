@@ -5,7 +5,7 @@
       <div style="display: flex;flex-direction: row">
         <common-drop-down
           :result="result"
-          :defaultValue="'0'"
+          :defaultValue="'trueName'"
           @selectCell="selectCell"
           class="com-drop-down">
         </common-drop-down>
@@ -181,10 +181,6 @@ export default {
       name1: '添加',
       name2: '删除',
       result: [
-        {
-          name: '全部',
-          key: '0'
-        },
         {
           name: '名称',
           key: 'trueName'
