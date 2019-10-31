@@ -145,7 +145,7 @@
             <a-col :span="12">
               <a-form-item label="联系电话">
                 <a-input
-                  v-decorator="['tel',{rules: [{ required: true, message: '电话不能为空!' }],}]"
+                  v-decorator="['tel',{rules: [{ required: true,pattern: /^[0-9]*$/, message: '电话不能为空且为数字!' }],}]"
                   style="width: 100%">
                   <a-select
                     slot="addonBefore"

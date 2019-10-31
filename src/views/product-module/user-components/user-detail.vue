@@ -10,8 +10,8 @@
             <img :src="info.avatarUrl" />
           </div>
           <div style="padding-left: 32px;margin-top: 20px;">
-            <h2>租户名称</h2>
-            <a-select style="width: 120px;"
+            <!-- <h2>租户名称</h2> -->
+            <!-- <a-select style="width: 120px;"
                       placeholder="租户的状态"
                       @change="handleChange">
               <template slot="suffixIcon">
@@ -29,12 +29,12 @@
               <a-select-option value="female">
                 female
               </a-select-option>
-            </a-select>
+            </a-select> -->
           </div>
         </div>
         <!--绑定账号-->
         <div style="margin-top: 20px;">
-          <div style="margin-left: 32px"><span style="color: #9EA0A5">绑定账号</span></div>
+          <!-- <div style="margin-left: 32px"><span style="color: #9EA0A5">绑定账号</span></div>
           <account style="cursor: pointer"
                    class="account"
                    :name="'QQ'"
@@ -42,7 +42,7 @@
           <account style="cursor: pointer"
                    class="account"
                    :name="'微信'"
-                   :number="12345"></account>
+                   :number="12345"></account> -->
         </div>
       </a-col>
       <a-col :span="3"
@@ -75,12 +75,12 @@
                  class="row1">
             <a-col :span="12">
               <a-form-item label="性别">
-                <span v-if="!InfoState">{{info.sex}}</span>
+                <span v-if="!InfoState">{{info.sex="54"?'男':'女'}}</span>
                 <a-radio-group name="c"
-                               :defaultValue="1"
+                               :defaultValue="54"
                                v-else>
-                  <a-radio :value="1">男</a-radio>
-                  <a-radio :value="2">女</a-radio>
+                  <a-radio :value="54">男</a-radio>
+                  <a-radio :value="55">女</a-radio>
                 </a-radio-group>
               </a-form-item>
             </a-col>

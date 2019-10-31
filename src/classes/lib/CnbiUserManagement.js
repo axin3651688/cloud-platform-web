@@ -24,7 +24,7 @@ class CnbiUserManagement {
   async getUserSimpleInfoList(otherParams) {
     let params = {
       page: 1,
-      size: 30
+      size: 3000
     }
     if (otherParams) params = Object.assign(params, otherParams)
     let res = await USER_SIMPLE_INFO_LIST(params)

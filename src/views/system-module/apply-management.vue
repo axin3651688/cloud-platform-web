@@ -157,7 +157,7 @@
             placeholder="请输入"
             v-decorator="[
               'name',
-              { rules: [{ required: true, message: '请输入牌照名称！' }] },
+              { rules: [{ required: true, message: '请输入应用名称！' }] },
             ]" />
         </a-form-item>
         <a-form-item label="描述">
