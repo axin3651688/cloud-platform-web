@@ -422,7 +422,7 @@ export default {
       this.active = record.id
     },
     beforeUpload (file) {
-      const fileType = ['image/jpeg', 'image/png', 'image/bmp']
+      const fileType = ['image/jpeg', 'image/png', 'image/svg+xml']
       const isImg = fileType.indexOf(file.type) > -1
       if (!isImg) {
         this.$message.error('只能jpg、png、svg图片！')

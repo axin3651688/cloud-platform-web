@@ -466,14 +466,14 @@ export default {
       })
     },
     beforeUpload (file) {
-      const fileType = ['image/jpeg', 'image/png', 'image/bmp']
+      const fileType = ['image/jpeg', 'image/png', 'image/image/svg+xml']
       const isImg = fileType.indexOf(file.type) > -1
       if (!isImg) {
         this.$message.error('只能jpg、png、svg图片！')
       }
-      const isLt5M = file.size / 1024 / 1024 < 5
+      const isLt5M = file.size / 1024 < 5
       if (!isLt5M) {
-        this.$message.error('图片不能超过5MB！')
+        this.$message.error('图片不能超过500kb！')
       }
       return isLt5M && isImg
     },
