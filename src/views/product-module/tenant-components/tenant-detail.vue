@@ -5,12 +5,12 @@
     <div class="tenant-detail-header">
       <div
         class=""
-        style="display: flex;flex-direction: row;align-items: center;margin-left: 30px;">
+        style="display: flex;flex-direction: row;align-items: center;margin-left: 20px;margin-bottom: 29px">
         <img
           v-if="info.logoFile"
-          style="width: 260px;"
-          :src="info.logoFile.thumbUrl">
-        <div style="margin-left: 30px;display: flex;flex-direction: column">
+          style="width: 260px;height: 60px;"
+          :src="info.logoFile.url">
+        <div style="margin-left: 20px;display: flex;flex-direction: column">
           <div>
             <h3 style="font-size: 18px;font-weight: bold;">{{ info.name }}</h3>
           </div>
