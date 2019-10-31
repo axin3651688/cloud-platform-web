@@ -82,10 +82,10 @@
               <a-select
                 v-decorator="[
                   'type',
-                  { rules: [{ required: true, message: '请选择类型' }] },
+                  { rules: [{ required: true, message: '请选择所属应用' }] },
                 ]"
                 @change="changeType"
-                placeholder="请选择">
+                placeholder="请选择所属应用">
                 <template slot="suffixIcon">
                   <img src="@icons/sort.svg" />
                 </template>
@@ -334,7 +334,7 @@ export default {
       defaultValue: 'name',
       result: [
         { name: '名称', key: 'name' },
-        { name: '类型', key: 'type' },
+        { name: '所属应用', key: 'serviceName' },
         { name: '权限路由', key: 'route' },
         { name: '访问路由', key: 'url' },
         { name: '服务标识', key: 'serviceId' }
@@ -348,8 +348,8 @@ export default {
         },
         {
           title: '所属应用',
-          dataIndex: 'type',
-          key: 'type',
+          dataIndex: 'serviceName',
+          key: 'serviceName',
           width: '12%'
         },
         {
@@ -434,6 +434,7 @@ export default {
     // 加载页面 获取数据
     async getData () {
       const data = await this.ModuleMObj.getResourcesModule()
+      console.log(data,'色字头上一把刀')
       this.dataSource = data
 
       // 拷贝数据
@@ -471,7 +472,7 @@ export default {
       if (!val2) {
         this.dataSource = this.dataOld
       } else {
-        this.dataSource = await this.ModuleMObj.searchResources(this.selectVal, val2, 3)
+        this.dataSource = await this.ModuleMObj.searchResources(this.selectVal, val2, 4)
       }
     },
 
