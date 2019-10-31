@@ -373,7 +373,22 @@ export default {
           title: '更新时间',
           dataIndex: 'updateTime',
           width: '12%',
-          key: 'updateTime'
+          key: 'updateTime',
+          customRender (text, record, index) {
+            var oDate = new Date(text * 1)
+            var oYear = oDate.getFullYear()
+            var oMonth = oDate.getMonth() + 1
+            var oDay = oDate.getDate()
+            if (oMonth < 10) {
+              oMonth = '0' + oMonth
+            }
+            if (oDay < 10) {
+              oDay = '0' + oDay
+            }
+            var oTime = oDay + '/' + oMonth + '/' + oYear
+            text = oTime
+            return text
+          }
         },
         {
           title: '状态',
@@ -419,20 +434,6 @@ export default {
     // 加载页面 获取数据
     async getData () {
       const data = await this.ModuleMObj.getResourcesModule()
-      data.forEach(item => {
-        var oDate = new Date(item.updateTime * 1)
-        var oYear = oDate.getFullYear()
-        var oMonth = oDate.getMonth() + 1
-        var oDay = oDate.getDate()
-        if (oMonth < 10) {
-          oMonth = '0' + oMonth
-        }
-        if (oDay < 10) {
-          oDay = '0' + oDay
-        }
-        var oTime = oDay + '/' + oMonth + '/' + oYear
-        item.updateTime = oTime
-      })
       this.dataSource = data
 
       // 拷贝数据
