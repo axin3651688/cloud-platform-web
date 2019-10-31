@@ -155,6 +155,14 @@
               { rules: [{ required: true, message: '请输入应用名称！' }] },
             ]" />
         </a-form-item>
+        <a-form-item label="应用标识">
+          <a-input
+            placeholder="请输入"
+            v-decorator="[
+              'serviceId',
+              { rules: [{ required: true, message: '请输入应用标识！' }] },
+            ]" />
+        </a-form-item>
         <a-form-item label="描述">
           <a-textarea
             placeholder="请输入描述"
@@ -350,6 +358,7 @@ export default {
     // 获取列表数据
     async getData () {
       const data = await this.ApplyMObj.getResourcesCard()
+      console.log(data,'测试应用标识')
       this.dataSource = data
 
       // 拷贝数据
