@@ -23,11 +23,9 @@
       <template
         slot="caozuo"
         slot-scope="text, record">
-        <div style="display: flex;flex-direction: row;justify-content: space-around;align-items: center;">
-          <span
-            @click="btnClickEdit(record)"
-            style="cursor: pointer">
-            <a-icon type="edit" />
+        <div >
+          <span @click="btnClickEdit(record)">
+            <img style="cursor: pointer;" src="@icons/Icon.svg" title="编辑">
           </span>
         </div>
       </template>
@@ -88,9 +86,7 @@
                     @change="changeType"
                     v-decorator="['type',{rules: [{ required: true, message: '请选择类型!' }],}]">
                     <template slot="suffixIcon">
-                      <img
-                        style="width: 12px;"
-                        src="../../assets/icons/paixu.svg" />
+                      <img src="@icons/sort.svg" />
                     </template>
                     <a-select-option
                       :value="item.value"
@@ -204,9 +200,7 @@
                     @change="changeType"
                     v-decorator="['type',{rules: [{ required: true, message: '请选择类型!' }],}]">
                     <template slot="suffixIcon">
-                      <img
-                        style="width: 12px;"
-                        src="../../assets/icons/paixu.svg" />
+                      <img src="@icons/sort.svg" />
                     </template>
                     <a-select-option
                       :value="item.value"

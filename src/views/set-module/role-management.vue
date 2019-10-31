@@ -32,11 +32,13 @@
       <template
         slot="caozuo"
         slot-scope="text, record">
-        <div style="display: flex;justify-content: space-around">
+        <div >
           <span @click="btnClick(record)">
-            <a-icon type="edit"></a-icon>
+            <img style="cursor: pointer;" src="@icons/Icon.svg" title="编辑">
           </span>
-          <span @click="accredit(record)">授权</span>
+          <span @click="accredit(record)">
+            <img style="margin-left: 16px;cursor: pointer;" src="@icons/shouquan.svg" title="授权">
+          </span>
         </div>
       </template>
     </a-table>

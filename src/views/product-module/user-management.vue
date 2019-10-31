@@ -46,7 +46,9 @@
           slot="xiangqing"
           slot-scope="text, record">
           <!--1代表开-->
-          <span @click="btnClick(record)">详情</span>
+          <span @click="btnClick(record)">
+            <img style="margin-left: 16px;cursor: pointer;" src="@icons/xiangqing.svg" title="详情">
+          </span>
         </template>
       </a-table>
     </div>

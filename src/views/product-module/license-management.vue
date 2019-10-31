@@ -67,7 +67,7 @@
               <span
                 @click="btnClick(record)"
                 title="编辑">
-                <a-icon type="edit" />
+                <img style="cursor: pointer;" src="@icons/Icon.svg" title="编辑">
               </span>
             </template>
           </a-table-column>
@@ -106,13 +106,11 @@
               <div class="license-foot-a">
                 <div style="display: flex;flex-direction: row;justify-content: space-between;height: 50px;">
                   <div style="display: flex;flex-direction: row;align-items: center;margin-right: 10px">
-                    <img src="../../assets/icons/weizhi.svg">数据源
+                    <img src="@icons/dingwei.svg">数据源
                   </div>
                   <div style="display: flex;flex-direction: row;align-items: center;flex-grow: 1;justify-content: space-between;">
                     <div v-if="addressState">
-                      <img
-                        src="../../assets/icons/bianji.svg"
-                        @click="addressState=false">
+                      <img style="margin-left: 16px;cursor: pointer;" src="@icons/Icon.svg" title="编辑" @click="addressState=false">
                     </div>
                     <div v-if="!addressState">
                       <a-button
@@ -150,9 +148,7 @@
                   </div>
                   <div style="display: flex;flex-direction: row;align-items: center;flex-grow: 1;justify-content: space-between;">
                     <div v-if="dataSourceState">
-                      <img
-                        src="../../assets/icons/bianji.svg"
-                        @click="dataSourceState=false">
+                      <img style="margin-left: 16px;cursor: pointer;" src="@icons/Icon.svg" title="编辑" @click="dataSourceState=false">
                     </div>
                     <div v-if="!dataSourceState">
                       <a-button

@@ -48,16 +48,10 @@
         <!--1代表开-->
         <div style="display: flex;justify-content: space-around">
           <span @click="btnClick(record)">
-            <a-icon
-              type="edit"
-              title="编辑"
-              style="cursor: pointer;"></a-icon>
+            <img style="cursor: pointer;" src="@icons/Icon.svg" title="编辑"/>
           </span>
           <span @click="btnAddClick(record)">
-            <a-icon
-              type="plus"
-              title="添加功能"
-              style="cursor: pointer;"></a-icon>
+            <img style="cursor: pointer;" src="@icons/add.svg" title="添加"/>
           </span>
         </div>
       </template>
@@ -171,9 +165,7 @@
             @change="changeType"
             v-decorator="['type',{rules: [{ required: true, message: '请选择类型!' }],}]">
             <template slot="suffixIcon">
-              <img
-                style="width: 12px;"
-                src="../../assets/icons/paixu.svg" />
+              <img src="@icons/sort.svg" />
             </template>
             <a-select-option value="1">
               目录

@@ -44,6 +44,7 @@ module.exports = {
   chainWebpack: (config) => {
     config.resolve.alias
       .set('@$', resolve('src'))
+      .set('@icons', resolve('src/assets/icons'))
 
     const svgRule = config.module.rule('svg')
     svgRule.uses.clear()

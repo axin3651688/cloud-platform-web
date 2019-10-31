@@ -46,10 +46,7 @@
         slot="bianji"
         slot-scope="text, record">
         <span @click="btnClick(record)">
-          <a-icon
-            type="edit"
-            title="编辑"
-            style="cursor: pointer"></a-icon>
+          <img style="margin-left: 16px;cursor: pointer;" src="@icons/Icon.svg" title="编辑">
         </span>
       </template>
     </a-table>
@@ -90,9 +87,7 @@
                 @change="changeType"
                 placeholder="请选择">
                 <template slot="suffixIcon">
-                  <img
-                    style="width: 12px;"
-                    src="../../assets/icons/paixu.svg" />
+                  <img src="@icons/sort.svg" />
                 </template>
                 <a-select-option value="3">
                   模块
@@ -112,9 +107,7 @@
                 ]"
                 placeholder="请选择">
                 <template slot="suffixIcon">
-                  <img
-                    style="width: 12px;"
-                    src="../../assets/icons/paixu.svg" />
+                  <img src="@icons/sort.svg" />
                 </template>
                 <template>
                   <a-select-option value="0">
@@ -224,9 +217,7 @@
                 placeholder="请选择"
                 @change="changeType">
                 <template slot="suffixIcon">
-                  <img
-                    style="width: 12px;"
-                    src="../../assets/icons/paixu.svg" />
+                  <img src="@icons/sort.svg" />
                 </template>
                 <a-select-option value="3">
                   模块
@@ -246,9 +237,7 @@
                 ]"
                 placeholder="请选择">
                 <template slot="suffixIcon">
-                  <img
-                    style="width: 12px;"
-                    src="../../assets/icons/paixu.svg" />
+                  <img src="@icons/sort.svg" />
                 </template>
                 <template>
                   <a-select-option value="0">无 </a-select-option>

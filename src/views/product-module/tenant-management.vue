@@ -72,9 +72,7 @@
               <a-form-item label="拥有者">
                 <a-select v-decorator="['ownerId',{rules: [{ required: true, message: '请选择所属人!' }],}]">
                   <template slot="suffixIcon">
-                    <img
-                      style="width: 12px;"
-                      src="../../assets/icons/paixu.svg" />
+                    <img src="@icons/sort.svg" />
                   </template>
                   <a-select-option
                     v-for="(item,index) in owners"
@@ -90,9 +88,7 @@
                 <a-select
                   v-decorator="['licenseId',{rules: [{ required: true, message: '请选择所属牌照!' }],}]">>
                   <template slot="suffixIcon">
-                    <img
-                      style="width: 12px;"
-                      src="../../assets/icons/paixu.svg" />
+                    <img src="@icons/sort.svg" />
                   </template>
                   <a-select-option
                     v-for="(item,index) in LicenseList"
@@ -112,9 +108,7 @@
                 <a-select
                   v-decorator="['type',{rules: [{ required: true, message: '请选择租户类型!' }],initialValue:'1'}]">
                   <template slot="suffixIcon">
-                    <img
-                      style="width: 12px;"
-                      src="../../assets/icons/paixu.svg" />
+                    <img src="@icons/sort.svg" />
                   </template>
                   <a-select-option value="1">
                     公共部署
@@ -158,9 +152,7 @@
                     v-decorator="['prefix', { initialValue: '86' }]"
                     style="width: 70px">
                     <template slot="suffixIcon">
-                      <img
-                        style="width: 12px;"
-                        src="../../assets/icons/paixu.svg" />
+                      <img src="@icons/sort.svg" />
                     </template>
                     <a-select-option value="86">
                       +86
