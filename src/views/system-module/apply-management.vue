@@ -49,13 +49,11 @@
             <img
               src=" https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3255435584,2194151633&fm=111&gp=0.jpg"
               style="width:64px;height: 64px;border-radius: 4px;background:rgba(112,55,55,1);opacity:1;"/>
-
           </span>
           <span >
             {{ text }}
           </span>
         </div>
-
       </template>
       <!--操作-->
       <template
@@ -66,7 +64,7 @@
             <img style="cursor: pointer;" src="@icons/Icon.svg" title="编辑">
           </span>
           <span @click="btnClick(record)">
-            <img style="margin-left: 16px;cursor: pointer;" src="@icons/peizhi.svg" title="服务配置">
+            <img style="margin-left: 12px;cursor: pointer;" src="@icons/peizhi.svg" title="服务配置">
           </span>
         </div>
 
@@ -76,25 +74,22 @@
         slot="zhuangtai"
         slot-scope="text, record">
         <!--1代表开-->
-        <span style="margin-right: 4px;">{{ record.enable==1?'启用':'禁用' }}</span>
-        <!--<a-switch :defaultChecked="record.name2==1?true:false" style="pointer-events:none"/>-->
+        <span style="margin-right: 15px;">{{ record.enable==1?'启用':'禁用' }}</span>
         <a-popover
           trigger="click"
           v-model="applyState"
           v-if="record.enable==1 && active==record.id">
-          <template slot="title">
-            <div style="margin: 5px 0;">
+          <template slot="content">
+            <div>
               <span>
                 <a-icon
                   type="exclamation-circle"
-                  style="color: #FAAD14;width: 14px;height: 14px;" />你确定禁用这个应用吗？
+                  style="color: #FAAD14;width: 14px;height: 14px;margin-right: 4px" />你确定禁用这个应用吗？
               </span>
             </div>
-          </template>
-          <template slot="content">
-            <div style="display: flex;justify-content: flex-end; margin: 5px 10px;">
+            <div style="display: flex;justify-content: flex-end; margin: 14px 10px;">
               <a-button
-                style="margin-right: 10px;"
+                style="margin-right: 8px;"
                 @click="cancelActive">取消</a-button>
               <a-button
                 type="primary"
@@ -199,15 +194,20 @@
         </a-form-item>
       </a-form>
       <template slot="footer">
-        <a-button
-          key="back"
-          @click="cancelSave">取消</a-button>
-        <a-button
-          key="submit"
-          type="primary"
-          @click="saveApplyOk">
-          <a-icon type="cloud-upload" /> 保存
-        </a-button>
+        <div class="apply-add-foot" style="display: flex;padding: 0 8px;">
+          <a-button
+            key="back"
+            style="margin-right: 16px"
+            @click="cancelSave">
+            取消
+          </a-button>
+          <a-button
+            key="submit"
+            type="primary"
+            @click="saveApplyOk">
+            <a-icon type="cloud-upload" /> 保存
+          </a-button>
+        </div>
       </template>
     </a-modal>
     <!--编辑应用-->
@@ -550,5 +550,8 @@ export default {
   }
   /deep/.ant-table-thead>tr>th{
     height: 47px;
+  }
+  form .ant-form-item{
+    margin-bottom: 0;
   }
 </style>

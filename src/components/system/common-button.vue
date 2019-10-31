@@ -6,7 +6,10 @@
       class="button_style_one"
       type="primary"
       @click.prevent="addClick">
-      <a-icon type="cloud-upload" />{{ name1 }}</a-button>
+      <div style="margin: 6px 0">
+        <a-icon type="cloud-upload" style="margin-right: 10px;"/>{{ name1 }}
+      </div>
+    </a-button>
     <a-button
       class="button_style_two"
       :disabled="!disabled"
