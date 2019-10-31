@@ -164,7 +164,7 @@
           <a-input
             placeholder="请输入"
             v-decorator="[
-              'name',
+              'serviceId',
               { rules: [{ required: true, message: '请输入应用标识！' }] },
             ]" />
         </a-form-item>

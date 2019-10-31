@@ -6,6 +6,7 @@ import {
   OPEN_RESOURCE,
   UPDATE_RESOURCE,
   SEARCH_RESOURCES,
+  FIND_CARD_RESOURCES,
   GET_RESOURCES_TREE,
   GET_RESOURCES_MENU,
   BAT_DELETE_AUTHORITY,
@@ -54,6 +55,20 @@ class CnbiModuleManagement {
   }
 
   /** 
+   * @desc    : 查询应用的模块
+   * @author  : zj
+   * @date  : 2019/10/31
+   * @param   {} 
+   * @return  {} 
+   * @update   by   
+   */
+  async findCardResources(clientId) {
+    let res = await FIND_CARD_RESOURCES({
+      clientId: clientId
+    });
+    return res.data
+  }
+  /** 
    * @desc    : 查询菜单列表
    * @author  : zj
    * @date  : 2019/10/25
@@ -94,13 +109,13 @@ class CnbiModuleManagement {
   }
 
   /** 
-  * @desc    : 批量删除权限
-  * @author  : zj
-  * @date  : 2019/10/30
-  * @param   {} 
-  * @return  {} 
-  * @update   by   
-  */
+   * @desc    : 批量删除权限
+   * @author  : zj
+   * @date  : 2019/10/30
+   * @param   {} 
+   * @return  {} 
+   * @update   by   
+   */
   async batDeleteAuthority(ids) {
     let res = await BAT_DELETE_AUTHORITY(ids);
     return res

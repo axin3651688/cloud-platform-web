@@ -32,6 +32,7 @@ const api = {
   OPEN_RESOURCE: '/upm/resource/open_resource',
   UPDATE_RESOURCE: '/upm/resource/update',
   SEARCH_RESOURCES: '/upm/resource/search_resources',
+  FIND_CARD_RESOURCES: '/upm/resource/find_card_resources',
 
   //用户模块的相关接口
   // USER_SIMPLE_INFO_LIST: '/uc/user/user_simple_info_list',
@@ -370,6 +371,22 @@ export function SEARCH_RESOURCES(parameter) {
   })
 }
 
+
+/** 
+ * @desc    : 查询应用的模块
+ * @author  : zj
+ * @date  : 2019/10/31
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function FIND_CARD_RESOURCES(parameter) {
+  return axios2({
+    url: api.FIND_CARD_RESOURCES,
+    method: 'get',
+    params: parameter
+  })
+}
 /**
  * @desc    : 获取权限列表（模块管理的）
  * @author  : zj
