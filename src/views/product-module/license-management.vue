@@ -214,12 +214,12 @@
         <a-form
           :form="form"
           @submit="oneSubmit">
-          <a-form-item label="牌照名称:">
+          <a-form-item label="牌照名称:"><!--/^[0-9]{1,20}$/-->
             <a-input
               placeholder="请输入"
               v-decorator="[
                 'name',
-                { rules: [{ required: true, message: '请输入牌照名称！' }] },
+                { rules: [{ required: true ,message: '请输入牌照名称！' }] },
               ]" />
           </a-form-item>
           <a-form-item label="牌照描述:">
@@ -254,7 +254,7 @@
               placeholder="请输入"
               v-decorator="[
                 'maxCompany',
-                { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }] },
+                { rules: [{ required: true, pattern: /^[0-9]{1,8}$/, message: '请输入正整数且不超过8位！' }] },
               ]" />个
           </a-form-item>
           <a-form-item label="最多用户数:">
@@ -262,7 +262,7 @@
               placeholder="请输入"
               v-decorator="[
                 'maxUser',
-                { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }] },
+                { rules: [{ required: true, pattern: /^[0-9]{1,8}$/, message: '请输入正整数且不超过8位！' }] },
               ]" />个
           </a-form-item>
           <a-form-item label="创建最多资源数:">
@@ -270,7 +270,7 @@
               placeholder="请输入"
               v-decorator="[
                 'maxDesign',
-                { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }] },
+                { rules: [{ required: true, pattern: /^[0-9]{1,8}$/, message: '请输入正整数且不超过8位！' }] },
               ]" />个
           </a-form-item>
           <a-form-item label="最大级别数:">
@@ -278,7 +278,7 @@
               placeholder="请输入"
               v-decorator="[
                 'maxLevel',
-                { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }] },
+                { rules: [{ required: true, pattern: /^[0-9]{1,8}$/, message: '请输入正整数且不超过8位！' }] },
               ]" />级
           </a-form-item>
           <a-form-item label="最多可用空间:">
@@ -286,7 +286,7 @@
               placeholder="请输入"
               v-decorator="[
                 'maxMemory',
-                { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }] },
+                { rules: [{ required: true, pattern: /^[0-9]{1,8}$/, message: '请输入正整数且不超过8位！' }] },
               ]" />MB
           </a-form-item>
           <a-form-item label="最多链接数:">
@@ -294,7 +294,7 @@
               placeholder="请输入"
               v-decorator="[
                 'maxConnect',
-                { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }] },
+                { rules: [{ required: true, pattern: /^[0-9]{1,8}$/, message: '请输入正整数且不超过8位！' }] },
               ]" />个
           </a-form-item>
           <a-form-item>

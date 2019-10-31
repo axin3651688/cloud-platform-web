@@ -156,8 +156,7 @@
               label="所属牌照:"
               class="item2">
               <a-select
-                default-value="1"
-                v-decorator="['licenseId',{rules: [{ required: true, message: '请选择所属牌照!' }],initialValue:info.licenseId}]">
+                v-decorator="['licenseId',{rules: [{ required: true, message: '请选择所属牌照!' }],initialValue:parseInt(info.licenseId)}]">
                 <template slot="suffixIcon">
                   <img src="@icons/sort.svg" />
                 </template>
@@ -209,18 +208,17 @@
               label="租户类型:"
               class="item2">
               <a-select
-                default-value="1"
                 v-decorator="['type',{rules: [{ required: true, message: '请选择租户类型!' }],initialValue:info.type}]">
                 <template slot="suffixIcon">
                   <img src="@icons/sort.svg" />
                 </template>
-                <a-select-option value="1">
+                <a-select-option :value="1">
                   公共部署
                 </a-select-option>
-                <a-select-option value="2">
+                <a-select-option :value="2">
                   私有部署
                 </a-select-option>
-                <a-select-option value="3">
+                <a-select-option :value="3">
                   本地部署
                 </a-select-option>
               </a-select>

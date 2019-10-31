@@ -37,14 +37,14 @@
         ref="table"></common-table>
     </div>
     <!--添加租户弹框-->
-    <!--  @ok="handleOk"
-        @cancel="handleCancel"
-        okText="保存"
-        cancelText="取消"-->
     <div v-if="visible">
       <a-modal
         title="添加租户"
         :visible="visible"
+        @ok="handleOk"
+        @cancel="handleCancel"
+        okText="保存"
+        cancelText="取消"
         :width="730">
         <a-form :form="form">
           <!-- 表单第一行 -->
@@ -223,17 +223,6 @@
             </a-col>
           </a-row>
         </a-form>
-        <template slot="footer">
-          <a-button
-            key="back"
-            @click="handleCancel">取消</a-button>
-          <a-button
-            key="submit"
-            type="primary"
-            @click="handleOk">
-            <a-icon type="cloud-upload" /> 保存
-          </a-button>
-        </template>
       </a-modal>
     </div>
   </div>
@@ -405,7 +394,7 @@ export default {
               message: '失效时间不能再生效时间之前!',
               field: 'endTime'
             }]
-            this.form.setFields({ endTime: { value: formData.beginTime, errors: arr } })
+            this.form.setFields({ endTime: { value: formData.endTime, errors: arr } })
             return
           }
           // formData.checkTime = 1
@@ -463,7 +452,7 @@ export default {
       if (!isImg) {
         this.$message.error('只能jpg、png、svg图片！')
       }
-      const isLt5M = file.size / 1024 < 5
+      const isLt5M = file.size / 1024 < 500
       if (!isLt5M) {
         this.$message.error('图片不能超过500kb！')
       }
@@ -471,10 +460,25 @@ export default {
     },
     inputHandler (val) {
       const _this = this
-      if (this.selectVal) {
+      if (_this.selectVal == 'type' && val != '') { // 判断是不是根据类型搜索，因为类型是死的，so可以这样写
+        if ('公共部署'.indexOf(val) > -1) {
+          val = 1
+        } else if ('私有部署'.indexOf(val) > -1) {
+          val = 2
+        } else if ('本地部署'.indexOf(val) > -1) {
+          val = 3
+        }
+      }
+      if (val) {
         this.data = this.dataOld.filter(item => {
-          return item[_this.selectVal] && item[_this.selectVal].indexOf(val) != -1
+          if (item[_this.selectVal]) {
+            const num = []
+            num.push(item[_this.selectVal])
+            return num.indexOf(val) != -1
+          }
         })
+      } else {
+        this.data = this.dataOld
       }
     },
     /**
@@ -546,4 +550,7 @@ ant .tenantInput {
   .tencent-table{
     background-color: #fff;
   }
+form .ant-form-item{
+  margin-bottom: 0;
+}
 </style>

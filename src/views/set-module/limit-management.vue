@@ -419,7 +419,7 @@ export default {
       _this.form.validateFields(async (err, values) => {
         if (!err) {
           const formData = JSON.parse(JSON.stringify(values))
-          formData.type = 1
+          formData.type = 0
           await _this.LimitMObj.saveResource(formData)
           // 重新加载最新的数据
           await _this.getData()
