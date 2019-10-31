@@ -34,6 +34,7 @@
       :columns="columns"
       :dataSource="dataSource"
       :rowKey="setKey"
+      :rowClassName="setStyle"
       :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
       <!--应用名称-->
       <template
@@ -41,8 +42,14 @@
         slot-scope="text, record">
         <div style="display: flex;flex-direction: row;align-items: center">
 
-          <span v-if="record.iconUrl" style="margin-right: 4px;">
-            <img :src="record.iconUrl" style="width:35px;height: 35px;border-radius: 4px;"/>
+          <span v-if="record.iconUrl" style="margin-right: 18px;">
+            <img :src="record.iconUrl" style="width:64px;height: 64px;border-radius: 4px;background:rgba(112,55,55,1);opacity:1;"/>
+          </span>
+          <span v-else style="margin-right: 18px;">
+            <img
+              src=" https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3255435584,2194151633&fm=111&gp=0.jpg"
+              style="width:64px;height: 64px;border-radius: 4px;background:rgba(112,55,55,1);opacity:1;"/>
+
           </span>
           <span >
             {{ text }}
@@ -56,7 +63,7 @@
         slot-scope="text, record">
         <div style="display: flex;flex-direction: row;align-items: center;">
           <span @click="btnClickEdit(record)" style="margin: 0 4px;">
-            <img style="margin-left: 16px;cursor: pointer;" src="@icons/Icon.svg" title="编辑">
+            <img style="cursor: pointer;" src="@icons/Icon.svg" title="编辑">
           </span>
           <span @click="btnClick(record)">
             <img style="margin-left: 16px;cursor: pointer;" src="@icons/peizhi.svg" title="服务配置">
@@ -198,6 +205,7 @@
     <!--编辑应用-->
     <a-modal
       v-model="showEditApply"
+      :destroyOnClose="true"
       v-if="editApply"
       title="编辑应用">
       <a-form :form="form1">
@@ -274,7 +282,7 @@ export default {
   data () {
     return {
       pagination: {
-        pageSize: 15,
+        pageSize: 7,
         hideOnSinglePage: true // 只有一页时是否隐藏分页器
       },
       ApplyMObj: null,
@@ -507,6 +515,9 @@ export default {
         }
       }
       return result
+    },
+    setStyle (record, index) {
+      return 'table-row'
     }
   }
 
@@ -525,4 +536,10 @@ export default {
 .apply-table {
   background-color: #fff;
 }
+  /deep/.table-row{
+    height: 87px;
+  }
+  /deep/.ant-table-thead>tr>th{
+    height: 47px;
+  }
 </style>
