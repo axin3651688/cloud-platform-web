@@ -156,7 +156,7 @@
               label="所属牌照:"
               class="item2">
               <a-select
-                v-decorator="['licenseId',{rules: [{ required: true, message: '请选择所属牌照!' }],initialValue:parseInt(info.licenseId)}]">
+                v-decorator="['licenseId',{rules: [{ required: true, message: '请选择所属牌照!' }],initialValue:info.licenseId}]">
                 <template slot="suffixIcon">
                   <img src="@icons/sort.svg" />
                 </template>
@@ -190,7 +190,6 @@
               class="item2">
               <!--info.beginTime-->
               <a-date-picker
-                @change="onChange"
                 v-decorator="['beginTime',{rules: [{ required: true, message: '请选择生效日期!' }],
                                            initialValue:this.$moment(info.beginTime, 'YYYY-MM-DD')}]"></a-date-picker>
             </a-form-item></a-col>
@@ -253,9 +252,8 @@
               label="到期日期:"
               class="item2">
               <a-date-picker
-                @change="onChange"
-                v-decorator="['endTime',{rules: [{ required: true, message: '请选择到期日期!' }]
-                                         ,initialValue:this.$moment(info.endTime, 'YYYY-MM-DD')}]" />
+                v-decorator="['endTime',
+                              {rules: [{ required: true, message: '请选择到期日期!' }],initialValue:this.$moment(info.endTime, 'YYYY-MM-DD')}]" />
             </a-form-item>
           </a-col>
         </a-row>
@@ -284,22 +282,11 @@ export default {
     }
   },
   created () {
-    console.log('created======================')
-
     this.TenantMObj = new CnbiTenantManagement()
     this.id = this.$route.query.id
     this.showInfo()
   },
-  activated () {
-    this.init()
-  },
   methods: {
-    init () {
-      console.log('activated======================')
-      this.TenantMObj = new CnbiTenantManagement()
-      this.id = this.$route.query.id
-      this.showInfo()
-    },
     // 点击详情  查询信息
     async showInfo () {
       var info = await this.TenantMObj.getTenancy(this.id)
@@ -350,9 +337,16 @@ export default {
       _this.form1.validateFields(async (err, values) => {
         if (!err) {
           const formData = JSON.parse(JSON.stringify(values))
-
           formData.beginTime = new Date(formData.beginTime).getTime()
           formData.endTime = new Date(formData.endTime).getTime()
+          if (formData.beginTime > formData.endTime) {
+            const arr = [{
+              message: '失效时间不能再生效时间之前!',
+              field: 'endTime'
+            }]
+            this.form1.setFields({ endTime: { initialValue: formData.endTime, errors: arr } })
+            return
+          }
           formData.id = this.id
           // 4.调用修改接口的方法，完成修改操作，关闭弹框
           await _this.TenantMObj.updateTenancy(formData)
@@ -367,9 +361,6 @@ export default {
           _this.showUpdataInfo = false
         }
       })
-    },
-    onChange () {
-
     },
     getYearMonthDay (time) {
       const year = new Date(time * 1).getFullYear()

@@ -190,7 +190,7 @@
               <div class="ant-upload-text">点击上传</div>
             </div>
           </a-upload>
-          <span>只能上传jpg/png文件， 且不超过500kb</span>
+          <span>只能上传jpg/png/svg文件， 且不超过500kb</span>
         </a-form-item>
       </a-form>
       <template slot="footer">
