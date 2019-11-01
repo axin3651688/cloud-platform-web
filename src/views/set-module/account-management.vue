@@ -19,7 +19,7 @@
         @addClick="addClick"
         @deleteClick="deleteClick"
         :disabled="selectedRowKeys.length>0?true:false"
-        :title="'删除后可能会影响使用功能的使用，您确定继续？'"
+        :title="'删除后无法恢复，您确定继续？'"
         :name1="name1"
         :name2="name2">
       </common-button>
@@ -392,4 +392,7 @@ export default {
 /deep/.add-account .ant-modal-footer {
   display: flex !important;
 }
+  .banClick{
+    pointer-events:none
+  }
 </style>

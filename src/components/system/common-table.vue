@@ -2,41 +2,20 @@
 <template>
   <div>
     <div style="margin-bottom: 16px">
-      <!-- <a-button
-        type="primary"
-        @click="start"
-        :disabled="!hasSelected"
-        :loading="loading">
-      </a-button> -->
-      <!-- <span style="margin-left: 8px"> -->
-      <!-- <template v-if="hasSelected">
-        {{ `Selected ${selectedRowKeys.length} items` }}
-      </template> -->
-      <!-- </span> -->
     </div>
-    <!--<a-table-->
-    <!--:rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"-->
-    <!--:columns="columns"-->
-    <!--:dataSource="data" />-->
     <a-table
       size="small"
       :dataSource="data"
+      :rowKey="setKey"
       :pagination="pagination"
       :columns="columns"
+      :rowClassName="rowClassName"
       :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
 
       <span
         slot="action"
         slot-scope="text,record"
         @click="btnclick(record )"><img style="cursor: pointer;" src="@icons/xiangqing.svg" title="详情"></span>
-      <!--<p slot="expandedRowRender" slot-scope="record" style="margin: 0">{{ record.description }}</p>-->
-
-      <!-- <template slot="name" slot-scope="text, record">
-        <span :text="text" @change="onCellChange(record.key, 'name', $event)" >123</span>
-        <span slot="action" slot-scope="text, record">
-          <a href="javascript:;" class="ant-dropdown-link"> Invite 一 {{ record.name }} <a-icon type="down" /> </a>
-        </span>
-      </template>-->
       <span>123</span>
     </a-table>
   </div>
@@ -76,13 +55,11 @@ export default {
         this.selectedRowKeys = []
       }, 1000)
     },
-    onSelectChange (selectedRowKeys, dd, bb) {
-      debugger
+    onSelectChange (selectedRowKeys) {
       // console.log('selectedRowKeys changed: ', selectedRowKeys)
-      console.log(dd, '55555555555')
       this.selectedRowKeys = selectedRowKeys
-      const ids = dd.map(d => d.id * 1)
-      console.log(ids, '111111000000')
+      const ids = this.selectedRowKeys
+      // console.log(ids, '111111000000')
       this.$emit('getIds', ids)
     },
     onCellChange (key, dataIndex, value) {
@@ -94,12 +71,19 @@ export default {
       this.$router.push({ name: 'TenantDetail', query: { id: key.id } })
       // this.$router.push({ name: 'TenantDetail' })
     },
-    // 清楚勾选的id
-    clearSelectedKey () {
-      this.selectedRowKeys = []
+    setKey (record) {
+      return record.id
+    },
+    rowClassName () {
+      return 'tenant-table'
     }
   }
 }
 </script>
 <style scoped>
+  /deep/.tenant-table>td{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 </style>

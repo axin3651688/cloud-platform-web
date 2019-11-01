@@ -23,7 +23,7 @@
               :key="index1"
               style="margin-top: 20px;">
               <a-checkbox
-                :defaultChecked="obj.selectArr.indexOf(item.name)>-1"
+                :defaultChecked="selectArr.indexOf(item.name)>-1"
                 :value="item.id"
                 @change="onChange">{{ item.name }}</a-checkbox>
             </a-col>
@@ -39,7 +39,7 @@ import ACol from 'ant-design-vue/es/grid/Col'
 export default {
   name: 'RoleNode',
   components: { ACol },
-  props: ['nodes'],
+  props: ['nodes', 'selectArr'],
   data () {
     return {
     }
@@ -67,4 +67,8 @@ export default {
   border-bottom: 1px solid #eaedf3;
   padding: 16px;
 }
+  /deep/.ant-checkbox-wrapper{
+    overflow: hidden;
+    text-overflow: ellipsis;white-space: nowrap;
+  }
 </style>

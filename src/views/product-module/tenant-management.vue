@@ -267,27 +267,34 @@ export default {
       imageUrl: '',
       columns: [{
         title: '名称',
-        dataIndex: 'name'
+        dataIndex: 'name',
+        width: '10%'
       }, {
         title: '拥有者',
-        dataIndex: 'ownerName'
+        dataIndex: 'ownerName',
+        width: '10%'
       }, {
         title: '所属牌照',
-        dataIndex: 'licenseName'
+        dataIndex: 'licenseName',
+        width: '10%'
       }, {
         title: '类型',
-        dataIndex: 'typeName'
+        dataIndex: 'typeName',
+        width: '10%'
       }, {
         title: '更新时间',
-        dataIndex: 'updateTime'
+        dataIndex: 'updateTime',
+        width: '15%'
       }, {
         title: '到期时间',
-        dataIndex: 'endTime'
+        dataIndex: 'endTime',
+        width: '15%'
       }, {
         title: '初始化',
-        dataIndex: ''
+        dataIndex: '',
+        width: '10%'
       },
-      { title: '更多', dataIndex: '', key: 'x', scopedSlots: { customRender: 'action' } }
+      { title: '详情', dataIndex: '', key: 'x', scopedSlots: { customRender: 'action' }, width: '10%' }
       ],
       data: [],
       result: [{ name: '名称', key: 'name' }, { name: '拥有者', key: 'ownerName' }, { name: '所属牌照', key: 'licenseName' }, { name: '类型', key: 'type' }],
@@ -474,9 +481,9 @@ export default {
       if (val) {
         this.data = this.dataOld.filter(item => {
           if (item[_this.selectVal]) {
-            const num = []
-            num.push(item[_this.selectVal])
-            return num.indexOf(val) != -1
+            // const num = []
+            // num.push(item[_this.selectVal])
+            return item[_this.selectVal].indexOf(val) != -1
           }
         })
       } else {

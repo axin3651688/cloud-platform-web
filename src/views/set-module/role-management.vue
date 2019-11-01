@@ -233,15 +233,14 @@ export default {
       // 2.如果勾选了，则获取勾选的id数组
       // 3.调用删除接口，传入参数，删除
 
-      debugger
       await this.RoleMObj.deleteRole(this.selectedRowKeys)
       // 4.删除成功后，及时更新数据，清除勾选图标
       await this.getData()
       this.selectedRowKeys = []
     },
 
-    accredit () {
-      this.$router.push({ name: 'RoleAccredit' })
+    accredit (record) {
+      this.$router.push({ name: 'RoleAccredit', query: { id: record.id } })
     },
     // 编辑按钮的点击事件
     btnClick (record) {
@@ -258,9 +257,7 @@ export default {
     },
     // 删除的勾选事件
     onSelectChange (selectedRowKeys, bb) {
-      debugger
       this.selectedRowKeys = selectedRowKeys
-      console.log(selectedRowKeys, '死死死死死死死死死死死死')
     },
     // 设置每行id为主键
     setKey (record) {

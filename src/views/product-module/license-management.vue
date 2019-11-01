@@ -5,6 +5,7 @@
       <!--表格-->
       <div class="license-header">
         <common-button
+          class="button_style"
           :name1="name1"
           :name2="name2"
           :title="'删除牌照将会影响所有使用当前牌照的租户，确定要继续？'"
