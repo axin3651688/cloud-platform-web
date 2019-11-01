@@ -4,188 +4,215 @@
     <!--头部-->
     <div style="display: flex;flex-direction: row;justify-content: space-between;background-color: #fff;padding: 16px 32px 0 32px">
       <div style="display: flex;flex-direction: row">
-        <common-drop-down :result="result"
-                          :defaultValue="defaultValue"
-                          @selectCell="selectCell"
-                          class="com-drop-down">
+        <common-drop-down
+          :result="result"
+          :defaultValue="defaultValue"
+          @selectCell="selectCell"
+          class="com-drop-down">
         </common-drop-down>
         <!--搜索框-->
-        <common-search :placeholder="version"
-                       style="width: 220px"
-                       @inputHandler="inputHandler"></common-search>
+        <common-search
+          :placeholder="version"
+          style="width: 220px"
+          @inputHandler="inputHandler"></common-search>
       </div>
-      <common-button @addClick="addClick"
-                     @deleteClick="deleteClick"
-                     :disabled="selectedRowKeys.length>0?true:false"
-                     :title="'删除后可能会影响使用功能的使用，您确定继续？'"
-                     :name1="name1"
-                     :name2="name2">
+      <common-button
+        @addClick="addClick"
+        @deleteClick="deleteClick"
+        :disabled="selectedRowKeys.length>0?true:false"
+        :title="'删除后可能会影响使用功能的使用，您确定继续？'"
+        :name1="name1"
+        :name2="name2">
       </common-button>
     </div>
     <!--表格-->
-    <a-table class="module-table"
-             :pagination="pagination"
-             size="small"
-             :columns="columns"
-             :dataSource="dataSource"
-             :rowKey="setKey"
-             :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
-      <template slot="zhuangtai"
-                slot-scope="text, record">
+    <a-table
+      class="module-table"
+      :pagination="pagination"
+      size="small"
+      :columns="columns"
+      :dataSource="dataSource"
+      :rowKey="setKey"
+      :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
+      <template
+        slot="zhuangtai"
+        slot-scope="text, record">
         <!--1代表开-->
-        <a-switch :defaultChecked="record.enable==1?true:false"
-                  @change="updataState(record)" />
+        <a-switch
+          :defaultChecked="record.enable==1?true:false"
+          @change="updataState(record)" />
       </template>
-      <template slot="bianji"
-                slot-scope="text, record">
+      <template
+        slot="bianji"
+        slot-scope="text, record">
         <span @click="btnClick(record)">
-          <img style="margin-left: 16px;cursor: pointer;"
-               src="@icons/Icon.svg"
-               title="编辑">
+          <img
+            style="margin-left: 16px;cursor: pointer;"
+            src="@icons/Icon.svg"
+            title="编辑">
         </span>
       </template>
     </a-table>
     <!--添加模块-->
-    <a-modal v-model="showAddModule"
-             :destroyOnClose="true"
-             :maskClosable="false"
-             title="添加模块">
-      <a-form :form="form"
-              autocomplete="off">
-        <a-row :gutter="24"
-               class="row1">
-          <a-col :span="12">
-            <a-form-item label="名称">
-              <a-input placeholder="请输入名称"
-                       v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],}]" />
-            </a-form-item>
-          </a-col>
-          <a-col :span="12">
-            <a-form-item label="描述">
-              <a-input placeholder="请输入描述"
-                       v-decorator="['note']" />
-            </a-form-item>
-          </a-col>
-        </a-row>
-        <a-row :gutter="24"
-               class="row2">
-          <a-col :span="12">
-            <a-form-item label="所属应用">
-              <a-select v-decorator="[
-                  'serviceName',
-                  { rules: [{ required: true, message: '请选择所属应用' }] },
-                ]"
-                        @change="selectApply"
-                        placeholder="请选择所属应用">
-                <template slot="suffixIcon">
-                  <img src="@icons/sort.svg" />
-                </template>
-                <a-select-option v-for="(item,index) in cardArr"
-                                 :key="index"
-                                 :value="item.serviceId">
-                  {{ item.name }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :span="12">
-            <a-form-item label="上级目录">
-              <a-select v-decorator="[
-                  'pid',
-                  { rules: [{ required: true, message: '请选择上级目录' }],initialValue:'0'}
-                ]"
-                        placeholder="请选择">
-                <template slot="suffixIcon">
-                  <img src="@icons/sort.svg" />
-                </template>
-                <template>
-                  <a-select-option value="0">
-                    无
+    <div v-if="showAddModule">
+      <a-modal
+        :visible="showAddModule"
+        :destroyOnClose="true"
+        @ok="saveModule"
+        @cancel="cancelSave"
+        :maskClosable="false"
+        okText="保存"
+        cancelText="取消"
+        title="添加模块">
+        <a-form
+          :form="form"
+          autocomplete="off">
+          <a-row
+            :gutter="24"
+            class="row1">
+            <a-col :span="12">
+              <a-form-item label="名称">
+                <a-input
+                  placeholder="请输入名称"
+                  v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],}]" />
+              </a-form-item>
+            </a-col>
+            <a-col :span="12">
+              <a-form-item label="描述">
+                <a-input
+                  placeholder="请输入描述"
+                  v-decorator="['note']" />
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row
+            :gutter="24"
+            class="row2">
+            <a-col :span="12">
+              <a-form-item label="所属应用">
+                <a-select
+                  v-decorator="[
+                    'serviceName',
+                    { rules: [{ required: true, message: '请选择所属应用' }] },
+                  ]"
+                  @change="selectApply"
+                  placeholder="请选择所属应用">
+                  <template slot="suffixIcon">
+                    <img src="@icons/sort.svg" />
+                  </template>
+                  <a-select-option
+                    v-for="(item,index) in cardArr"
+                    :key="index"
+                    :value="item.serviceId">
+                    {{ item.name }}
                   </a-select-option>
-                </template>
-                <a-select-option v-for="(item,index) in byServiceIdModuleArr"
-                                 :key="index"
-                                 :value="item.code">
-                  {{ item.name }}
-                </a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col :span="12">
+              <a-form-item label="上级目录">
+                <a-select
+                  v-decorator="[
+                    'pid',
+                    { rules: [{ required: true, message: '请选择上级目录' }],initialValue:'0'}
+                  ]"
+                  placeholder="请选择">
+                  <template slot="suffixIcon">
+                    <img src="@icons/sort.svg" />
+                  </template>
+                  <template>
+                    <a-select-option value="0">
+                      无
+                    </a-select-option>
+                  </template>
+                  <a-select-option
+                    v-for="(item,index) in byServiceIdModuleArr"
+                    :key="index"
+                    :value="item.code">
+                    {{ item.name }}
+                  </a-select-option>
 
-              </a-select>
-            </a-form-item>
-          </a-col>
-        </a-row>
-        <a-row :gutter="24"
-               class="row3">
-          <a-col :span="12">
-            <a-form-item label="权限路由">
-              <a-input placeholder="请输入权限路由"
-                       v-decorator="['route',{rules: [{ required: true, message: '权限路由不能为空!' }],}]" />
-            </a-form-item>
-          </a-col>
-          <a-col :span="12">
-            <a-form-item label="访问路由">
-              <a-input placeholder="请输入访问路由"
-                       v-decorator="['url',{rules: [{ required: true, message: '访问路由不能为空!' }],}]" />
-            </a-form-item>
-          </a-col>
-        </a-row>
-        <a-row :gutter="24"
-               class="row4">
-          <a-col :span="12">
-            <a-form-item label="状态">
-              <a-switch defaultChecked />
-            </a-form-item>
-          </a-col>
-        </a-row>
-      </a-form>
-      <template slot="footer">
-        <a-button key="back"
-                  @click="cancelSave">取消</a-button>
-        <a-button key="submit"
-                  type="primary"
-                  @click="saveModule">
-          <a-icon type="cloud-upload" /> 保存
-        </a-button>
-      </template>
-    </a-modal>
+                </a-select>
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row
+            :gutter="24"
+            class="row3">
+            <a-col :span="12">
+              <a-form-item label="权限路由">
+                <a-input
+                  placeholder="请输入权限路由"
+                  v-decorator="['route',{rules: [{ required: true, message: '权限路由不能为空!' }],}]" />
+              </a-form-item>
+            </a-col>
+            <a-col :span="12">
+              <a-form-item label="访问路由">
+                <a-input
+                  placeholder="请输入访问路由"
+                  v-decorator="['url',{rules: [{ required: true, message: '访问路由不能为空!' }],}]" />
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row
+            :gutter="24"
+            class="row4">
+            <a-col :span="12">
+              <a-form-item label="状态">
+                <a-switch defaultChecked />
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </a-form>
+      </a-modal>
+    </div>
     <!--编辑模块-->
-    <a-modal v-model="showEditModule"
-             :destroyOnClose="true"
-             :maskClosable="false"
-             v-if="editModuleInfo"
-             title="编辑">
-      <a-form :form="form1"
-              autocomplete="off">
-        <a-row :gutter="24"
-               class="row1">
+    <a-modal
+      v-model="showEditModule"
+      :destroyOnClose="true"
+      :maskClosable="false"
+      v-if="editModuleInfo"
+      title="编辑">
+      <a-form
+        :form="form1"
+        autocomplete="off">
+        <a-row
+          :gutter="24"
+          class="row1">
           <a-col :span="12">
             <a-form-item label="名称">
-              <a-input placeholder="请输入名称"
-                       v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],initialValue:editModuleInfo.name}]" />
+              <a-input
+                placeholder="请输入名称"
+                v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],initialValue:editModuleInfo.name}]" />
             </a-form-item>
           </a-col>
           <a-col :span="12">
             <a-form-item label="描述">
-              <a-input placeholder="请输入描述"
-                       v-decorator="['note',{initialValue:editModuleInfo.note}]" />
+              <a-input
+                placeholder="请输入描述"
+                v-decorator="['note',{initialValue:editModuleInfo.note}]" />
             </a-form-item>
           </a-col>
         </a-row>
-        <a-row :gutter="24"
-               class="row2">
+        <a-row
+          :gutter="24"
+          class="row2">
           <a-col :span="12">
             <a-form-item label="所属应用">
-              <a-select v-decorator="[
+              <a-select
+                v-decorator="[
                   'serviceName',
                   { rules: [{ required: true, message: '请选择所属应用' }],initialValue:editModuleInfo.serviceName },
                 ]"
-                        placeholder="请选择所属应用"
-                        @change="selectApply">
+                placeholder="请选择所属应用"
+                @change="selectApply">
                 <template slot="suffixIcon">
                   <img src="@icons/sort.svg" />
                 </template>
-                <a-select-option v-for="(item,index) in cardArr"
-                                 :key="index"
-                                 :value="item.serviceId">
+                <a-select-option
+                  v-for="(item,index) in cardArr"
+                  :key="index"
+                  :value="item.serviceId">
                   {{ item.name }}
                 </a-select-option>
               </a-select>
@@ -193,11 +220,12 @@
           </a-col>
           <a-col :span="12">
             <a-form-item label="上级目录">
-              <a-select v-decorator="[
+              <a-select
+                v-decorator="[
                   'pid',
                   { rules: [{ required: true, message: '请选择上级目录' }],initialValue:editModuleInfo.pid },
                 ]"
-                        placeholder="请选择">
+                placeholder="请选择">
                 <template slot="suffixIcon">
                   <img src="@icons/sort.svg" />
                 </template>
@@ -206,9 +234,10 @@
                 </template>
                 <template>
 
-                  <a-select-option v-for="(item,index) in byServiceIdModuleArr"
-                                   :key="index"
-                                   :value="item.code">
+                  <a-select-option
+                    v-for="(item,index) in byServiceIdModuleArr"
+                    :key="index"
+                    :value="item.code">
                     {{ item.name }}
                   </a-select-option>
                 </template>
@@ -216,28 +245,33 @@
             </a-form-item>
           </a-col>
         </a-row>
-        <a-row :gutter="24"
-               class="row3">
+        <a-row
+          :gutter="24"
+          class="row3">
           <a-col :span="12">
             <a-form-item label="权限路由">
-              <a-input placeholder="请输入权限路由"
-                       v-decorator="['route',{rules: [{ required: true, message: '权限路由不能为空!' }],initialValue:editModuleInfo.route}]" />
+              <a-input
+                placeholder="请输入权限路由"
+                v-decorator="['route',{rules: [{ required: true, message: '权限路由不能为空!' }],initialValue:editModuleInfo.route}]" />
             </a-form-item>
           </a-col>
           <a-col :span="12">
             <a-form-item label="访问路由">
-              <a-input placeholder="请输入访问路由"
-                       v-decorator="['url',{rules: [{ required: true, message: '访问路由不能为空!' }],initialValue:editModuleInfo.url}]" />
+              <a-input
+                placeholder="请输入访问路由"
+                v-decorator="['url',{rules: [{ required: true, message: '访问路由不能为空!' }],initialValue:editModuleInfo.url}]" />
             </a-form-item>
           </a-col>
         </a-row>
       </a-form>
       <template slot="footer">
-        <a-button key="back"
-                  @click="cancelEdit">取消</a-button>
-        <a-button key="submit"
-                  type="primary"
-                  @click="saveEdit">
+        <a-button
+          key="back"
+          @click="cancelEdit">取消</a-button>
+        <a-button
+          key="submit"
+          type="primary"
+          @click="saveEdit">
           <a-icon type="cloud-upload" /> 保存
         </a-button>
       </template>
@@ -268,9 +302,9 @@ export default {
       },
       editId: null, // 点击编辑的时候该行数据对应的id
       editModuleInfo: null, // 要编辑的模块信息
-      serviceId: '',//选择的所属应用对应的编码
-      selectApplyCode: null,//选择的所属应用对应的code
-      byServiceIdModuleArr: [],//通过选择的应用查询出来的模块数组
+      serviceId: '', // 选择的所属应用对应的编码
+      selectApplyCode: null, // 选择的所属应用对应的code
+      byServiceIdModuleArr: [], // 通过选择的应用查询出来的模块数组
       LicenseMObj: null,
       cardArr: [], // 应用（功能）数组
       moduleArr: [], // 模块数组
@@ -373,13 +407,12 @@ export default {
     // 根据选择的应用 查询对应的上级目录 列表
     async selectApply (serviceName) {
       this.serviceId = serviceName
-      //根据应用的serviceId，获取应用的code
-      debugger
-      let record = this.cardArr.filter(item => item.serviceId == this.serviceId)[0]
+      // 根据应用的serviceId，获取应用的code
+      const record = this.cardArr.filter(item => item.serviceId == this.serviceId)[0]
       this.selectApplyCode = record.code
       console.log(this.selectApplyCode, 'this.selectApplyCode11111111111')
-      //查询应用下的模块
-      const data = await this.ModuleMObj.findCardResources(this.serviceId);
+      // 查询应用下的模块
+      const data = await this.ModuleMObj.findCardResources(this.serviceId)
       this.byServiceIdModuleArr = data
       console.log(data, '黄河入海流')
     },
@@ -463,7 +496,6 @@ export default {
     async saveModule () {
       const _this = this
       _this.form.validateFields(async (err, values) => {
-        debugger
         if (!err) {
           const formData = JSON.parse(JSON.stringify(values))
           if (formData.pid == '0') {
@@ -482,8 +514,19 @@ export default {
       })
     },
     // 添加弹框的取消事件
-    cancelSave () {
-      this.showAddModule = false
+    cancelSave (e) {
+      const _this = this
+      _this.$confirm({
+        title: '您还未完成添加操作,您确定取消？',
+        content: '',
+        onOk () {
+          _this.showAddModule = false
+        },
+        onCancel () {
+          console.log('Cancel')
+        },
+        class: 'test'
+      })
     },
     // 编辑弹框的取消事件
     cancelEdit () {

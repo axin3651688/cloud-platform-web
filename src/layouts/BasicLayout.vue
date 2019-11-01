@@ -23,7 +23,7 @@
                :collapsible="true"></side-menu>
 
     <a-layout :class="[layoutMode, `content-width-${contentWidth}`]"
-              :style="{ paddingLeft: contentPaddingLeft, minHeight: '100vh' }">
+              :style="{ paddingLeft: contentPaddingLeft, manHeight: '100vh' }">
       <!-- layout header -->
       <global-header :mode="layoutMode"
                      :menus="menus"
