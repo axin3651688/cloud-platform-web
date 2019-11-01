@@ -94,7 +94,7 @@
               <div class="license-foot-a">
                 <div style="display: flex;flex-direction: row;justify-content: space-between;height: 50px;">
                   <div style="display: flex;flex-direction: row;align-items: center;margin-right: 10px">
-                    <img src="@icons/dingwei.svg">数据源
+                    <img src="@icons/dingwei.svg">应用
                   </div>
                   <div style="display: flex;flex-direction: row;align-items: center;flex-grow: 1;justify-content: space-between;">
                     <div v-if="addressState">
@@ -118,9 +118,9 @@
                 </div>
                 <div style="display: flex;flex-direction: row;overflow: hidden;flex-wrap:wrap;flex-grow: 1">
                   <!--info.dpTypes-->
-                  <div v-for="(item,index) in address"
+                  <div v-for="(item,index) in selectArr"
                        :key="index">
-                    <serve-address :src="item.src"
+                    <serve-address :src="item.url"
                                    :name="item.name"
                                    :addressState="addressState"></serve-address>
                   </div>
@@ -131,7 +131,7 @@
                 <!--头部-->
                 <div style="display: flex;flex-direction: row;justify-content: space-between;height: 50px;">
                   <div style="display: flex;flex-direction: row;align-items: center;margin-right: 10px">
-                    <img src="../../assets/icons/shujuyuan.svg">应用
+                    <img src="../../assets/icons/shujuyuan.svg">模块
                   </div>
                   <div style="display: flex;flex-direction: row;align-items: center;flex-grow: 1;justify-content: space-between;">
                     <div v-if="dataSourceState">
@@ -156,9 +156,9 @@
                 <!--内容-->
                 <div style="display: flex;flex-direction: row;overflow: hidden;flex-wrap:wrap;flex-grow: 1">
                   <!--info.cards-->
-                  <div v-for="(item,index) in dataSource"
+                  <div v-for="(item,index) in selectModule"
                        :key="index">
-                    <data-source :src="item.src"
+                    <data-source :src="item.url"
                                  :name="item.name"
                                  :dataSourceState="dataSourceState"></data-source>
                   </div>
@@ -401,7 +401,7 @@
               <a-input placeholder="请输入"
                        v-decorator="[
                   'price',
-                  { rules: [{ required: true, pattern: /^[0-9]*$/, message: '请输入正确的数字！' }],initialValue: editLicenseInfo.price },
+                  { rules: [{ required: true, message: '请输入正确的价格！' }],initialValue: editLicenseInfo.price },
                 ]" />
             </a-form-item>
           </a-col>
@@ -534,6 +534,9 @@ export default {
       // saveFlag: false, // 保存状态,
       cardArr: [], // 应用数组
       moduleArr: [], // 模块数组
+
+      selectArr:[],//已经添加的应用数组
+      selectModule:[],//已经添加的模块数组
       formData: {}, // 表单的数据
       ids: []// 根据勾选的，获得对应牌照信息的id
     }
@@ -723,6 +726,9 @@ export default {
             info.createTime = new Date(info.createTime * 1).toLocaleString()
             info.updateTime = new Date(info.updateTime * 1).toLocaleString()
             this.info = info
+            this.selectArr = this.info.cardList
+            this.selectModule = this.info.moduleList
+            console.log(this.info,'春去秋来小兵最帅')
           }, // 点击行
           doubleclick: (event) => { },
           contextmenu: (event) => { },

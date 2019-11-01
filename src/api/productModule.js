@@ -14,7 +14,7 @@ const api = {
   USER_SIMPLE_INFO_LIST: '/uc/user/user_simple_info_list/',
   VALID_SERVICE_SIGN: '/tc/tenancy/valid_service_sign/',
   //牌照管理相关接口
-  GET_LICENSE_ID: '/upm/license/get_license_id',
+  GET_LICENSE_ID: '/upm/license/find_license_info',
   FIND_LICENSE_LIST: '/upm/license/find_list',
   OPEN_LICENSE: '/upm/license/open_license',
   SAVE_LICENSE: '/upm/license/save',

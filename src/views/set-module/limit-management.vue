@@ -326,9 +326,7 @@ export default {
       // 获取应用数组
       this.moduleArr = await this.LimitMObj.findSystemModule()
 
-      // 获取模块数组
-      this.menuArr = await this.LimitMObj.getResourcesMenu()
-      console.log(this.menuArr, '长城之上是千亿的星空')
+
     },
     // 加载页面 获取数据
     async getData () {
@@ -357,7 +355,10 @@ export default {
     },
 
     // 添加按钮的点击事件
-    addClick () {
+    async  addClick () {
+      // 获取模块数组
+      this.menuArr = await this.LimitMObj.getResourcesMenu()
+      console.log(this.menuArr, '长城之上是千亿的星空')
       this.showAddLimit = true
     },
     //添加功能按钮的点击事件

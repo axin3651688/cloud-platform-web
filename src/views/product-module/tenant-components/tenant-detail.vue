@@ -344,7 +344,7 @@ export default {
           formData.endTime = new Date(formData.endTime).getTime()
           if (formData.beginTime > formData.endTime) {
             const arr = [{
-              message: '失效时间不能再生效时间之前!',
+              message: '失效时间不能在生效时间之前!',
               field: 'endTime'
             }]
             this.form1.setFields({ endTime: { initialValue: formData.endTime, errors: arr } })

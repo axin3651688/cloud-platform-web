@@ -502,7 +502,8 @@ export default {
     // 编辑弹框的确认按钮
     async saveEdit () {
       const _this = this
-      _this.form.validateFields(async (err, values) => {
+      _this.form1.validateFields(async (err, values) => {
+        debugger
         if (!err) {
           const formData = JSON.parse(JSON.stringify(values))
           if (formData.pid == '0') {
