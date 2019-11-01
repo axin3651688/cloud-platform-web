@@ -3,108 +3,92 @@
     <div style="display: flex;flex-direction: row;justify-content: space-between;background-color: #fff;padding: 16px 32px 0 32px">
       <div style="display: flex;flex-direction: row">
         <!-- 类型的选择框 -->
-        <common-drop-down
-          :result="result1"
-          :defaultValue="defaultValue1"
-          @selectCell="selectCell1"
-          class="com-drop-down">
+        <common-drop-down :result="result1"
+                          :defaultValue="defaultValue1"
+                          @selectCell="selectCell1"
+                          class="com-drop-down">
         </common-drop-down>
-        <common-drop-down
-          :result="result"
-          :defaultValue="defaultValue"
-          @selectCell="selectCell"
-          class="com-drop-down-two">
+        <common-drop-down :result="result"
+                          :defaultValue="defaultValue"
+                          @selectCell="selectCell"
+                          class="com-drop-down">
         </common-drop-down>
 
         <!--搜索框-->
-        <common-search
-          :placeholder="'请输入'"
-          style="width: 220px"
-          @inputHandler="inputHandler">
+        <common-search :placeholder="'请输入'"
+                       style="width: 220px"
+                       @inputHandler="inputHandler">
         </common-search>
       </div>
 
-      <common-button
-        @addClick="addClick"
-        @deleteClick="deleteClick"
-        :name1="name1"
-        :name2="name2"
-        :title="'删除后可能会影响使用功能的使用，您确定继续？'"
-        :disabled="selectedRowKeys.length>0?true:false">
+      <common-button @addClick="addClick"
+                     @deleteClick="deleteClick"
+                     :name1="name1"
+                     :name2="name2"
+                     :title="'删除后可能会影响使用功能的使用，您确定继续？'"
+                     :disabled="selectedRowKeys.length>0?true:false">
       </common-button>
     </div>
     <!--表格-->
-    <a-table
-      size="small"
-      class="limit-table"
-      :columns="columns"
-      :dataSource="dataSource"
-      :rowKey="setKey"
-      :pagination="pagination"
-      :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
-      <template
-        slot="zhuangtai"
-        slot-scope="text, record">
+    <a-table size="small"
+             class="limit-table"
+             :columns="columns"
+             :dataSource="dataSource"
+             :rowKey="setKey"
+             :pagination="pagination"
+             :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
+      <template slot="zhuangtai"
+                slot-scope="text, record">
         <!--1代表开-->
-        <a-switch
-          :defaultChecked="record.enable==1?true:false"
-          @change="updataState(record)" />
+        <a-switch :defaultChecked="record.enable==1?true:false"
+                  @change="updataState(record)" />
       </template>
-      <template
-        slot="bianji"
-        slot-scope="text, record">
+      <template slot="bianji"
+                slot-scope="text, record">
         <!--1代表开-->
         <div style="display: flex;justify-content: space-around">
           <span @click="btnClick(record)">
-            <img
-              style="cursor: pointer;"
-              src="@icons/Icon.svg"
-              title="编辑" />
+            <img style="cursor: pointer;"
+                 src="@icons/Icon.svg"
+                 title="编辑" />
           </span>
           <span @click="btnAddClick(record)">
-            <img
-              style="cursor: pointer;"
-              src="@icons/add.svg"
-              title="添加" />
+            <img style="cursor: pointer;"
+                 src="@icons/add.svg"
+                 title="添加" />
           </span>
         </div>
       </template>
     </a-table>
     <!--添加权限-->
-    <a-modal
-      v-model="showAddLimit"
-      :destroyOnClose="true"
-      :maskClosable="false"
-      title="新增权限"
-      :width="350">
-      <a-form
-        :form="form"
-        autocomplete="off">
+    <a-modal v-model="showAddLimit"
+             :destroyOnClose="true"
+             :maskClosable="false"
+             title="新增权限"
+             :width="350">
+      <a-form :form="form"
+              autocomplete="off">
         <a-form-item label="名称">
-          <a-input
-            placeholder="请输入名称"
-            v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],}]" />
+          <a-input placeholder="请输入名称"
+                   v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],}]" />
         </a-form-item>
         <a-form-item label="权限路由">
-          <a-input
-            placeholder="请输入权限路由"
-            v-decorator="['route',{rules: [{ required: true, message: '权限路由不能为空!' }],}]" />
+          <a-input placeholder="请输入权限路由"
+                   v-decorator="['route',{rules: [{ required: true, message: '权限路由不能为空!' }],}]" />
         </a-form-item>
         <a-form-item label="访问路由">
-          <a-input
-            placeholder="请输入访问路由"
-            v-decorator="['url',{rules: [{ required: true, message: '访问路由不能为空!' }],}]" />
+          <a-input placeholder="请输入访问路由"
+                   v-decorator="['url',{rules: [{ required: true, message: '访问路由不能为空!' }],}]" />
         </a-form-item>
         <a-form-item label="上级目录">
           <!-- <a-input placeholder="请选择上级目录"
                    v-decorator="['pid',{rules: [{ required: true, message: '访问路由不能为空!' }],}]" /> -->
 
-          <a-select
-            style="width: 200px"
-            v-decorator="[
-              'pid',
-              { rules: [{ required: true, message: '请选择上级目录' }]},]"
-            placeholder="请选择上级目录">
+          <a-select style="width: 200px"
+                    v-decorator="[
+                  'pid',
+                  { rules: [{ required: true, message: '请选择上级目录' }]},]"
+                    placeholder="请选择上级目录">
             <template slot="suffixIcon">
               <img src="@icons/sort.svg" />
             </template>
@@ -113,118 +97,99 @@
             </template>
             <template>
 
-              <a-select-option
-                v-for="(item,index) in menuArr"
-                :key="index"
-                :value="item.code">
+              <a-select-option v-for="(item,index) in menuArr"
+                               :key="index"
+                               :value="item.code">
                 {{ item.name }}
               </a-select-option>
             </template>
           </a-select>
         </a-form-item>
-        <a-form-item
-          label="状态"
-          style="display: flex">
+        <a-form-item label="状态"
+                     style="display: flex">
           <a-switch defaultChecked />
         </a-form-item>
       </a-form>
       <template slot="footer">
         <div style="display: flex;margin-left: 32px">
-          <a-button
-            key="back"
-            @click="cancelAddLimit"
-            style="margin-right: 32px;">取消</a-button>
-          <a-button
-            key="submit"
-            type="primary"
-            @click="saveAddLimit">
+          <a-button key="back"
+                    @click="cancelAddLimit"
+                    style="margin-right: 32px;">取消</a-button>
+          <a-button key="submit"
+                    type="primary"
+                    @click="saveAddLimit">
             <a-icon type="cloud-upload" /> 保存
           </a-button>
         </div>
       </template>
     </a-modal>
     <!--编辑权限-->
-    <a-modal
-      v-model="showEditLimit"
-      :maskClosable="false"
-      v-if="editLimit"
-      title="编辑权限"
-      :width="350">
-      <a-form
-        :form="form1"
-        autocomplete="off">
+    <a-modal v-model="showEditLimit"
+             :maskClosable="false"
+             v-if="editLimit"
+             title="编辑权限"
+             :width="350">
+      <a-form :form="form1"
+              autocomplete="off">
         <a-form-item label="名称">
-          <a-input
-            placeholder="请输入名称"
-            v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],initialValue:editLimit.name}]" />
+          <a-input placeholder="请输入名称"
+                   v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],initialValue:editLimit.name}]" />
         </a-form-item>
         <a-form-item label="权限路由">
-          <a-input
-            placeholder="请输入权限路由"
-            v-decorator="['route',{rules: [{ required: true, message: '权限路由不能为空!' }],initialValue:editLimit.route}]" />
+          <a-input placeholder="请输入权限路由"
+                   v-decorator="['route',{rules: [{ required: true, message: '权限路由不能为空!' }],initialValue:editLimit.route}]" />
         </a-form-item>
         <a-form-item label="访问路由">
-          <a-input
-            placeholder="请输入访问路由"
-            v-decorator="['url',{rules: [{ required: true, message: '访问路由不能为空!' }],initialValue:editLimit.url}]" />
+          <a-input placeholder="请输入访问路由"
+                   v-decorator="['url',{rules: [{ required: true, message: '访问路由不能为空!' }],initialValue:editLimit.url}]" />
         </a-form-item>
       </a-form>
       <template slot="footer">
         <div style="display: flex;margin-left: 32px">
-          <a-button
-            key="back"
-            @click="cancelEditLimit"
-            style="margin-right: 32px;">取消</a-button>
-          <a-button
-            key="submit"
-            type="primary"
-            @click="saveEditLimit">
+          <a-button key="back"
+                    @click="cancelEditLimit"
+                    style="margin-right: 32px;">取消</a-button>
+          <a-button key="submit"
+                    type="primary"
+                    @click="saveEditLimit">
             <a-icon type="cloud-upload" /> 保存
           </a-button>
         </div>
       </template>
     </a-modal>
     <!--添加功能-->
-    <a-modal
-      v-model="showAddFeatures"
-      :maskClosable="false"
-      :destroyOnClose="true"
-      title="新增权限"
-      :width="350">
-      <a-form
-        :form="form2"
-        autocomplete="off">
+    <a-modal v-model="showAddFeatures"
+             :maskClosable="false"
+             :destroyOnClose="true"
+             title="新增权限"
+             :width="350">
+      <a-form :form="form2"
+              autocomplete="off">
         <a-form-item label="名称">
-          <a-input
-            placeholder="请输入名称"
-            v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],}]" />
+          <a-input placeholder="请输入名称"
+                   v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],}]" />
         </a-form-item>
         <a-form-item label="权限路由">
-          <a-input
-            placeholder="请输入权限路由"
-            v-decorator="['route',{rules: [{ required: true, message: '权限路由不能为空!' }],}]" />
+          <a-input placeholder="请输入权限路由"
+                   v-decorator="['route',{rules: [{ required: true, message: '权限路由不能为空!' }],}]" />
         </a-form-item>
         <a-form-item label="访问路由">
-          <a-input
-            placeholder="请输入访问路由"
-            v-decorator="['url',{rules: [{ required: true, message: '访问路由不能为空!' }],}]" />
+          <a-input placeholder="请输入访问路由"
+                   v-decorator="['url',{rules: [{ required: true, message: '访问路由不能为空!' }],}]" />
         </a-form-item>
-        <a-form-item
-          label="状态"
-          style="display: flex">
+        <a-form-item label="状态"
+                     style="display: flex">
           <a-switch defaultChecked />
         </a-form-item>
       </a-form>
       <template slot="footer">
         <div style="display: flex;margin-left: 32px">
-          <a-button
-            key="back"
-            @click="cancelAddLimit1"
-            style="margin-right: 32px;">取消</a-button>
-          <a-button
-            key="submit"
-            type="primary"
-            @click="saveAddLimit1">
+          <a-button key="back"
+                    @click="cancelAddLimit1"
+                    style="margin-right: 32px;">取消</a-button>
+          <a-button key="submit"
+                    type="primary"
+                    @click="saveAddLimit1">
             <a-icon type="cloud-upload" /> 保存
           </a-button>
         </div>
@@ -264,7 +229,7 @@ export default {
       showAddLimit: false, // 添加权限
       showEditLimit: false, // 编辑权限
       showAddFeatures: false, // 添加功能
-      newPid: null, // 点击添加功能时获得的当前code，作为新添加权限的pid
+      newPid: null,//点击添加功能时获得的当前code，作为新添加权限的pid
       form: this.$form.createForm(this),
       form1: this.$form.createForm(this),
       form2: this.$form.createForm(this),
@@ -360,6 +325,8 @@ export default {
     async getArrData () {
       // 获取应用数组
       this.moduleArr = await this.LimitMObj.findSystemModule()
+
+
     },
     // 加载页面 获取数据
     async getData () {
@@ -394,7 +361,7 @@ export default {
       console.log(this.menuArr, '长城之上是千亿的星空')
       this.showAddLimit = true
     },
-    // 添加功能按钮的点击事件
+    //添加功能按钮的点击事件
     btnAddClick (record) {
       console.log(record, '羌笛吹落梅，让人分不清异乡和故里')
       this.showAddFeatures = true

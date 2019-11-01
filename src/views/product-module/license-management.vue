@@ -588,6 +588,9 @@ export default {
       // saveFlag: false, // 保存状态,
       cardArr: [], // 应用数组
       moduleArr: [], // 模块数组
+
+      selectArr:[],//已经添加的应用数组
+      selectModule:[],//已经添加的模块数组
       formData: {}, // 表单的数据
       ids: []// 根据勾选的，获得对应牌照信息的id
     }
@@ -777,6 +780,9 @@ export default {
             info.createTime = new Date(info.createTime * 1).toLocaleString()
             info.updateTime = new Date(info.updateTime * 1).toLocaleString()
             this.info = info
+            this.selectArr = this.info.cardList
+            this.selectModule = this.info.moduleList
+            console.log(this.info,'春去秋来小兵最帅')
           }, // 点击行
           doubleclick: (event) => { },
           contextmenu: (event) => { },

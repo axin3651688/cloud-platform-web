@@ -60,17 +60,18 @@
       :width="350">
       <a-form :form="form" autocomplete="off">
         <a-form-item label="选择用户">
-          <a-select
-            size="default"
-            style="width: 200px"
-            v-decorator="['userId',{rules: [{ required: true, message: '请选择用户!' }],}]">
-            <template slot="suffixIcon">
-              <img src="@icons/sort.svg" />
-            </template>
-            <a-select-option
-              v-for="(item,index) in owners"
-              :key="index"
-              :value="item.id">
+          <a-select showSearch
+                    placeholder="请选择用户"
+                    optionFilterProp="children"
+                    style="width: 200px"
+                    @focus="handleFocus"
+                    @blur="handleBlur"
+                    @change="handleChangeUser"
+                    :filterOption="filterOption"
+                    v-decorator="['userId',{rules: [{ required: true, message: '请选择用户!' }],}]">
+            <a-select-option v-for="(item,index) in owners"
+                             :key="index"
+                             :value="item.id">
               {{ item.username }}
             </a-select-option>
           </a-select>
@@ -380,7 +381,25 @@ export default {
         }
         _this.showEditAccount = false
       })
-    }
+    },
+
+    //以下几个方法都是处理添加弹框中的下拉搜索框
+    handleChangeUser (value) {
+      debugger
+      console.log(value, 'value到底是什么');
+    },
+    handleBlur () {
+      console.log('blur');
+    },
+    handleFocus () {
+      console.log('focus');
+    },
+    filterOption (input, option) {
+      console.log(input, 'input是个锤子', option, 'option是个鸡毛')
+      return (
+        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      );
+    },
   }
 }
 </script>
@@ -392,7 +411,4 @@ export default {
 /deep/.add-account .ant-modal-footer {
   display: flex !important;
 }
-  .banClick{
-    pointer-events:none
-  }
 </style>
