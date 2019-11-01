@@ -304,7 +304,8 @@ export default {
       name2: '删除',
       result: [
         { name: '应用名称', key: 'name' },
-        { name: '应用描述', key: 'note' }
+        { name: '应用描述', key: 'note' },
+        { name: '服务标识', key: 'serviceId' }
       ],
       selectedRowKeys: [],
       columns: [
@@ -317,7 +318,12 @@ export default {
         {
           title: '应用描述',
           dataIndex: 'note',
-          width: '50%'
+          width: '25%'
+        },
+        {
+          title: '服务标识',
+          dataIndex: 'serviceId',
+          width: '25%'
         },
         {
           title: '状态',
