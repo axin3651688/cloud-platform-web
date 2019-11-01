@@ -119,7 +119,7 @@
     <a-modal
       v-model="ServiceSetting"
       :title="title">
-      <form :form="form">
+      <form :form="form" autocomplete="off">
         <a-row
           :gutter="24"
           class="row1">
@@ -216,7 +216,7 @@
       :destroyOnClose="true"
       v-if="editApply"
       title="编辑应用">
-      <a-form :form="form1">
+      <a-form :form="form1" autocomplete="off">
         <a-form-item label="名称">
           <a-input
             placeholder="请输入"

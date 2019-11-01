@@ -213,6 +213,7 @@
         v-if="current==0">
         <a-form
           :form="form"
+          autocomplete="off"
           @submit="oneSubmit">
           <a-form-item label="牌照名称:"><!--/^[0-9]{1,20}$/-->
             <a-input
@@ -247,6 +248,7 @@
         v-if="current==1">
         <a-form
           :form="form1"
+          autocomplete="off"
           class="step1"
           @submit="handleSubmit">
           <a-form-item label="创建最大公司数:">
@@ -313,6 +315,7 @@
         v-if="current==2">
         <a-form
           :form="form2"
+          autocomplete="off"
           @submit="threeSubmit">
           <a-form-item label="可用应用:">
             <a-select
@@ -383,7 +386,7 @@
       title="牌照编辑"
       :destroyOnClose="true"
     >
-      <a-form :form="form3" v-if="editLicenseInfo">
+      <a-form :form="form3" v-if="editLicenseInfo" autocomplete="off">
         <a-row :gutter="24">
           <a-col :span="12">
             <a-form-item label="牌照名称:">

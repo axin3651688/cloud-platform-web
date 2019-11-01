@@ -47,7 +47,7 @@
         okText="保存"
         cancelText="取消"
         :width="730">
-        <a-form :form="form">
+        <a-form :form="form" autocomplete="off">
           <!-- 表单第一行 -->
           <a-row
             :gutter="24"

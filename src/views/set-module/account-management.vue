@@ -57,7 +57,7 @@
       title="添加员工"
       class="add-account"
       :width="350">
-      <a-form :form="form">
+      <a-form :form="form" autocomplete="off">
         <a-form-item label="选择用户">
           <a-select
             size="default"
@@ -111,7 +111,7 @@
       title="修改员工信息"
       class="add-account"
       :width="350">
-      <a-form :form="form1">
+      <a-form :form="form1" autocomplete="off">
         <a-form-item label="用户名">
           <a-input
             style="width: 200px"

@@ -54,7 +54,8 @@
         <a-form
           style="padding-left: 30px;"
           class="infoShow"
-          :form="form">
+          :form="form"
+          autocomplete="off">
           <a-row
             :gutter="24"
             class="row1">
@@ -136,7 +137,7 @@
       okText="保存"
       cancelText="取消"
       title="修改基本信息">
-      <a-form :form="form1">
+      <a-form :form="form1" autocomplete="off">
         <a-row
           :gutter="24"
           class="row1">

@@ -51,6 +51,7 @@
              title="添加用户"
              :destroyOnClose="true">
       <a-form :form="form"
+              autocomplete="off"
               class="addUser-table">
         <a-form-item label="昵称">
           <a-input placeholder="请输入昵称"
