@@ -162,7 +162,7 @@ class CnbiTenantManagement {
   async getUserSimpleInfoList() {
     let res = await USER_SIMPLE_INFO_LIST({
       page: 1,
-      size: 10
+      size: 1000
     })
     debugger
     return res.data.data

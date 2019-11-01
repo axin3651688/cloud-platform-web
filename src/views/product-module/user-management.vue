@@ -97,7 +97,7 @@
         </a-form-item>
         <a-form-item label="邮箱">
           <a-input placeholder="请输入"
-                   v-decorator="['email',{rules:[{pattern:/^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,message: '请输入正确的邮箱'}]}]" />
+                   v-decorator="['email',{rules:[{ required: true,pattern:/^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,message: '请输入正确的邮箱'}]}]" />
         </a-form-item>
         <a-form-item label="手机号">
           <a-input placeholder="请输入"

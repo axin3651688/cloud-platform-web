@@ -80,6 +80,31 @@
           <a-input placeholder="请输入访问路由"
                    v-decorator="['url',{rules: [{ required: true, message: '访问路由不能为空!' }],}]" />
         </a-form-item>
+        <a-form-item label="上级目录">
+          <!-- <a-input placeholder="请选择上级目录"
+                   v-decorator="['pid',{rules: [{ required: true, message: '访问路由不能为空!' }],}]" /> -->
+
+          <a-select style="width: 200px"
+                    v-decorator="[
+                  'pid',
+                  { rules: [{ required: true, message: '请选择上级目录' }]},]"
+                    placeholder="请选择上级目录">
+            <template slot="suffixIcon">
+              <img src="@icons/sort.svg" />
+            </template>
+            <template>
+              <a-select-option value="0">无 </a-select-option>
+            </template>
+            <template>
+
+              <a-select-option v-for="(item,index) in menuArr"
+                               :key="index"
+                               :value="item.code">
+                {{ item.name }}
+              </a-select-option>
+            </template>
+          </a-select>
+        </a-form-item>
         <a-form-item label="状态"
                      style="display: flex">
           <a-switch defaultChecked />
@@ -300,9 +325,10 @@ export default {
     async getArrData () {
       // 获取应用数组
       this.moduleArr = await this.LimitMObj.findSystemModule()
-      // console.log(this.moduleArr, '长城之上是千亿的星空')
+
       // 获取模块数组
       this.menuArr = await this.LimitMObj.getResourcesMenu()
+      console.log(this.menuArr, '长城之上是千亿的星空')
     },
     // 加载页面 获取数据
     async getData () {
