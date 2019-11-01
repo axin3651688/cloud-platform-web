@@ -46,9 +46,13 @@
       </template>
     </a-table>
     <!--添加模块-->
-    <a-modal v-model="showAddModule"
+    <a-modal :visible="showAddModule"
              :destroyOnClose="true"
+             @ok="saveModule"
+             @cancel="cancelSave"
              :maskClosable="false"
+             okText="保存"
+             cancelText="取消"
              title="添加模块">
       <a-form :form="form"
               autocomplete="off">
@@ -138,15 +142,7 @@
           </a-col>
         </a-row>
       </a-form>
-      <template slot="footer">
-        <a-button key="back"
-                  @click="cancelSave">取消</a-button>
-        <a-button key="submit"
-                  type="primary"
-                  @click="saveModule">
-          <a-icon type="cloud-upload" /> 保存
-        </a-button>
-      </template>
+
     </a-modal>
     <!--编辑模块-->
     <a-modal v-model="showEditModule"
@@ -485,7 +481,18 @@ export default {
     },
     // 添加弹框的取消事件
     cancelSave () {
-      this.showAddModule = false
+      const _this = this
+      _this.$confirm({
+        title: '您还未完成添加操作,您确定取消？',
+        content: '',
+        onOk () {
+          _this.showAddModule = false
+        },
+        onCancel () {
+          console.log('Cancel')
+        },
+        class: 'test'
+      })
     },
     // 编辑弹框的取消事件
     cancelEdit () {
