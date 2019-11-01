@@ -66,7 +66,7 @@
       title="添加接入"
       v-model="showAddApply"
       :destroyOnClose="true">
-      <a-form :form="form">
+      <a-form :form="form" autocomplete="off">
         <a-row :gutter="24">
           <a-col :span="12">
             <a-form-item label="名称">
@@ -178,7 +178,7 @@
     <a-modal
       title="编辑应用"
       v-model="showEditApply">
-      <a-form :form="form1">
+      <a-form :form="form1" autocomplete="off">
         <a-row :gutter="24">
           <a-col :span="12">
             <a-form-item label="名称">

@@ -48,7 +48,7 @@
       title="添加角色"
       :destroyOnClose="true"
       :width="350">
-      <a-form :form="form">
+      <a-form :form="form" autocomplete="off">
         <a-form-item label="名称">
           <a-input
             placeholder="请输入名称"
@@ -89,7 +89,7 @@
       v-model="showEditRole"
       title="角色信息编辑"
       :width="350">
-      <a-form :form="form1">
+      <a-form :form="form1" autocomplete="off">
         <a-form-item label="名称">
           <a-input
             placeholder="请输入名称"

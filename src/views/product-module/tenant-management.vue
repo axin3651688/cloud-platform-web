@@ -41,12 +41,13 @@
       <a-modal
         title="添加租户"
         :visible="visible"
+        :destroyOnClose="true"
         @ok="handleOk"
         @cancel="handleCancel"
         okText="保存"
         cancelText="取消"
         :width="730">
-        <a-form :form="form">
+        <a-form :form="form" autocomplete="off">
           <!-- 表单第一行 -->
           <a-row
             :gutter="24"
@@ -187,7 +188,7 @@
                   <a-form-item label="失效时间">
                     <a-date-picker
                       v-decorator="['endTime',
-                                    {rules: [{ required: true, message: '请选择牌照到期时间!' }]}]" />
+                                    {rules: [{ required: true, message: '请选择牌照到期时间!' }],initialValue:this.$moment('2019-02-21', 'YYYY-MM-DD')}]" />
 
                   </a-form-item>
                 </a-col>

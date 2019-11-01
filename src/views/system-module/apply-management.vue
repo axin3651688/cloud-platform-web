@@ -119,7 +119,7 @@
     <a-modal
       v-model="ServiceSetting"
       :title="title">
-      <form :form="form">
+      <form :form="form" autocomplete="off">
         <a-row
           :gutter="24"
           class="row1">
@@ -190,7 +190,7 @@
               <div class="ant-upload-text">点击上传</div>
             </div>
           </a-upload>
-          <span>只能上传jpg/png文件， 且不超过500kb</span>
+          <span>只能上传jpg/png/svg文件， 且不超过500kb</span>
         </a-form-item>
       </a-form>
       <template slot="footer">
@@ -216,7 +216,7 @@
       :destroyOnClose="true"
       v-if="editApply"
       title="编辑应用">
-      <a-form :form="form1">
+      <a-form :form="form1" autocomplete="off">
         <a-form-item label="名称">
           <a-input
             placeholder="请输入"
