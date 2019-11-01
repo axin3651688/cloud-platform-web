@@ -597,7 +597,7 @@ export default {
     async btnClick (record) {
       const _this = this
       _this.$confirm({
-        title: '编辑会影响所有使用当前牌照的租户，确认进行编辑？',
+        title: '修改牌照将会影响所有使用当前牌照的租户，确认进行继续？',
         content: '',
         onOk () {
           setTimeout(async () => {

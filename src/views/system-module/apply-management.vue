@@ -293,7 +293,7 @@ export default {
   data () {
     return {
       pagination: {
-        pageSize: 8,
+        pageSize: 7,
         hideOnSinglePage: true // 只有一页时是否隐藏分页器
       },
       ApplyMObj: null,

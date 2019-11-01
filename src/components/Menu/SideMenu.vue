@@ -5,15 +5,17 @@
     :collapsible="collapsible"
     v-model="collapsed"
     :trigger="null">
+    <div class="menu" style="max-height:100vh;overflow-y: auto">
     <logo />
-    <s-menu
-      :collapsed="collapsed"
-      :menu="menus"
-      :theme="theme"
-      :mode="mode"
-      @select="onSelect"
-      style="padding: 16px 0px;">
-    </s-menu>
+        <s-menu
+          :collapsed="collapsed"
+          :menu="menus"
+          :theme="theme"
+          :mode="mode"
+          @select="onSelect"
+          style="padding: 16px 0px;">
+        </s-menu>
+    </div>
   </a-layout-sider>
 
 </template>
@@ -267,3 +269,16 @@ export default {
   }
 }
 </script>
+<style scoped>
+  ::-webkit-scrollbar
+  {
+    width:8px;
+    background-color:#001529;
+  }
+  ::-webkit-scrollbar-thumb
+  {
+    border-radius:8px;
+    -webkit-box-shadow:inset 0 0 6px rgba(0,0,0,.3);
+    background-color:#555;
+  }
+</style>

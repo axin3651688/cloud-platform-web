@@ -312,7 +312,7 @@ export default {
     return {
       ThirdPartyApplyObj: null,
       pagination: {
-        pageSize: 8,
+        pageSize: 7,
         hideOnSinglePage: true // 只有一页时是否隐藏分页器
       },
       name1: '添加接入',
