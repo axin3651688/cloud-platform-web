@@ -45,6 +45,7 @@
     <!--添加用户-->
     <a-modal
       v-model="showAddRole"
+      :maskClosable="false"
       title="添加角色"
       :destroyOnClose="true"
       :width="350">
@@ -87,6 +88,7 @@
     <!--角色信息编辑-->
     <a-modal
       v-model="showEditRole"
+      :maskClosable="false"
       title="角色信息编辑"
       :width="350">
       <a-form :form="form1" autocomplete="off">

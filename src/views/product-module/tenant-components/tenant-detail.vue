@@ -8,8 +8,9 @@
         style="display: flex;flex-direction: row;align-items: center;margin-left: 20px;margin-bottom: 29px">
         <img
           v-if="info.logoFile"
-          style="width: 260px;height: 60px;"
-          :src="info.logoFile.url">
+          style="max-width: 260px;max-height: 60px;"
+          :src="info.logoFile.url"
+        >
         <div style="margin-left: 20px;display: flex;flex-direction: column">
           <div>
             <h3 style="font-size: 18px;font-weight: bold;">{{ info.name }}</h3>
@@ -133,6 +134,7 @@
     <a-modal
       v-model="showUpdataInfo"
       :destroyOnClose="true"
+      :maskClosable="false"
       @ok="UpdataInfo"
       okText="保存"
       cancelText="取消"

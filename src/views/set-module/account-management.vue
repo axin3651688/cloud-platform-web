@@ -54,6 +54,7 @@
     <a-modal
       v-model="showAddAccount"
       :destroyOnClose="true"
+      :maskClosable="false"
       title="添加员工"
       class="add-account"
       :width="350">
@@ -108,6 +109,8 @@
     <!--修改员工-->
     <a-modal
       v-model="showEditAccount"
+      :maskClosable="false"
+      :destroyOnClose="true"
       title="修改员工信息"
       class="add-account"
       :width="350">

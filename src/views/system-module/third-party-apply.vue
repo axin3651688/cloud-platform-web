@@ -65,6 +65,7 @@
     <a-modal
       title="添加接入"
       v-model="showAddApply"
+      :maskClosable="false"
       :destroyOnClose="true">
       <a-form :form="form" autocomplete="off">
         <a-row :gutter="24">
@@ -177,6 +178,7 @@
     </a-modal>
     <a-modal
       title="编辑应用"
+      :maskClosable="false"
       v-model="showEditApply">
       <a-form :form="form1" autocomplete="off">
         <a-row :gutter="24">

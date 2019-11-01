@@ -187,6 +187,7 @@
     <!--添加牌照弹框-->
     <a-modal
       v-model="showLicenseModal"
+      :maskClosable="false"
       :destroyOnClose="true"
       footer="">
       <a-steps
@@ -384,6 +385,7 @@
     <a-modal
       v-model="editState"
       title="牌照编辑"
+      :maskClosable="false"
       :destroyOnClose="true"
     >
       <a-form :form="form3" v-if="editLicenseInfo" autocomplete="off">

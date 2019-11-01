@@ -48,6 +48,7 @@
     <!--添加模块-->
     <a-modal v-model="showAddModule"
              :destroyOnClose="true"
+             :maskClosable="false"
              title="添加模块">
       <a-form :form="form"
               autocomplete="off">
@@ -149,6 +150,7 @@
     <!--编辑模块-->
     <a-modal v-model="showEditModule"
              :destroyOnClose="true"
+             :maskClosable="false"
              v-if="editModuleInfo"
              title="编辑">
       <a-form :form="form1"

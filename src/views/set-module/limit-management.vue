@@ -62,6 +62,7 @@
     <!--添加权限-->
     <a-modal v-model="showAddLimit"
              :destroyOnClose="true"
+             :maskClosable="false"
              title="新增权限"
              :width="350">
       <a-form :form="form">
@@ -97,6 +98,7 @@
     </a-modal>
     <!--编辑权限-->
     <a-modal v-model="showEditLimit"
+             :maskClosable="false"
              v-if="editLimit"
              title="编辑权限"
              :width="350">
@@ -129,6 +131,7 @@
     </a-modal>
     <!--添加功能-->
     <a-modal v-model="showAddFeatures"
+             :maskClosable="false"
              :destroyOnClose="true"
              title="新增权限"
              :width="350">

@@ -42,6 +42,7 @@
         title="添加租户"
         :visible="visible"
         :destroyOnClose="true"
+        :maskClosable="false"
         @ok="handleOk"
         @cancel="handleCancel"
         okText="保存"
@@ -188,7 +189,7 @@
                   <a-form-item label="失效时间">
                     <a-date-picker
                       v-decorator="['endTime',
-                                    {rules: [{ required: true, message: '请选择牌照到期时间!' }],initialValue:this.$moment('2019-02-21', 'YYYY-MM-DD')}]" />
+                                    {rules: [{ required: true, message: '请选择牌照到期时间!' }]}]" />
 
                   </a-form-item>
                 </a-col>

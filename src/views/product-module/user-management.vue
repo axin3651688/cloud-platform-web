@@ -49,6 +49,7 @@
     </div>
     <a-modal v-model="showAddUser"
              title="添加用户"
+             :maskClosable="false"
              :destroyOnClose="true">
       <a-form :form="form"
               autocomplete="off"

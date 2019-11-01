@@ -118,6 +118,7 @@
     <!--服务设置-->
     <a-modal
       v-model="ServiceSetting"
+      :maskClosable="false"
       :title="title">
       <form :form="form" autocomplete="off">
         <a-row
@@ -144,6 +145,7 @@
     <a-modal
       v-model="showAddApply"
       :destroyOnClose="true"
+      :maskClosable="false"
       :width="350"
       title="添加应用">
       <a-form :form="form1" autocomplete="off">
@@ -214,6 +216,7 @@
     <a-modal
       v-model="showEditApply"
       :destroyOnClose="true"
+      :maskClosable="false"
       v-if="editApply"
       title="编辑应用">
       <a-form :form="form1" autocomplete="off">
