@@ -164,7 +164,7 @@
           <a-col :span="12">
             <a-form-item label="描述">
               <a-input placeholder="请输入描述"
-                       v-decorator="['note',{initialValue:editModuleInfo.serviceId}]" />
+                       v-decorator="['note',{initialValue:editModuleInfo.note}]" />
             </a-form-item>
           </a-col>
         </a-row>

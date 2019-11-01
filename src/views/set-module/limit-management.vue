@@ -2,17 +2,18 @@
   <div>
     <div style="display: flex;flex-direction: row;justify-content: space-between;background-color: #fff;padding: 16px 32px 0 32px">
       <div style="display: flex;flex-direction: row">
-        <common-drop-down :result="result"
-                          :defaultValue="defaultValue"
-                          @selectCell="selectCell"
-                          class="com-drop-down">
-        </common-drop-down>
         <!-- 类型的选择框 -->
         <common-drop-down :result="result1"
                           :defaultValue="defaultValue1"
                           @selectCell="selectCell1"
                           class="com-drop-down">
         </common-drop-down>
+        <common-drop-down :result="result"
+                          :defaultValue="defaultValue"
+                          @selectCell="selectCell"
+                          class="com-drop-down">
+        </common-drop-down>
+
         <!--搜索框-->
         <common-search :placeholder="'请输入'"
                        style="width: 220px"
@@ -64,7 +65,8 @@
              :destroyOnClose="true"
              title="新增权限"
              :width="350">
-      <a-form :form="form">
+      <a-form :form="form"
+              autocomplete="off">
         <a-form-item label="名称">
           <a-input placeholder="请输入名称"
                    v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],}]" />
@@ -100,7 +102,8 @@
              v-if="editLimit"
              title="编辑权限"
              :width="350">
-      <a-form :form="form1">
+      <a-form :form="form1"
+              autocomplete="off">
         <a-form-item label="名称">
           <a-input placeholder="请输入名称"
                    v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],initialValue:editLimit.name}]" />
@@ -132,7 +135,8 @@
              :destroyOnClose="true"
              title="新增权限"
              :width="350">
-      <a-form :form="form2">
+      <a-form :form="form2"
+              autocomplete="off">
         <a-form-item label="名称">
           <a-input placeholder="请输入名称"
                    v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],}]" />
@@ -145,21 +149,6 @@
           <a-input placeholder="请输入访问路由"
                    v-decorator="['url',{rules: [{ required: true, message: '访问路由不能为空!' }],}]" />
         </a-form-item>
-        <a-form-item label="类型">
-          <a-select style="width: 200px;"
-                    @change="changeType"
-                    v-decorator="['type',{rules: [{ required: true, message: '请选择类型!' }],}]">
-            <template slot="suffixIcon">
-              <img src="@icons/sort.svg" />
-            </template>
-            <a-select-option value="1">
-              目录
-            </a-select-option>
-            <a-select-option value="2">
-              功能
-            </a-select-option>
-          </a-select>
-        </a-form-item>
         <a-form-item label="状态"
                      style="display: flex">
           <a-switch defaultChecked />
@@ -168,11 +157,11 @@
       <template slot="footer">
         <div style="display: flex;margin-left: 32px">
           <a-button key="back"
-                    @click="cancelAddLimit"
+                    @click="cancelAddLimit1"
                     style="margin-right: 32px;">取消</a-button>
           <a-button key="submit"
                     type="primary"
-                    @click="saveAddLimit">
+                    @click="saveAddLimit1">
             <a-icon type="cloud-upload" /> 保存
           </a-button>
         </div>
@@ -212,6 +201,7 @@ export default {
       showAddLimit: false, // 添加权限
       showEditLimit: false, // 编辑权限
       showAddFeatures: false, // 添加功能
+      newPid: null,//点击添加功能时获得的当前code，作为新添加权限的pid
       form: this.$form.createForm(this),
       form1: this.$form.createForm(this),
       form2: this.$form.createForm(this),
@@ -219,7 +209,6 @@ export default {
       name2: '删除',
       result: [
         { name: '名称', key: 'name' },
-        { name: '类型', key: 'type' },
         { name: '权限路由', key: 'route' },
         { name: '访问路由', key: 'url' }
       ],
@@ -234,7 +223,15 @@ export default {
           title: '类型',
           dataIndex: 'type',
           key: 'type',
-          width: '12%'
+          width: '12%',
+          customRender (text, record, index) {
+            if (text == 1) {
+              text = '目录'
+            } else {
+              text = '功能'
+            }
+            return text
+          }
         },
         {
           title: '权限路由',
@@ -300,35 +297,17 @@ export default {
     async getArrData () {
       // 获取应用数组
       this.moduleArr = await this.LimitMObj.findSystemModule()
+      // console.log(this.moduleArr, '长城之上是千亿的星空')
       // 获取模块数组
       this.menuArr = await this.LimitMObj.getResourcesMenu()
-    },
-    // 选择类型时触发的事件
-    changeType (type) {
-      this.type = type
     },
     // 加载页面 获取数据
     async getData () {
       const data = await this.LimitMObj.getResourcesTree()
-      // data.forEach(item => {
-      //   var oDate = new Date(item.updateTime * 1)
-      //   var oYear = oDate.getFullYear()
-      //   var oMonth = oDate.getMonth() + 1
-      //   var oDay = oDate.getDate()
-      //   if (oMonth < 10) {
-      //     oMonth = '0' + oMonth
-      //   }
-      //   if (oDay < 10) {
-      //     oDay = '0' + oDay
-      //   }
-      //   var oTime = oDay + '/' + oMonth + '/' + oYear
-      //   item.updateTime = oTime
-      // })
       this.dataSource = data
 
       // 拷贝数据
       this.dataOld = this.deepCopy(this.dataSource)
-      console.log(data, '死死死isisis')
     },
 
     // 模糊查询的第一个框的选择事件
@@ -341,11 +320,9 @@ export default {
     },
     // 点击搜索框的事件
     async inputHandler (val2) {
-      debugger
       if (!val2) {
         this.dataSource = this.dataOld
       } else {
-        debugger
         this.dataSource = await this.LimitMObj.searchResources(this.selectVal, val2, this.selectVal1)
       }
     },
@@ -354,8 +331,11 @@ export default {
     addClick () {
       this.showAddLimit = true
     },
+    //添加功能按钮的点击事件
     btnAddClick (record) {
+      console.log(record, '羌笛吹落梅，让人分不清异乡和故里')
       this.showAddFeatures = true
+      this.newPid = record.code
     },
     // 删除按钮触发事件
     async deleteClick () {
@@ -393,25 +373,45 @@ export default {
       this.showEditLimit = true
       this.editId = record.id * 1
       this.editLimit = record
-      debugger
     },
 
-    // 添加弹框的取消事件
+    // (一级目录（大添加按钮的）)添加弹框的取消事件
     cancelAddLimit () {
       this.showAddLimit = false
     },
 
-    // 添加弹框的保存按钮事件
+    // (一级目录（大添加按钮的）)添加弹框的保存按钮事件
     async saveAddLimit () {
       const _this = this
       _this.form.validateFields(async (err, values) => {
         if (!err) {
           const formData = JSON.parse(JSON.stringify(values))
-          formData.type = 0
+          formData.type = 1
           await _this.LimitMObj.saveResource(formData)
           // 重新加载最新的数据
           await _this.getData()
           _this.showAddLimit = false
+        }
+      })
+    },
+
+    // （次级目录）添加弹框的取消事件
+    cancelAddLimit1 () {
+      this.showAddFeatures = false
+    },
+
+    // （次级目录）添加弹框的保存按钮事件
+    async saveAddLimit1 () {
+      const _this = this
+      _this.form2.validateFields(async (err, values) => {
+        if (!err) {
+          const formData = JSON.parse(JSON.stringify(values))
+          formData.type = 2
+          formData.pid = this.newPid
+          await _this.LimitMObj.saveResource(formData)
+          // 重新加载最新的数据
+          await _this.getData()
+          _this.showAddFeatures = false
         }
       })
     },
@@ -426,7 +426,6 @@ export default {
         if (!err) {
           const formData = JSON.parse(JSON.stringify(values))
           formData.id = this.editId
-          // formData.type = 3
           await _this.LimitMObj.updateResource(formData)
           // 重新加载最新的数据
           await _this.getData()
