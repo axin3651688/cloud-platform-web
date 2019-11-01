@@ -82,6 +82,7 @@
                 </template>
                 <a-select-option v-for="(item,index) in cardArr"
                                  :key="index"
+                                 v-if="item.enable==1"
                                  :value="item.serviceId">
                   {{ item.name }}
                 </a-select-option>
@@ -185,6 +186,7 @@
                 </template>
                 <a-select-option v-for="(item,index) in cardArr"
                                  :key="index"
+                                 v-if="item.enable==1"
                                  :value="item.serviceId">
                   {{ item.name }}
                 </a-select-option>

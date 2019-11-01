@@ -3,89 +3,83 @@
     <!--头部-->
     <div style="display: flex;flex-direction: row;justify-content: space-between;background-color: #fff;padding: 16px 32px 0 32px">
       <div style="display: flex;flex-direction: row">
-        <common-drop-down
-          :result="result"
-          :defaultValue="'trueName'"
-          @selectCell="selectCell"
-          class="com-drop-down">
+        <common-drop-down :result="result"
+                          :defaultValue="'trueName'"
+                          @selectCell="selectCell"
+                          class="com-drop-down">
         </common-drop-down>
         <!--搜索框-->
-        <common-search
-          :placeholder="'请输入'"
-          style="width: 220px">
+        <common-search :placeholder="'请输入'"
+                       style="width: 220px">
         </common-search>
       </div>
-      <common-button
-        @addClick="addClick"
-        @deleteClick="deleteClick"
-        :disabled="selectedRowKeys.length>0?true:false"
-        :title="'删除后可能会影响使用功能的使用，您确定继续？'"
-        :name1="name1"
-        :name2="name2">
+      <common-button @addClick="addClick"
+                     @deleteClick="deleteClick"
+                     :disabled="selectedRowKeys.length>0?true:false"
+                     :title="'删除后可能会影响使用功能的使用，您确定继续？'"
+                     :name1="name1"
+                     :name2="name2">
       </common-button>
     </div>
     <div style="background-color: #fff">
       <!--表格-->
-      <a-table
-        :pagination="pagination"
-        size="small"
-        :columns="columns"
-        :dataSource="dataSource"
-        :rowKey="setKey"
-        :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
-        <template
-          slot="zhuangtai"
-          slot-scope="text, record">
+      <a-table :pagination="pagination"
+               size="small"
+               :columns="columns"
+               :dataSource="dataSource"
+               :rowKey="setKey"
+               :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
+        <template slot="zhuangtai"
+                  slot-scope="text, record">
           <!--1代表开-->
-          <a-switch
-            :defaultChecked="record.enable==1?true:false"
-            @change="updataState(record)" />
+          <a-switch :defaultChecked="record.enable==1?true:false"
+                    @change="updataState(record)" />
         </template>
-        <template
-          slot="caozuo"
-          slot-scope="text, record">
+        <template slot="caozuo"
+                  slot-scope="text, record">
           <span @click="btnClick(record)">
-            <img style="margin-left: 16px;cursor: pointer;" src="@icons/Icon.svg" title="编辑">
+            <img style="margin-left: 16px;cursor: pointer;"
+                 src="@icons/Icon.svg"
+                 title="编辑">
           </span>
         </template>
       </a-table>
     </div>
     <!--添加员工-->
-    <a-modal
-      v-model="showAddAccount"
-      :destroyOnClose="true"
-      :maskClosable="false"
-      title="添加员工"
-      class="add-account"
-      :width="350">
-      <a-form :form="form" autocomplete="off">
+    <a-modal v-model="showAddAccount"
+             :destroyOnClose="true"
+             :maskClosable="false"
+             title="添加员工"
+             class="add-account"
+             :width="350">
+      <a-form :form="form"
+              autocomplete="off">
         <a-form-item label="选择用户">
-          <a-select
-            size="default"
-            style="width: 200px"
-            v-decorator="['userId',{rules: [{ required: true, message: '请选择用户!' }],}]">
-            <template slot="suffixIcon">
-              <img src="@icons/sort.svg" />
-            </template>
-            <a-select-option
-              v-for="(item,index) in owners"
-              :key="index"
-              :value="item.id">
+          <a-select showSearch
+                    placeholder="请选择用户"
+                    optionFilterProp="children"
+                    style="width: 200px"
+                    @focus="handleFocus"
+                    @blur="handleBlur"
+                    @change="handleChangeUser"
+                    :filterOption="filterOption"
+                    v-decorator="['userId',{rules: [{ required: true, message: '请选择用户!' }],}]">
+            <a-select-option v-for="(item,index) in owners"
+                             :key="index"
+                             :value="item.id">
               {{ item.username }}
             </a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item label="分配角色">
-          <a-select
-            mode="tags"
-            size="default"
-            style="width: 200px"
-            @change="handleChange"
-            v-decorator="['roleIds',{rules: [{ required: true, message: '角色不能为空!' }],}]">
-            <a-select-option
-              v-for="(item,index) in roleArr"
-              :key="index"
-              :value="item.id">
+          <a-select mode="tags"
+                    size="default"
+                    style="width: 200px"
+                    @change="handleChange"
+                    v-decorator="['roleIds',{rules: [{ required: true, message: '角色不能为空!' }],}]">
+            <a-select-option v-for="(item,index) in roleArr"
+                             :key="index"
+                             :value="item.id">
               {{ item.name }}
             </a-select-option>
           </a-select>
@@ -93,45 +87,40 @@
       </a-form>
       <template slot="footer">
         <div style="display: flex;margin-left: 32px">
-          <a-button
-            key="back"
-            @click="cancelAddAccount"
-            style="margin-right: 32px">取消</a-button>
-          <a-button
-            key="submit"
-            type="primary"
-            @click="saveAddAccount">
+          <a-button key="back"
+                    @click="cancelAddAccount"
+                    style="margin-right: 32px">取消</a-button>
+          <a-button key="submit"
+                    type="primary"
+                    @click="saveAddAccount">
             <a-icon type="cloud-upload" /> 保存
           </a-button>
         </div>
       </template>
     </a-modal>
     <!--修改员工-->
-    <a-modal
-      v-model="showEditAccount"
-      :maskClosable="false"
-      :destroyOnClose="true"
-      title="修改员工信息"
-      class="add-account"
-      :width="350">
-      <a-form :form="form1" autocomplete="off">
+    <a-modal v-model="showEditAccount"
+             :maskClosable="false"
+             :destroyOnClose="true"
+             title="修改员工信息"
+             class="add-account"
+             :width="350">
+      <a-form :form="form1"
+              autocomplete="off">
         <a-form-item label="用户名">
-          <a-input
-            style="width: 200px"
-            v-model="userName"
-            :disabled="true" />
+          <a-input style="width: 200px"
+                   v-model="userName"
+                   :disabled="true" />
         </a-form-item>
         <a-form-item label="分配角色">
-          <a-select
-            mode="tags"
-            size="default"
-            style="width: 200px"
-            @change="handleChange"
-            v-decorator="['roleIds',{rules: [{ required: true, message: '角色不能为空!' }],}]">
-            <a-select-option
-              v-for="(item,index) in roleArr"
-              :key="index"
-              :value="item.id">
+          <a-select mode="tags"
+                    size="default"
+                    style="width: 200px"
+                    @change="handleChange"
+                    v-decorator="['roleIds',{rules: [{ required: true, message: '角色不能为空!' }],}]">
+            <a-select-option v-for="(item,index) in roleArr"
+                             :key="index"
+                             :value="item.id">
               {{ item.name }}
             </a-select-option>
           </a-select>
@@ -139,14 +128,12 @@
       </a-form>
       <template slot="footer">
         <div style="display: flex;margin-left: 32px">
-          <a-button
-            key="back"
-            @click="cancelEditAccount"
-            style="margin-right: 32px">取消</a-button>
-          <a-button
-            key="submit"
-            type="primary"
-            @click="saveEditAccount">
+          <a-button key="back"
+                    @click="cancelEditAccount"
+                    style="margin-right: 32px">取消</a-button>
+          <a-button key="submit"
+                    type="primary"
+                    @click="saveEditAccount">
             <a-icon type="cloud-upload" /> 保存
           </a-button>
         </div>
@@ -207,22 +194,22 @@ export default {
       ],
       selectedRowKeys: [],
       columns: [
-        { title: '名称',
+        {          title: '名称',
           dataIndex: 'trueName'
         },
-        { title: '用户名',
+        {          title: '用户名',
           dataIndex: 'userName'
         },
-        { title: '手机号',
+        {          title: '手机号',
           dataIndex: 'phone'
         },
-        { title: '邮箱',
+        {          title: '邮箱',
           dataIndex: 'email'
         },
-        { title: '角色',
+        {          title: '角色',
           dataIndex: 'roleName'
         },
-        { title: '更新时间',
+        {          title: '更新时间',
           dataIndex: 'updateTime',
           customRender (text, record, index) {
             var oDate = new Date(text * 1)
@@ -240,11 +227,11 @@ export default {
             return text
           }
         },
-        { title: '状态',
+        {          title: '状态',
           dataIndex: 'enable',
           scopedSlots: { customRender: 'zhuangtai' }
         },
-        { title: '操作',
+        {          title: '操作',
           dataIndex: 'name7',
           scopedSlots: { customRender: 'caozuo' }
         }
@@ -268,6 +255,8 @@ export default {
   methods: {
     // 进入页面  加载数据
     async getData () {
+      // 筛选用户(待用 估计不需要了)
+      // getUserSimpleInfoList({ field: 'username', value: val2 })
       const data = await this.AccountMObj.accountPage()
       // console.log(data, '少年的你')
       this.dataSource = data
@@ -380,7 +369,25 @@ export default {
         }
         _this.showEditAccount = false
       })
-    }
+    },
+
+    //以下几个方法都是处理添加弹框中的下拉搜索框
+    handleChangeUser (value) {
+      debugger
+      console.log(value, 'value到底是什么');
+    },
+    handleBlur () {
+      console.log('blur');
+    },
+    handleFocus () {
+      console.log('focus');
+    },
+    filterOption (input, option) {
+      console.log(input, 'input是个锤子', option, 'option是个鸡毛')
+      return (
+        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      );
+    },
   }
 }
 </script>

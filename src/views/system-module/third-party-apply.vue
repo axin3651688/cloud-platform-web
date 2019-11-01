@@ -156,7 +156,7 @@
               <a-textarea
                 :rows="6"
                 placeholder="请输入"
-                v-decorator="['note',{ rules: [{ required: true, message: '请输入名称' }] }]" />
+                v-decorator="['note',{ rules: [{ required: true, message: '请输入描述' }] }]" />
             </a-form-item>
           </a-col>
         </a-row>
@@ -260,7 +260,7 @@
                     </div>
 
                   </a-upload>
-                  <span>只能上传jpg/png文件， 且不超过500kb</span>
+                  <span>只能上传svg/jpg/png文件， 且不超过500kb</span>
                 </a-form-item>
               </a-col>
             </a-row>
@@ -270,7 +270,7 @@
               <a-textarea
                 :rows="6"
                 placeholder="请输入"
-                v-decorator="['note',{ rules: [{ required: true, message: '请输入名称！' }] }]" />
+                v-decorator="['note',{ rules: [{ required: true, message: '请输入描述！' }] }]" />
             </a-form-item>
           </a-col>
         </a-row>
