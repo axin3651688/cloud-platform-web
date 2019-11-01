@@ -89,20 +89,21 @@
     <a-modal
       v-model="showEditRole"
       :maskClosable="false"
+      v-if="editApply"
       title="角色信息编辑"
       :width="350">
       <a-form :form="form1" autocomplete="off">
         <a-form-item label="名称">
           <a-input
             placeholder="请输入名称"
-            v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],}]" />
+            v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],initialValue: editApply.name}]" />
         </a-form-item>
         <a-form-item label="描述">
           <a-textarea
             placeholder="请输入描述"
             v-decorator="[
               'note',
-              { rules: [{ required: true, pattern: /^[\S\n\s]{0,150}$/, message: '请输入150字以内的描述！' }] },
+              { rules: [{ required: true, pattern: /^[\S\n\s]{0,150}$/, message: '请输入150字以内的描述！' }],initialValue: editApply.note },
             ]" />
         </a-form-item>
       </a-form>
@@ -136,6 +137,7 @@ export default {
   name: 'RoleManagement',
   data () {
     return {
+      editApply: null, // 要编辑的应用信息
       name1: '添加',
       name2: '删除',
       RoleMObj: null,
@@ -246,6 +248,7 @@ export default {
     btnClick (record) {
       this.showEditRole = true
       this.editId = record.id * 1
+      this.editApply = record
     },
 
     // 修改角色状态的点击事件

@@ -385,6 +385,7 @@ export default {
       this.title = 'XX应用服务配置'
     },
     btnClickEdit (record) {
+      debugger
       this.fileList.iconId = record.iconId
       this.fileList.url = record.iconUrl
       this.showEditApply = true

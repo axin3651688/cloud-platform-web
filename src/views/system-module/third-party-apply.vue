@@ -163,20 +163,21 @@
     </a-modal>
     <a-modal title="编辑应用"
              :maskClosable="false"
-             v-model="showEditApply">
+             v-model="showEditApply"
+             v-if="editApply">
       <a-form :form="form1"
               autocomplete="off">
         <a-row :gutter="24">
           <a-col :span="12">
             <a-form-item label="名称">
               <a-input placeholder="请输入"
-                       v-decorator="['name',{ rules: [{ required: true, message: '请输入名称！' }] }]" />
+                       v-decorator="['name',{ rules: [{ required: true, message: '请输入名称！' }] ,initialValue: editApply.name}]" />
             </a-form-item>
           </a-col>
           <a-col :span="12">
             <a-form-item label="回调地址">
               <a-input placeholder="请输入"
-                       v-decorator="['redirectUri',{ rules: [{ required: true, message: '请输入回调地址！' }] }]" />
+                       v-decorator="['redirectUri',{ rules: [{ required: true, message: '请输入回调地址！' }] ,initialValue: editApply.redirectUri}]" />
             </a-form-item>
           </a-col>
         </a-row>
@@ -184,13 +185,13 @@
           <a-col :span="12">
             <a-form-item label="TOKEN">
               <a-input placeholder="请输入"
-                       v-decorator="['appId',{ rules: [{ required: true, message: '请输入TOKEN！' }] }]" />
+                       v-decorator="['appId',{ rules: [{ required: true, message: '请输入TOKEN！' }] ,initialValue: editApply.appId}]" />
             </a-form-item>
           </a-col>
           <a-col :span="12">
             <a-form-item label="APIKEY">
               <a-input placeholder="请输入"
-                       v-decorator="['appKey',{ rules: [{ required: true, message: '请输入APIKEY！' }] }]" />
+                       v-decorator="['appKey',{ rules: [{ required: true, message: '请输入APIKEY！' }],initialValue: editApply.appKey }]" />
             </a-form-item>
           </a-col>
         </a-row>
@@ -201,7 +202,7 @@
                 <a-form-item label="类型">
 
                   <a-select style="width: 224px;"
-                            v-decorator="['type',{rules: [{ required: true, message: '请选择类型!' }],}]">
+                            v-decorator="['type',{rules: [{ required: true, message: '请选择类型!' }],initialValue: editApply.type}]">
                     <template slot="suffixIcon">
                       <img src="@icons/sort.svg" />
                     </template>
@@ -244,7 +245,7 @@
             <a-form-item label="描述">
               <a-textarea :rows="6"
                           placeholder="请输入"
-                          v-decorator="['note',{ rules: [{ required: true, message: '请输入描述！' }] }]" />
+                          v-decorator="['note',{ rules: [{ required: true, message: '请输入描述！' }] ,initialValue: editApply.note}]" />
             </a-form-item>
           </a-col>
         </a-row>
@@ -355,6 +356,7 @@ export default {
       dataSource: [],
       showAddApply: false, // 添加应用
       showEditApply: false,
+      editApply: null, // 要编辑的应用信息
       form: this.$form.createForm(this),
       form1: this.$form.createForm(this),
       disable: false,
@@ -407,7 +409,7 @@ export default {
 
     // 设置每行id为主键
     setKey (record) {
-      return record.id
+      return record.id    
     },
     // 设置每行class名称
     setStyle () {
@@ -415,10 +417,14 @@ export default {
     },
     // 编辑按钮的点击事件
     btnClickEdit (record) {
+      debugger
       this.showEditApply = true
       this.editId = record.id * 1
-      this.fileList.url = record.icon
-      this.fileList.icon = record.iconUrl
+      this.fileList.url = record.iconFile.thumbUrl
+      this.fileList.icon = record.icon
+      this.editApply = record
+      
+      
     },
     beforeUpload (file) {
       const fileType = ['image/jpeg', 'image/png', 'image/svg+xml']

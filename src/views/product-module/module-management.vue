@@ -280,10 +280,10 @@ export default {
       defaultValue: 'name',
       result: [
         { name: '名称', key: 'name' },
-        { name: '所属应用', key: 'serviceName' },
+        // { name: '所属应用', key: 'serviceName' },
         { name: '权限路由', key: 'route' },
         { name: '访问路由', key: 'url' },
-        { name: '服务标识', key: 'serviceId' }
+        // { name: '服务标识', key: 'serviceId' }
 
       ],
       columns: [
