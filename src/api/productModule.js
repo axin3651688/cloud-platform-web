@@ -280,7 +280,7 @@ export function GET_RESOURCES_CARD() {
 export function DELETE_LICENSE_AUTHORITY(parameter) {
   return axios2({
     url: api.DELETE_LICENSE_AUTHORITY,
-    method: 'post',
+    method: 'delete',
     params: parameter
   })
 }
