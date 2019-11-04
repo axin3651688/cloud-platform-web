@@ -10,7 +10,7 @@
         {{ name }}
       </div>
       <div v-if="!addressState">
-        <a-button style="width: 45px;height: 45px;background-color: #E8E8E8" @click="btnClick()">
+        <a-button style="width: 45px;height: 45px;background-color: #E8E8E8" @click="btnClick">
           <img src="../../../assets/icons/lajitong.svg"/>
         </a-button>
       </div>
@@ -21,7 +21,7 @@
 <script>
 export default {
   name: 'ServeAddress',
-  props: ['src', 'name', 'addressState'],
+  props: ['src', 'name', 'addressState','value'],
   data () {
     return {
       flag: true
@@ -29,7 +29,9 @@ export default {
   },
   methods: {
     btnClick () {
-      this.flag = false
+      debugger
+      // this.flag = this.value
+      this.$emit('del',this.value)
     }
   }
 }

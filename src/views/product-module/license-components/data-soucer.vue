@@ -6,7 +6,7 @@
         style="width: 64px;height: 64px;border-radius: 4px;"
         :src="src"/>
       <span style="margin: 5px 0">{{ name }}</span>
-      <a-badge count="X" class="icon-cha" v-if="!dataSourceState" @click="aclick()">
+      <a-badge count="X" class="icon-cha" v-if="!dataSourceState" @click="aclick">
         <span href="#" class="head-example" ></span>
       </a-badge>
     </div>
@@ -16,7 +16,7 @@
 <script>
 export default {
   name: 'DataSoucer',
-  props: ['src', 'dataSourceState', 'name'],
+  props: ['src', 'dataSourceState', 'name','value'],
   data () {
     return {
       flag: true
@@ -25,7 +25,8 @@ export default {
   methods: {
     aclick () {
       console.log('11111111111111111')
-      this.flag = false
+      // this.flag = false
+      this.$emit('del',this.value)
     }
   }
 }

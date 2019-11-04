@@ -8,7 +8,9 @@ import {
   UPDATE_LICENSE,
   UPDATE_VAIL_LICENSE,
   GET_RESOURCES_CARD,
-  GET_RESOURCES_MODULE
+  GET_RESOURCES_MODULE,
+  DELETE_LICENSE_AUTHORITY,
+  BATCH_LICENSE_AUTHORITY
 } from '@/api/productModule'
 /**
  * @desc    : 该类为牌照管理类，为了实现页面代码更加简单清晰而写的，
@@ -150,6 +152,35 @@ class CnbiLicenseManagement {
   async getResourcesModule() {
     let res = await GET_RESOURCES_MODULE();
     return res.data
+  }
+
+  /** 
+   * @desc    : 删除牌照权限
+   * @author  : zj
+   * @date  : 2019/11/04
+   * @param   {牌照id,应用id} 
+   * @return  {} 
+   * @update   by   
+   */
+  async deleteLicenseAuthority(licenseId, resourcesId) {
+    let res = await DELETE_LICENSE_AUTHORITY({
+      licenseId: licenseId - 0,
+      resourcesId: resourcesId - 0
+    });
+    return res
+  }
+
+  /** 
+   * @desc    : 添加牌照权限
+   * @author  : zj
+   * @date  : 2019/11/04
+   * @param   {} 
+   * @return  {} 
+   * @update   by   
+   */
+  async batchLicenseAuthority(licenseAuthorityBatchDto) {
+    let res = await BATCH_LICENSE_AUTHORITY(licenseAuthorityBatchDto);
+    return res
   }
 }
 export default CnbiLicenseManagement

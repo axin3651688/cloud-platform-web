@@ -21,9 +21,10 @@ const api = {
   DELETE_LICENSE: '/upm/license/bat_delete',
   UPDATE_LICENSE: '/upm/license/update',
   UPDATE_VAIL_LICENSE: '/upm/license_authority/update_vail_license',
-  GET_RESOURCES_CARD: '/upm/resource/get_resources_card',
-
-  GET_RESOURCES_MODULE: '/upm/resource/get_resources_module',
+  GET_RESOURCES_CARD: '/upm/resource/get_resources_card', //查看应用列表
+  DELETE_LICENSE_AUTHORITY: '/upm/license_authority/delete', //删除牌照权限
+  BATCH_LICENSE_AUTHORITY: '/upm/license_authority/batch', //添加牌照权限
+  GET_RESOURCES_MODULE: '/upm/resource/get_resources_module', //查看模块列表
   GET_RESOURCES_MENU: '/upm/resource/get_resources_menu',
   //模块管理相关接口
   // GET_RESOURCES_MODULE: '/upm/resource/get_resources_module',
@@ -265,6 +266,38 @@ export function GET_RESOURCES_CARD() {
   return axios2({
     url: api.GET_RESOURCES_CARD,
     method: 'get'
+  })
+}
+
+/** 
+ * @desc    : 删除牌照权限
+ * @author  : zj
+ * @date  : 2019/11/04
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function DELETE_LICENSE_AUTHORITY(parameter) {
+  return axios2({
+    url: api.DELETE_LICENSE_AUTHORITY,
+    method: 'post',
+    params: parameter
+  })
+}
+
+/** 
+ * @desc    : 添加牌照权限
+ * @author  : zj
+ * @date  : 2019/11/04
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function BATCH_LICENSE_AUTHORITY(parameter) {
+  return axios2({
+    url: api.BATCH_LICENSE_AUTHORITY,
+    method: 'post',
+    data: parameter
   })
 }
 /**
