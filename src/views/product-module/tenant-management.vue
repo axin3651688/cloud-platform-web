@@ -4,60 +4,69 @@
     <div>
       <div style="display: flex;flex-direction: row;justify-content: space-between;background-color: #fff;padding: 16px 32px 0 32px">
         <div style="display: flex;flex-direction: row;">
-          <common-drop-down :result="result"
-                            class="com-drop-down"
-                            :defaultValue="'name'"
-                            @selectCell="selectCell">
+          <common-drop-down
+            :result="result"
+            class="com-drop-down"
+            :defaultValue="'name'"
+            @selectCell="selectCell">
           </common-drop-down>
           <!--搜索框-->
-          <common-search :placeholder="version"
-                         style="width: 220px;float: none"
-                         @inputHandler="inputHandler">
+          <common-search
+            :placeholder="version"
+            style="width: 220px;float: none"
+            @inputHandler="inputHandler">
           </common-search>
         </div>
         <!--按钮-->
-        <common-button style="float: none;"
-                       :name1="name1"
-                       :name2="name2"
-                       :title="'删除后无法恢复，您确定继续？'"
-                       :disabled="tenancyIds.length>0?true:false"
-                       @addClick="addClick"
-                       @deleteClick="deleteClick">
+        <common-button
+          style="float: none;"
+          :name1="name1"
+          :name2="name2"
+          :title="'删除后无法恢复，您确定继续？'"
+          :disabled="tenancyIds.length>0?true:false"
+          @addClick="addClick"
+          @deleteClick="deleteClick">
         </common-button>
       </div>
       <!--表格-->
-      <common-table class="tencent-table"
-                    :columns="columns"
-                    :data="data"
-                    @getIds="getIds"
-                    ref="table"></common-table>
+      <common-table
+        class="tencent-table"
+        :columns="columns"
+        :data="data"
+        @getIds="getIds"
+        ref="table"></common-table>
     </div>
     <!--添加租户弹框-->
     <div v-if="visible">
-      <a-modal title="添加租户"
-               :visible="visible"
-               :destroyOnClose="true"
-               :maskClosable="false"
-               @ok="handleOk"
-               @cancel="handleCancel"
-               okText="保存"
-               cancelText="取消"
-               :width="730">
-        <a-form :form="form"
-                autocomplete="off">
+      <a-modal
+        title="添加租户"
+        :visible="visible"
+        :destroyOnClose="true"
+        :maskClosable="false"
+        @ok="handleOk"
+        @cancel="handleCancel"
+        okText="保存"
+        cancelText="取消"
+        :width="730">
+        <a-form
+          :form="form"
+          autocomplete="off">
           <!-- 表单第一行 -->
-          <a-row :gutter="24"
-                 class="row1">
+          <a-row
+            :gutter="24"
+            class="row1">
             <a-col :span="12">
               <a-form-item label="名称">
-                <a-input placeholder="请输入名称"
-                         v-decorator="['name',{rules: [{ required: true, message: '名称不能为空' }]}]" />
+                <a-input
+                  placeholder="请输入名称"
+                  v-decorator="['name',{rules: [{ required: true, message: '名称不能为空' }]}]" />
               </a-form-item>
             </a-col>
             <a-col :span="12">
               <a-form-item label="营业执照">
-                <a-input placeholder="目录"
-                         v-decorator="['societyCode',{rules: [{ required: true, message: '营业执照不能为空!' }],}]" />
+                <a-input
+                  placeholder="目录"
+                  v-decorator="['societyCode',{rules: [{ required: true, message: '营业执照不能为空!' }],}]" />
               </a-form-item>
             </a-col>
           </a-row>
@@ -69,9 +78,10 @@
                   <template slot="suffixIcon">
                     <img src="@icons/sort.svg" />
                   </template>
-                  <a-select-option v-for="(item,index) in owners"
-                                   :key="index"
-                                   :value="item.id">
+                  <a-select-option
+                    v-for="(item,index) in owners"
+                    :key="index"
+                    :value="item.id">
                     {{ item.nickName }}
                   </a-select-option>
                 </a-select>
@@ -83,10 +93,11 @@
                   <template slot="suffixIcon">
                     <img src="@icons/sort.svg" />
                   </template>
-                  <a-select-option v-for="(item,index) in LicenseList"
-                                   :key="index"
-                                   v-if="item.enable==1"
-                                   :value="item.id">
+                  <a-select-option
+                    v-for="(item,index) in LicenseList"
+                    :key="index"
+                    v-if="item.enable==1"
+                    :value="item.id">
                     {{ item.name }}
                   </a-select-option>
                 </a-select>
@@ -116,8 +127,9 @@
             </a-col>
             <a-col :span="12">
               <a-form-item label="服务标识">
-                <a-input placeholder="请输入服务标识"
-                         v-decorator="['serviceId',{rules: [{ required: true, message: '服务标识不能为空!' }],}]" />
+                <a-input
+                  placeholder="请输入服务标识"
+                  v-decorator="['serviceId',{rules: [{ required: true, message: '服务标识不能为空!' }],}]" />
               </a-form-item>
             </a-col>
           </a-row>
@@ -126,19 +138,22 @@
           <a-row :gutter="24">
             <a-col :span="12">
               <a-form-item label="访问地址">
-                <a-input addonBefore="Http://"
-                         style="width: 329px"
-                         placeholder="请输入"
-                         v-decorator="['url']" />
+                <a-input
+                  addonBefore="Http://"
+                  style="width: 329px"
+                  placeholder="请输入"
+                  v-decorator="['url']" />
               </a-form-item>
             </a-col>
             <a-col :span="12">
               <a-form-item label="联系电话">
-                <a-input v-decorator="['tel',{rules: [{ required: true,pattern: /^[0-9]*$/, message: '电话不能为空且为数字!' }],}]"
-                         style="width: 100%">
-                  <a-select slot="addonBefore"
-                            v-decorator="['prefix', { initialValue: '86' }]"
-                            style="width: 70px">
+                <a-input
+                  v-decorator="['tel',{rules: [{ required: true,pattern: /^[0-9]*$/, message: '电话不能为空且为数字!' }],}]"
+                  style="width: 100%">
+                  <a-select
+                    slot="addonBefore"
+                    v-decorator="['prefix', { initialValue: '86' }]"
+                    style="width: 70px">
                     <template slot="suffixIcon">
                       <img src="@icons/sort.svg" />
                     </template>
@@ -159,8 +174,9 @@
             <a-col :span="12">
               <!-- 第五行左1 -->
               <a-form-item label="租户地址">
-                <a-input placeholder="请输入租户地址"
-                         v-decorator="['address',{rules: [{ required: true, message: '租户地址不能为空!' }],}]" />
+                <a-input
+                  placeholder="请输入租户地址"
+                  v-decorator="['address',{rules: [{ required: true, message: '租户地址不能为空!' }],}]" />
               </a-form-item>
               <!-- 第五行左2 -->
               <a-row :gutter="24">
@@ -171,7 +187,8 @@
                 </a-col>
                 <a-col :span="12">
                   <a-form-item label="失效时间">
-                    <a-date-picker v-decorator="['endTime',
+                    <a-date-picker
+                      v-decorator="['endTime',
                                     {rules: [{ required: true, message: '请选择牌照到期时间!' }]}]" />
 
                   </a-form-item>
@@ -180,19 +197,22 @@
             </a-col>
             <a-col :span="12">
               <!-- 第五行右侧企业标识 -->
-              <a-form-item label="企业标识"
-                           class="qybs">
-                <a-upload name="file"
-                          :beforeUpload="beforeUpload"
-                          :showUploadList="false"
-                          listType="picture-card"
-                          class="avatar-uploader"
-                          :customRequest="customRequest"
-                          :disabled="disable"
-                          v-decorator="['logoId']">
-                  <img v-if="fileList.url"
-                       :src="fileList.url"
-                       alt="avatar" />
+              <a-form-item
+                label="企业标识"
+                class="qybs">
+                <a-upload
+                  name="file"
+                  :beforeUpload="beforeUpload"
+                  :showUploadList="false"
+                  listType="picture-card"
+                  class="avatar-uploader"
+                  :customRequest="customRequest"
+                  :disabled="disable"
+                  v-decorator="['logoId']">
+                  <img
+                    v-if="fileList.url"
+                    :src="fileList.url"
+                    alt="avatar" />
                   <div v-else>
                     <a-icon :type="loading ? 'loading' : 'plus'" />
                     <div class="ant-upload-text">点击上传</div>
@@ -297,7 +317,21 @@ export default {
   methods: {
     // 刷新数据的方法
     async refreshData () {
-      const data = await this.TenantMObj.getTenancyList()
+      let data = []
+      if (this.$route.query.name) { // 判断是否从控制台过来的
+        const name = this.$route.query.name
+        if (name == 'expire') { // 展示要到期的列表
+          const time = new Date()
+          const month = 2592000000// 现在的时间加上1个月的毫秒数
+          const endTime = time.getTime() + month
+          data = await this.TenantMObj.getEndTimeTenancyList(endTime)
+        } else if (name == 'deploy') { // 展示某种类型的列表
+          const type = this.$route.query.type
+          data = await this.TenantMObj.getTypeTenancyList(type)
+        }
+      } else {
+        data = await this.TenantMObj.getTenancyList()
+      }
       data.forEach(item => {
         var oDate = new Date(item.updateTime * 1)
         var oYear = oDate.getFullYear()
@@ -448,6 +482,7 @@ export default {
     inputHandler (val) {
       const _this = this
       if (_this.selectVal == 'type' && val != '') { // 判断是不是根据类型搜索，因为类型是死的，so可以这样写
+        console.log('type====' + val)
         if ('公共部署'.indexOf(val) > -1) {
           val = 1
         } else if ('私有部署'.indexOf(val) > -1) {
@@ -455,6 +490,12 @@ export default {
         } else if ('本地部署'.indexOf(val) > -1) {
           val = 3
         }
+        this.data = this.dataOld.filter(item => {
+          if (item[_this.selectVal]) {
+            return item[_this.selectVal] == val
+          }
+        })
+        return
       }
       if (val) {
         this.data = this.dataOld.filter(item => {

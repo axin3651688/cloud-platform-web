@@ -24,7 +24,7 @@ import {
 * @update   by
 */
 class CnbiTenantManagement {
-  //租户管理的相关属性，多为调用的方法需要传递的参数
+  // 租户管理的相关属性，多为调用的方法需要传递的参数
 
   /**
    * 新增租户需要传递的参数   zj 2019/10/18
@@ -43,11 +43,11 @@ class CnbiTenantManagement {
    */
   tenancyEditDto = null;
 
-  constructor(obj) {
+  constructor (obj) {
     Object.assign(this, obj)
     this.init()
   }
-  test(data) {
+  test (data) {
     // console.log(data.data, "11112222");
   }
   /**
@@ -58,7 +58,7 @@ class CnbiTenantManagement {
    * @return  {}
    * @update   by
    */
-  async init() {
+  async init () {
     // debugger
     // var data = await this.getUserSimpleInfoList();
     // debugger
@@ -119,8 +119,8 @@ class CnbiTenantManagement {
    * @return  {}
    * @update   by
    */
-  async saveTenancy(tenancyDto) {
-    let res = await SAVE_TENANCY(tenancyDto);
+  async saveTenancy (tenancyDto) {
+    const res = await SAVE_TENANCY(tenancyDto)
     return res
   }
   /**
@@ -131,8 +131,8 @@ class CnbiTenantManagement {
    * @return  {}
    * @update   by
    */
-  async deleteTenancy(tenancyIds) {
-    let res = await DELETE_TENANCY(tenancyIds);
+  async deleteTenancy (tenancyIds) {
+    const res = await DELETE_TENANCY(tenancyIds)
     // debugger
     return res
   }
@@ -144,11 +144,43 @@ class CnbiTenantManagement {
    * @return  {}
    * @update   by
    */
-  async getTenancyList() {
-    let res = await GET_TENANCY_LIST({
+  async getTenancyList () {
+    const res = await GET_TENANCY_LIST({
       page: 1,
       size: 30
-    });
+    })
+    return res.data.data
+  }
+  /**
+   * @desc    : 获取租户列表的方法(只获取即将到期的租户)
+   * @author  : zj
+   * @date  : 2019/10/14
+   * @param   {}
+   * @return  {}
+   * @update   by
+   */
+  async getEndTimeTenancyList (params) {
+    const res = await GET_TENANCY_LIST({
+      page: 1,
+      size: 30,
+      daysBetween: params
+    })
+    return res.data.data
+  }
+  /**
+   * @desc    : 获取租户列表的方法(获取指定的租户类型)
+   * @author  : zj
+   * @date  : 2019/10/14
+   * @param   {}
+   * @return  {}
+   * @update   by
+   */
+  async getTypeTenancyList (params) {
+    const res = await GET_TENANCY_LIST({
+      page: 1,
+      size: 30,
+      type: params
+    })
     return res.data.data
   }
   /**
@@ -159,8 +191,8 @@ class CnbiTenantManagement {
    * @return  {}
    * @update   by
    */
-  async getUserSimpleInfoList() {
-    let res = await USER_SIMPLE_INFO_LIST({
+  async getUserSimpleInfoList () {
+    const res = await USER_SIMPLE_INFO_LIST({
       page: 1,
       size: 1000
     })
@@ -175,10 +207,10 @@ class CnbiTenantManagement {
    * @return  {}
    * @update   by
    */
-  async getTenancy(id) {
-    let res = await GET_TENANCY({
+  async getTenancy (id) {
+    const res = await GET_TENANCY({
       tenancyId: id
-    });
+    })
     return res.data
   }
   /**
@@ -189,8 +221,8 @@ class CnbiTenantManagement {
    * @return  {}
    * @update   by
    */
-  async updateTenancy(tenancyEditDto) {
-    let res = await UPDATE_TENANCY(tenancyEditDto);
+  async updateTenancy (tenancyEditDto) {
+    const res = await UPDATE_TENANCY(tenancyEditDto)
     return res
   }
 
@@ -202,8 +234,8 @@ class CnbiTenantManagement {
    * @return  {}
    * @update   by
    */
-  async findLicenseList() {
-    let res = await FIND_LICENSE_LIST();
+  async findLicenseList () {
+    const res = await FIND_LICENSE_LIST()
     return res.data
   }
   /**
@@ -214,8 +246,8 @@ class CnbiTenantManagement {
    * @return  {}
    * @update   by
    */
-  async validServiceSign(serviceSign) {
-    let res = await VALID_SERVICE_SIGN(serviceSign);
+  async validServiceSign (serviceSign) {
+    const res = await VALID_SERVICE_SIGN(serviceSign)
     return res.data
   }
 }

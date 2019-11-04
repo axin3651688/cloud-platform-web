@@ -20,19 +20,28 @@
             :span="6"
             style="display: flex;flex-direction: column;padding-left: 38px;">
             <span class="header-name">用户数</span>
-            <span class="header-value">{{ totalUserCount }}<img class="icon-console" src="@icons/Tag.svg" alt=""></span>
+            <span class="header-value" @click="routingHop('UserManagement')">
+              {{ totalUserCount }}
+              <img class="icon-console" src="@icons/Tag.svg" alt="">
+            </span>
           </a-col>
           <a-col
             :span="6"
             style="display: flex;flex-direction: column">
             <span class="header-name">租户数</span>
-            <span class="header-value">{{ totalTenancyCount }}<img class="icon-console" src="@icons/Tag(1).svg" alt=""></span>
+            <span class="header-value" @click="routingHop('TenantManagement')">
+              {{ totalTenancyCount }}
+              <img class="icon-console" src="@icons/Tag(1).svg" alt="">
+            </span>
           </a-col>
           <a-col
             :span="6"
             style="display: flex;flex-direction: column">
             <span class="header-name">即将到期</span>
-            <span class="header-value">{{ tenancyExpireCount }}<img class="icon-console" src="@icons/Tag(2).svg" alt=""></span>
+            <span class="header-value" @click="routingHop('TenantManagement','expire')">
+              {{ tenancyExpireCount }}
+              <img class="icon-console" src="@icons/Tag(2).svg" alt="">
+            </span>
           </a-col>
           <a-col
             :span="6"
@@ -282,6 +291,7 @@ export default {
         const obj = {}
         obj['value'] = item.num
         obj['name'] = item.name
+        obj['type'] = item.type
         arr.push(obj)
         legendDatas.push(item.name)
       })
@@ -296,6 +306,20 @@ export default {
     drawLine (dom, option) {
       // 基于准备好的dom，初始化echarts实例
       const myChart = ECharts.init(document.getElementById(dom))
+      // 下钻
+      const _this = this
+      if (dom == 'myChart2') {
+        myChart.on('click', (params) => {
+          console.log(params.data.name + '==============' + params.data.type)
+          const param = {
+            name: 'deploy',
+            type: params.data.type
+          }
+          _this.routingHop('TenantManagement', param)
+        })
+      }
+
+      // 自适应
       const resizeDiv = document.getElementById(dom)
       // // 绘制图表
       myChart.setOption(option)
@@ -425,6 +449,36 @@ export default {
       this.setChart2(dom3, false, this.chart3)
       this.setChart2(dom4, false, this.chart4)
       this.setChart2(dom5, false, this.chart5)
+    },
+    /**
+     * 跳转页面
+     * name 路由名称
+     * params 参数
+     *
+     **/
+    routingHop (name, params) {
+      if (!params) {
+        this.$router.push({
+          name
+        })
+      } else {
+        if (params == 'expire') { // 即将到期
+          this.$router.push({
+            name: name,
+            query: {
+              name: 'expire'
+            }
+          })
+        } else if (params.name == 'deploy') { // 部署类型
+          this.$router.push({
+            name: name,
+            query: {
+              name: params.name,
+              type: params.type
+            }
+          })
+        }
+      }
     }
   }
 }
