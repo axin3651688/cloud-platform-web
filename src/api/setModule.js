@@ -13,6 +13,7 @@ const api = {
   LISTRESOURCE: '/upm/authority/listResource',
   AUTHORITY_ROLE: '/upm/authority/authority_role',
   VALID_ROLE_NAME: '/upm/role/valid_role_name/',
+  FIND_ROLE_INFO_BY_ID: '/upm/role/find_id',
 
   //账号管理的相关接口--*********相关的js在角色管理中*************
   ENABLE_ACCOUNT: '/upm/authorize/enable_account',
@@ -151,6 +152,22 @@ export function VALID_ROLE_NAME(parameter) {
 }
 
 /** 
+ * @desc    : 根据角色id查询角色信息
+ * @author  : zj
+ * @date  : 2019/11/05
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
+export function FIND_ROLE_INFO_BY_ID(parameter) {
+  return axios2({
+    url: api.FIND_ROLE_INFO_BY_ID,
+    method: 'get',
+    params: parameter
+  })
+}
+
+/** 
  * @desc    : 启用禁用账号
  * @author  : zj
  * @date  : 2019/10/30
@@ -215,13 +232,13 @@ export function SAVE_ACCOUNT(parameter) {
 }
 
 /** 
-* @desc    : 修改账号拥有的角色
-* @author  : zj
-* @date  : 2019/10/30
-* @param   {} 
-* @return  {} 
-* @update   by   
-*/
+ * @desc    : 修改账号拥有的角色
+ * @author  : zj
+ * @date  : 2019/10/30
+ * @param   {} 
+ * @return  {} 
+ * @update   by   
+ */
 export function UPDATE_ACCOUNT(parameter) {
   return axios2({
     url: api.UPDATE_ACCOUNT,

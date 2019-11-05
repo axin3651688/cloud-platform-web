@@ -4,7 +4,7 @@
       class="node-content"
       v-for="(obj,index) in nodes"
       :key="index">
-      <a-row :gutter="8">
+      <a-row :gutter="6">
         <a-col :span="24">
           <a-row :gutter="24">
             <a-col :span="24">
@@ -18,7 +18,7 @@
           </a-row>
           <a-row :gutter="24">
             <a-col
-              :span="8"
+              :span="6"
               v-for="(item,index1) in obj.children"
               :key="index1"
               style="margin-top: 20px;">

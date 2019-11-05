@@ -8,6 +8,7 @@ import {
   LISTRESOURCE,
   AUTHORITY_ROLE,
   VALID_ROLE_NAME,
+  FIND_ROLE_INFO_BY_ID,
 
   //以下为账号管理的
   ENABLE_ACCOUNT,
@@ -138,6 +139,21 @@ class CnbiRoleManagement {
   }
 
   /** 
+   * @desc    : 根据角色id查询角色信息
+   * @author  : zj
+   * @date  : 2019/11/05
+   * @param   {} 
+   * @return  {} 
+   * @update   by   
+   */
+  async findRoleInfoById(id) {
+    let res = await FIND_ROLE_INFO_BY_ID({
+      id: id
+    });
+    return res.data
+  }
+
+  /** 
    * @desc    : 启用禁用账号
    * @author  : zj
    * @date  : 2019/10/30
@@ -196,13 +212,13 @@ class CnbiRoleManagement {
   }
 
   /** 
-  * @desc    : 修改账号拥有的角色
-  * @author  : zj
-  * @date  : 2019/10/30
-  * @param   {} 
-  * @return  {} 
-  * @update   by   
-  */
+   * @desc    : 修改账号拥有的角色
+   * @author  : zj
+   * @date  : 2019/10/30
+   * @param   {} 
+   * @return  {} 
+   * @update   by   
+   */
   async updateAccount(authorizeBatchDto) {
     let res = await UPDATE_ACCOUNT(authorizeBatchDto);
     return res
