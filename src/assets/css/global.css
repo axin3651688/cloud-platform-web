@@ -1,0 +1,8 @@
+.ant-table-thead>tr>th{
+  height: 47px;
+  font-size:12px;
+  font-weight:400;
+  line-height:18px;
+  color:rgba(158,160,165,1);
+  opacity:1;
+}

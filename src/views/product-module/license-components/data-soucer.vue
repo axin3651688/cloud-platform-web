@@ -1,7 +1,7 @@
 <!--牌照管理-可用数据源-->
 <template>
   <div class="box" v-show="flag">
-    <div style="margin: 10px 20px 10px 0;display: flex;flex-direction: column;align-items: center">
+    <div style="margin: 24px 40px 0 0;display: flex;flex-direction: column;align-items: center">
       <img
         style="width: 64px;height: 64px;border-radius: 4px;"
         :src="src"/>

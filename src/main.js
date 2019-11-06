@@ -16,6 +16,7 @@ import './mock'
 
 import bootstrap from './core/bootstrap'
 import './core/use'
+import './assets/css/global.css'
 import './permission' // permission control
 import './utils/filter'// 导入文件
 

@@ -367,7 +367,7 @@ export default {
     // 获取列表数据
     async getData () {
       const data = await this.ApplyMObj.getResourcesCard()
-      console.log(data,'测试应用标识')
+      console.log(data, '测试应用标识')
       this.dataSource = data
 
       // 拷贝数据
@@ -547,6 +547,7 @@ export default {
 <style scoped>
 .com-drop-down {
   width: 120px;
+  color:#9EA0A5;
 }
 .form1-icon .ant-form-item-children {
   display: flex;
@@ -560,6 +561,11 @@ export default {
   }
   /deep/.ant-table-thead>tr>th{
     height: 47px;
+    font-size:12px;
+    font-weight:400;
+    line-height:18px;
+    color:rgba(158,160,165,1);
+    opacity:1;
   }
   form .ant-form-item{
     margin-bottom: 0;

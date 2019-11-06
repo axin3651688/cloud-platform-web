@@ -12,11 +12,16 @@
       :rowClassName="rowClassName"
       :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
 
-      <span
-        slot="action"
-        slot-scope="text,record"
-        @click="btnclick(record )"><img style="cursor: pointer;" src="@icons/xiangqing.svg" title="详情"></span>
-      <span>123</span>
+      <template slot="action" slot-scope="text,record">
+        <span @click="btnclick(record )">详情</span>
+      </template>
+      <template slot="tag" slot-scope="text,record" >
+        <span>
+          <a-tag
+            color="blue"
+            :key="record.id">{{ text }}</a-tag>
+        </span>
+      </template>
     </a-table>
   </div>
 </template>

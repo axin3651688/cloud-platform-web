@@ -274,7 +274,8 @@ export default {
       }, {
         title: '所属牌照',
         dataIndex: 'licenseName',
-        width: '10%'
+        width: '10%',
+        scopedSlots: { customRender: 'tag' }
       }, {
         title: '类型',
         dataIndex: 'typeName',
