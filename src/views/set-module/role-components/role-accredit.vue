@@ -29,7 +29,8 @@
                       style="margin-right: 8px;" />{{item.name}}
             </div>
             <div class="centerPartDown">
-              <a-checkbox-group @change="onChange">
+              <a-checkbox-group @change="onChange"
+                                v-model="allValue">
                 <a-row>
                   <a-col :span="12"
                          v-for="(innerItem,innerIndex) in item.children"
@@ -55,7 +56,8 @@
              v-for="(item,index) in childrenArr"
              :key="index"
              :value="item.id">
-          <a-checkbox-group @change="onChangeDown">
+          <a-checkbox-group @change="onChangeDown"
+                            v-model="allValue1">
             <a-checkbox :value="item.id">{{ item.name }}{{item.id}}</a-checkbox>
           </a-checkbox-group>
         </div>
@@ -80,21 +82,19 @@ export default {
   },
   data () {
     return {
-      childrenArr: [],//查询勾选的权限子级 集合
+      allValue: [],//中间层勾选的最终集合
+      allValue1: [],//最底层勾选的最终集合
+      childrenArr: [],//查询勾选的权限子级 集合--要在底层显示的数据
       contentHtml: '',
       showFlag: false,
       roleName: '',
       LimitMObj: null,
       RoleMObj: null,
-      // roleArr: [], // 角色列表
       selectArr: [], // 默认勾选的数组
       name1: '保存',
       id: '', // 角色id
-      roleId: null, // 勾选的角色id
       selectedNode: '1', // 点击的节点
       limitData: [],//所有数据
-      checkMidArr: [],//中间框的所有勾选值数组
-      checkBottomArr: []//底层勾选的数组
     }
   },
   created () {
@@ -106,108 +106,67 @@ export default {
   methods: {
     // 获取数据
     async getData () {
-      //根据角色id查询角色信息
       debugger
+      //根据角色id查询角色信息
       const roleData = await this.RoleMObj.findRoleInfoById(this.id);
       this.roleName = roleData.name
-      console.log(this.roleName, '搞不出来啊')
-
-
-      // // 角色列表数组(暂时不需要)
-      // const data = await this.RoleMObj.findRoleList()
-      // this.roleArr = data
 
       // 查询所有数据
       const limitData = await this.LimitMObj.getResourcesTree()
-      console.log(limitData, 'limitData是什么')
-      this.selectArr = await this.RoleMObj.listresource(this.id)// 已经勾选的节点
-      console.log(this.selectArr, 'this.selectArr是个什么')
+      // console.log(limitData, 'limitData是什么')
       this.limitData = limitData
+
+      //此数据待再次点击授权的时候用，用于显示之前勾选过的授权
+      const alreadySelectArr = await this.RoleMObj.listresource(this.id)// 已经勾选的节点
+      this.selectArr = alreadySelectArr.data
+
+      //判断，如果this.selectArr不为空，则表示之前授权过，需要显示出来（即对应的图标要被勾选）
+      if (this.selectArr || this.selectArr.length > 0) {
+        //将this.selectArr中之前勾选的权限id赋值给allValue
+        this.selectArr.forEach(item => {
+          this.showFlag = true
+          this.allValue.push(item.id)
+          this.allValue1.push(item.id)
+          
+          console.log(this.allValue, '已经勾选的id集合')
+          console.log(this.allValue1, '已经勾选的id222集合')
+        })
+      }
+      // console.log(this.selectArr, 'this.selectArr是个什么')
     },
 
     //授权完成后的保存按钮
     async addClick () {
-      const resources = this.checkMidArr.concat(this.checkBottomArr)
-      await this.RoleMObj.authorityRole(this.id, resources);
-    },
-    onchangeUp (val) {
-      // 中间层的勾选事件
-      debugger
-      console.log(val, '我有点坏')
+      // let resources = []
+      const resources = this.allValue.concat(this.allValue1)
+      // console.log(resources, 'resources到底是什么')
+      const res = await this.RoleMObj.authorityRole(this.id, resources.toString());
+      if (res.code == 200) {
+        this.$message.success('授权成功')
+      }
     },
 
     // //勾选事件
-    // onChange (checkedValue) {
-    //   debugger
-    //   //1.勾选 触发最下面的框展现事件 
-    //   this.showFlag = true
-    //   //2.判断，如果所勾选的还有children,则将所有的子级展示在框中
-    //   //2.1如果是点击文字，判断是否有子级，有就显示，单纯的展示，不勾选
-    //   //2.2如果是勾选，判断是否有子级，有就全部显示，并且全勾选
-    //   this.childrenArr = [];
-    //   this.limitData.forEach(item => {
-    //     if (item.children && item.children.length > 0) {
-    //       let childrenList=[];
-    //       checkedValue.forEach((val,i)=>{
-    //         const _childrenList = item.children.filter(item1 => item1.id === checkedValue[i])
-    //         this.childrenArr = childrenList.concat(_childrenList.children||[])
-    //       })
-    //       this.childrenArr = childrenList.length > 0 ? childrenList[0].children : []
-    //     }
-    //   })
-    //   console.log(this.childrenArr, '控制台的孙子孙子')
-    //   if (!this.childrenArr || this.childrenArr.length === 0) this.showFlag = false
-    // },
-
-    //中间框勾选事件
-    onChange (checks) {
-      this.showFlag = true;
-      let arr = this.childrenArr || []
-      if (!checks || checks.length === 0) {
-        this.childrenArr = arr;
-        return
-      }
+    onChange (checkedValues, kk, dd) {
+      debugger
+      //1.勾选 触发最下面的框展现事件 
+      this.showFlag = true
+      //2.判断，如果所勾选的还有children,则将所有的子级展示在框中 //2.1如果是点击文字，判断是否有子级，有就显示，单纯的展示，不勾选 //2.2如果是勾选，判断是否有子级，有就全部显示，并且全勾选
+      this.childrenArr = [];
       this.limitData.forEach(item => {
-        let children = item.children;
-        if (children && children.length > 0) {
-          children.forEach(innerItem => {
-            checks.forEach(check => {
-              if (innerItem.id === check) {
-                arr = arr.concat(innerItem.children || [])
-              }
-            })
-          })
+        if ((item.children || item.children.length > 0) && this.childrenArr.length == 0) {
+          const childrenList = item.children.filter(item1 => item1.id === checkedValues[checkedValues.length - 1])
+          this.childrenArr = childrenList.length > 0 ? childrenList[0].children : []
         }
       })
-      // debugger
-      this.checkMidArr = checks;
-      this.childrenArr = arr;
     },
 
-    // 选择角色的事件
-    async handleChange (val) {
-      // 获取选择的角色id
-      this.roleId = val
-      // 根据勾选的角色，查询改角色的所有资源
-      const resourceList = await this.RoleMObj.listresource(this.roleId)
-      console.log(resourceList, '卡萨绝好的卡JS号地块金黄色')
-      // 该数组就是默认勾选的数组
-      this.selectArr = resourceList.data
-
-      // 查询所有数据
-      const limitData = await this.LimitMObj.getResourcesTree()
-      limitData.forEach(item => {
-        console.log(item, '看撒谎的客家话的')
-        item.selectArr = this.selectArr
-      })
-      console.log(limitData, '死吧死吧死吧')
-      this.limitData = limitData
-    },
     //最下方的勾选事件
-    onChangeDown (checkV) {
+    onChangeDown (checkedValues) {
       debugger
       //获取下面的点击数组
-      this.checkBottomArr = checkV
+      this.allValue1 = checkedValues
+      // console.log(this.allValue1, 'this.allValue1到底是多少')
     }
   }
 }
