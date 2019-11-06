@@ -4,69 +4,60 @@
     <div>
       <div style="display: flex;flex-direction: row;justify-content: space-between;background-color: #fff;padding: 16px 32px 0 32px">
         <div style="display: flex;flex-direction: row;">
-          <common-drop-down
-            :result="result"
-            class="com-drop-down"
-            :defaultValue="'name'"
-            @selectCell="selectCell">
+          <common-drop-down :result="result"
+                            class="com-drop-down"
+                            :defaultValue="'name'"
+                            @selectCell="selectCell">
           </common-drop-down>
           <!--搜索框-->
-          <common-search
-            :placeholder="version"
-            style="width: 220px;float: none"
-            @inputHandler="inputHandler">
+          <common-search :placeholder="version"
+                         style="width: 220px;float: none"
+                         @inputHandler="inputHandler">
           </common-search>
         </div>
         <!--按钮-->
-        <common-button
-          style="float: none;"
-          :name1="name1"
-          :name2="name2"
-          :title="'删除后无法恢复，您确定继续？'"
-          :disabled="tenancyIds.length>0?true:false"
-          @addClick="addClick"
-          @deleteClick="deleteClick">
+        <common-button style="float: none;"
+                       :name1="name1"
+                       :name2="name2"
+                       :title="'删除后无法恢复，您确定继续？'"
+                       :disabled="tenancyIds.length>0?true:false"
+                       @addClick="addClick"
+                       @deleteClick="deleteClick">
         </common-button>
       </div>
       <!--表格-->
-      <common-table
-        class="tencent-table"
-        :columns="columns"
-        :data="data"
-        @getIds="getIds"
-        ref="table"></common-table>
+      <common-table class="tencent-table"
+                    :columns="columns"
+                    :data="data"
+                    @getIds="getIds"
+                    ref="table"></common-table>
     </div>
     <!--添加租户弹框-->
     <div v-if="visible">
-      <a-modal
-        title="添加租户"
-        :visible="visible"
-        :destroyOnClose="true"
-        :maskClosable="false"
-        @ok="handleOk"
-        @cancel="handleCancel"
-        okText="保存"
-        cancelText="取消"
-        :width="730">
-        <a-form
-          :form="form"
-          autocomplete="off">
+      <a-modal title="添加租户"
+               :visible="visible"
+               :destroyOnClose="true"
+               :maskClosable="false"
+               @ok="handleOk"
+               @cancel="handleCancel"
+               okText="保存"
+               cancelText="取消"
+               :width="730">
+        <a-form :form="form"
+                autocomplete="off">
           <!-- 表单第一行 -->
-          <a-row
-            :gutter="24"
-            class="row1">
+          <a-row :gutter="24"
+                 class="row1">
             <a-col :span="12">
               <a-form-item label="名称">
-                <a-input
-                  placeholder="请输入名称"
-                  v-decorator="['name',{rules: [{ required: true, message: '名称不能为空' }]}]" />
+                <a-input placeholder="请输入名称"
+                         v-decorator="['name',{rules: [{ required: true, message: '名称不能为空' }]}]" />
               </a-form-item>
             </a-col>
             <a-col :span="12">
               <a-form-item label="营业执照">
-                <a-input
-                  placeholder="目录"
-                  v-decorator="['societyCode',{rules: [{ required: true, message: '营业执照不能为空!' }],}]" />
+                <a-input placeholder="目录"
+                         v-decorator="['societyCode',{rules: [{ required: true, message: '营业执照不能为空!' }],}]" />
               </a-form-item>
             </a-col>
           </a-row>
@@ -78,10 +69,9 @@
                   <template slot="suffixIcon">
                     <img src="@icons/sort.svg" />
                   </template>
-                  <a-select-option
-                    v-for="(item,index) in owners"
-                    :key="index"
-                    :value="item.id">
+                  <a-select-option v-for="(item,index) in owners"
+                                   :key="index"
+                                   :value="item.id">
                     {{ item.nickName }}
                   </a-select-option>
                 </a-select>
@@ -93,11 +83,10 @@
                   <template slot="suffixIcon">
                     <img src="@icons/sort.svg" />
                   </template>
-                  <a-select-option
-                    v-for="(item,index) in LicenseList"
-                    :key="index"
-                    v-if="item.enable==1"
-                    :value="item.id">
+                  <a-select-option v-for="(item,index) in LicenseList"
+                                   :key="index"
+                                   v-if="item.enable==1"
+                                   :value="item.id">
                     {{ item.name }}
                   </a-select-option>
                 </a-select>
@@ -127,9 +116,8 @@
             </a-col>
             <a-col :span="12">
               <a-form-item label="服务标识">
-                <a-input
-                  placeholder="请输入服务标识"
-                  v-decorator="['serviceId',{rules: [{ required: true, message: '服务标识不能为空!' }],}]" />
+                <a-input placeholder="请输入服务标识"
+                         v-decorator="['serviceId',{rules: [{ required: true, message: '服务标识不能为空!' }],}]" />
               </a-form-item>
             </a-col>
           </a-row>
@@ -138,22 +126,19 @@
           <a-row :gutter="24">
             <a-col :span="12">
               <a-form-item label="访问地址">
-                <a-input
-                  addonBefore="Http://"
-                  style="width: 329px"
-                  placeholder="请输入"
-                  v-decorator="['url']" />
+                <a-input addonBefore="Http://"
+                         style="width: 329px"
+                         placeholder="请输入"
+                         v-decorator="['url']" />
               </a-form-item>
             </a-col>
             <a-col :span="12">
               <a-form-item label="联系电话">
-                <a-input
-                  v-decorator="['tel',{rules: [{ required: true,pattern: /^[0-9]*$/, message: '电话不能为空且为数字!' }],}]"
-                  style="width: 100%">
-                  <a-select
-                    slot="addonBefore"
-                    v-decorator="['prefix', { initialValue: '86' }]"
-                    style="width: 70px">
+                <a-input v-decorator="['tel',{rules: [{ required: true,pattern: /^[0-9]*$/, message: '电话不能为空且为数字!' }],}]"
+                         style="width: 100%">
+                  <a-select slot="addonBefore"
+                            v-decorator="['prefix', { initialValue: '86' }]"
+                            style="width: 70px">
                     <template slot="suffixIcon">
                       <img src="@icons/sort.svg" />
                     </template>
@@ -174,9 +159,8 @@
             <a-col :span="12">
               <!-- 第五行左1 -->
               <a-form-item label="租户地址">
-                <a-input
-                  placeholder="请输入租户地址"
-                  v-decorator="['address',{rules: [{ required: true, message: '租户地址不能为空!' }],}]" />
+                <a-input placeholder="请输入租户地址"
+                         v-decorator="['address',{rules: [{ required: true, message: '租户地址不能为空!' }],}]" />
               </a-form-item>
               <!-- 第五行左2 -->
               <a-row :gutter="24">
@@ -187,8 +171,7 @@
                 </a-col>
                 <a-col :span="12">
                   <a-form-item label="失效时间">
-                    <a-date-picker
-                      v-decorator="['endTime',
+                    <a-date-picker v-decorator="['endTime',
                                     {rules: [{ required: true, message: '请选择牌照到期时间!' }]}]" />
 
                   </a-form-item>
@@ -197,22 +180,19 @@
             </a-col>
             <a-col :span="12">
               <!-- 第五行右侧企业标识 -->
-              <a-form-item
-                label="企业标识"
-                class="qybs">
-                <a-upload
-                  name="file"
-                  :beforeUpload="beforeUpload"
-                  :showUploadList="false"
-                  listType="picture-card"
-                  class="avatar-uploader"
-                  :customRequest="customRequest"
-                  :disabled="disable"
-                  v-decorator="['logoId']">
-                  <img
-                    v-if="fileList.url"
-                    :src="fileList.url"
-                    alt="avatar" />
+              <a-form-item label="企业标识"
+                           class="qybs">
+                <a-upload name="file"
+                          :beforeUpload="beforeUpload"
+                          :showUploadList="false"
+                          listType="picture-card"
+                          class="avatar-uploader"
+                          :customRequest="customRequest"
+                          :disabled="disable"
+                          v-decorator="['logoId']">
+                  <img v-if="fileList.url"
+                       :src="fileList.url"
+                       alt="avatar" />
                   <div v-else>
                     <a-icon :type="loading ? 'loading' : 'plus'" />
                     <div class="ant-upload-text">点击上传</div>
@@ -360,7 +340,9 @@ export default {
         var oTime1 = oDay1 + '/' + oMonth1 + '/' + oYear1
         item.endTime = oTime1
       })
+
       this.data = data
+      this.dataOld = this.deepCopy(this.data)
     },
     getIds (ids) {
       // 1.获取表格中勾选的租户id数组(删除操作第一步)
@@ -369,7 +351,7 @@ export default {
     // 进入页面  加载数据列表
     async getData () {
       await this.refreshData()
-      this.dataOld = this.deepCopy(this.data)
+
       // 获取所有的所属人
       this.owners = await this.TenantMObj.getUserSimpleInfoList()
       // 获取所有的牌照列表
@@ -390,8 +372,7 @@ export default {
       // 重新加载最新的数据
       await _this.refreshData()
 
-      // 清除勾选的id
-      this.$refs.table.clearSelectedKey()
+      _this.tenancyIds = []
     },
     // 保存租户（保存按钮）
     handleOk () {

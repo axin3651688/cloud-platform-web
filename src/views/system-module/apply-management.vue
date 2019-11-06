@@ -2,113 +2,106 @@
   <div>
     <div style="display: flex;flex-direction: row;justify-content: space-between;background-color: #fff;padding: 16px 32px 0 32px">
       <div style="display: flex;flex-direction: row;">
-        <common-drop-down
-          :result="result"
-          :defaultValue="defaultValue"
-          @selectCell="selectCell"
-          class="com-drop-down">
+        <common-drop-down :result="result"
+                          :defaultValue="defaultValue"
+                          @selectCell="selectCell"
+                          class="com-drop-down">
         </common-drop-down>
         <!--搜索框-->
-        <common-search
-          :placeholder="version"
-          style="width: 220px;float: none"
-          @inputHandler="inputHandler">
+        <common-search :placeholder="version"
+                       style="width: 220px;float: none"
+                       @inputHandler="inputHandler">
 
         </common-search>
       </div>
       <!--按钮-->
-      <common-button
-        style="float: none;"
-        :name1="name1"
-        :name2="name2"
-        :title="'删除后可能会影响使用功能的使用，您确定继续？'"
-        :disabled="selectedRowKeys.length>0?true:false"
-        @addClick="addClick"
-        @deleteClick="deleteClick">
+      <common-button style="float: none;"
+                     :name1="name1"
+                     :name2="name2"
+                     :title="'删除后可能会影响使用功能的使用，您确定继续？'"
+                     :disabled="selectedRowKeys.length>0?true:false"
+                     @addClick="addClick"
+                     @deleteClick="deleteClick">
       </common-button>
     </div>
-    <a-table
-      class="apply-table"
-      :pagination="pagination"
-      size="small"
-      :columns="columns"
-      :dataSource="dataSource"
-      :rowKey="setKey"
-      :rowClassName="setStyle"
-      :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
+    <a-table class="apply-table"
+             :pagination="pagination"
+             size="small"
+             :columns="columns"
+             :dataSource="dataSource"
+             :rowKey="setKey"
+             :rowClassName="setStyle"
+             :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
       <!--应用名称-->
-      <template
-        slot="applyName"
-        slot-scope="text, record">
+      <template slot="applyName"
+                slot-scope="text, record">
         <div style="display: flex;flex-direction: row;align-items: center">
 
-          <span v-if="record.iconUrl" style="margin-right: 18px;">
-            <img :src="record.iconUrl" style="width:64px;height: 64px;border-radius: 4px;background:rgba(112,55,55,1);opacity:1;"/>
+          <span v-if="record.iconUrl"
+                style="margin-right: 18px;">
+            <img :src="record.iconUrl"
+                 style="width:64px;height: 64px;border-radius: 4px;background:rgba(112,55,55,1);opacity:1;" />
           </span>
-          <span v-else style="margin-right: 18px;">
-            <img
-              src=" https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3255435584,2194151633&fm=111&gp=0.jpg"
-              style="width:64px;height: 64px;border-radius: 4px;background:rgba(112,55,55,1);opacity:1;"/>
+          <span v-else
+                style="margin-right: 18px;">
+            <img src=" https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3255435584,2194151633&fm=111&gp=0.jpg"
+                 style="width:64px;height: 64px;border-radius: 4px;background:rgba(112,55,55,1);opacity:1;" />
           </span>
-          <span >
+          <span>
             {{ text }}
           </span>
         </div>
       </template>
       <!--操作-->
-      <template
-        slot="caozuo"
-        slot-scope="text, record">
+      <template slot="caozuo"
+                slot-scope="text, record">
         <div style="display: flex;flex-direction: row;align-items: center;">
-          <span @click="btnClickEdit(record)" style="margin: 0 4px;">
-            <img style="cursor: pointer;" src="@icons/Icon.svg" title="编辑">
+          <span @click="btnClickEdit(record)"
+                style="margin: 0 4px;">
+            <img style="cursor: pointer;"
+                 src="@icons/Icon.svg"
+                 title="编辑">
           </span>
           <span @click="btnClick(record)">
-            <img style="margin-left: 12px;cursor: pointer;" src="@icons/peizhi.svg" title="服务配置">
+            <img style="margin-left: 12px;cursor: pointer;"
+                 src="@icons/peizhi.svg"
+                 title="服务配置">
           </span>
         </div>
 
       </template>
       <!--状态-->
-      <template
-        slot="zhuangtai"
-        slot-scope="text, record">
+      <template slot="zhuangtai"
+                slot-scope="text, record">
         <!--1代表开-->
         <span style="margin-right: 15px;">{{ record.enable==1?'启用':'禁用' }}</span>
-        <a-popover
-          trigger="click"
-          v-model="applyState"
-          v-if="record.enable==1 && active==record.id">
+        <a-popover trigger="click"
+                   v-model="applyState"
+                   v-if="record.enable==1 && active==record.id">
           <template slot="content">
             <div>
               <span>
-                <a-icon
-                  type="exclamation-circle"
-                  style="color: #FAAD14;width: 14px;height: 14px;margin-right: 4px" />你确定禁用这个应用吗？
+                <a-icon type="exclamation-circle"
+                        style="color: #FAAD14;width: 14px;height: 14px;margin-right: 4px" />你确定禁用这个应用吗？
               </span>
             </div>
             <div style="display: flex;justify-content: flex-end; margin: 14px 10px;">
-              <a-button
-                style="margin-right: 8px;"
-                @click="cancelActive">取消</a-button>
-              <a-button
-                type="primary"
-                @click="saveActive(record)">保存</a-button>
+              <a-button style="margin-right: 8px;"
+                        @click="cancelActive">取消</a-button>
+              <a-button type="primary"
+                        @click="saveActive(record)">保存</a-button>
             </div>
           </template>
           <span @click="spanClick(record)">
-            <a-switch
-              :defaultChecked="record.enable==1?true:false"
-              style="pointer-events:none" /></span>
+            <a-switch :defaultChecked="record.enable==1?true:false"
+                      style="pointer-events:none" /></span>
         </a-popover>
         <span v-if="record.enable==0">
-          <a-switch
-            :defaultChecked="record.enable==1?true:false"
-            @click="open(record)" />
+          <a-switch :defaultChecked="record.enable==1?true:false"
+                    @click="open(record)" />
         </span>
-        <span
-          @click="spanClick(record)"
-          v-if="record.enable==1 && active!=record.id">
+        <span @click="spanClick(record)"
+              v-if="record.enable==1 && active!=record.id">
           <a-switch :defaultChecked="record.enable==1?true:false" />
         </span>
 
@@ -116,77 +109,67 @@
 
     </a-table>
     <!--服务设置-->
-    <a-modal
-      v-model="ServiceSetting"
-      :maskClosable="false"
-      :title="title">
-      <form :form="form" autocomplete="off">
-        <a-row
-          :gutter="24"
-          class="row1">
+    <a-modal v-model="ServiceSetting"
+             :maskClosable="false"
+             :title="title">
+      <form :form="form"
+            autocomplete="off">
+        <a-row :gutter="24"
+               class="row1">
           <a-col :span="12">
             <a-form-item label="数据库IP">
-              <a-input
-                placeholder="请输入数据库IP"
-                v-decorator="['name',{rules: [{ required: true, message: '数据库IP不能为空!' }],}]" />
+              <a-input placeholder="请输入数据库IP"
+                       v-decorator="['name',{rules: [{ required: true, message: '数据库IP不能为空!' }],}]" />
             </a-form-item>
           </a-col>
           <a-col :span="12">
             <a-form-item label="端口">
-              <a-input
-                placeholder="请输入端口"
-                v-decorator="['name',{rules: [{ required: true, message: '端口不能为空!' }],}]" />
+              <a-input placeholder="请输入端口"
+                       v-decorator="['name',{rules: [{ required: true, message: '端口不能为空!' }],}]" />
             </a-form-item>
           </a-col>
         </a-row>
       </form>
     </a-modal>
     <!--添加应用-->
-    <a-modal
-      v-model="showAddApply"
-      :destroyOnClose="true"
-      :maskClosable="false"
-      :width="350"
-      title="添加应用">
-      <a-form :form="form1" autocomplete="off">
+    <a-modal v-model="showAddApply"
+             :destroyOnClose="true"
+             :maskClosable="false"
+             :width="350"
+             title="添加应用">
+      <a-form :form="form1"
+              autocomplete="off">
         <a-form-item label="名称">
-          <a-input
-            placeholder="请输入"
-            v-decorator="[
+          <a-input placeholder="请输入"
+                   v-decorator="[
               'name',
               { rules: [{ required: true, message: '请输入应用名称！' }] },
             ]" />
         </a-form-item>
         <a-form-item label="应用标识">
-          <a-input
-            placeholder="请输入"
-            v-decorator="[
+          <a-input placeholder="请输入"
+                   v-decorator="[
               'serviceId',
               { rules: [{ required: true, message: '请输入应用标识！' }] },
             ]" />
         </a-form-item>
         <a-form-item label="描述">
-          <a-textarea
-            placeholder="请输入描述"
-            v-decorator="['note']" />
+          <a-textarea placeholder="请输入描述"
+                      v-decorator="['note']" />
         </a-form-item>
-        <a-form-item
-          label="图标"
-          class="form1-icon">
-          <a-upload
-            name="file"
-            :beforeUpload="beforeUpload"
-            :showUploadList="false"
-            listType="picture-card"
-            class="avatar-uploader"
-            :customRequest="customRequest"
-            :disabled="disable"
-            v-decorator="['iconId']">
-            <img
-              v-if="fileList.url"
-              :src="fileList.url"
-              alt="avatar"
-            />
+        <a-form-item label="图标"
+                     class="form1-icon">
+          <a-upload name="file"
+                    :beforeUpload="beforeUpload"
+                    :showUploadList="false"
+                    listType="picture-card"
+                    class="avatar-uploader"
+                    :customRequest="customRequest"
+                    :disabled="disable"
+                    v-decorator="['iconId']">
+            <img v-if="fileList.url"
+                 :src="fileList.url"
+                 alt="avatar" />
             <div v-else>
               <a-icon :type="loading ? 'loading' : 'plus'" />
               <div class="ant-upload-text">点击上传</div>
@@ -196,62 +179,62 @@
         </a-form-item>
       </a-form>
       <template slot="footer">
-        <div class="apply-add-foot" style="display: flex;padding: 0 8px;">
-          <a-button
-            key="back"
-            style="margin-right: 16px"
-            @click="cancelSave">
+        <div class="apply-add-foot"
+             style="display: flex;padding: 0 8px;">
+          <a-button key="back"
+                    style="margin-right: 16px"
+                    @click="cancelSave">
             取消
           </a-button>
-          <a-button
-            key="submit"
-            type="primary"
-            @click="saveApplyOk">
+          <a-button key="submit"
+                    type="primary"
+                    @click="saveApplyOk">
             <a-icon type="cloud-upload" /> 保存
           </a-button>
         </div>
       </template>
     </a-modal>
     <!--编辑应用-->
-    <a-modal
-      v-model="showEditApply"
-      :destroyOnClose="true"
-      :maskClosable="false"
-      v-if="editApply"
-      title="编辑应用">
-      <a-form :form="form1" autocomplete="off">
+    <a-modal v-model="showEditApply"
+             :destroyOnClose="true"
+             :maskClosable="false"
+             v-if="editApply"
+             title="编辑应用">
+      <a-form :form="form1"
+              autocomplete="off">
         <a-form-item label="名称">
-          <a-input
-            placeholder="请输入"
-            v-decorator="[
+          <a-input placeholder="请输入"
+                   v-decorator="[
               'name',
               { rules: [{ required: true, message: '请输入名称！' }],initialValue: editApply.name},
             ]" />
         </a-form-item>
-        <a-form-item label="描述">
-          <a-textarea
-            placeholder="请输入描述"
-            v-decorator="['note',{initialValue: editApply.note}]" />
+        <a-form-item label="应用标识">
+          <a-input placeholder="请输入"
+                   v-decorator="[
+              'serviceId',
+              { rules: [{ required: true, message: '请输入应用标识！' }] ,initialValue: editApply.serviceId}, 
+            ]" />
         </a-form-item>
-        <a-form-item
-          label="图标"
-          class="form1-icon">
-          <a-upload
-            name="file"
-            :beforeUpload="beforeUpload"
-            :showUploadList="false"
-            listType="picture-card"
-            class="avatar-uploader"
-            :customRequest="customRequest"
-            :disabled="disable"
-            v-decorator="[
+        <a-form-item label="描述">
+          <a-textarea placeholder="请输入描述"
+                      v-decorator="['note',{initialValue: editApply.note}]" />
+        </a-form-item>
+        <a-form-item label="图标"
+                     class="form1-icon">
+          <a-upload name="file"
+                    :beforeUpload="beforeUpload"
+                    :showUploadList="false"
+                    listType="picture-card"
+                    class="avatar-uploader"
+                    :customRequest="customRequest"
+                    :disabled="disable"
+                    v-decorator="[
               'iconId'
             ]">
-            <img
-              v-if="fileList.url"
-              :src="fileList.url"
-              alt="avatar"
-            />
+            <img v-if="fileList.url"
+                 :src="fileList.url"
+                 alt="avatar" />
             <div v-else>
               <a-icon :type="loading ? 'loading' : 'plus'" />
               <div class="ant-upload-text">点击上传</div>
@@ -261,13 +244,11 @@
         </a-form-item>
       </a-form>
       <template slot="footer">
-        <a-button
-          key="back"
-          @click="cancelEdit">取消</a-button>
-        <a-button
-          key="submit"
-          type="primary"
-          @click="editApplyOk">
+        <a-button key="back"
+                  @click="cancelEdit">取消</a-button>
+        <a-button key="submit"
+                  type="primary"
+                  @click="editApplyOk">
           <a-icon type="cloud-upload" /> 保存
         </a-button>
       </template>
@@ -331,7 +312,7 @@ export default {
           scopedSlots: { customRender: 'zhuangtai' },
           width: '20%'
         },
-        { title: '操作',
+        {          title: '操作',
           dataIndex: '',
           key: 'x',
           width: '10%',
@@ -547,7 +528,7 @@ export default {
 <style scoped>
 .com-drop-down {
   width: 120px;
-  color:#9EA0A5;
+  color: #9ea0a5;
 }
 .form1-icon .ant-form-item-children {
   display: flex;
@@ -556,18 +537,18 @@ export default {
 .apply-table {
   background-color: #fff;
 }
-  /deep/.table-row{
-    height: 87px;
-  }
-  /deep/.ant-table-thead>tr>th{
-    height: 47px;
-    font-size:12px;
-    font-weight:400;
-    line-height:18px;
-    color:rgba(158,160,165,1);
-    opacity:1;
-  }
-  form .ant-form-item{
-    margin-bottom: 0;
-  }
+/deep/.table-row {
+  height: 87px;
+}
+/deep/.ant-table-thead > tr > th {
+  height: 47px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  color: rgba(158, 160, 165, 1);
+  opacity: 1;
+}
+form .ant-form-item {
+  margin-bottom: 0;
+}
 </style>

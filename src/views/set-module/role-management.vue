@@ -3,57 +3,55 @@
   <div>
 
     <div style="display: flex;flex-direction: row;justify-content: flex-end;background-color: #fff;padding: 16px 32px 0 32px">
-      <common-button
-        style="float: none"
-        @addClick="addClick"
-        @deleteClick="deleteClick"
-        :name1="name1"
-        :name2="name2"
-        :title="'删除后可能会影响使用功能的使用，您确定继续？'"
-        :disabled="selectedRowKeys.length>0?true:false">
+      <common-button style="float: none"
+                     @addClick="addClick"
+                     @deleteClick="deleteClick"
+                     :name1="name1"
+                     :name2="name2"
+                     :title="'删除后可能会影响使用功能的使用，您确定继续？'"
+                     :disabled="selectedRowKeys.length>0?true:false">
       </common-button>
     </div>
-    <a-table
-      size="small"
-      class="role-table"
-      :columns="columns"
-      :dataSource="dataSource"
-      :rowKey="setKey"
-      :pagination="pagination"
-      :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
-      <template
-        slot="zhuangtai"
-        slot-scope="text, record">
+    <a-table size="small"
+             class="role-table"
+             :columns="columns"
+             :dataSource="dataSource"
+             :rowKey="setKey"
+             :pagination="pagination"
+             :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
+      <template slot="zhuangtai"
+                slot-scope="text, record">
         <!--1代表开-->
-        <a-switch
-          :defaultChecked="record.enable==1?true:false"
-          @change="updataState(record)" />
+        <a-switch :defaultChecked="record.enable==1?true:false"
+                  @change="updataState(record)" />
       </template>
-      <template
-        slot="caozuo"
-        slot-scope="text, record">
-        <div >
+      <template slot="caozuo"
+                slot-scope="text, record">
+        <div>
           <span @click="btnClick(record)">
-            <img style="cursor: pointer;" src="@icons/Icon.svg" title="编辑">
+            <img style="cursor: pointer;"
+                 src="@icons/Icon.svg"
+                 title="编辑">
           </span>
           <span @click="accredit(record)">
-            <img style="margin-left: 16px;cursor: pointer;" src="@icons/shouquan.svg" title="授权">
+            <img style="margin-left: 16px;cursor: pointer;"
+                 src="@icons/shouquan.svg"
+                 title="授权">
           </span>
         </div>
       </template>
     </a-table>
     <!--添加用户-->
-    <a-modal
-      v-model="showAddRole"
-      :maskClosable="false"
-      title="添加角色"
-      :destroyOnClose="true"
-      :width="350">
-      <a-form :form="form" autocomplete="off">
+    <a-modal v-model="showAddRole"
+             :maskClosable="false"
+             title="添加角色"
+             :destroyOnClose="true"
+             :width="350">
+      <a-form :form="form"
+              autocomplete="off">
         <a-form-item label="名称">
-          <a-input
-            placeholder="请输入名称"
-            v-decorator="['name',
+          <a-input placeholder="请输入名称"
+                   v-decorator="['name',
                           {
                             rules: [
                               {required: true, message: '名称不能为空!'},
@@ -62,61 +60,54 @@
         </a-form-item>
         <!--  v-decorator="['name',{rules: [{ required: true, message: '描述不能为空!' }],}]" />-->
         <a-form-item label="描述">
-          <a-textarea
-            placeholder="请输入描述"
-            v-decorator="[
+          <a-textarea placeholder="请输入描述"
+                      v-decorator="[
               'note',
-              { rules: [{ required: true, pattern: /^[\S\n\s]{0,150}$/, message: '请输入150字以内的描述！' }] },
+              { rules: [{ pattern: /^[\S\n\s]{0,150}$/, message: '请输入150字以内的描述！' }] },
             ]" />
         </a-form-item>
       </a-form>
       <template slot="footer">
         <div style="display: flex;margin-left: 32px">
-          <a-button
-            key="back"
-            @click="cancelAddRole"
-            style="margin-right: 32px">取消</a-button>
-          <a-button
-            key="submit"
-            type="primary"
-            @click="saveAddRole">
+          <a-button key="back"
+                    @click="cancelAddRole"
+                    style="margin-right: 32px">取消</a-button>
+          <a-button key="submit"
+                    type="primary"
+                    @click="saveAddRole">
             <a-icon type="cloud-upload" /> 保存
           </a-button>
         </div>
       </template>
     </a-modal>
     <!--角色信息编辑-->
-    <a-modal
-      v-model="showEditRole"
-      :maskClosable="false"
-      v-if="editApply"
-      title="角色信息编辑"
-      :width="350">
-      <a-form :form="form1" autocomplete="off">
+    <a-modal v-model="showEditRole"
+             :maskClosable="false"
+             v-if="editApply"
+             title="角色信息编辑"
+             :width="350">
+      <a-form :form="form1"
+              autocomplete="off">
         <a-form-item label="名称">
-          <a-input
-            placeholder="请输入名称"
-            v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],initialValue: editApply.name}]" />
+          <a-input placeholder="请输入名称"
+                   v-decorator="['name',{rules: [{ required: true, message: '名称不能为空!' }],initialValue: editApply.name}]" />
         </a-form-item>
         <a-form-item label="描述">
-          <a-textarea
-            placeholder="请输入描述"
-            v-decorator="[
+          <a-textarea placeholder="请输入描述"
+                      v-decorator="[
               'note',
-              { rules: [{ required: true, pattern: /^[\S\n\s]{0,150}$/, message: '请输入150字以内的描述！' }],initialValue: editApply.note },
+              { rules: [{ pattern: /^[\S\n\s]{0,150}$/, message: '请输入150字以内的描述！' }],initialValue: editApply.note },
             ]" />
         </a-form-item>
       </a-form>
       <template slot="footer">
         <div style="display: flex;margin-left: 32px">
-          <a-button
-            key="back"
-            @click="cancelEditRole"
-            style="margin-right: 32px">取消</a-button>
-          <a-button
-            key="submit"
-            type="primary"
-            @click="saveEditRole">
+          <a-button key="back"
+                    @click="cancelEditRole"
+                    style="margin-right: 32px">取消</a-button>
+          <a-button key="submit"
+                    type="primary"
+                    @click="saveEditRole">
             <a-icon type="cloud-upload" /> 保存
           </a-button>
         </div>
@@ -144,15 +135,15 @@ export default {
       editId: null, // 点击编辑的时候该行数据对应的id
       selectedRowKeys: [],
       columns: [
-        { title: '角色',
+        {          title: '角色',
           dataIndex: 'name',
           width: '10%'
         },
-        { title: '描述',
+        {          title: '描述',
           dataIndex: 'note',
           width: '50%'
         },
-        { title: '创建时间',
+        {          title: '创建时间',
           dataIndex: 'createTime',
           width: '10%',
           customRender (text, record, index) {
@@ -171,7 +162,7 @@ export default {
             return text
           }
         },
-        { title: '更新时间',
+        {          title: '更新时间',
           width: '10%',
           dataIndex: 'updateTime',
           customRender (text, record, index) {
@@ -190,12 +181,12 @@ export default {
             return text
           }
         },
-        { title: '状态',
+        {          title: '状态',
           width: '10%',
           dataIndex: 'enable',
           scopedSlots: { customRender: 'zhuangtai' }
         },
-        { title: '操作',
+        {          title: '操作',
           width: '10%',
           dataIndex: 'name5',
           scopedSlots: { customRender: 'caozuo' }
@@ -338,7 +329,7 @@ form {
   flex-direction: column;
   margin: 0 32px;
 }
-  .role-table{
-    background-color: #fff;
-  }
+.role-table {
+  background-color: #fff;
+}
 </style>
