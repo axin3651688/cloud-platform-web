@@ -32,6 +32,7 @@
         :columns="columns"
         :dataSource="dataSource"
         :rowKey="setKey"
+        :scroll="{y:'calc(100vh - 311px)' }"
         :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
         <template
           slot="zhuangtai"
@@ -231,22 +232,28 @@ export default {
       selectedRowKeys: [],
       columns: [
         { title: '名称',
-          dataIndex: 'trueName'
+          dataIndex: 'trueName',
+          width:'10%'
         },
         { title: '用户名',
-          dataIndex: 'userName'
+          dataIndex: 'userName',
+          width:'10%'
         },
         { title: '手机号',
-          dataIndex: 'phone'
+          dataIndex: 'phone',
+          width:'10%'
         },
         { title: '邮箱',
-          dataIndex: 'email'
+          dataIndex: 'email',
+          width:'10%'
         },
         { title: '角色',
-          dataIndex: 'roleName'
+          dataIndex: 'roleName',
+          width:'20%'
         },
         { title: '更新时间',
           dataIndex: 'updateTime',
+          width:'10%',
           customRender (text, record, index) {
             var oDate = new Date(text * 1)
             var oYear = oDate.getFullYear()
@@ -265,10 +272,12 @@ export default {
         },
         { title: '状态',
           dataIndex: 'enable',
+          width:'10%',
           scopedSlots: { customRender: 'zhuangtai' }
         },
         { title: '操作',
           dataIndex: 'name7',
+          width:'10%',
           scopedSlots: { customRender: 'caozuo' }
         }
       ],
@@ -457,5 +466,9 @@ export default {
 }
 /deep/.add-account .ant-modal-footer {
   display: flex !important;
+}
+/deep/.ant-table-tbody > tr > td {
+  word-wrap: break-word;
+  word-break: break-all;
 }
 </style>

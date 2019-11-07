@@ -266,11 +266,11 @@ export default {
       columns: [{
         title: '名称',
         dataIndex: 'name',
-        width: '10%'
+        width: '15%'
       }, {
         title: '拥有者',
         dataIndex: 'ownerName',
-        width: '10%'
+        width: '15%'
       }, {
         title: '所属牌照',
         dataIndex: 'licenseName',
@@ -581,5 +581,9 @@ ant .tenantInput {
 }
 form .ant-form-item {
   margin-bottom: 0;
+}
+/deep/.ant-table-tbody > tr > td {
+  word-wrap: break-word;
+  word-break: break-all;
 }
 </style>

@@ -36,6 +36,7 @@
              :dataSource="dataSource"
              :rowKey="setKey"
              :pagination="pagination"
+             :scroll="{y:'calc(100vh - 311px)' }"
              :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
       <template slot="zhuangtai"
                 slot-scope="text, record">
@@ -310,8 +311,13 @@ export default {
       ],
       dataSource: [],
       pagination: {
-        pageSize: 15,
-        hideOnSinglePage: true // 只有一页时是否隐藏分页器
+        pageSize: 20,
+        showTotal: total => `共${total}条`,
+        showSizeChanger: true,
+        showQuickJumper: true,
+        pageSizeOptions: ['20', '50', '100'],
+        onShowSizeChange: (current, pageSize) => this.pageSize = pageSize,
+        total: 0 // 总条数
       }
     }
   },

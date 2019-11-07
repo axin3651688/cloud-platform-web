@@ -33,6 +33,7 @@
              :columns="columns"
              :dataSource="dataSource"
              :rowKey="setKey"
+             :scroll="{y:'calc(100vh - 247px)' }"
              :rowClassName="setStyle"
              :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
       <!--应用名称-->
@@ -307,7 +308,7 @@ export default {
   data () {
     return {
       pagination: {
-        pageSize: 7,
+        pageSize: 100,
         hideOnSinglePage: true // 只有一页时是否隐藏分页器
       },
       ApplyMObj: null,
@@ -593,17 +594,17 @@ export default {
     align-items: center
   }
   .cancel{
-    margin-right: 16px
-  }
+       margin-right: 16px
+     }
 .cancel:hover, .cancel:focus {
   color: #2D9C3C;
   border-color: #2D9C3C;
 }
-  .save{
-    border:1px solid rgba(45,156,60,1);
-    background:linear-gradient(360deg,rgba(52,170,68,1) 0%,rgba(56,178,73,1) 100%);
-    box-shadow:0px 1px 1px rgba(19,31,21,0.1);
-    opacity:1;
-    border-radius:4px
-  }
+.save{
+  border:1px solid rgba(45,156,60,1);
+  background:linear-gradient(360deg,rgba(52,170,68,1) 0%,rgba(56,178,73,1) 100%);
+  box-shadow:0px 1px 1px rgba(19,31,21,0.1);
+  opacity:1;
+  border-radius:4px
+}
 </style>

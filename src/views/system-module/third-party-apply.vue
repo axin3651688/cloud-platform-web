@@ -19,6 +19,7 @@
       :columns="columns"
       :dataSource="dataSource"
       :rowKey="setKey"
+      :scroll="{y:'calc(100vh - 247px)' }"
       :rowClassName="setStyle"
       :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
       <!--应用名称-->
@@ -324,7 +325,7 @@ export default {
     return {
       ThirdPartyApplyObj: null,
       pagination: {
-        pageSize: 7,
+        pageSize: 100,
         hideOnSinglePage: true // 只有一页时是否隐藏分页器
       },
       name1: '添加接入',

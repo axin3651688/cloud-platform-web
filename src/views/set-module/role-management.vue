@@ -19,6 +19,7 @@
       :columns="columns"
       :dataSource="dataSource"
       :rowKey="setKey"
+      :scroll="{y:'calc(100vh - 311px)' }"
       :pagination="pagination"
       :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
       <template
@@ -208,8 +209,13 @@ export default {
       form1: this.$form.createForm(this),
       isNamerepeat: false, // 名字是否重复
       pagination: {
-        pageSize: 15,
-        hideOnSinglePage: true // 只有一页时是否隐藏分页器
+        pageSize: 20,
+        showTotal: total => `共${total}条`,
+        showSizeChanger: true,
+        showQuickJumper: true,
+        pageSizeOptions: ['20', '50', '100'],
+        onShowSizeChange: (current, pageSize) => this.pageSize = pageSize,
+        total: 0 // 总条数
       }
     }
   },

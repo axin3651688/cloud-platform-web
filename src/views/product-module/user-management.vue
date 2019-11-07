@@ -155,13 +155,6 @@ export default {
     CommonDropDown
   },
   name: 'UserManagement',
-  computed: {
-    scrollY () {
-      console.log('网页可见区域高：' + document.body.clientHeight)
-      console.log('网页可见区域高：==' + (document.body.clientHeight - 311))
-      return document.body.clientHeight - 311
-    }
-  },
   data () {
     return {
       UserMObj: null,
@@ -202,19 +195,24 @@ export default {
       ],
       columns: [
         { title: '昵称',
-          dataIndex: 'nickName'
+          dataIndex: 'nickName',
+          width:'15%'
         },
         { title: '用户名',
-          dataIndex: 'username'
+          dataIndex: 'username',
+          width:'10%'
         },
         { title: '手机号',
-          dataIndex: 'phone'
+          dataIndex: 'phone',
+          width:'10%'
         },
         { title: '邮箱',
-          dataIndex: 'email'
+          dataIndex: 'email',
+          width:'10%'
         },
         { title: '创建时间',
           dataIndex: 'createTime',
+          width:'20%',
           customRender (text, record, index) {
             var oDate = new Date(text * 1)
             var oYear = oDate.getFullYear()
@@ -233,6 +231,7 @@ export default {
         },
         { title: '更新时间',
           dataIndex: 'updateTime',
+          width:'20%',
           customRender (text, record, index) {
             var oDate = new Date(text * 1)
             var oYear = oDate.getFullYear()
@@ -251,10 +250,12 @@ export default {
         },
         { title: '状态',
           dataIndex: 'enable',
+          width:'10%',
           scopedSlots: { customRender: 'zhuangtai' }
         },
         { title: '操作',
           dataIndex: 'name7',
+          width:'5%',
           scopedSlots: { customRender: 'xiangqing' }
         }
       ],
@@ -265,7 +266,6 @@ export default {
   created () {
     this.UserMObj = new CnbiUserManagement()
     this.getData()
-    this.resize()
   },
   methods: {
     // 加载页面 获取数据
@@ -276,13 +276,6 @@ export default {
 
       // 拷贝数据
       this.dataOld = this.deepCopy(this.dataSource)
-    },
-    resize () {
-      window.onresize = function () {
-        this.scrollY = document.body.clientHeight - 311
-        console.log('resize：' + document.body.clientHeight)
-        console.log('this.scrollY ========' + this.scrollY)
-      }
     },
     // 添加按钮的点击事件
     addClick () {
@@ -409,5 +402,9 @@ export default {
 }
 .user-table {
   background-color: #fff;
+}
+/deep/.ant-table-tbody > tr > td {
+  word-wrap: break-word;
+  word-break: break-all;
 }
 </style>

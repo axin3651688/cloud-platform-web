@@ -29,6 +29,7 @@
              :columns="columns"
              :dataSource="dataSource"
              :rowKey="setKey"
+             :scroll="{y:'calc(100vh - 311px)' }"
              :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
       <template slot="zhuangtai"
                 slot-scope="text, record">
@@ -261,8 +262,13 @@ export default {
   data () {
     return {
       pagination: {
-        pageSize: 15,
-        hideOnSinglePage: true // 只有一页时是否隐藏分页器
+        pageSize: 20,
+        showTotal: total => `共${total}条`,
+        showSizeChanger: true,
+        showQuickJumper: true,
+        pageSizeOptions: ['20', '50', '100'],
+        onShowSizeChange: (current, pageSize) => this.pageSize = pageSize,
+        total: 0 // 总条数
       },
       editId: null, // 点击编辑的时候该行数据对应的id
       editModuleInfo: null, // 要编辑的模块信息
