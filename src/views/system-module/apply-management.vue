@@ -29,7 +29,6 @@
     </div>
     <a-table
       class="apply-table"
-      :pagination="pagination"
       size="small"
       :columns="columns"
       :dataSource="dataSource"
@@ -199,12 +198,13 @@
         <div class="apply-add-foot" style="display: flex;padding: 0 8px;">
           <a-button
             key="back"
-            style="margin-right: 16px"
+            class="cancel"
             @click="cancelSave">
             取消
           </a-button>
           <a-button
             key="submit"
+            class="save"
             type="primary"
             @click="saveApplyOk">
             <a-icon type="cloud-upload" /> 保存
@@ -218,6 +218,7 @@
       :destroyOnClose="true"
       :maskClosable="false"
       v-if="editApply"
+      :width="350"
       title="编辑应用">
       <a-form :form="form1" autocomplete="off">
         <a-form-item label="名称">
@@ -261,15 +262,21 @@
         </a-form-item>
       </a-form>
       <template slot="footer">
-        <a-button
-          key="back"
-          @click="cancelEdit">取消</a-button>
-        <a-button
-          key="submit"
-          type="primary"
-          @click="editApplyOk">
-          <a-icon type="cloud-upload" /> 保存
-        </a-button>
+        <div class="apply-add-foot" style="display: flex;padding: 0 8px;">
+          <a-button
+            class="cancel"
+            key="back"
+            @click="cancelEdit">
+            取消
+          </a-button>
+          <a-button
+            key="submit"
+            class="save"
+            type="primary"
+            @click="editApplyOk">
+            <a-icon type="cloud-upload" /> 保存
+          </a-button>
+        </div>
       </template>
     </a-modal>
   </div>
@@ -292,10 +299,6 @@ export default {
   name: 'ApplyManagement',
   data () {
     return {
-      pagination: {
-        pageSize: 7,
-        hideOnSinglePage: true // 只有一页时是否隐藏分页器
-      },
       ApplyMObj: null,
       version: '关键字搜索',
       defaultValue: 'name',
@@ -569,5 +572,27 @@ export default {
   }
   form .ant-form-item{
     margin-bottom: 0;
+  }
+  input,textarea{
+      width: 280px;
+  }
+  .ant-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center
+  }
+  .cancel{
+    margin-right: 16px
+  }
+.cancel:hover, .cancel:focus {
+  color: #2D9C3C;
+  border-color: #2D9C3C;
+}
+  .save{
+    border:1px solid rgba(45,156,60,1);
+    background:linear-gradient(360deg,rgba(52,170,68,1) 0%,rgba(56,178,73,1) 100%);
+    box-shadow:0px 1px 1px rgba(19,31,21,0.1);
+    opacity:1;
+    border-radius:4px
   }
 </style>

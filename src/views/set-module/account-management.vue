@@ -191,14 +191,19 @@ export default {
   name: 'AccountManagement',
   data () {
     return {
+      pagination: {
+        pageSize: 20,
+        showTotal: total => `共${total}条`,
+        showSizeChanger: true,
+        showQuickJumper: true,
+        pageSizeOptions: ['20', '50', '100'],
+        onShowSizeChange: (current, pageSize) => this.pageSize = pageSize,
+        total: 0 // 总条数
+      },
       TenantMObj: null,
       AccountMObj: null,
       userName: '',
       editId: null, // 点击编辑的时候该行数据对应的id
-      pagination: {
-        pageSize: 15,
-        hideOnSinglePage: true // 只有一页时是否隐藏分页器
-      },
       name1: '添加',
       name2: '删除',
       result: [

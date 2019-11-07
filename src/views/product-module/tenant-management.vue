@@ -322,15 +322,18 @@ export default {
       if (this.$route.query.name) { // 判断是否从控制台过来的
         const name = this.$route.query.name
         if (name == 'expire') { // 展示要到期的列表
+          console.log('展示要到期的列表=============')
           const time = new Date()
           const month = 2592000000// 现在的时间加上1个月的毫秒数
           const endTime = time.getTime() + month
           data = await this.TenantMObj.getEndTimeTenancyList(endTime)
         } else if (name == 'deploy') { // 展示某种类型的列表
+          console.log('展示某种类型的列表=============')
           const type = this.$route.query.type
           data = await this.TenantMObj.getTypeTenancyList(type)
         }
       } else {
+        console.log('本身=============')
         data = await this.TenantMObj.getTenancyList()
       }
       data.forEach(item => {
@@ -370,6 +373,7 @@ export default {
     async getData () {
       await this.refreshData()
       this.dataOld = this.deepCopy(this.data)
+      console.log('this.dataOld===========', this.dataOld)
       // 获取所有的所属人
       this.owners = await this.TenantMObj.getUserSimpleInfoList()
       // 获取所有的牌照列表
@@ -391,7 +395,7 @@ export default {
       await _this.refreshData()
 
       // 清除勾选的id
-      this.$refs.table.clearSelectedKey()
+      // this.$refs.table.clearSelectedKey()
     },
     // 保存租户（保存按钮）
     handleOk () {

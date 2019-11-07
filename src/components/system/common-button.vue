@@ -13,6 +13,7 @@
     <a-button
       class="button_style_two"
       :disabled="!disabled"
+      :class="!disabled?'btn2':''"
       @click="showConfirm">{{ name2 }}</a-button>
   </div>
 </template>
@@ -66,6 +67,11 @@ export default {
 .button_style_one {
   margin-right: 32px;
   cursor: pointer;
+  border:1px solid rgba(45,156,60,1);
+  background:linear-gradient(360deg,rgba(52,170,68,1) 0%,rgba(56,178,73,1) 100%);
+  box-shadow:0px 1px 1px rgba(19,31,21,0.1);
+  opacity:1;
+  border-radius:4px
 }
 .button_style_two {
   cursor: pointer;
@@ -77,5 +83,9 @@ export default {
     line-height:22px;
     color:rgba(62,63,66,1);
     opacity:1; */
+}
+.btn2:hover, .btn2:focus {
+  color: #2D9C3C;
+  border-color: #2D9C3C;
 }
 </style>
