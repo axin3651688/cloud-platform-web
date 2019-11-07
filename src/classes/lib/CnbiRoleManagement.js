@@ -114,7 +114,7 @@ class CnbiRoleManagement {
    * @return  {}
    * @update   by
    */
-  async authorityRole(roleId, resources) {
+  async authorityRole(roleId, resources) {debugger
     let res = await AUTHORITY_ROLE({
       roleId: roleId,
       resources: resources

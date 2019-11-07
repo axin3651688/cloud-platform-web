@@ -27,14 +27,14 @@
         @deleteClick="deleteClick">
       </common-button>
     </div>
-    <a-table
-      class="apply-table"
-      size="small"
-      :columns="columns"
-      :dataSource="dataSource"
-      :rowKey="setKey"
-      :rowClassName="setStyle"
-      :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
+    <a-table class="apply-table"
+             :pagination="pagination"
+             size="small"
+             :columns="columns"
+             :dataSource="dataSource"
+             :rowKey="setKey"
+             :rowClassName="setStyle"
+             :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
       <!--应用名称-->
       <template
         slot="applyName"
@@ -229,6 +229,13 @@
               { rules: [{ required: true, message: '请输入名称！' }],initialValue: editApply.name},
             ]" />
         </a-form-item>
+        <a-form-item label="应用标识">
+          <a-input placeholder="请输入"
+                   v-decorator="[
+              'serviceId',
+              { rules: [{ required: true, message: '请输入应用标识！' }] ,initialValue: editApply.serviceId},
+            ]" />
+        </a-form-item>
         <a-form-item label="描述">
           <a-textarea
             placeholder="请输入描述"
@@ -299,6 +306,10 @@ export default {
   name: 'ApplyManagement',
   data () {
     return {
+      pagination: {
+        pageSize: 7,
+        hideOnSinglePage: true // 只有一页时是否隐藏分页器
+      },
       ApplyMObj: null,
       version: '关键字搜索',
       defaultValue: 'name',
