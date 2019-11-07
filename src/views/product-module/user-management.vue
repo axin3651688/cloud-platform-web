@@ -58,10 +58,12 @@
         </a-table>
       </div>
     </div>
+    <!--添加用户-->
     <a-modal
       v-model="showAddUser"
       title="添加用户"
       :maskClosable="false"
+      :width="350"
       :destroyOnClose="true">
       <a-form
         :form="form"
@@ -124,18 +126,21 @@
             v-decorator="['phone',{rules: [{ required: true,pattern:/^[1][3,4,5,7,6,8][0-9]{9}$/, message: '请输入正确的手机号' }]}]" />
         </a-form-item>
       </a-form>
-      <template
-        slot="footer"
-        style="display: flex">
-        <a-button
-          key="back"
-          @click="cancelAddUser">取消</a-button>
-        <a-button
-          key="submit"
-          type="primary"
-          @click="saveAddUser">
-          <a-icon type="cloud-upload" /> 保存
-        </a-button>
+      <template slot="footer">
+        <div style="display: flex;">
+          <a-button
+            key="back"
+            class="cancel"
+            @click="cancelAddUser"
+            style="margin-right: 24px;margin-left: 16px;">取消</a-button>
+          <a-button
+            key="submit"
+            class="save"
+            type="primary"
+            @click="saveAddUser">
+            <a-icon type="cloud-upload" /> 保存
+          </a-button>
+        </div>
       </template>
     </a-modal>
   </div>
@@ -196,23 +201,23 @@ export default {
       columns: [
         { title: '昵称',
           dataIndex: 'nickName',
-          width:'15%'
+          width: '15%'
         },
         { title: '用户名',
           dataIndex: 'username',
-          width:'10%'
+          width: '10%'
         },
         { title: '手机号',
           dataIndex: 'phone',
-          width:'10%'
+          width: '10%'
         },
         { title: '邮箱',
           dataIndex: 'email',
-          width:'10%'
+          width: '10%'
         },
         { title: '创建时间',
           dataIndex: 'createTime',
-          width:'20%',
+          width: '20%',
           customRender (text, record, index) {
             var oDate = new Date(text * 1)
             var oYear = oDate.getFullYear()
@@ -231,7 +236,7 @@ export default {
         },
         { title: '更新时间',
           dataIndex: 'updateTime',
-          width:'20%',
+          width: '20%',
           customRender (text, record, index) {
             var oDate = new Date(text * 1)
             var oYear = oDate.getFullYear()
@@ -250,12 +255,12 @@ export default {
         },
         { title: '状态',
           dataIndex: 'enable',
-          width:'10%',
+          width: '10%',
           scopedSlots: { customRender: 'zhuangtai' }
         },
         { title: '操作',
           dataIndex: 'name7',
-          width:'5%',
+          width: '5%',
           scopedSlots: { customRender: 'xiangqing' }
         }
       ],
@@ -395,7 +400,7 @@ export default {
   align-items: center;
 }
 .addUser-table input {
-  width: 200px;
+  width: 286px;
 }
 .table-sex {
   display: flex;
@@ -407,4 +412,18 @@ export default {
   word-wrap: break-word;
   word-break: break-all;
 }
+.cancel:hover, .cancel:focus {
+  color: #2D9C3C;
+  border-color: #2D9C3C;
+}
+.save{
+  border:1px solid rgba(45,156,60,1);
+  background:linear-gradient(360deg,rgba(52,170,68,1) 0%,rgba(56,178,73,1) 100%);
+  box-shadow:0px 1px 1px rgba(19,31,21,0.1);
+  opacity:1;
+  border-radius:4px
+}
+  .ant-form-item{
+    margin-bottom: 0;
+  }
 </style>

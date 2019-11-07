@@ -46,8 +46,9 @@
           基本信息
         </span>
         <a-button
-          class="button_style_one"
+          class="save"
           type="primary"
+
           @click="editClick">
           <a-icon type="cloud-upload" />修改</a-button>
       </div>
@@ -121,7 +122,7 @@
         <div>
           <span>初始化服务</span>
           <a-button
-            class="button_style_one"
+            class="save"
             type="primary">
             <a-icon type="cloud-upload" />初始化账套</a-button>
         </div>
@@ -395,5 +396,12 @@ export default {
 }
 .infoShow .ant-form-item {
   display: flex;
+}
+.save{
+  border:1px solid rgba(45,156,60,1);
+  background:linear-gradient(360deg,rgba(52,170,68,1) 0%,rgba(56,178,73,1) 100%);
+  box-shadow:0px 1px 1px rgba(19,31,21,0.1);
+  opacity:1;
+  border-radius:4px
 }
 </style>

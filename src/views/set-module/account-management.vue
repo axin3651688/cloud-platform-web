@@ -71,13 +71,14 @@
       :width="350">
       <a-form
         :form="form"
+        style="margin-left: 8px;"
         autocomplete="off">
         <a-form-item label="选择用户">
           <a-select
             showSearch
             placeholder="请选择用户"
             optionFilterProp="children"
-            style="width: 200px"
+            style="width: 286px"
             @focus="handleFocus"
             @blur="handleBlur"
             @change="handleChangeUser"
@@ -86,9 +87,9 @@
             <a-select-option
               v-for="(item,index) in owners"
               :key="index"
-              v-if="item.enable==1"
+              v-if="!item.joinAccountManager"
               :value="item.id">
-              {{ item.username }}
+              {{ item.nickName }}
             </a-select-option>
           </a-select>
         </a-form-item>
@@ -96,7 +97,7 @@
           <a-select
             mode="tags"
             size="default"
-            style="width: 200px"
+            style="width: 286px"
             @change="handleChange"
             v-decorator="['roleIds',{rules: [{ required: true, message: '角色不能为空!' }],}]">
             <a-select-option
@@ -109,14 +110,16 @@
         </a-form-item>
       </a-form>
       <template slot="footer">
-        <div style="display: flex;margin-left: 32px">
+        <div style="display: flex;">
           <a-button
             key="back"
+            class="cancel"
             @click="cancelAddAccount"
-            style="margin-right: 32px">取消</a-button>
+            style="margin-right: 24px;margin-left: 16px;">取消</a-button>
           <a-button
             key="submit"
             type="primary"
+            class="save"
             @click="saveAddAccount">
             <a-icon type="cloud-upload" /> 保存
           </a-button>
@@ -160,11 +163,13 @@
         <div style="display: flex;margin-left: 32px">
           <a-button
             key="back"
+            class="cancel"
             @click="cancelEditAccount"
             style="margin-right: 32px">取消</a-button>
           <a-button
             key="submit"
             type="primary"
+            class="save"
             @click="saveEditAccount">
             <a-icon type="cloud-upload" /> 保存
           </a-button>
@@ -233,27 +238,27 @@ export default {
       columns: [
         { title: '名称',
           dataIndex: 'trueName',
-          width:'10%'
+          width: '10%'
         },
         { title: '用户名',
           dataIndex: 'userName',
-          width:'10%'
+          width: '10%'
         },
         { title: '手机号',
           dataIndex: 'phone',
-          width:'10%'
+          width: '10%'
         },
         { title: '邮箱',
           dataIndex: 'email',
-          width:'10%'
+          width: '10%'
         },
         { title: '角色',
           dataIndex: 'roleName',
-          width:'20%'
+          width: '20%'
         },
         { title: '更新时间',
           dataIndex: 'updateTime',
-          width:'10%',
+          width: '10%',
           customRender (text, record, index) {
             var oDate = new Date(text * 1)
             var oYear = oDate.getFullYear()
@@ -272,12 +277,12 @@ export default {
         },
         { title: '状态',
           dataIndex: 'enable',
-          width:'10%',
+          width: '10%',
           scopedSlots: { customRender: 'zhuangtai' }
         },
         { title: '操作',
           dataIndex: 'name7',
-          width:'10%',
+          width: '10%',
           scopedSlots: { customRender: 'caozuo' }
         }
       ],
@@ -451,7 +456,6 @@ export default {
       console.log('focus')
     },
     filterOption (input, option) {
-      console.log(input, 'input是个锤子', option, 'option是个鸡毛')
       return (
         option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
       )
@@ -470,5 +474,16 @@ export default {
 /deep/.ant-table-tbody > tr > td {
   word-wrap: break-word;
   word-break: break-all;
+}
+.cancel:hover, .cancel:focus {
+  color: #2D9C3C;
+  border-color: #2D9C3C;
+}
+.save{
+  border:1px solid rgba(45,156,60,1);
+  background:linear-gradient(360deg,rgba(52,170,68,1) 0%,rgba(56,178,73,1) 100%);
+  box-shadow:0px 1px 1px rgba(19,31,21,0.1);
+  opacity:1;
+  border-radius:4px
 }
 </style>

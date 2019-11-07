@@ -67,7 +67,7 @@
             placeholder="请输入描述"
             v-decorator="[
               'note',
-              { rules: [{ required: true, pattern: /^[\S\n\s]{0,150}$/, message: '请输入150字以内的描述！' }] },
+              { rules: [{ required: false, pattern: /^[\S\n\s]{0,150}$/, message: '请输入150字以内的描述！' }] },
             ]" />
         </a-form-item>
       </a-form>
@@ -75,11 +75,13 @@
         <div style="display: flex;margin-left: 32px">
           <a-button
             key="back"
+            class="cancel"
             @click="cancelAddRole"
             style="margin-right: 32px">取消</a-button>
           <a-button
             key="submit"
             type="primary"
+            class="save"
             @click="saveAddRole">
             <a-icon type="cloud-upload" /> 保存
           </a-button>
@@ -112,11 +114,13 @@
         <div style="display: flex;margin-left: 32px">
           <a-button
             key="back"
+            class="cancel"
             @click="cancelEditRole"
             style="margin-right: 32px">取消</a-button>
           <a-button
             key="submit"
             type="primary"
+            class="save"
             @click="saveEditRole">
             <a-icon type="cloud-upload" /> 保存
           </a-button>
@@ -347,4 +351,15 @@ form {
   .role-table{
     background-color: #fff;
   }
+.cancel:hover, .cancel:focus {
+  color: #2D9C3C;
+  border-color: #2D9C3C;
+}
+.save{
+  border:1px solid rgba(45,156,60,1);
+  background:linear-gradient(360deg,rgba(52,170,68,1) 0%,rgba(56,178,73,1) 100%);
+  box-shadow:0px 1px 1px rgba(19,31,21,0.1);
+  opacity:1;
+  border-radius:4px
+}
 </style>

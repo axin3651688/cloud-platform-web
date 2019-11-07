@@ -37,16 +37,13 @@
         ref="table"></common-table>
     </div>
     <!--添加租户弹框-->
-    <div v-if="visible">
+    <div v-if="visible" class="add-tenant">
       <a-modal
         title="添加租户"
         :visible="visible"
         :destroyOnClose="true"
         :maskClosable="false"
-        @ok="handleOk"
         @cancel="handleCancel"
-        okText="保存"
-        cancelText="取消"
         :width="730">
         <a-form
           :form="form"
@@ -223,6 +220,22 @@
             </a-col>
           </a-row>
         </a-form>
+        <template slot="footer">
+          <div style="display: flex;margin-left: 8px;">
+            <a-button
+              key="back"
+              class="cancel"
+              @click="handleCancel"
+              style="margin-right: 24px">取消</a-button>
+            <a-button
+              key="submit"
+              type="primary"
+              class="save"
+              @click="handleOk">
+              <a-icon type="cloud-upload" /> 保存
+            </a-button>
+          </div>
+        </template>
       </a-modal>
     </div>
   </div>
@@ -585,5 +598,23 @@ form .ant-form-item {
 /deep/.ant-table-tbody > tr > td {
   word-wrap: break-word;
   word-break: break-all;
+}
+/deep/.add-tenant .ant-btn-primary{
+    border:1px solid rgba(45,156,60,1);
+    background:linear-gradient(360deg,rgba(52,170,68,1) 0%,rgba(56,178,73,1) 100%) !important;
+    box-shadow:0px 1px 1px rgba(19,31,21,0.1);
+    opacity:1;
+    border-radius:4px
+}
+.cancel:hover, .cancel:focus {
+  color: #2D9C3C;
+  border-color: #2D9C3C;
+}
+.save{
+  border:1px solid rgba(45,156,60,1);
+  background:linear-gradient(360deg,rgba(52,170,68,1) 0%,rgba(56,178,73,1) 100%);
+  box-shadow:0px 1px 1px rgba(19,31,21,0.1);
+  opacity:1;
+  border-radius:4px
 }
 </style>

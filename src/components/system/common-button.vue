@@ -13,7 +13,7 @@
     <a-button
       class="button_style_two"
       :disabled="!disabled"
-      :class="!disabled?'btn2':''"
+      :id="!disabled?'':'btn2'"
       @click="showConfirm">{{ name2 }}</a-button>
   </div>
 </template>
@@ -61,7 +61,6 @@ export default {
 <style scoped>
 .button_style {
   padding-right: 32px;
-  float: right;
   padding-bottom: 15px;
 }
 .button_style_one {
@@ -73,18 +72,8 @@ export default {
   opacity:1;
   border-radius:4px
 }
-.button_style_two {
+#btn2:hover, #btn2:focus {
   cursor: pointer;
-  /* width:32px;
-    height:19px;
-    font-size:14px;
-    font-family:Microsoft YaHei;
-    font-weight:400;
-    line-height:22px;
-    color:rgba(62,63,66,1);
-    opacity:1; */
-}
-.btn2:hover, .btn2:focus {
   color: #2D9C3C;
   border-color: #2D9C3C;
 }

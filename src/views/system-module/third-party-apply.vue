@@ -176,11 +176,13 @@
         <div style="display: flex;padding: 0 8px;">
           <a-button
             key="back"
+            class="cancel"
             @click="cancelAddApply"
             style="margin-right: 16px">取消</a-button>
           <a-button
             key="submit"
             type="primary"
+            class="save"
             @click="saveAddApply">
             <a-icon type="cloud-upload" /> 保存
           </a-button>
@@ -292,11 +294,13 @@
         <div style="display: flex;padding: 0 8px;">
           <a-button
             key="back"
+            class="cancel"
             @click="cancelEditApply"
             style="margin-right: 16px">取消</a-button>
           <a-button
             key="submit"
             type="primary"
+            class="save"
             @click="saveEditApply">
             <a-icon type="cloud-upload" /> 保存
           </a-button>
@@ -565,5 +569,16 @@ export default {
 }
 form .ant-form-item {
   margin-bottom: 0;
+}
+.cancel:hover, .cancel:focus {
+  color: #2D9C3C;
+  border-color: #2D9C3C;
+}
+.save{
+  border:1px solid rgba(45,156,60,1);
+  background:linear-gradient(360deg,rgba(52,170,68,1) 0%,rgba(56,178,73,1) 100%);
+  box-shadow:0px 1px 1px rgba(19,31,21,0.1);
+  opacity:1;
+  border-radius:4px
 }
 </style>
