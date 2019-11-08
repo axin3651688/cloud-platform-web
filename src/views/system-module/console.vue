@@ -2,23 +2,23 @@
   <div>
     <a-row
       :gutter="24"
-      style="background-color: white;padding: 10px 0">
+      style="background-color: white;">
       <a-col
         :span="24"
         style="border-bottom: 1px solid #EAEDF3">
-        <div style="margin-left: 38px;margin-bottom: 10px;">
+        <div style="margin:25px 0px 19px 20px;">
           <div class="icon-text">
-            <img src="@icons/dingwei.svg" alt=""><span style="margin-left: 16px;">服务地址</span>
+            <img src="@icons/console-user.svg" alt=""><span style="margin-left: 16px;">用户数据</span>
           </div>
         </div>
       </a-col>
       <a-col
         :span="24"
-        style="margin-top: 10px;">
+        style="padding: 20px;">
         <a-row :gutter="24">
           <a-col
             :span="6"
-            style="display: flex;flex-direction: column;padding-left: 38px;">
+            style="display: flex;flex-direction: column;padding-left: 32px;">
             <span class="header-name">用户数</span>
             <span class="header-value" @click="routingHop('UserManagement')">
               {{ totalUserCount }}
@@ -54,16 +54,17 @@
     </a-row>
     <a-row
       :gutter="24"
-      style="margin-top: 24px;">
+      style="padding-top:24px "
+    >
       <a-col
         :span="6"
         style="background-color: white">
         <a-row :gutter="24">
           <a-col
             :span="24"
-            style="padding: 10px 38px;border-bottom: 1px solid #EAEDF3">
+            style="padding: 10px 32px;border-bottom: 1px solid #EAEDF3">
             <div class="icon-text">
-              <img src="@icons/info-logo.svg" alt=""/>
+              <img src="@icons/console-shangji.svg" alt=""/>
               <span style="margin-left: 16px;">商机数据</span>
             </div>
           </a-col>
@@ -73,9 +74,10 @@
           style="border-bottom: 1px solid #EAEDF3;padding-bottom: 10px;">
           <a-col :span="24">
             <div id="myChart"></div>
-            <div style="display: flex;justify-content: space-between;padding: 0 28px;">
+            <div style="display: flex;justify-content: space-between;padding: 0 20px;">
               <span class="icon-text">
-                <img src="@icons/info-logo.svg" alt="" style="margin-right: 16px;">未处理商机
+                <img src="@icons/4681.svg" alt="" style="margin-right: 16px;">未处理商机
+
               </span>
               <span style="color:#1665D8;cursor: pointer;">
                 查看全部  →
@@ -87,15 +89,15 @@
       </a-col>
 
       <a-col
-        :span="10"
-        style="margin: 0px 12px 24px 12px">
+        :span="12"
+        style="padding: 0px 24px 24px 24px">
         <div style="background-color: white">
           <a-row :gutter="24">
             <a-col
               :span="24"
-              style="padding: 10px 38px;border-bottom: 1px solid #EAEDF3">
+              style="padding: 10px 44px;border-bottom: 1px solid #EAEDF3">
               <div class="icon-text">
-                <img src="@icons/info-logo.svg" alt=""><span style="margin-left: 16px;">租户数据</span>
+                <img src="@icons/console-zuhu.svg" alt=""><span style="margin-left: 16px;">租户数据</span>
               </div>
             </a-col>
           </a-row>
@@ -111,9 +113,9 @@
               <a-row :gutter="24">
                 <a-col
                   :span="24"
-                  style="padding: 10px 38px;border-bottom: 1px solid #EAEDF3">
+                  style="padding: 10px 44px;border-bottom: 1px solid #EAEDF3">
                   <div class="icon-text">
-                    <img src="@icons/info-logo.svg" alt=""><span style="margin-left: 16px;">系统数据</span>
+                    <img src="@icons/4675.svg" alt=""><span style="margin-left: 16px;">系统数据</span>
                   </div>
                 </a-col>
               </a-row>
@@ -159,9 +161,9 @@
         <a-row :gutter="24">
           <a-col
             :span="24"
-            style="padding: 10px 38px;border-bottom: 1px solid #EAEDF3">
+            style="padding: 10px 32px;border-bottom: 1px solid #EAEDF3">
             <div class="icon-text">
-              <img src="@icons/info-logo.svg" alt=""><span style="margin-left: 16px;">未初始化租户</span>
+              <img src="@icons/console-noinit.svg" alt=""><span style="margin-left: 16px;">未初始化租户</span>
             </div>
           </a-col>
         </a-row>
@@ -337,7 +339,13 @@ export default {
       const option = {
         tooltip: {},
         xAxis: {
-          data: ['已处理', '试用中', '未处理']
+          data: ['已处理', '试用中', '未处理'],
+          splitLine: { // x轴刻度线
+            show: true,
+            lineStyle: {
+              type: 'dashed'
+            }
+          }
         },
         grid: {
           left: '10%',
@@ -350,6 +358,12 @@ export default {
             align: 'right',
             textStyle: {
               fontSize: 12
+            }
+          },
+          splitLine: {
+            show: true,
+            lineStyle: {
+              type: 'dashed'
             }
           }
         },
@@ -366,9 +380,9 @@ export default {
               },
               // 以下为是否显示，显示位置和显示格式的设置了
               label: { // 柱状图头部显示
-                show: false,
+                show: true,
                 position: 'top',
-                formatter: '{c}K',
+                formatter: '{c}',
                 // fontSize:16,
                 color: '#000000'
               }

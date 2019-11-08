@@ -3,8 +3,13 @@
   <div class="box" v-show="flag">
     <div style="margin: 24px 40px 0 0;display: flex;flex-direction: column;align-items: center">
       <img
+        v-if="src"
         style="width: 64px;height: 64px;border-radius: 4px;"
         :src="src"/>
+      <img
+        v-else
+        style="width: 64px;height: 64px;border-radius: 4px;"
+        src="http://img1.imgtn.bdimg.com/it/u=3591148647,2189733428&fm=26&gp=0.jpg"/>
       <span style="margin: 5px 0">{{ name }}</span>
       <a-badge count="X" class="icon-cha" v-if="!dataSourceState" @click="aclick">
         <span href="#" class="head-example" ></span>

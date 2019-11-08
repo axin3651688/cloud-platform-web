@@ -3,7 +3,7 @@
     <a-badge count="X" class="icon-cha" @click="del" v-show="!addressState">
       <span href="#" class="head-example" ></span>
     </a-badge>
-    <span style="margin-left: 20px;overflow: hidden;text-overflow: ellipsis;">{{ module.name }}</span>
+    <span style="margin-left: 20px;overflow: hidden;text-overflow: ellipsis;color:#3E3F42;">· {{ module.name }}</span>
   </div>
 </template>
 

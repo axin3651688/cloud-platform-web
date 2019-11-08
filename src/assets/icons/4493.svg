@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: #9ea0a5;
+      }
+
+      .cls-1 {
+        opacity: 0;
+      }
+    </style>
+  </defs>
+  <g id="组_4493" data-name="组 4493" transform="translate(12) rotate(90)">
+    <path id="Op_component_1" data-name="Op component 1" class="cls-1" d="M1404,33.655,1410.093,30l5.87,3.522L1404,33.655m12,4.679L1409.889,42,1404,38.467l12-.133" transform="translate(-1404 -30)"/>
+    <path id="Op_component_2" data-name="Op component 2" class="cls-2" d="M1407.045,30,1404,33.045l5.979-.111L1407.045,30" transform="translate(-1401 -25.045)"/>
+  </g>
+</svg>

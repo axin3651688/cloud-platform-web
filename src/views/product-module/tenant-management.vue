@@ -617,4 +617,8 @@ form .ant-form-item {
   opacity:1;
   border-radius:4px
 }
+/deep/.ant-btn-primary{
+  background-color: #2D9C3C;
+  border-color: #2D9C3C;
+}
 </style>

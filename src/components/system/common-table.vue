@@ -12,9 +12,11 @@
       :scroll="{y:'calc(100vh - 311px)' }"
       :rowClassName="rowClassName"
       :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
-
       <template slot="action" slot-scope="text,record">
-        <span @click="btnclick(record )">详情</span>
+        <span @click="btnclick(record )" style="display: flex;align-items: center">
+          详情
+          <img src="@icons/4493.svg" style="margin-left: 8px"/>
+        </span>
       </template>
       <template slot="tag" slot-scope="text,record" >
         <span>
@@ -93,8 +95,7 @@ export default {
 </script>
 <style scoped>
   /deep/.tenant-table>td{
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    word-wrap: break-word;
+    word-break: break-all;
   }
 </style>

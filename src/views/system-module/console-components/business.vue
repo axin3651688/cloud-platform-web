@@ -6,9 +6,10 @@
         <span>{{ item.companyName }}</span>
       </a-col>
       <a-col :span="8" >
-        <div style="display: flex;flex-direction: column;">
+        <div style="display: flex;flex-direction: row;align-items: center">
+          <span><img src="@icons/4688.svg" style="margin-right: 8px;"/></span>
           <span class="people-info">{{ item.name }}</span>
-          <span class="people-info">{{ item.phone }}</span>
+          <!--<span class="people-info">{{ item.phone }}</span>-->
         </div>
       </a-col>
     </a-row>

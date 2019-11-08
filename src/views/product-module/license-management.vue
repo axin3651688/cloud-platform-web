@@ -28,8 +28,9 @@
             dataIndex="name"
             width="15%"
             key="name">
-            <template slot-scope="tags">
-              <span>
+            <template slot-scope="tags,record">
+              <span style="display: flex;align-items: center;">
+                <img src="@icons/4493.svg" :class="expandedRowKeys==record.id?'vertical':'plane'"/>
                 <a-tag
                   color="blue"
                   :key="tags">{{ tags }}</a-tag>
@@ -122,8 +123,11 @@
                   border-bottom: 1px solid #EAEDF3;opacity:1;
                   border-right: 1px solid #EAEDF3;height: 65px;"
                     >
-                      <div >
-                        <a-icon type="edit" style="margin: 0 16px 0 16px"/> <span>应用</span>
+                      <div style="display: flex;align-items: center">
+                        <img src="@icons/4723.svg" style="margin: 0 16px 0 16px"/>
+                        <span>
+                          应用
+                        </span>
                       </div>
                       <div style="margin-right: 24px;" v-if="!dataSourceState">
                         <a-button style="margin-right: 32px;" type="primary" @click.prevent="updateDataSource()">
@@ -145,7 +149,7 @@
                         v-for="(item,index) in selectArr"
                         :key="index">
                         <data-source
-                          :src="item.iconUrl"
+                          :src="item.iconUrl==null?'':item.iconUrl"
                           :name="item.name"
                           :dataSourceState="dataSourceState"
                           :value="item.id"
@@ -180,8 +184,9 @@
                   border-bottom: 1px solid #EAEDF3;opacity:1;
                   border-right: 1px solid #EAEDF3;height: 65px;"
                     >
-                      <div >
-                        <a-icon type="edit" style="margin: 0 16px 0 16px"/> <span>模块</span>
+                      <div style="display: flex;align-items: center">
+                        <img src="@icons/4705.svg" style="margin: 0 16px 0 16px"/>
+                        <span>模块</span>
                       </div>
                       <div style="margin-right: 24px;" v-if="!addressState">
                         <a-button style="margin-right: 32px;" type="primary" @click.prevent="updateAddress()">
@@ -204,7 +209,7 @@
                         :key="index">
                         <module :module="item" @del="delModule" :addressState="addressState"></module>
                       </div>
-                      <div @click="addModule" v-if="!addressState">模块添加</div>
+                      <div @click="addModule" v-if="!addressState"><span style="color:#9EA0A5;">添加新模块</span></div>
                     </div>
                   </div>
 
@@ -417,7 +422,7 @@
                 { rules: [{ required: true, pattern: /^[0-9]{1,8}$/, message: '请输入正整数且不超过8位！' }] },
               ]" />个
           </a-form-item>
-          <a-form-item  class="btnNext">
+          <a-form-item class="btnNext">
             <a-button
               type="primary"
               class="save"
@@ -1157,5 +1162,12 @@ export default {
     display: flex;justify-content: center;
 
   }
+  .plane{
+   margin-right: 18px;
+    -webkit-transform:rotate(0deg);
+  }
+  .vertical{
+    margin-right: 18px;
+    -webkit-transform:rotate(90deg);
+  }
 </style>
-

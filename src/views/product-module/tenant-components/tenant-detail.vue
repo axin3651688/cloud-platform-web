@@ -5,7 +5,7 @@
     <div class="tenant-detail-header">
       <div
         class=""
-        style="display: flex;flex-direction: row;align-items: center;margin-left: 20px;margin-bottom: 29px">
+        style="display: flex;flex-direction: row;align-items: center;margin-bottom: 29px">
         <img
           v-if="info.logoFile"
           style="max-width: 260px;max-height: 60px;"
@@ -13,14 +13,11 @@
         >
         <div style="margin-left: 20px;display: flex;flex-direction: column">
           <div>
-            <h3 style="font-size: 18px;font-weight: bold;">{{ info.name }}</h3>
+            <h3 style="font-size: 18px;font-weight: bold;">{{ info.tenancyName }}</h3>
           </div>
           <div style="display: flex;flex-direction: row;">
             <div>
               <p>编号：<span>{{ info.code }}</span></p>
-            </div>
-            <div style="margin-left: 100px;">
-              <p>公司名称：<span>{{ info.tenancyName }}</span></p>
             </div>
           </div>
         </div>
@@ -40,70 +37,70 @@
     <div
       class="content"
       v-if="tabKey==1">
-      <div style="display: flex;justify-content: space-between;padding: 10px 30px">
-        <span>
+      <div style="display: flex;justify-content: space-between;padding: 16px 30px;border-bottom: 1px solid #EAEDF3">
+        <span style="color: #9EA0A5;">
           <img src="@icons/jbxx.svg">
           基本信息
         </span>
         <a-button
           class="save"
           type="primary"
-
           @click="editClick">
           <a-icon type="cloud-upload" />修改</a-button>
       </div>
       <div>
+
         <a-form
           style="padding-left: 30px;"
           class="infoShow"
           :form="form"
           autocomplete="off">
           <a-row
-            :gutter="24"
+            :gutter="12"
             class="row1">
-            <a-col :span="12">
-              <a-form-item label="营业执照">
+            <a-col :span="6">
+              <a-form-item label="营业执照" class="col1">
                 <span>{{ info.societyCode }}</span>
               </a-form-item>
-              <a-form-item label="所属牌照">
+              <a-form-item label="所属牌照" class="col1">
                 {{ info.licenseName }}
               </a-form-item>
-              <a-form-item label="服务标识">
+              <a-form-item label="服务标识" class="col1">
                 {{ info.service }}
               </a-form-item>
-              <a-form-item label="联系电话">
+              <a-form-item label="联系电话" class="col1">
                 {{ info.tel }}
               </a-form-item>
-              <a-form-item label="生效日期">
+              <a-form-item label="生效日期" class="col1">
                 {{ info.beginTime }}
               </a-form-item>
-              <a-form-item label="创建日期">
+              <a-form-item label="创建日期" class="col1">
                 {{ info.createTime }}
               </a-form-item>
-              <a-form-item label="最近更新日期">
+              <a-form-item label="最近更新日期" class="col1-rq">
                 {{ info.updateTime }}
               </a-form-item>
             </a-col>
-            <a-col :span="12">
-              <a-form-item label="拥有者">
+            <a-col :span="6">
+              <a-form-item label="拥有者" class="col2-3">
                 {{ info.ownerName }}
               </a-form-item>
-              <a-form-item label="租户类型">
+              <a-form-item label="租户类型" class="col2">
                 {{ info.typeName }}
               </a-form-item>
-              <a-form-item label="访问网址">
+              <a-form-item label="访问网址" class="col2">
                 {{ info.url }}
               </a-form-item>
-              <a-form-item label="租户地址">
+              <a-form-item label="租户地址" class="col2">
                 {{ info.address }}
               </a-form-item>
-              <a-form-item label="到期日期">
+              <a-form-item label="到期日期" class="col2">
                 {{ info.endTime }}
               </a-form-item>
-              <a-form-item label="创建人">
+              <a-form-item label="创建人" class="col2-3">
                 {{ info.createUserName }}
               </a-form-item>
-              <a-form-item label="最近更新人">
+              <a-form-item label="最近更新人" class="col2-5">
                 {{ info.updateUserName }}
               </a-form-item>
             </a-col>
@@ -119,14 +116,26 @@
       <div
         class="noInit"
         style="display: flex;flex-direction: column">
-        <div>
-          <span>初始化服务</span>
+        <div style="padding: 16px 0;border-bottom: 1px solid #EAEDF3">
+          <span><img src="@icons/tenant-init.svg" style="margin-right: 16px;margin-left: 32px;">初始化服务</span>
           <a-button
             class="save"
             type="primary">
             <a-icon type="cloud-upload" />初始化账套</a-button>
         </div>
-        <div></div>
+        <div style="min-height: 200px;align-items: center;display: flex;justify-content: center;flex-direction: column">
+          <div >
+            <div style="display: flex;flex-direction: row;margin-bottom: 16px;">
+              <img src="@icons/4700.svg">
+              <div style="display: flex;flex-direction: column;padding-left: 16px;color:#6B6C6F;">
+                <span>当前租户</span>
+                <span>未完成初始化</span>
+              </div>
+            </div>
+            <div style="color: #9EA0A5;">初始化后可以使用设计器设计分析资源！</div>
+          </div>
+
+        </div>
       </div>
       <!--已经初始化-->
       <div></div>
@@ -136,9 +145,6 @@
       v-model="showUpdataInfo"
       :destroyOnClose="true"
       :maskClosable="false"
-      @ok="UpdataInfo"
-      okText="保存"
-      cancelText="取消"
       title="修改基本信息">
       <a-form :form="form1" autocomplete="off">
         <a-row
@@ -262,6 +268,22 @@
           </a-col>
         </a-row>
       </a-form>
+      <template slot="footer">
+        <div style="display: flex;">
+          <a-button
+            key="back"
+            class="cancel"
+            @click="cancelUpdataInfo"
+            style="margin-right: 24px;margin-left: 16px;">取消</a-button>
+          <a-button
+            key="submit"
+            class="save"
+            type="primary"
+            @click="UpdataInfo">
+            <a-icon type="cloud-upload" /> 保存
+          </a-button>
+        </div>
+      </template>
     </a-modal>
   </div>
 </template>
@@ -269,9 +291,10 @@
 <script>
 import AFormItem from 'ant-design-vue/es/form/FormItem'
 import CnbiTenantManagement from '@/classes/lib/CnbiTenantManagement'
+import ARow from 'ant-design-vue/es/grid/Row'
 export default {
   name: 'TenantInit',
-  components: { AFormItem },
+  components: { ARow, AFormItem },
   data () {
     return {
       form: this.$form.createForm(this),
@@ -366,6 +389,9 @@ export default {
         }
       })
     },
+    cancelUpdataInfo () {
+      this.showUpdataInfo = false
+    },
     getYearMonthDay (time) {
       const year = new Date(time * 1).getFullYear()
       let month = new Date(time * 1).getMonth() + 1// 9
@@ -382,14 +408,16 @@ export default {
 .tenant-detail {
   display: flex;
   flex-direction: column;
-  background-color: #fff;
-  padding: 16px 32px;
 }
 .tenant-detail-header {
   display: flex;
   flex-direction: column;
+  background-color: #fff;
+  padding: 36px 32px 0 32px ;
 }
 .content {
+  margin-top: 24px;
+  background-color: #fff;
 }
 .tenant-detail-tabs {
   min-height: 64px;
@@ -397,11 +425,44 @@ export default {
 .infoShow .ant-form-item {
   display: flex;
 }
+/deep/.infoShow .ant-form-item-label label{
+  color:#9EA0A5;
+}
+/deep/.infoShow .ant-form-item-control{
+  color:#3E3F42;
+}
+/deep/.col1 .ant-form-item-control-wrapper{
+  margin-left: 52px;
+}
+/deep/.col1-rq .ant-form-item-control-wrapper{
+  margin-left: 24px;
+}
+/deep/.col2-5 .ant-form-item-control-wrapper{
+  margin-left: 24px;
+}
+/deep/.col2-3 .ant-form-item-control-wrapper{
+  margin-left: 52px;
+}
+/deep/.col2 .ant-form-item-control-wrapper{
+  margin-left: 40px;
+}
 .save{
+  margin-left: 32px;
   border:1px solid rgba(45,156,60,1);
   background:linear-gradient(360deg,rgba(52,170,68,1) 0%,rgba(56,178,73,1) 100%);
   box-shadow:0px 1px 1px rgba(19,31,21,0.1);
   opacity:1;
   border-radius:4px
 }
+.cancel:hover, .cancel:focus {
+  color: #2D9C3C;
+  border-color: #2D9C3C;
+}
+  .ant-form-item{
+    margin-bottom: 8px;
+  }
+  .row1{
+    margin-top: 24px;
+    margin-bottom: 20px;
+  }
 </style>
