@@ -40,6 +40,7 @@ const api = {
   ENABLE_USER: '/uc/user/enable_user',
   FIND_USER_DETAIL_INFO: '/uc/user/find_user_detail_info',
   ADMIN_SAVE: '/uc/user/admin_save',
+  ADMIN_UPDATE: '/uc/user/admin_update',
 
   //权限管理的相关接口（除了查询接口不一致，其余用模块的接口）
   GET_RESOURCES_TREE: '/upm/resource/get_resources_tree',
@@ -269,13 +270,13 @@ export function GET_RESOURCES_CARD() {
   })
 }
 
-/** 
+/**
  * @desc    : 删除牌照权限
  * @author  : zj
  * @date  : 2019/11/04
- * @param   {} 
- * @return  {} 
- * @update   by   
+ * @param   {}
+ * @return  {}
+ * @update   by
  */
 export function DELETE_LICENSE_AUTHORITY(parameter) {
   return axios2({
@@ -285,13 +286,13 @@ export function DELETE_LICENSE_AUTHORITY(parameter) {
   })
 }
 
-/** 
+/**
  * @desc    : 添加牌照权限
  * @author  : zj
  * @date  : 2019/11/04
- * @param   {} 
- * @return  {} 
- * @update   by   
+ * @param   {}
+ * @return  {}
+ * @update   by
  */
 export function BATCH_LICENSE_AUTHORITY(parameter) {
   return axios2({
@@ -405,13 +406,13 @@ export function SEARCH_RESOURCES(parameter) {
 }
 
 
-/** 
+/**
  * @desc    : 查询应用的模块
  * @author  : zj
  * @date  : 2019/10/31
- * @param   {} 
- * @return  {} 
- * @update   by   
+ * @param   {}
+ * @return  {}
+ * @update   by
  */
 export function FIND_CARD_RESOURCES(parameter) {
   return axios2({
@@ -443,13 +444,13 @@ export function FIND_SYSTEM_MODULE() {
 }
 
 
-/** 
+/**
  * @desc    : 批量删除权限
  * @author  : zj
  * @date  : 2019/10/30
- * @param   {} 
- * @return  {} 
- * @update   by   
+ * @param   {}
+ * @return  {}
+ * @update   by
  */
 export function BAT_DELETE_AUTHORITY(parameter) {
   return axios2({
@@ -507,6 +508,21 @@ export function ADMIN_SAVE(parameter) {
   })
 }
 
+/**
+ * @desc    : 管理员编辑用户
+ * @author  : zj
+ * @date  : 2019/10/29
+ * @param   {}
+ * @return  {}
+ * @update   by
+ */
+export function ADMIN_UPDATE(parameter) {
+  return axios2({
+    url: api.ADMIN_UPDATE,
+    method: 'put',
+    data: parameter
+  })
+}
 /**
  * @desc    : 校验服务标识是否重复
  * @author  : zj

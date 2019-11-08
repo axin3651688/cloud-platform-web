@@ -320,10 +320,11 @@ export default {
     },
     // 详情按钮的点击事件
     btnClick (key) {
+      debugger
       this.$router.push({
         name: 'UserDetail',
         query: {
-          id: key
+          id: key.id
         }
       })
     },
