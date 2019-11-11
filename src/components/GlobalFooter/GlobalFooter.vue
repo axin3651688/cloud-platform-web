@@ -35,7 +35,6 @@ export default {
   padding: 0 16px;
   margin: 48px 0 24px;
   text-align: center;
-
   .links {
     margin-bottom: 8px;
 

@@ -28,28 +28,28 @@
       :class="[layoutMode, `content-width-${contentWidth}`]"
       :style="{ paddingLeft: contentPaddingLeft, maxHeight: '100vh' }">
       <!-- layout header -->
-        <global-header
-          :mode="layoutMode"
-          :menus="menus"
-          :theme="navTheme"
-          :collapsed="collapsed"
-          :device="device"
-          @toggle="toggle" />
+      <global-header
+        :mode="layoutMode"
+        :menus="menus"
+        :theme="navTheme"
+        :collapsed="collapsed"
+        :device="device"
+        @toggle="toggle" />
       <!-- layout content -->
-        <a-layout-content :style="{ height: '100%', margin: '24px 24px 0', paddingTop: fixedHeader ? '64px' : '0' }">
-          <multi-tab v-if="multiTab"></multi-tab>
-          <transition name="page-transition">
-            <route-view />
-          </transition>
-        </a-layout-content>
+      <a-layout-content :style="{ height: '100%', margin: '24px 24px 0',paddingTop: fixedHeader ? '64px' : '0' }">
+        <multi-tab v-if="multiTab"></multi-tab>
+        <transition name="page-transition">
+          <route-view />
+        </transition>
+      </a-layout-content>
 
-        <!-- layout footer -->
-        <a-layout-footer>
-          <global-footer />
-        </a-layout-footer>
+      <!-- layout footer -->
+      <a-layout-footer>
+        <global-footer />
+      </a-layout-footer>
 
-        <!-- Setting Drawer (show in development mode) -->
-        <setting-drawer v-if="!production"></setting-drawer>
+      <!-- Setting Drawer (show in development mode) -->
+      <setting-drawer v-if="!production"></setting-drawer>
     </a-layout>
   </a-layout>
 

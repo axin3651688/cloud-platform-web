@@ -27,21 +27,21 @@
         @deleteClick="deleteClick">
       </common-button>
     </div>
-    <a-table class="apply-table"
-             :pagination="pagination"
-             size="small"
-             :columns="columns"
-             :dataSource="dataSource"
-             :rowKey="setKey"
-             :scroll="{y:'calc(100vh - 247px)' }"
-             :rowClassName="setStyle"
-             :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
+    <a-table
+      class="apply-table"
+      :pagination="pagination"
+      size="small"
+      :columns="columns"
+      :dataSource="dataSource"
+      :rowKey="setKey"
+      :scroll="{y:'calc(100vh - 247px)' }"
+      :rowClassName="setStyle"
+      :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}">
       <!--应用名称-->
       <template
         slot="applyName"
         slot-scope="text, record">
-        <div style="display: flex;flex-direction: row;align-items: center">
-
+        <div style="display: flex;flex-direction: row;align-items: center;position: relative;">
           <span v-if="record.iconUrl" style="margin-right: 18px;">
             <img :src="record.iconUrl" style="width:64px;height: 64px;border-radius: 4px;background:rgba(112,55,55,1);opacity:1;"/>
           </span>
@@ -50,6 +50,11 @@
               src=" https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3255435584,2194151633&fm=111&gp=0.jpg"
               style="width:64px;height: 64px;border-radius: 4px;background:rgba(112,55,55,1);opacity:1;"/>
           </span>
+          <div style="width:64px;height: 64px;border-radius: 4px;background: #3E3F42;opacity:0.4;position: absolute;">
+          </div>
+          <div style="width:64px;height: 64px;border-radius: 4px;position: absolute;justify-content: center;align-items: center;display: flex">
+            <img src="@icons/apply.svg"/>
+          </div>
           <span >
             {{ text }}
           </span>
@@ -231,8 +236,9 @@
             ]" />
         </a-form-item>
         <a-form-item label="应用标识">
-          <a-input placeholder="请输入"
-                   v-decorator="[
+          <a-input
+            placeholder="请输入"
+            v-decorator="[
               'serviceId',
               { rules: [{ required: true, message: '请输入应用标识！' }] ,initialValue: editApply.serviceId},
             ]" />

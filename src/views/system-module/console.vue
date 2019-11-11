@@ -371,7 +371,7 @@ export default {
           name: '',
           type: 'bar',
           data: this.barData,
-          barWidth: '30%',
+          barWidth: '40%',
           itemStyle: {
             normal: {
               color: function (params) { // '#FFD16E', '#7AA2EA',

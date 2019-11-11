@@ -5,16 +5,16 @@
     :collapsible="collapsible"
     v-model="collapsed"
     :trigger="null">
-    <div class="menu" style="max-height:100vh;overflow-y: auto">
-    <logo />
-        <s-menu
-          :collapsed="collapsed"
-          :menu="menus"
-          :theme="theme"
-          :mode="mode"
-          @select="onSelect"
-          style="padding: 16px 0px;">
-        </s-menu>
+    <div class="menu" style="max-height:100vh;">
+      <logo />
+      <s-menu
+        :collapsed="collapsed"
+        :menu="menus"
+        :theme="theme"
+        :mode="mode"
+        @select="onSelect"
+        style="padding: 16px 0px;background-color: #252529">
+      </s-menu>
     </div>
   </a-layout-sider>
 
@@ -273,12 +273,35 @@ export default {
   ::-webkit-scrollbar
   {
     width:8px;
-    background-color:#001529;
+    background-color:#252529;
   }
   ::-webkit-scrollbar-thumb
   {
     border-radius:8px;
     -webkit-box-shadow:inset 0 0 6px rgba(0,0,0,.3);
     background-color:#555;
+  }
+  /deep/.ant-menu-dark .ant-menu-item-selected > a, .ant-menu-dark .ant-menu-item-selected > a:hover {
+    color: #fff;
+    background: #1665D8;
+    border-radius: 4px;
+    opacity: 1;
+  }
+  /deep/.ant-menu.ant-menu-dark .ant-menu-item-selected, .ant-menu-submenu-popup.ant-menu-dark .ant-menu-item-selected {
+    background-color: #252529;
+    height: 36px;
+  }
+  /deep/.ant-menu-item a{
+    height: 36px;
+  }
+  /deep/.ant-menu-item .anticon, .ant-menu-submenu-title .anticon{
+    margin-right: 16px;
+  }
+  .menu{
+    overflow-y: hidden;
+  }
+  .menu:hover{
+    overflow-y: auto;
+
   }
 </style>

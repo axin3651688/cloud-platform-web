@@ -44,15 +44,10 @@
               :defaultChecked="record.enable==1?true:false"
               @change="updataState(record)" />
           </template>
-          <template
-            slot="xiangqing"
-            slot-scope="text, record">
-            <!--1代表开-->
-            <span @click="btnClick(record)">
-              <img
-                style="margin-left: 16px;cursor: pointer;"
-                src="@icons/xiangqing.svg"
-                title="详情">
+          <template slot="xiangqing" slot-scope="text,record">
+            <span @click="btnClick(record )" style="display: flex;align-items: center">
+              详情
+              <img src="@icons/4493.svg" style="margin-left: 8px"/>
             </span>
           </template>
         </a-table>

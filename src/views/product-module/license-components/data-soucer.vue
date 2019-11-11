@@ -1,7 +1,7 @@
 <!--牌照管理-可用数据源-->
 <template>
   <div class="box" v-show="flag">
-    <div style="margin: 24px 40px 0 0;display: flex;flex-direction: column;align-items: center">
+    <div style="margin: 24px 40px 0 0;display: flex;flex-direction: column;align-items: center;position: relative;">
       <img
         v-if="src"
         style="width: 64px;height: 64px;border-radius: 4px;"
@@ -11,6 +11,11 @@
         style="width: 64px;height: 64px;border-radius: 4px;"
         src="http://img1.imgtn.bdimg.com/it/u=3591148647,2189733428&fm=26&gp=0.jpg"/>
       <span style="margin: 5px 0">{{ name }}</span>
+      <div style="width:64px;height: 64px;border-radius: 4px;background: #3E3F42;opacity:0.4;position: absolute;">
+      </div>
+      <div style="width:64px;height: 64px;border-radius: 4px;position: absolute;justify-content: center;align-items: center;display: flex">
+        <img src="@icons/apply.svg"/>
+      </div>
       <a-badge count="X" class="icon-cha" v-if="!dataSourceState" @click="aclick">
         <span href="#" class="head-example" ></span>
       </a-badge>

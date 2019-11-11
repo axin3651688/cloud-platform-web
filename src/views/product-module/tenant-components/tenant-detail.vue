@@ -8,7 +8,7 @@
         style="display: flex;flex-direction: row;align-items: center;margin-bottom: 29px">
         <img
           v-if="info.logoFile"
-          style="max-width: 260px;max-height: 60px;"
+          style="width: 260px;height: 60px;"
           :src="info.logoFile.url"
         >
         <div style="margin-left: 20px;display: flex;flex-direction: column">

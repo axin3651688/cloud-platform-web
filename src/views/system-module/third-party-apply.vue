@@ -26,8 +26,7 @@
       <template
         slot="thirdPartyName"
         slot-scope="text, record">
-        <div style="display: flex;flex-direction: row;align-items: center">
-
+        <div style="display: flex;flex-direction: row;align-items: center;">
           <span
             v-if="record.iconFile"
             style="margin-right: 18px;">

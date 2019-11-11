@@ -1,8 +1,9 @@
 <template>
-  <div class="logo">
+  <div class="logo" style="background-color: #252529;border-bottom: 1px solid #313131">
     <router-link :to="{name:'index'}">
-      <LogoSvg alt="logo" />
-      <h1 v-if="showTitle">{{ title }}</h1>
+      <!--<LogoSvg alt="logo" />-->
+      <img src="@icons/logo.png" style="width: 200px;"/>
+      <!--<h1 v-if="showTitle">{{ title }}</h1>-->
     </router-link>
   </div>
 </template>
