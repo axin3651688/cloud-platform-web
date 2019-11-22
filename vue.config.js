@@ -99,17 +99,17 @@ module.exports = {
     host: '0.0.0.0',
     disableHostCheck: true,
     proxy: {
-      '/api': {
+      /* '/api': {
         target: 'https://www.easy-mock.com/mock/5d1de8af2152d8760870932f/antd-pro',
         ws: false,
         changeOrigin: true
-      },
-      '/aapi': {
-        target: 'http://192.168.2.236:80',
+      }, */
+      '/api': {
+        target: 'http://121.199.47.77:8005',
         ws: false,
         changeOrigin: true,
         pathRewrite: {
-          '^/aapi': '/'
+          '^/api': '/'
         }
       }
       /* '/org': {
