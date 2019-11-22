@@ -31,7 +31,7 @@ router.beforeEach((to, from, next) => {
         })
       }, TIME_SETTING.refreshTokenInterval)
       // 如果没有任何资源信息，那么重新去获取一下
-      if (store.getters.resources.length === 0) {
+      if (!store.getters.userInfo.id) {
         store.dispatch('GetInfo').then(res => {
           // 调用 vuex 从后端获取用户的路由菜单，动态添加可访问路由表
           store.dispatch('GenerateRoutes', { id: res.data.id }).then(() => {

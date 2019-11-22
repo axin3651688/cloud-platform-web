@@ -3,17 +3,16 @@ import {
   axios2
 } from '@/utils/request'
 
-
 const api = {
-  //租户管理相关接口（初始化的相关接口暂时没有）
+  // 租户管理相关接口（初始化的相关接口暂时没有）
   GET_TENANCY_LIST: '/tc/tenancy/get_tenancy_list',
-  SAVE_TENANCY: '/tc/tenancy/save', //(此处命名与接口不同，由于接口就一个save，避免冲突，自行定义该接口名称 by:zj)
-  DELETE_TENANCY: '/tc/tenancy/delete', //(同上)
-  GET_TENANCY: '/tc/tenancy/get_tenancy_detail', //（同上）
+  SAVE_TENANCY: '/tc/tenancy/save', // (此处命名与接口不同，由于接口就一个save，避免冲突，自行定义该接口名称 by:zj)
+  DELETE_TENANCY: '/tc/tenancy/delete', // (同上)
+  GET_TENANCY: '/tc/tenancy/get_tenancy_detail', // （同上）
   UPDATE_TENANCY: '/tc/tenancy/update_tenancy_info',
   USER_SIMPLE_INFO_LIST: '/uc/user/user_simple_info_list/',
   VALID_SERVICE_SIGN: '/tc/tenancy/valid_service_sign/',
-  //牌照管理相关接口
+  // 牌照管理相关接口
   GET_LICENSE_ID: '/upm/license/find_license_info',
   FIND_LICENSE_LIST: '/upm/license/find_list',
   OPEN_LICENSE: '/upm/license/open_license',
@@ -21,12 +20,12 @@ const api = {
   DELETE_LICENSE: '/upm/license/bat_delete',
   UPDATE_LICENSE: '/upm/license/update',
   UPDATE_VAIL_LICENSE: '/upm/license_authority/update_vail_license',
-  GET_RESOURCES_CARD: '/upm/resource/get_resources_card', //查看应用列表
-  DELETE_LICENSE_AUTHORITY: '/upm/license_authority/delete', //删除牌照权限
-  BATCH_LICENSE_AUTHORITY: '/upm/license_authority/batch', //添加牌照权限
-  GET_RESOURCES_MODULE: '/upm/resource/get_resources_module', //查看模块列表
+  GET_RESOURCES_CARD: '/upm/resource/get_resources_card', // 查看应用列表
+  DELETE_LICENSE_AUTHORITY: '/upm/license_authority/delete', // 删除牌照权限
+  BATCH_LICENSE_AUTHORITY: '/upm/license_authority/batch', // 添加牌照权限
+  GET_RESOURCES_MODULE: '/upm/resource/get_resources_module', // 查看模块列表
   GET_RESOURCES_MENU: '/upm/resource/get_resources_menu',
-  //模块管理相关接口
+  // 模块管理相关接口
   // GET_RESOURCES_MODULE: '/upm/resource/get_resources_module',
   SAVE_RESOURCE: '/upm/resource/save',
   BAT_DELETE_MODEL: '/upm/resource/bat_delete_model',
@@ -34,18 +33,18 @@ const api = {
   UPDATE_RESOURCE: '/upm/resource/update',
   SEARCH_RESOURCES: '/upm/resource/search_resources',
   FIND_CARD_RESOURCES: '/upm/resource/find_card_resources',
-
-  //用户模块的相关接口
+  INIT_CUSTOMIZE_INIT_TENANCY: '/upm/init/customize_init_tenancy',
+  // 用户模块的相关接口
   // USER_SIMPLE_INFO_LIST: '/uc/user/user_simple_info_list',
   ENABLE_USER: '/uc/user/enable_user',
   FIND_USER_DETAIL_INFO: '/uc/user/find_user_detail_info',
   ADMIN_SAVE: '/uc/user/admin_save',
   ADMIN_UPDATE: '/uc/user/admin_update',
 
-  //权限管理的相关接口（除了查询接口不一致，其余用模块的接口）
+  // 权限管理的相关接口（除了查询接口不一致，其余用模块的接口）
   GET_RESOURCES_TREE: '/upm/resource/get_resources_tree',
   FIND_SYSTEM_MODULE: '/upm/resource/find_system_module',
-  BAT_DELETE_AUTHORITY: '/upm/resource/bat_delete_authority',
+  BAT_DELETE_AUTHORITY: '/upm/resource/bat_delete_authority'
 
 }
 
@@ -59,7 +58,7 @@ export default api
  * @return  {*}
  * @update   by
  */
-export function GET_TENANCY_LIST(parameter) {
+export function GET_TENANCY_LIST (parameter) {
   return axios2({
     url: api.GET_TENANCY_LIST,
     method: 'post',
@@ -75,7 +74,7 @@ export function GET_TENANCY_LIST(parameter) {
  * @return  {*}
  * @update   by
  */
-export function SAVE_TENANCY(parameter) {
+export function SAVE_TENANCY (parameter) {
   return axios2({
     url: api.SAVE_TENANCY,
     method: 'post',
@@ -90,7 +89,7 @@ export function SAVE_TENANCY(parameter) {
  * @return  {*}
  * @update   by
  */
-export function DELETE_TENANCY(parameter) {
+export function DELETE_TENANCY (parameter) {
   debugger
   return axios2({
     url: api.DELETE_TENANCY,
@@ -106,7 +105,7 @@ export function DELETE_TENANCY(parameter) {
  * @return  {}
  * @update   by
  */
-export function GET_TENANCY(parameter) {
+export function GET_TENANCY (parameter) {
   return axios2({
     url: api.GET_TENANCY,
     method: 'get',
@@ -122,7 +121,7 @@ export function GET_TENANCY(parameter) {
  * @return  {}
  * @update   by
  */
-export function UPDATE_TENANCY(parameter) {
+export function UPDATE_TENANCY (parameter) {
   return axios2({
     url: api.UPDATE_TENANCY,
     method: 'put',
@@ -138,7 +137,7 @@ export function UPDATE_TENANCY(parameter) {
  * @return  {}
  * @update   by
  */
-export function USER_SIMPLE_INFO_LIST(parameter) {
+export function USER_SIMPLE_INFO_LIST (parameter) {
   return axios2({
     url: api.USER_SIMPLE_INFO_LIST,
     method: 'post',
@@ -153,7 +152,7 @@ export function USER_SIMPLE_INFO_LIST(parameter) {
  * @return  {}
  * @update   by
  */
-export function GET_LICENSE_ID(parameter) {
+export function GET_LICENSE_ID (parameter) {
   return axios2({
     url: api.GET_LICENSE_ID,
     method: 'get',
@@ -169,7 +168,7 @@ export function GET_LICENSE_ID(parameter) {
  * @return  {}
  * @update   by
  */
-export function FIND_LICENSE_LIST() {
+export function FIND_LICENSE_LIST () {
   return axios2({
     url: api.FIND_LICENSE_LIST,
     method: 'get'
@@ -184,7 +183,7 @@ export function FIND_LICENSE_LIST() {
  * @return  {}
  * @update   by
  */
-export function OPEN_LICENSE(parameter) {
+export function OPEN_LICENSE (parameter) {
   return axios2({
     url: api.OPEN_LICENSE,
     method: 'put',
@@ -200,7 +199,7 @@ export function OPEN_LICENSE(parameter) {
  * @return  {}
  * @update   by
  */
-export function SAVE_LICENSE(parameter) {
+export function SAVE_LICENSE (parameter) {
   return axios2({
     url: api.SAVE_LICENSE,
     method: 'post',
@@ -216,7 +215,7 @@ export function SAVE_LICENSE(parameter) {
  * @return  {}
  * @update   by
  */
-export function DELETE_LICENSE(parameter) {
+export function DELETE_LICENSE (parameter) {
   return axios2({
     url: api.DELETE_LICENSE,
     method: 'delete',
@@ -232,7 +231,7 @@ export function DELETE_LICENSE(parameter) {
  * @return  {}
  * @update   by
  */
-export function UPDATE_LICENSE(parameter) {
+export function UPDATE_LICENSE (parameter) {
   return axios2({
     url: api.UPDATE_LICENSE,
     method: 'put',
@@ -248,7 +247,7 @@ export function UPDATE_LICENSE(parameter) {
  * @return  {}
  * @update   by
  */
-export function UPDATE_VAIL_LICENSE(parameter) {
+export function UPDATE_VAIL_LICENSE (parameter) {
   return axios2({
     url: api.UPDATE_VAIL_LICENSE,
     method: 'post',
@@ -263,7 +262,7 @@ export function UPDATE_VAIL_LICENSE(parameter) {
  * @return  {}
  * @update   by
  */
-export function GET_RESOURCES_CARD() {
+export function GET_RESOURCES_CARD () {
   return axios2({
     url: api.GET_RESOURCES_CARD,
     method: 'get'
@@ -278,7 +277,7 @@ export function GET_RESOURCES_CARD() {
  * @return  {}
  * @update   by
  */
-export function DELETE_LICENSE_AUTHORITY(parameter) {
+export function DELETE_LICENSE_AUTHORITY (parameter) {
   return axios2({
     url: api.DELETE_LICENSE_AUTHORITY,
     method: 'delete',
@@ -294,7 +293,7 @@ export function DELETE_LICENSE_AUTHORITY(parameter) {
  * @return  {}
  * @update   by
  */
-export function BATCH_LICENSE_AUTHORITY(parameter) {
+export function BATCH_LICENSE_AUTHORITY (parameter) {
   return axios2({
     url: api.BATCH_LICENSE_AUTHORITY,
     method: 'post',
@@ -309,7 +308,7 @@ export function BATCH_LICENSE_AUTHORITY(parameter) {
  * @return  {}
  * @update   by
  */
-export function GET_RESOURCES_MODULE() {
+export function GET_RESOURCES_MODULE () {
   return axios2({
     url: api.GET_RESOURCES_MODULE,
     method: 'get'
@@ -323,7 +322,7 @@ export function GET_RESOURCES_MODULE() {
  * @return  {}
  * @update   by
  */
-export function GET_RESOURCES_MENU() {
+export function GET_RESOURCES_MENU () {
   return axios2({
     url: api.GET_RESOURCES_MENU,
     method: 'get'
@@ -337,7 +336,7 @@ export function GET_RESOURCES_MENU() {
  * @return  {}
  * @update   by
  */
-export function SAVE_RESOURCE(parameter) {
+export function SAVE_RESOURCE (parameter) {
   return axios2({
     url: api.SAVE_RESOURCE,
     method: 'post',
@@ -352,7 +351,7 @@ export function SAVE_RESOURCE(parameter) {
  * @return  {}
  * @update   by
  */
-export function BAT_DELETE_MODEL(parameter) {
+export function BAT_DELETE_MODEL (parameter) {
   return axios2({
     url: api.BAT_DELETE_MODEL,
     method: 'delete',
@@ -367,7 +366,7 @@ export function BAT_DELETE_MODEL(parameter) {
  * @return  {}
  * @update   by
  */
-export function OPEN_RESOURCE(parameter) {
+export function OPEN_RESOURCE (parameter) {
   return axios2({
     url: api.OPEN_RESOURCE,
     method: 'put',
@@ -382,7 +381,7 @@ export function OPEN_RESOURCE(parameter) {
  * @return  {}
  * @update   by
  */
-export function UPDATE_RESOURCE(parameter) {
+export function UPDATE_RESOURCE (parameter) {
   return axios2({
     url: api.UPDATE_RESOURCE,
     method: 'put',
@@ -397,14 +396,13 @@ export function UPDATE_RESOURCE(parameter) {
  * @return  {}
  * @update   by
  */
-export function SEARCH_RESOURCES(parameter) {
+export function SEARCH_RESOURCES (parameter) {
   return axios2({
     url: api.SEARCH_RESOURCES,
     method: 'get',
     params: parameter
   })
 }
-
 
 /**
  * @desc    : 查询应用的模块
@@ -414,7 +412,7 @@ export function SEARCH_RESOURCES(parameter) {
  * @return  {}
  * @update   by
  */
-export function FIND_CARD_RESOURCES(parameter) {
+export function FIND_CARD_RESOURCES (parameter) {
   return axios2({
     url: api.FIND_CARD_RESOURCES,
     method: 'get',
@@ -429,20 +427,19 @@ export function FIND_CARD_RESOURCES(parameter) {
  * @return  {}
  * @update   by
  */
-export function GET_RESOURCES_TREE() {
+export function GET_RESOURCES_TREE () {
   return axios2({
     url: api.GET_RESOURCES_TREE,
     method: 'get'
   })
 }
 
-export function FIND_SYSTEM_MODULE() {
+export function FIND_SYSTEM_MODULE () {
   return axios2({
     url: api.FIND_SYSTEM_MODULE,
     method: 'get'
   })
 }
-
 
 /**
  * @desc    : 批量删除权限
@@ -452,7 +449,7 @@ export function FIND_SYSTEM_MODULE() {
  * @return  {}
  * @update   by
  */
-export function BAT_DELETE_AUTHORITY(parameter) {
+export function BAT_DELETE_AUTHORITY (parameter) {
   return axios2({
     url: api.BAT_DELETE_AUTHORITY,
     method: 'delete',
@@ -468,7 +465,7 @@ export function BAT_DELETE_AUTHORITY(parameter) {
  * @return  {}
  * @update   by
  */
-export function ENABLE_USER(parameter) {
+export function ENABLE_USER (parameter) {
   return axios2({
     url: api.ENABLE_USER,
     method: 'put',
@@ -484,7 +481,7 @@ export function ENABLE_USER(parameter) {
  * @return  {}
  * @update   by
  */
-export function FIND_USER_DETAIL_INFO(parameter) {
+export function FIND_USER_DETAIL_INFO (parameter) {
   return axios2({
     url: api.FIND_USER_DETAIL_INFO,
     method: 'get',
@@ -500,7 +497,7 @@ export function FIND_USER_DETAIL_INFO(parameter) {
  * @return  {}
  * @update   by
  */
-export function ADMIN_SAVE(parameter) {
+export function ADMIN_SAVE (parameter) {
   return axios2({
     url: api.ADMIN_SAVE,
     method: 'post',
@@ -516,7 +513,7 @@ export function ADMIN_SAVE(parameter) {
  * @return  {}
  * @update   by
  */
-export function ADMIN_UPDATE(parameter) {
+export function ADMIN_UPDATE (parameter) {
   return axios2({
     url: api.ADMIN_UPDATE,
     method: 'put',
@@ -525,15 +522,30 @@ export function ADMIN_UPDATE(parameter) {
 }
 /**
  * @desc    : 校验服务标识是否重复
- * @author  : zj
+ * @author  : shj
  * @date  : 2019/10/28
  * @param   {}
  * @return  {}
  * @update   by
  */
-export function VALID_SERVICE_SIGN(parameter) {
+export function VALID_SERVICE_SIGN (parameter) {
   return axios2({
     url: api.VALID_SERVICE_SIGN + parameter,
     method: 'get'
+  })
+}
+/**
+   * @desc    : 初始化账套
+   * @author  : shj
+   * @date  : 2019/11/21
+   * @param   {}
+   * @return  {}
+   * @update   by
+   */
+export function INIT_CUSTOMIZE_INIT_TENANCY (account) {
+  return axios2({
+    url: api.INIT_CUSTOMIZE_INIT_TENANCY,
+    method: 'post',
+    data: account
   })
 }

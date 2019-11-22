@@ -108,10 +108,10 @@
         </a-form>
       </div>
     </div>
-    <!--初始化信息-->
+    <!--还未初始化信息-->
     <div
       class="content"
-      v-if="tabKey==2">
+      v-if="tabKey==2 ">
       <!--还未初始化-->
       <div
         class="noInit"
@@ -120,7 +120,9 @@
           <span><img src="@icons/tenant-init.svg" style="margin-right: 16px;margin-left: 32px;">初始化服务</span>
           <a-button
             class="save"
-            type="primary">
+            type="primary"
+            @click="initAccount"
+          >
             <a-icon type="cloud-upload" />初始化账套</a-button>
         </div>
         <div style="min-height: 200px;align-items: center;display: flex;justify-content: center;flex-direction: column">
@@ -137,8 +139,24 @@
 
         </div>
       </div>
-      <!--已经初始化-->
-      <div></div>
+    </div>
+    <!--已经初始化-->
+    <div
+      v-if="false"
+      style="background-color: #fff">
+      <a-row
+        :gutter="
+          12">
+        <a-col :span="12">
+          <div style="padding: 24px 32px 0 32px;">
+            <div style="display: flex;justify-content: space-between;">
+              <div><a-icon type="edit"/>以初始化</div>
+              <div><a-icon type="edit"/></div>
+            </div>
+          </div>
+
+        </a-col>
+      </a-row>
     </div>
     <!--修改基本信息-->
     <a-modal
@@ -285,6 +303,172 @@
         </div>
       </template>
     </a-modal>
+    <!--showInitPublic-->
+    <a-modal
+      v-model="showInitPublic"
+      :destroyOnClose="true"
+      :maskClosable="false"
+      :width="350"
+      title="初始化">
+      <a-form :form="form2" autocomplete="off">
+        <a-row
+          :gutter="24"
+          class="row1">
+          <a-col :span="24">
+            <a-form-item
+              label="公共数据库:"
+              class="item2">
+              <a-select
+                placeholder="请选择公共数据库"
+                v-decorator="['address',{rules: [{ required: true, message: '请选择公共数据库!' }]}]">
+                <template slot="suffixIcon">
+                  <img src="@icons/sort.svg" />
+                </template>
+                <a-select-option
+                  :value="1">
+                  mysql
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+        </a-row>
+      </a-form>
+      <template slot="footer">
+        <div style="display: flex;">
+          <a-button
+            key="back"
+            class="cancel"
+            @click="cancelInit('public')"
+            style="margin-right: 24px;margin-left: 16px;">取消</a-button>
+          <a-button
+            key="submit"
+            class="save"
+            type="primary"
+            @click="saveInit('public')">
+            <a-icon type="cloud-upload" /> 保存
+          </a-button>
+        </div>
+      </template>
+    </a-modal>
+    <!--showInitPrivate-->
+    <a-modal
+      v-model="showInitPrivate"
+      :destroyOnClose="true"
+      :maskClosable="false"
+      :width="350"
+      title="初始化">
+      <a-form :form="form3" autocomplete="off">
+        <a-row
+          :gutter="24"
+          class="row1">
+          <a-col :span="24">
+            <a-form-item
+              label="数据库地址"
+              class="item2">
+              <a-input
+                placeholder="请输入"
+                v-decorator="[
+                  'address',
+                  { rules: [{ required: true, message: '请输入数据库地址！' }]},
+                ]"
+                class="item2-input" />
+            </a-form-item>
+            <a-form-item
+              label="端口"
+              class="item2">
+              <a-input
+                placeholder="请输入"
+                v-decorator="[
+                  'port',
+                  { rules: [{ required: true, message: '请输入端口！' }]},
+                ]"
+                class="item2-input" />
+            </a-form-item>
+            <a-form-item
+              label="数据库账号"
+              class="item2">
+              <a-input
+                placeholder="请输入"
+                v-decorator="[
+                  'username',
+                  { rules: [{ required: true, message: '请输入数据库账号！' }]},
+                ]"
+                class="item2-input" />
+            </a-form-item>
+            <a-form-item
+              label="数据库密码"
+              class="item2">
+              <a-input
+                type="password"
+                placeholder="请输入"
+                v-decorator="[
+                  'password',
+                  { rules: [{ required: true, message: '请输入数据库密码！' }]},
+                ]"
+                class="item2-input" />
+            </a-form-item>
+          </a-col>
+        </a-row>
+      </a-form>
+      <template slot="footer">
+        <div style="display: flex;">
+          <a-button
+            key="back"
+            class="cancel"
+            @click="cancelInit('private')"
+            style="margin-right: 24px;margin-left: 16px;">取消</a-button>
+          <a-button
+            key="submit"
+            class="save"
+            type="primary"
+            @click="saveInit('private')">
+            <a-icon type="cloud-upload" /> 保存
+          </a-button>
+        </div>
+      </template>
+    </a-modal>
+    <!--showInitIng-->
+    <a-modal
+      v-model="showInitIng"
+      :destroyOnClose="true"
+      :maskClosable="false"
+      :width="350"
+      :footer="null"
+      :closable="false"
+      :bodyStyle="{height:'432px',padding:'0'}"
+      title="初始化">
+      <div style="width: 100%;display: flex;justify-content: center;margin-top: 30px;">
+        <div class="loader loader13">
+          <svg width="50px" height="50px" fill="#3B7CFF" viewBox="0 0 30 30">
+            <circle cx="4" cy="4" r="4"/>
+            <circle cx="4" cy="26" r="4"/>
+            <circle cx="26" cy="4" r="4"/>
+            <circle cx="26" cy="26" r="4"/>
+          </svg>
+          <span>初始化进行中</span>
+        </div>
+      </div>
+      <div style="border: 1px solid rgba(255,163,158,1);background:rgba(255,241,240,1);margin: 22px 9px;padding: 16px;margin-top: 100px;" v-if="err">
+        <div style="display: flex;justify-content: space-between;flex-direction: row;">
+          <div style="display: flex;align-items: center;">
+            <img src="@icons/x-red.svg" style="margin-right: 2px;"><span>出错了！</span>
+          </div>
+          <div><span style="color: #CECFD2;cursor: pointer" @click="showInitIng=false">X</span></div>
+        </div>
+        <div style="padding-left: 18px;"><span >初始化进程失败，请重新开始初始化。</span></div>
+      </div>
+    </a-modal>
+    <!--showInitEnd-->
+    <a-modal
+      v-model="showInitEnd"
+      :destroyOnClose="true"
+      :maskClosable="false"
+      :width="350"
+      :footer="null"
+      :bodyStyle="{height:'432px',display: 'flex','justify-content': 'center','align-items': 'center'}"
+      title="初始化">
+      <a-progress :strokeColor="'#3BAD4B'" type="circle" :percent="100" :format="() => '完成'"/>
+    </a-modal>
   </div>
 </template>
 
@@ -305,7 +489,14 @@ export default {
       info: null, // 当前租户的所有详细信息
       tabKey: '1', // 标签页
       showUpdataInfo: false, // 修改信息弹框
-      form1: this.$form.createForm(this, { name: 'dynamic_rule' })
+      form1: this.$form.createForm(this),
+      form2: this.$form.createForm(this),
+      form3: this.$form.createForm(this),
+      showInitPublic: false, // 公有部署
+      showInitPrivate: false, // 其他部署(私有、本地)
+      showInitIng: false, // 初始化中
+      showInitEnd: false, // 初始化完成
+      err: false// 初始化出错
     }
   },
   created () {
@@ -399,6 +590,96 @@ export default {
       let date = new Date(time * 1).getDate()
       date = date < 10 ? '0' + date : date
       return year + '-' + month + '-' + date
+    },
+    /* 初始化账套 */
+    initAccount () {
+      const type = this.info.type
+      console.log('type==' + type)
+      this.err = false
+      if (type == 1) {
+        // 共有部署
+        this.showInitPublic = true
+      } else {
+        // 私有部署
+        this.showInitPrivate = true
+      }
+    },
+    cancelInit (type) {
+      if (type == 'public') {
+        this.showInitPublic = false
+      } else if (type == 'private') {
+        this.showInitPrivate = false
+      }
+    },
+    saveInit (type) {
+      const _this = this
+      if (type == 'public') {
+        _this.form2.validateFields(async (err, values) => {
+          if (!err) {
+            const account = {
+              chooseDimCube: {
+                'dbType': 1,
+                'resourceId': 54,
+                'version': 1
+              },
+              chooseTenancy: {
+                'dbType': 1,
+                'resourceId': 2,
+                'version': 1
+              },
+              dataSourceInfoDto: {
+                'address': '192.168.2.240:3306',
+                'username': 'root',
+                'password': '123456'
+              },
+              'tenancyId': _this.id
+            }
+            _this.showInitPublic = false
+            _this.showInitIng = true
+            const res = await _this.TenantMObj.initCustomizeInitTenancy(account)
+            console.log('res=============', res)
+            if (res.code != 200) {
+              this.err = true
+            } else {
+              _this.showInitIng = false
+              _this.showInitEnd = true
+              console.log(res)
+            }
+          }
+        })
+      } else if (type == 'private') {
+        _this.form3.validateFields(async (err, values) => {
+          if (!err) {
+            const account = {
+              chooseDimCube: {
+                'dbType': 1,
+                'resourceId': 54,
+                'version': 1
+              },
+              chooseTenancy: {
+                'dbType': 1,
+                'resourceId': 2,
+                'version': 1
+              },
+              dataSourceInfoDto: {
+                'address': values.address + ':' + values.port,
+                'username': values.username,
+                'password': values.password
+              },
+              'tenancyId': _this.id
+            }
+            _this.showInitPrivate = false
+            _this.showInitIng = true
+            const res = await _this.TenantMObj.initCustomizeInitTenancy(account)
+            if (res.code != 200) {
+              this.err = true
+            } else {
+              _this.showInitIng = false
+              _this.showInitEnd = true
+            }
+          }
+        })
+      }
     }
   }
 }
@@ -465,4 +746,182 @@ export default {
     margin-top: 24px;
     margin-bottom: 20px;
   }
+.initIng .ant-modal-body{
+  display: flex;
+  justify-content: center;
+}
+  /*动效*/
+@keyframes loader13dot1 {
+  0%,
+  45% {
+    cx: 6;
+    cy: 6;
+  }
+  55%,
+  80% {
+    cx: 2;
+    cy: 2;
+  }
+  90%,
+  100% {
+    cx: 6;
+    cy: 6;
+  }
+}
+@keyframes loader13dot2 {
+  0%,
+  45% {
+    cx: 6;
+    cy: 24;
+  }
+  55%,
+  80% {
+    cx: 2;
+    cy: 28;
+  }
+  90%,
+  100% {
+    cx: 6;
+    cy: 24;
+  }
+}
+
+@keyframes loader13dot3 {
+  0%,
+  45% {
+    cx: 24;
+    cy: 6;
+  }
+  55%,
+  80% {
+    cx: 28;
+    cy: 2;
+  }
+  90%,
+  100% {
+    cx: 24;
+    cy: 6;
+  }
+}
+
+@keyframes loader13dot4 {
+  0%,
+  45% {
+    cx: 24;
+    cy: 24;
+  }
+  55%,
+  80% {
+    cx: 28;
+    cy: 28;
+  }
+  90%,
+  100% {
+    cx: 24;
+    cy: 24;
+  }
+}
+
+.loader13 svg {
+  overflow: visible;
+  animation: 1.5s rotateWithBoost linear infinite;
+}
+
+.loader13 svg circle:first-of-type {
+  animation: 1.5s loader13dot1 linear infinite;
+}
+.loader13 svg circle:nth-of-type(2) {
+  animation: 1.5s loader13dot2 linear infinite;
+}
+.loader13 svg circle:nth-of-type(3) {
+  animation: 1.5s loader13dot3 linear infinite;
+}
+.loader13 svg circle:last-of-type {
+  animation: 1.5s loader13dot4 linear infinite;
+}
+/*LOADER BOX*/
+.loader {
+  height: 150px;
+  width: 200px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #a0a0a0;
+  position: relative;
+}
+
+.loader span {
+  font-size: 12px;
+  position: absolute;
+  bottom: 16px;
+}
+
+@media only screen and (min-width: 861px) {
+  .row:nth-child(odd) .loader:nth-child(odd),
+  .row:nth-child(even) .loader:nth-child(even) {
+    background: #1e1e1e;
+  }
+
+  .row:nth-child(odd) .loader:nth-child(even),
+  .row:nth-child(even) .loader:nth-child(odd) {
+    background: #2a2a2a;
+  }
+}
+
+@media only screen and (max-width: 860px) {
+  .row .loader:first-child,
+  .row .loader:last-child {
+    background: #2a2a2a;
+  }
+
+  .row .loader {
+    background: #1e1e1e;
+  }
+}
+
+@media only screen and (max-width: 460px) {
+  .row .loader:nth-child(odd) {
+    background: #2a2a2a;
+  }
+  .row .loader:nth-child(even) {
+    background: #1e1e1e;
+  }
+}
+
+/*** LOADERS ***/
+
+/* COMMON ANIMATIONS */
+@keyframes spinBasic {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinBasicReverse {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes rotateWithBoost {
+  0% {
+    transform: rotate(0deg);
+  }
+  60% {
+    transform: rotate(180deg);
+  }
+  90%,
+  100% {
+    transform: rotate(360deg);
+  }
+}
+/deep/.ant-progress-circle.ant-progress-status-success .ant-progress-text{
+  color:#3E3F42;
+}
 </style>

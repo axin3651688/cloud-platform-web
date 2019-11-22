@@ -8,7 +8,8 @@ import {
   UPDATE_TENANCY,
   USER_SIMPLE_INFO_LIST,
   FIND_LICENSE_LIST,
-  VALID_SERVICE_SIGN
+  VALID_SERVICE_SIGN,
+  INIT_CUSTOMIZE_INIT_TENANCY // 初始化账套(自定义选择)
 } from '@/api/productModule'
 
 /**
@@ -249,6 +250,18 @@ class CnbiTenantManagement {
   async validServiceSign (serviceSign) {
     const res = await VALID_SERVICE_SIGN(serviceSign)
     return res.data
+  }
+  /**
+   * @desc    : 初始化账套
+   * @author  : shj
+   * @date  : 2019/11/21
+   * @param   {}
+   * @return  {}
+   * @update   by
+   */
+  async initCustomizeInitTenancy (account) {
+    const res = await INIT_CUSTOMIZE_INIT_TENANCY(account)
+    return res
   }
 }
 export default CnbiTenantManagement

@@ -99,19 +99,30 @@ module.exports = {
     host: '0.0.0.0',
     disableHostCheck: true,
     proxy: {
+      // '/api': { // 不用
+      //   target: 'https://www.easy-mock.com/mock/5d1de8af2152d8760870932f/antd-pro',
+      //   ws: false,
+      //   changeOrigin: true
+      // },
       '/api': {
-        target: 'https://www.easy-mock.com/mock/5d1de8af2152d8760870932f/antd-pro',
-        ws: false,
-        changeOrigin: true
-      },
-      '/aapi': {
-        target: 'http://192.168.2.236:80',
+        // target: 'http://192.168.2.236:80',
+        target: 'http://121.199.47.77:8005', // 阿里云
         ws: false,
         changeOrigin: true,
         pathRewrite: {
-          '^/aapi': '/'
+          '^/api': '/'
         }
       }
+      // 打包时用api
+      /* '/api': {
+        target: 'http://192.168.2.236:80',
+        // target: 'http://121.199.47.77:8005', 阿里云
+        ws: false,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': '/'
+        }
+      } */
     }
   },
 
