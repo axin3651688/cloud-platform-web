@@ -25,6 +25,12 @@
               <span>账户设置</span>
             </router-link>
           </a-menu-item>
+          <a-menu-item key="2">
+            <a href="javascript:;" @click="toPortal">
+              <a-icon type="setting"/>
+              <span>查看门户</span>
+            </a>
+          </a-menu-item>
           <!--<a-menu-item key="2" disabled>
             <a-icon type="setting"/>
             <span>测试</span>
@@ -45,6 +51,8 @@
 <script>
 import NoticeIcon from '@/components/NoticeIcon'
 import { mapActions, mapGetters } from 'vuex'
+import Vue from 'vue'
+import { ACCESS_TOKEN, TOKEN_INFO } from '@/store/mutation-types'
 
 export default {
   name: 'UserMenu',
@@ -73,6 +81,23 @@ export default {
         onCancel () {
         }
       })
+    },
+    toPortal () {
+      const urlParam = this.getUrlPrams([
+        { key: 'access_token', value: Vue.ls.get(ACCESS_TOKEN) },
+        { key: 'token_info', value: Vue.ls.get(TOKEN_INFO) }
+      ]);
+      window.location.href = process.env.VUE_APP_PORTAL + urlParam;
+    },
+    getUrlPrams (params = []) {
+      let urlParamString = '?'
+      params.forEach(function (ele, i) {
+        if (i > 0) {
+          urlParamString += '&'
+        }
+        urlParamString += ele.key + '=' + ele.value
+      })
+      return urlParamString
     }
   }
 }
