@@ -104,13 +104,13 @@ module.exports = {
       //   ws: false,
       //   changeOrigin: true
       // },
-      '/api': {
-        // target: 'http://192.168.2.236:80',
-        target: 'http://121.199.47.77:8005', // 阿里云
+      '/aapi': {
+        target: 'http://192.168.2.236:80',
+        // target: 'http://121.199.47.77:8005', // 阿里云
         ws: false,
         changeOrigin: true,
         pathRewrite: {
-          '^/api': '/'
+          '^/aapi': '/'
         }
       }
       // 打包时用api

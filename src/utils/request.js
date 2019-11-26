@@ -7,7 +7,7 @@ import { ACCESS_TOKEN, TOKEN_INFO } from '@/store/mutation-types'
 
 // 创建 axios 实例
 const service = axios.create({
-  baseURL: '/aaapi',
+  baseURL: '/api',
   timeout: 6000
 })
 
@@ -39,7 +39,7 @@ service.interceptors.response.use((response) => {
 }, err)
 
 const service2 = axios.create({
-  baseURL: '/api', // api base_url  打包时用api
+  baseURL: '/aapi', // api base_url  打包时用api
   // baseURL: '/aapi', // api base_url
   timeout: 6000 // 请求超时时间
 })
