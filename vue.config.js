@@ -105,7 +105,7 @@ module.exports = {
         changeOrigin: true
       }, */
       '/api': {
-        target: 'http://121.199.47.77:8005',
+        target: 'http://192.168.2.236',
         ws: false,
         changeOrigin: true,
         pathRewrite: {
