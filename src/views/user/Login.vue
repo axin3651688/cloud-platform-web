@@ -186,10 +186,12 @@ export default {
         if (!err) {
           // 这里根据Tab页的不同提交不同的登陆类型
           const loginParams = { ...values }
-          loginParams['client_id'] = 'browser'
+          loginParams['client_id'] = 'platform-console'// browser
           loginParams['grant_type'] = 'password'
           if (customActiveKey === 'tab1') {
             loginParams['auth_type'] = ''
+            loginParams['platform'] = 'pc'
+            loginParams['device'] = '123'
           } else {
             loginParams['auth_type'] = 'sms'
             loginParams['username'] = loginParams['mobile']

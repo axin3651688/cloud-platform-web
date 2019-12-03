@@ -132,7 +132,8 @@ const user = {
         const tokenInfo = JSON.parse(Vue.ls.get(TOKEN_INFO))
         logout({
           access_token: tokenInfo['access_token'],
-          client_id: 'browser'
+          client_id: 'platform-console'
+          // client_id: 'browser'
         }).then(() => {
           // commit('SET_TOKEN', {})
           commit('SET_ROLES', [])
