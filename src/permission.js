@@ -6,7 +6,7 @@ import 'nprogress/nprogress.css' // progress bar style
 import notification from 'ant-design-vue/es/notification'
 import { setDocumentTitle, domTitle } from '@/utils/domUtil'
 import { ACCESS_TOKEN, TOKEN_INFO } from '@/store/mutation-types'
-import {TIME_SETTING} from '@/config/projectSetting'
+import { TIME_SETTING } from '@/config/projectSetting'
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 const whiteList = ['login', 'register', 'registerResult'] // no redirect whitelist
 
@@ -14,6 +14,7 @@ router.beforeEach((to, from, next) => {
   NProgress.start()
   to.meta && (typeof to.meta.title !== 'undefined' && setDocumentTitle(`${to.meta.title} - ${domTitle}`))
   // 用于其他系统跳转过来，把Token也携带过来即可
+  console.log('用于其他系统跳转过来，把Token也携带过来即可===============')
   if (to.query.access_token && to.query.token_info) {
     Vue.ls.set(ACCESS_TOKEN, to.query.access_token)
     Vue.ls.set(TOKEN_INFO, to.query.token_info)

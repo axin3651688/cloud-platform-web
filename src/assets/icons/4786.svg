@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: #FACF55;
+      }
+
+      .cls-1 {
+        opacity: 0;
+      }
+    </style>
+  </defs>
+  <g id="组_4786" data-name="组 4786" transform="translate(-1386 -22.703)">
+    <path id="Icon" class="cls-1" d="M865,229.645,860.364,225l-10.456,9.688v5.417h5.364Zm-4.529-2,1.728,1.718-1.346,1.424-1.8-1.794Zm-8.6,10.5v-2.633l5.6-5.17,1.955,2.15-4.994,5.653ZM845,245h19.635v-1.958H845Z" transform="translate(541 -202.297)"/>
+    <path id="路径_3591" data-name="路径 3591" class="cls-2" d="M64,132.927,69.744,128v10.053Z" transform="translate(1322 -103.297)"/>
+    <path id="路径_3592" data-name="路径 3592" class="cls-2" d="M240.572,286v-2.513h8.478a4.488,4.488,0,1,0,0-8.976H240V272h9.05a7,7,0,0,1,0,14Z" transform="translate(1149.949 -244.066)"/>
+  </g>
+</svg>

@@ -57,6 +57,9 @@ const constantRouterComponents = {
   ContentManagement: () => import('@/views/official-module/content-management'),
   FileManagement: () => import('@/views/official-module/file-management'),
   BusinessChanceManagement: () => import('@/views/official-module/business-chance-management'),
+  FAQHomeManagement: () => import('@/views/official-module/faq-home-management'),
+  AddFaq: () => import('@/views/official-module/faq/add-faq'),
+
   AccountManagement: () => import('@/views/set-module/account-management'),
   RoleManagement: () => import('@/views/set-module/role-management'),
   LimitManagement: () => import('@/views/set-module/limit-management'),
@@ -65,7 +68,6 @@ const constantRouterComponents = {
   TenantDetail: () => import('@/views/product-module/tenant-components/tenant-detail'),
   UserDetail: () => import('@/views/product-module/user-components/user-detail'),
   RoleAccredit: () => import('@/views/set-module/role-components/role-accredit')
-
 }
 
 // 前端未找到页面路由（固定不用改）
@@ -161,6 +163,18 @@ const customRoute = [
         icon: 'bb',
         key: 'BusinessChanceManagement',
         title: '商机管理'
+      },
+      {
+        component: 'FAQHomeManagement',
+        icon: 'bb',
+        key: 'FAQHomeManagement',
+        title: 'FAQ管理'
+      },
+      {
+        component: 'AddFaq',
+        icon: 'bb',
+        key: 'AddFaq',
+        title: '添加FAQ'
       },
       {
         component: 'AccountManagement',

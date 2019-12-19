@@ -205,6 +205,16 @@ export default {
         },
         {
           meta: {
+            icon: 'xx11',
+            keepAlive: false,
+            permission: Array(1),
+            title: 'FAQ管理'
+          },
+          name: 'FAQHomeManagement',
+          path: '/FAQHomeManagement'
+        },
+        {
+          meta: {
             icon: 'setting',
             keepAlive: false,
             permission: Array(1),

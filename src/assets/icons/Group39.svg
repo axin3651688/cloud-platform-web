@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2 {
+        fill: #88898a;
+      }
+    </style>
+  </defs>
+  <g id="Group_39" data-name="Group 39" transform="translate(0.303)">
+    <rect id="Rectangle_35" data-name="Rectangle 35" class="cls-1" width="16" height="16" transform="translate(-0.303)"/>
+    <g id="组_2874" data-name="组 2874" transform="translate(-139.61 -99.1)">
+      <path id="路径_3481" data-name="路径 3481" class="cls-2" d="M153.531,102.079h-3.6a2.259,2.259,0,0,0-4.512,0h-3.608a.556.556,0,1,0,0,1.112h11.719a.556.556,0,1,0,0-1.112Zm-5.855-1.043a1.148,1.148,0,0,1,1.142,1.043h-2.284A1.148,1.148,0,0,1,147.676,101.036Zm4.465,3.264a.556.556,0,0,0-.556.556v8.308H143.81v-8.308a.556.556,0,1,0-1.112,0v8.864a.556.556,0,0,0,.556.556h8.887a.556.556,0,0,0,.556-.556v-8.864A.556.556,0,0,0,152.141,104.3Z" transform="translate(0 0)"/>
+      <path id="路径_3482" data-name="路径 3482" class="cls-2" d="M386.418,421.709v-4.945a.556.556,0,1,0-1.112,0v4.945a.556.556,0,1,0,1.112,0Zm3.328,0v-4.945a.556.556,0,0,0-1.112,0v4.945a.556.556,0,1,0,1.112,0Z" transform="translate(-239.81 -310.789)"/>
+    </g>
+  </g>
+</svg>

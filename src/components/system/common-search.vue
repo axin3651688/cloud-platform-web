@@ -1,8 +1,9 @@
 <!-- <h1>工程中共用的搜索模板组件</h1> -->
 <template>
   <div class="commonSearch">
-    <a-input-search :placeholder="placeholder"
-                    @search="onSearch" />
+    <a-input-search
+      :placeholder="placeholder"
+      @search="onSearch" />
   </div>
 </template>
 <script>
@@ -10,7 +11,8 @@ export default {
   name: 'CommonSearch',
   data () {
     return {
-      options1: []
+      options1: [],
+      value: ''
     }
   },
   props: {
@@ -19,8 +21,8 @@ export default {
   methods: {
     onSearch (value) {
       console.log(value)
-      this.$emit('inputHandler', value);
-    },
+      this.$emit('inputHandler', value)
+    }
   }
 }
 </script>

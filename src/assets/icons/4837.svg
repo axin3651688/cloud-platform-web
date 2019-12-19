@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: #cecfd2;
+      }
+
+      .cls-1 {
+        opacity: 0;
+      }
+    </style>
+  </defs>
+  <g id="组_4837" data-name="组 4837" transform="translate(-1386 -22.703)">
+    <path id="Icon" class="cls-1" d="M865,229.645,860.364,225l-10.456,9.688v5.417h5.364Zm-4.529-2,1.728,1.718-1.346,1.424-1.8-1.794Zm-8.6,10.5v-2.633l5.6-5.17,1.955,2.15-4.994,5.653ZM845,245h19.635v-1.958H845Z" transform="translate(541 -202.297)"/>
+    <g id="组_4790" data-name="组 4790" transform="translate(1275 -41.296)">
+      <path id="路径_3595" data-name="路径 3595" class="cls-2" d="M123.862,64H112V84h17.857V68.7Zm.625,2.306L127.924,69h-3.437ZM113.429,82.571V65.429h9.629v5h5.371V82.571Z"/>
+      <path id="路径_3596" data-name="路径 3596" class="cls-2" d="M254.4,224h5.759v1.429H254.4Zm.067,4.29h11.339v1.429H254.467Z" transform="translate(-139.221 -156.429)"/>
+      <path id="路径_3597" data-name="路径 3597" class="cls-2" d="M325.679,541.039l-4.339-4.339L317,541.039h3.625V544.7h1.429v-3.658Z" transform="translate(-200.424 -462.149)"/>
+    </g>
+  </g>
+</svg>
