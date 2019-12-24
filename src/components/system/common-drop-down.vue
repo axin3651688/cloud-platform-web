@@ -5,6 +5,7 @@
       @change="selectCell"
       style="width: 100%;box-shadow:0px 1px 3px rgba(0,0,0,0.04);opacity:1;color: #9EA0A5;"
       :defaultValue="defaultValue"
+      :value="defaultValue"
     >
       <template slot="suffixIcon">
         <img src="@icons/sort.svg" />

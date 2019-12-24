@@ -3,9 +3,9 @@
 <template>
   <div class="table-pagination" style="margin: 16px;display: flex;flex-direction: row-reverse" >
     <a-pagination
-      v-model="current"
       v-if="total>0"
       :defaultPageSize="size"
+      :defaultCurrent="defaultCurrent"
       :hideOnSinglePage="hideOnSinglePage"
       :showSizeChanger="showSizeChanger"
       :showQuickJumper="showQuickJumper"
@@ -34,7 +34,7 @@ export default {
   name: 'TablePagination',
   data () {
     return {
-      current: 1
+      // current: 1
     }
   },
   props:
@@ -79,9 +79,9 @@ export default {
       this.$emit('changePage', page, pageSize)
     },
     // pageSize 变化的回调
-    showSizeChange (current, size) {
-      console.log('pageSize的回调', current, size)
-      this.$emit('changePageSize', current, size)
+    showSizeChange (page, size) {
+      console.log('pageSize的回调', page, size)
+      this.$emit('changePageSize', page, size)
     },
     showTotal (total) {
       return `共${total}条`

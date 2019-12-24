@@ -323,7 +323,8 @@ export default {
               const res = await _this.FAQMObj.categoryDelete(record.id)
               console.log('删除分类========', res)
               if (res.code === 200) {
-                _this.getDataSource(_this.current, _this.pageSize)
+                // _this.getDataSource(_this.current, _this.pageSize)
+                _this.getDataTree()
               }
             }, 100)
           },

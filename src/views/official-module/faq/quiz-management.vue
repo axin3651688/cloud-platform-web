@@ -15,7 +15,7 @@
         class="button_style_one"
         type="primary"
       >
-        <div style="margin: 6px 0">
+        <div style="margin: 6px 0" @click="refreshPage">
           <img src="@icons/4504.svg" style="margin-right: 10px;"/>刷新页面
         </div>
       </a-button>
@@ -81,6 +81,7 @@
       <!--分页器-->
       <table-pagination
         :total="total"
+        :defaultCurrent="current"
         :pageSizeOptions="pageSizeOptions"
         :size="pageSize"
         :showSizeChanger="true"
@@ -100,6 +101,16 @@ import TablePagination from '@/components/system/table-pagination'
 export default {
   name: 'QuizManagement',
   components: { TablePagination, CommonDropDown },
+  props: {
+    inheritPage: { // 付组件传下来的页数
+      type: Number,
+      default: 1
+    },
+    faqId: {
+      type: String,
+      default: null
+    }
+  },
   data () {
     return {
       titleKeyWord: '',
@@ -189,7 +200,10 @@ export default {
     }
   },
   created () {
-    console.log('QuizManagement========')
+    this.current = parseInt(this.inheritPage)
+    if (this.faqId) { // 判断是不是从faq管理偷渡过来的
+      this.selectVal = '0'
+    }
     this.FAQMObj = new CnbiFAQManagement()
     this.getDataSource()
   },
@@ -207,10 +221,8 @@ export default {
       this.selectVal = value
       console.log('下拉框==' + value)
       this.getDataSource()
-      // 刷新 TODO
     },
     onSearch (val) {
-      // 刷新 TODO
       this.getDataSource()
     },
     setKey (record) {
@@ -221,15 +233,17 @@ export default {
       const page = this.current
       const pageSize = this.pageSize
       const title = this.titleKeyWord
+      const faqId = this.faqId
       let status = null
       if (this.selectVal != 'all') {
         status = this.selectVal
       }
       const params = {
         page: page,
-        pageSize,
+        size: pageSize,
         status,
-        title
+        title,
+        faqId
       }
       const res = await this.FAQMObj.questionFindPage(params)
       if (res.code === 200) {
@@ -242,13 +256,13 @@ export default {
     changePage (page, pageSize) {
       this.current = page
       this.pageSize = pageSize
-      // 刷新 TODO
+      this.getDataSource()
     },
     // 条数该表
     changePageSize (current, size) {
       this.current = current
       this.pageSize = size
-      // 刷新 TODO
+      this.getDataSource()
     },
     // 提交问题
     async submitIssue (record) {
@@ -263,20 +277,36 @@ export default {
     },
     // 编辑问题
     editIssue (record) {
-      // TODO
+      const current = this.current
+      this.$router.push({
+        name: 'Answer',
+        query: {
+          issueId: record.id,
+          type: 'edit',
+          current: current
+        }
+      })
     },
     // 回复问题
     replyIssue (record) {
-      // TODO
+      const current = this.current
+      this.$router.push({
+        name: 'Answer',
+        query: {
+          issueId: record.id,
+          type: 'reply',
+          current: current
+        }
+      })
     },
     // 删除问题
     async deleteIssue (record) {
       const id = record.id
       const res = await this.FAQMObj.questionDelete(id)
-      console.log('撤回提交==', res)
+      console.log('删除问题==', res)
       this.getDataSource()
     },
-    // 撤回提交 TODO
+    // 撤回提交
     async backSubmit (record) {
       const params = {
         field: 'status',
@@ -286,6 +316,15 @@ export default {
       const res = await this.FAQMObj.questionUpdateByField(params)
       console.log('撤回提交==', res)
       this.getDataSource()
+    },
+    // 刷新页面
+    refreshPage () {
+      this.selectVal = 'all'
+      this.$emit('update:faqId', null)
+      const _this = this
+      this.$nextTick(() => { // 等faqId值改变后在执行刷新
+        _this.getDataSource()
+      })
     }
 
   }

@@ -17,11 +17,17 @@ const api = {
   coreDelete: '/faq/core/delete', // 按主键删除(参数可以是单复数
   coreBatchUpdateField: '/faq/core/batch_update_field', // 批量发布FAQ
   coreSave: '/faq/core/save', // 添加FAQ
+  coreFindOne: '/faq/core/find_one', // 按主键或条件查单个FAQ
 
   // FAQ问答
   questionFindPage: '/faq/question/find_page', // 按分页查数据
   questionUpdateByField: '/faq/question/update_by_field', // 按一个字段(主键)更新
-  questionDelete: '/faq/question/delete' // // 按主键删除(参数可以是单复数
+  questionDelete: '/faq/question/delete', // // 按主键删除(参数可以是单复数
+  questionFindDetailById: '/faq/question/find_detail_by_id', // 根据问题id查看所属FAQ及回复
+
+  // FAQ回复
+  replySave: '/faq/reply/save', // 添加FAQ回复
+  replyUpdateByFiled: '/faq/reply/update_by_field' // 按一个字段(主键)更新
 }
 /**
  * 按分页查数据
@@ -65,9 +71,8 @@ export function CATEGORY_SAVE (keyword, pid, text) {
  */
 export function CATEGORY_DELETE (ids) {
   return axios2({
-    url: api.categoryDelete,
-    method: 'delete',
-    params: { ids }
+    url: api.categoryDelete + '/' + ids,
+    method: 'delete'
   })
 }
 /**
@@ -128,9 +133,8 @@ export function CORE_UPDATE_BY_FIELD (params) {
  */
 export function CORE_DELETE (ids) {
   return axios2({
-    url: api.coreDelete,
-    method: 'delete',
-    params: { ids }
+    url: api.coreDelete + '/' + ids,
+    method: 'delete'
   })
 }
 /**
@@ -157,7 +161,18 @@ export function CORE_SAVE (params) {
     data: params
   })
 }
-
+/**
+ * 添加FAQ
+ * @param
+ * @returns {*}
+ */
+export function CORE_FIND_ONE (params) {
+  return axios2({
+    url: api.coreFindOne,
+    method: 'get',
+    params: params
+  })
+}
 //* **************************************************FAQ问答****************************************************************
 
 /**
@@ -191,8 +206,44 @@ export function QUESTION_UPDATE_BY_FIELD (params) {
  */
 export function QUESTION_DELETE (ids) {
   return axios2({
-    url: api.questionDelete,
-    method: 'delete',
-    params: { ids }
+    url: api.questionDelete + '/' + ids,
+    method: 'delete'
+  })
+}
+
+/**
+ * 根据问题id查看所属FAQ及回复
+ * @param
+ * @returns {*}
+ */
+export function QUESTION_FIND_DETAIL_BY_ID (id) {
+  return axios2({
+    url: api.questionFindDetailById + '/' + id,
+    method: 'get'
+  })
+}
+
+/**
+ * 根据问题id查看所属FAQ及回复
+ * @param
+ * @returns {*}
+ */
+export function REPLY_SAVE (params) {
+  return axios2({
+    url: api.replySave,
+    method: 'post',
+    data: params
+  })
+}
+/**
+ * 按一个字段(主键)更新
+ * @param
+ * @returns {*}
+ */
+export function REPLY_UPDATE_BY_FILED (params) {
+  return axios2({
+    url: api.replyUpdateByFiled,
+    method: 'put',
+    data: params
   })
 }

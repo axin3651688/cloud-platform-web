@@ -11,9 +11,14 @@ import {
   CORE_DELETE,
   CORE_BATCH_UPDATE_FIELD,
   CORE_SAVE,
+  CORE_FIND_ONE,
   QUESTION_FIND_PAGE,
   QUESTION_UPDATE_BY_FIELD,
-  QUESTION_DELETE
+  QUESTION_DELETE,
+  QUESTION_FIND_DETAIL_BY_ID,
+  REPLY_SAVE,
+  REPLY_UPDATE_BY_FILED
+
 } from '@/api/FAQ'
 class CnbiFAQManagement {
   constructor (obj) {
@@ -105,6 +110,7 @@ class CnbiFAQManagement {
     const res = await CORE_UPDATE(params)
     return res
   }
+
   /**
    * @desc    : 按一个字段(主键)更新
    * @author  : shj
@@ -142,7 +148,7 @@ class CnbiFAQManagement {
     return res
   }
   /**
-   * @desc    : 批量发布FAQ
+   * @desc    : 添加FAQ
    * @author  : shj
    * @date  : 2019/12/13
    * @param   {}
@@ -153,6 +159,19 @@ class CnbiFAQManagement {
     const res = await CORE_SAVE(params)
     return res
   }
+  /**
+   * @desc    : 添加FAQ
+   * @author  : shj
+   * @date  : 2019/12/13
+   * @param   {}
+   * @return  {}
+   * @update   by
+   */
+  async coreFindOne (params) {
+    const res = await CORE_FIND_ONE(params)
+    return res
+  }
+
   /**
    * @desc    : FAQ问答列表
    * @author  : shj
@@ -187,6 +206,43 @@ class CnbiFAQManagement {
    */
   async questionDelete (ids) {
     const res = await QUESTION_DELETE(ids)
+    return res
+  }
+  /**
+   * @desc    : 根据问题id查看所属FAQ及回复
+   * @author  : shj
+   * @date  : 2019/12/13
+   * @param   {}
+   * @return  {}
+   * @update   by
+   */
+  async questionFindDetailById (id) {
+    const res = await QUESTION_FIND_DETAIL_BY_ID(id)
+    return res
+  }
+  /**
+   * @desc    : 根据问题id查看所属FAQ及回复
+   * @author  : shj
+   * @date  : 2019/12/13
+   * @param   {}
+   * @return  {}
+   * @update   by
+   */
+  async replySave (params) {
+    const res = await REPLY_SAVE(params)
+    return res
+  }
+
+  /**
+   * @desc    : 按一个字段(主键)更新
+   * @author  : shj
+   * @date  : 2019/12/13
+   * @param   {}
+   * @return  {}
+   * @update   by
+   */
+  async replyUpdateByFiled (params) {
+    const res = await REPLY_UPDATE_BY_FILED(params)
     return res
   }
 }

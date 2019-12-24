@@ -52,7 +52,7 @@
         :rowKey="setKey"
         :columns="columns"
         :dataSource="dataSource"
-        :scroll="{y:'calc(100vh - 271px)' }"
+        :scroll="{y:'calc(100vh - 331px)' }"
       >
         <template slot="FQAtitle" slot-scope="text,record">
           <span style="color: #1C6CE1" @click="clickTitle(record)">{{ text }}</span>
@@ -71,7 +71,7 @@
           <div style="display: flex;flex-direction: row;">
             <div style="margin-right: 35px;">
               <img v-if="record.issue==1" src="@icons/4786.svg" @click="changeIssue(record)"/>
-              <img v-else src="@icons/Icon.svg">
+              <img v-else src="@icons/Icon.svg" @click="editorFaq(record)">
             </div>
             <div>
               <span style="margin-right: 8px">评论</span>
@@ -84,6 +84,7 @@
       <!--分页器-->
       <table-pagination
         :total="total"
+        :defaultCurrent="current"
         :pageSizeOptions="pageSizeOptions"
         :size="pageSize"
         :showSizeChanger="true"
@@ -102,14 +103,21 @@ import TablePagination from '@/components/system/table-pagination'
 export default {
   name: 'FaqManagement',
   components: { TablePagination },
+  props: {
+    inheritPage: { // 付组件传下来的页数
+      type: Number,
+      default: 1
+    }
+  },
   data () {
     return {
-      active: '',
+      FAQMObj: null,
       sortName: undefined,
       titleKeyWord: '',
       sortTree: [], // 树形分类结构
       pageSize: 20,
       pageSizeOptions: ['20', '50', '100'],
+      // pageSizeOptions: ['3', '5', '15'],
       total: 0, // 总条数
       current: 1, // 当前页数
       columns: [
@@ -175,10 +183,13 @@ export default {
     }
   },
   created () {
-    console.log('FAQ----created')
+    this.current = parseInt(this.inheritPage)
     this.FAQMObj = new CnbiFAQManagement()
     this.getDataSource()
     this.getDataTree()
+  },
+  mounted () {
+    console.log('mounted========')
   },
   watch: {
     // 监听标题搜索是否清空，如清空刷新页面
@@ -206,11 +217,10 @@ export default {
       const categoryId = this.sortName
       const params = {
         page: page,
-        pageSize,
+        size: pageSize,
         categoryId,
         title
       }
-      console.log('params======', params)
       const res = await this.FAQMObj.coreFindPage(params)
       if (res.code === 200) {
         this.total = res.data.totalElements
@@ -247,7 +257,7 @@ export default {
       this.pageSize = pageSize
       this.getDataSource()
     },
-    // 条数该表
+    // 条数改变
     changePageSize (current, size) {
       this.current = current
       this.pageSize = size
@@ -278,6 +288,18 @@ export default {
       await this.FAQMObj.coreUpdateByField(params)
       this.getDataSource()
     },
+    // 跳转编辑FAQ页面
+    editorFaq (record) {
+      const current = this.current
+      this.$router.push({
+        name: 'FaqOperation',
+        query: {
+          type: 'edit',
+          faqId: record.id,
+          current: current
+        }
+      })
+    },
     // 勾选事件
     onSelectChange (selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys
@@ -304,9 +326,20 @@ export default {
     },
     // 添加FAQ
     addFAQ () {
-      this.$router.push({
-        name: 'AddFaq'
-      })
+      if (!this.sortTree) {
+        this.$warning({
+          title: '请先添加FAQ分类'
+        })
+      } else {
+        const current = this.current
+        this.$router.push({
+          name: 'FaqOperation',
+          query: {
+            type: 'add',
+            current: current
+          }
+        })
+      }
     },
     // 点击标题
     clickTitle (record) {
@@ -314,8 +347,9 @@ export default {
     },
     // 点击数量
     clickCount (record) {
-      // TODO
+      // TODO 闪现到问答管理，展示所有未解决问题
       console.log('跳转页面')
+      this.$emit('jump', record.id)
     }
 
   }

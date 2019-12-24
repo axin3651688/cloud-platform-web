@@ -58,7 +58,9 @@ const constantRouterComponents = {
   FileManagement: () => import('@/views/official-module/file-management'),
   BusinessChanceManagement: () => import('@/views/official-module/business-chance-management'),
   FAQHomeManagement: () => import('@/views/official-module/faq-home-management'),
-  AddFaq: () => import('@/views/official-module/faq/add-faq'),
+  FaqOperation: () => import('@/views/official-module/faq/faq-operation'),
+  Answer: () => import('@/views/official-module/faq/answer'),
+  FaqDetail: () => import('@/views/official-module/faq/faq-detail'),
 
   AccountManagement: () => import('@/views/set-module/account-management'),
   RoleManagement: () => import('@/views/set-module/role-management'),
@@ -171,10 +173,22 @@ const customRoute = [
         title: 'FAQ管理'
       },
       {
-        component: 'AddFaq',
+        component: 'FaqOperation',
         icon: 'bb',
-        key: 'AddFaq',
+        key: 'FaqOperation',
         title: '添加FAQ'
+      },
+      {
+        component: 'Answer',
+        icon: 'bb',
+        key: 'Answer',
+        title: '回复单页'
+      },
+      {
+        component: 'FaqDetail',
+        icon: 'bb',
+        key: 'FaqDetail',
+        title: '回复单页'
       },
       {
         component: 'AccountManagement',
