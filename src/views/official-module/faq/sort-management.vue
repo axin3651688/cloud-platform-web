@@ -21,7 +21,7 @@
           :rowKey="setKey"
           :columns="columns"
           :dataSource="sortTree"
-          :scroll="{y:'calc(100vh - 271px)' }"
+          :scroll="{y:'calc(100vh - 331px)' }"
           :pagination="pagination"
         >
           <template slot="action" slot-scope="text,record">
@@ -61,7 +61,7 @@
                 placeholder="请输入"
                 v-decorator="[
                   'text',
-                  { rules: [{ required: true, message: '请输入FAQ分类名称且不超过32位！' }] },
+                  { rules: [{ required: true, message: '请输入FAQ分类名称且不超过32位！' ,max:32}] },
                 ]" />
             </a-form-item>
             <a-form-item label="关键字">
@@ -69,7 +69,7 @@
                 placeholder="请输入"
                 v-decorator="[
                   'keyword',
-                  { rules: [{ required: true, message: '请输入关键字且不超过32位！' }] },
+                  { rules: [{ required: true, message: '请输入关键字且不超过32位！' ,max:32}] },
                 ]" />
             </a-form-item>
             <a-form-item label="FAQ分类位置">
@@ -121,7 +121,7 @@
                 placeholder="请输入"
                 v-decorator="[
                   'text',
-                  { rules: [{ required: true, message: '请输入FAQ分类名称且不超过32位！' }],initialValue:editFaq.text },
+                  { rules: [{ required: true, message: '请输入FAQ分类名称且不超过32位！',max:32 }],initialValue:editFaq.text },
                 ]" />
             </a-form-item>
             <a-form-item label="关键字">
@@ -129,7 +129,7 @@
                 placeholder="请输入"
                 v-decorator="[
                   'keyword',
-                  { rules: [{ required: true, message: '请输入关键字且不超过32位！' }],initialValue:editFaq.keyword },
+                  { rules: [{ required: true, message: '请输入关键字且不超过32位！',max:32 }],initialValue:editFaq.keyword },
                 ]" />
             </a-form-item>
             <a-form-item label="FAQ分类位置">
@@ -137,11 +137,11 @@
                 style="width: 300px"
                 v-decorator="[
                   'pid',
-                  { rules: [{ required: true, message: '必填项' }],initialValue:editFaq.code },
+                  { rules: [{ required: true, message: '必填项' }],initialValue:editFaq.pid },
                 ]"
                 :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
                 placeholder="请选择分类位置"
-                :treeData="sortTree"
+                :treeData="editSortTree"
               >
               </a-tree-select>
             </a-form-item>
@@ -233,6 +233,7 @@ export default {
       form1: this.$form.createForm(this), // 编辑
       sortTree: [], // 树形分类结构
       addsortTree: [], // 添加FAQ时用
+      editSortTree: [],
       expandedKeys: [], // 展开指定的树节点
       autoExpandParent: false // 是否自动展开父节点
     }
@@ -301,19 +302,65 @@ export default {
 
     // 编辑FAQ
     editSort (record) {
-      console.log('bianji==', record)
       this.editFaq = record
       this.showEditFaq = true
       this.visible = false
       this.active = ''
+      // this.changTree(record)
+      const obj = [{
+        title: '顶级分类',
+        value: '0',
+        key: '0'
+      }]
+      this.editSortTree = obj.concat(this.deepCopy(this.sortTree))
+
+      this.changTree(this.editSortTree, record)
+    },
+    /**
+     * 深拷贝
+     */
+    deepCopy (obj) { // 深拷贝
+      const result = Array.isArray(obj) ? [] : {}
+      for (const key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          if (obj[key] == null) {
+            result[key] = null
+          } else if (obj[key] == undefined) {
+            result[key] = undefined
+          } else if (typeof obj[key] === 'object') {
+            result[key] = this.deepCopy(obj[key]) // 递归复制
+          } else {
+            result[key] = obj[key]
+          }
+        }
+      }
+      return result
+    },
+
+    changTree (data, editFaq) {
+      data.forEach((item) => {
+        if (item.code == editFaq.code &&　item.pid == 0) {
+          item['selectable'] = false
+          if (item.children) {
+            delete item.children
+          }
+        } else if (item.code == editFaq.code) {
+          item['selectable'] = false
+          delete item.children
+        }
+        if (item.children) {
+          this.changTree(item.children, editFaq)
+        }
+      })
     },
     // 删除FAQ
     deleteSort (record) {
       this.active = ''
       const _this = this
-      if (record.leaf === 0) { // 0 表示分类下有内容不可删除
+      console.log(record)
+      if (record.leaf === 0 || record.faqCount != 0) { // 0 表示分类下有内容不可删除
         this.$warning({
-          title: '当前分类下已添加FAQ，不可删除'
+          title: '当前分类下有内容，不可删除'
         })
       } else {
         this.$confirm({
@@ -356,7 +403,24 @@ export default {
       this.form1.validateFields(async (err, values) => {
         if (!err) { // id, keyword, pid, text
           const id = _this.editFaq.id
-          const res = await _this.FAQMObj.categoryUpdate(id, values.keyword, values.pid, values.text)
+          const params = {
+            'datas': [
+              {
+                field: 'keyword',
+                value: values.keyword
+              }, {
+                field: 'pid',
+                value: values.pid
+              },
+              {
+                field: 'text',
+                value: values.text
+              }
+            ],
+            'id': id
+          }
+          const res = await _this.FAQMObj.categoryUpdateByFileds(params)
+          // const res = await _this.FAQMObj.categoryUpdate(id, values.keyword, values.pid, values.text)
           console.log('更新FAQ==', res)
           _this.editFaq = false
           // _this.getDataSource(_this.current, _this.pageSize)

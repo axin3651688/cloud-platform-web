@@ -8,8 +8,8 @@ const api = {
   categorySave: '/faq/category/save', // 添加分类
   categoryDelete: '/faq/category/delete', // 按主键删除(参数可以是单复数)
   categoryFindTree: '/faq/category/find_tree', // 按树结构查看所有数据
-  categoryUpdate: '/faq/category/update', // 按主键修改
-
+  categoryUpdate: '/faq/category/update', // 按主键修改 -----未用，用时需注意，传全部参数
+  categoryUpdateByFileds: '/faq/category/update_by_fields', // 多字段修改
   // FAQ
   coreFindPage: '/faq/core/find_page', // 按分页查数据
   coreUpdate: '/faq/core/update', // 按主键修改
@@ -80,14 +80,26 @@ export function CATEGORY_DELETE (ids) {
  * @param keyword 关键词, pid 父级编码 顶级为0, text 名称
  * @returns {*}
  */
-export function CATEGORY_UPDATE (id, keyword, pid, text) {
+export function CATEGORY_UPDATE (params) {
   return axios2({
     url: api.categoryUpdate,
     method: 'put',
-    data: { id, keyword, pid, text }
+    data: params
   })
 }
 
+/**
+ * 修改分类
+ * @param k
+ * @returns {*}
+ */
+export function CATEGORYUPDATEBYFILEDS (params) {
+  return axios2({
+    url: api.categoryUpdateByFileds,
+    method: 'put',
+    data: params
+  })
+}
 //* **********************************************FAQ******************************************************
 
 /**

@@ -5,6 +5,7 @@ import {
   CATEGORY_SAVE,
   CATEGORY_DELETE,
   CATEGORY_UPDATE,
+  CATEGORYUPDATEBYFILEDS,
   CORE_FIND_PAGE,
   CORE_UPDATE,
   CORE_UPDATE_BY_FIELD,
@@ -82,8 +83,20 @@ class CnbiFAQManagement {
    * @return  {}
    * @update   by
    */
-  async categoryUpdate (id, keyword, pid, text) {
-    const res = await CATEGORY_UPDATE(id, keyword, pid, text)
+  async categoryUpdate (params) {
+    const res = await CATEGORY_UPDATE(params)
+    return res
+  }
+  /**
+   * @desc    : 按主键修改
+   * @author  : shj
+   * @date  : 2019/12/16
+   * @param   {}
+   * @return  {}
+   * @update   by
+   */
+  async categoryUpdateByFileds (params) {
+    const res = await CATEGORYUPDATEBYFILEDS(params)
     return res
   }
   /**

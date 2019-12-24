@@ -7,30 +7,40 @@
         </div>
       </div>
     </div>
-    <div class="content" style="padding: 32px;">
-      <div>
+    <div class="content" style="padding: 32px;background-color: #fff;margin-top: 24px;">
+      <div style="display: flex;flex-direction: row">
         <div>
-          <img src="https://dss3.baidu.com/-rVXeDTa2gU2pMbgoY3K///it///u=4121232426,1436481329&fm=202&src=ry_add_wise">
+          <img style="height: 60px;width: 177px;" src="https://dss3.baidu.com/-rVXeDTa2gU2pMbgoY3K///it///u=4121232426,1436481329&fm=202&src=ry_add_wise">
         </div>
-        <div>
-          <a-row :gutter="24">
-            <a-col :span="6">
+        <div style="margin-left: 24px;">
+          <div style="display: flex;flex-direction: row;flex-wrap: wrap;">
+            <div style="width: 304px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">
               <span>FAQ标题：</span>
-              <span>标题名称</span>
-            </a-col>
-            <a-col :span="6">
+              <span>标题名称标题名称标题名称标题名称标题名称标题名称标题名称标题名称标题名称标题名称标题名称</span>
+            </div>
+            <div class="text-name">
               <span>FAQ分类：</span>
-              <span>设计器</span>
-            </a-col>
-            <a-col :span="6">
-              <span></span>
-              <span></span>
-            </a-col>
-            <a-col :span="6">
-              <span></span>
-              <span></span>
-            </a-col>
-          </a-row>
+              <span>FAQ分类</span>
+            </div>
+            <div class="text-name">
+              <span>关键词：</span>
+              <span>关键词</span>
+            </div>
+            <div class="text-name">
+              <span>FAQ展示排序：</span>
+              <span>FAQ展示排序</span>
+            </div>
+          </div>
+          <div style="display: flex;flex-direction: row;margin-top: 20px;">
+            <div style="width: 304px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">
+              <span>是否推荐：</span>
+              <span>FAQ展示排序</span>
+            </div>
+            <div class="text-name">
+              <span>查看数量：</span>
+              <span>88</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -39,10 +49,28 @@
 </template>
 
 <script>
+import CnbiFAQManagement from '@/classes/lib/CnbiFAQManagement'
 import ACol from 'ant-design-vue/es/grid/Col'
 export default {
   name: 'FaqDetail',
-  components: { ACol }
+  components: { ACol },
+  created () {
+    this.FAQMObj = new CnbiFAQManagement()
+    this.getFaqDetail()
+  },
+  methods: {
+    goBack () {
+
+    },
+    async getFaqDetail () {
+      const params = {
+        field: 'id',
+        value: this.$route.query.faqId
+      }
+      const res = await this.FAQMObj.coreFindOne(params)
+      console.log('res=======', res)
+    }
+  }
 }
 </script>
 
@@ -52,5 +80,12 @@ export default {
   }
   .btn{
     filter: grayscale(100%);
+  }
+  .text-name{
+    width: 304px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-left: 24px;
   }
 </style>

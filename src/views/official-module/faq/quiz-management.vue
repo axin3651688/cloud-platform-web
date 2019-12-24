@@ -29,11 +29,11 @@
         :rowKey="setKey"
         :columns="columns"
         :dataSource="dataSource"
-        :scroll="{y:'calc(100vh - 271px)' }"
+        :scroll="{y:'calc(100vh - 331px)' }"
       >
         <template slot="createUserName" slot-scope="text,record">
           <span v-if="record.createUserName">{{ text }}</span>
-          <span v-else>山上有个老和尚</span>
+          <span v-else>游客</span>
         </template>
         <template slot="status" slot-scope="text,record">
           <span v-if="record.status==1" style="color: #3BAD4B">已解决</span>

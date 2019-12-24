@@ -49,7 +49,7 @@
             </div>
           </a-col>
           <a-col :span="16">
-            <a-form :form="form" style="margin-top: 18px">
+            <a-form :form="form" style="margin-top: 18px" autocomplete="off">
               <a-row :gutter="24">
                 <a-col :span="10">
                   <a-form-item label="FQA标题">
@@ -58,7 +58,7 @@
                       placeholder="请输入"
                       v-decorator="[
                         'title',
-                        { rules: [{ required: true, message: '请输入!' }],initialValue: editFaq.title},
+                        { rules: [{ required: true, message: '支持输入中文，字母，数字，下划线，限64个字符!' ,max:64}],initialValue: editFaq.title},
                       ]" />
 
                     <a-input
@@ -66,7 +66,7 @@
                       placeholder="请输入"
                       v-decorator="[
                         'title',
-                        { rules: [{ required: true, message: '请输入!' }] },
+                        { rules: [{ required: true, message: '支持输入中文，字母，数字，下划线，限64个字符' ,max:64}] },
                       ]" />
                   </a-form-item>
                 </a-col>
@@ -77,7 +77,7 @@
                       placeholder="请输入"
                       v-decorator="[
                         'keyword',
-                        { rules: [{ required: true, message: '请输入关键词!' }],initialValue: editFaq.keyword },
+                        { rules: [{ required: true, message: '支持输入中文，字母，数字，下划线，限64个字符' ,max:64}],initialValue: editFaq.keyword },
                       ]" />
 
                     <a-input
@@ -85,7 +85,7 @@
                       placeholder="请输入"
                       v-decorator="[
                         'keyword',
-                        { rules: [{ required: true, message: '请输入关键词!' }] },
+                        { rules: [{ required: true, message: '支持输入中文，字母，数字，下划线，限64个字符' ,max:64}] },
                       ]" />
                   </a-form-item>
                 </a-col>
@@ -98,14 +98,14 @@
                       placeholder="请输入"
                       v-decorator="[
                         'sort',
-                        { rules: [{ required: true, message: '请输入数字!' }],initialValue: editFaq.sort },
+                        { rules: [{ required: true, message: '请输入数字!' ,pattern:/^\+?[0-9]*$/}],initialValue: editFaq.sort },
                       ]" />
                     <a-input
                       v-else
                       placeholder="请输入"
                       v-decorator="[
                         'sort',
-                        { rules: [{ required: true, message: '请输入数字!' }] },
+                        { rules: [{ required: true, message: '请输入数字!' ,pattern:/^\+?[0-9]*$/}] },
                       ]" />
                   </a-form-item>
                 </a-col>
@@ -196,6 +196,7 @@ export default {
     }
   },
   created () {
+    console.log('----------------------')
     this.FAQMObj = new CnbiFAQManagement()
     this.getDataTree()
     this.isType()

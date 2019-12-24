@@ -3,7 +3,7 @@
     <div class="faq" :style="{height: '64px',width: 'calc(100vh+48px)','background-color': '#fff'}">
       <div style="display: flex;align-items: center;padding-left: 36px;height: 100%;">
         <div style="cursor: pointer;">
-          <img class="btn" src="@icons/4786.svg" @click="goBack" title="返回"/>
+          <img class="btn" src="@icons/4786.svg" @click="goBack"/>
         </div>
       </div>
     </div>
@@ -12,25 +12,25 @@
         <div style="display: flex;flex-direction: row;margin-bottom: 24px">
           <div style="width: 348px;overflow: hidden;text-overflow-ellipsis: ellipsis;">
             <span>FAQ标题：</span>
-            <span style="margin-left: 24px;">{{ faq.title }}</span>
+            <span style="margin-left: 24px;" v-if="faq">{{ faq.title }}</span>
           </div>
           <div style="width: 348px;overflow: hidden;text-overflow-ellipsis: ellipsis;margin-left: 24px">
             <span>FAQ分类：</span>
-            <span style="margin-left: 24px;">{{ faq.categoryText }}</span>
+            <span style="margin-left: 24px;" v-if="faq">{{ faq.categoryText }}</span>
           </div>
         </div>
         <div>
           <div style="width: 348px;overflow: hidden;text-overflow-ellipsis: ellipsis;margin-right:24px;">
-            <span style="margin-right: 16px;">{{ faq.title }}</span>
+            <span style="margin-right: 16px;" v-if="faq">{{ faq.title }}</span>
             <span style="color:#1665D8;cursor: pointer;">详情</span>
           </div>
         </div>
       </div>
       <div>
         <div style="padding: 10px 0 10px 0;display: flex;flex-direction: column;border-bottom: 1px solid #EAEDF3;">
-          <span>{{ question.createUserName || '游客' }}</span>
-          <span style="margin-top: 10px;">
-            {{ question.title }}
+          <span v-if="question">{{ question.createUserName || '游客' }}</span>
+          <span style="margin-top: 10px;" v-if="question">
+            {{ question.content }}
           </span>
         </div>
       </div>
@@ -39,7 +39,7 @@
           FAQ内容:
         </span>
         <div >
-          <u-e v-if="type=='edit'" :config="config" ref="ue" :id="'ue2'" :defaultMsg="reply.content"></u-e>
+          <u-e v-if="type=='edit' && reply" :config="config" ref="ue" :id="'ue2'" :defaultMsg="reply.content"></u-e>
           <u-e v-else :config="config" ref="ue" :id="'ue2'"></u-e>
           <!--<u-e v-else :config="config" ref="ue"></u-e>-->
         </div>

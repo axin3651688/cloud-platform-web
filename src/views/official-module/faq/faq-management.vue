@@ -63,8 +63,8 @@
         </template>
         <template slot="issue" slot-scope="text,record">
           <div>
-            <span v-if="record.issue==1" style="color:#E7492E ">是</span>
-            <span v-else style="color:#3BAD4B ">否</span>
+            <span v-if="record.issue==1" style="color:#3BAD4B">是</span>
+            <span v-else style="color:#E7492E ">否</span>
           </div>
         </template>
         <template slot="action" slot-scope="text,record">
@@ -267,7 +267,7 @@ export default {
       return record.id
     },
     // 评论开关
-    changeDiscuss (record) {
+    async changeDiscuss (record) {
       console.log('评论开关===', record)
       const isComment = record.isComment == 0 ? 1 : 0
       const params = {
@@ -275,7 +275,8 @@ export default {
         value: isComment,
         id: record.id
       }
-      this.FAQMObj.coreUpdateByField(params)
+      await this.FAQMObj.coreUpdateByField(params)
+      this.getDataSource()
     },
     // 撤销发布
     async changeIssue (record) {
@@ -318,11 +319,23 @@ export default {
     },
     // 删除
     async clickDelete () {
-      const ids = this.selectedRowKeys.join()
-      const res = await this.FAQMObj.coreDelete(ids)
-      console.log('删除res====', res)
-      this.selectedRowKeys = []
-      this.getDataSource()
+      const _this = this
+      this.$confirm({
+        title: '删除后不可恢复，是否确认删除？',
+        onOk () {
+          setTimeout(async () => {
+            const ids = _this.selectedRowKeys.join()
+            const res = await _this.FAQMObj.coreDelete(ids)
+            console.log('删除res====', res)
+            _this.selectedRowKeys = []
+            _this.getDataSource()
+          }, 100)
+        },
+        onCancel () {
+
+        },
+        class: 'click-delete'
+      })
     },
     // 添加FAQ
     addFAQ () {
@@ -343,11 +356,15 @@ export default {
     },
     // 点击标题
     clickTitle (record) {
-      // TODO
+      this.$router.push({
+        name: 'FaqDetail',
+        query: {
+          faqId: record.id
+        }
+      })
     },
     // 点击数量
     clickCount (record) {
-      // TODO 闪现到问答管理，展示所有未解决问题
       console.log('跳转页面')
       this.$emit('jump', record.id)
     }

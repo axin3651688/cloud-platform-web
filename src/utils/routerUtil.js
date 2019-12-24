@@ -188,7 +188,7 @@ const customRoute = [
         component: 'FaqDetail',
         icon: 'bb',
         key: 'FaqDetail',
-        title: '回复单页'
+        title: 'FAQ详情'
       },
       {
         component: 'AccountManagement',
