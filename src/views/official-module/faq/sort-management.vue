@@ -137,7 +137,7 @@
                 style="width: 300px"
                 v-decorator="[
                   'pid',
-                  { rules: [{ required: true, message: '必填项' }],initialValue:editFaq.pid },
+                  { rules: [{ required: true, message: '请选择分类位置' }],initialValue:editFaq.pid },
                 ]"
                 :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
                 placeholder="请选择分类位置"
@@ -188,12 +188,12 @@ export default {
       },
       columns: [
         {
-          title: 'FQA分类名称',
+          title: 'FAQ分类名称',
           dataIndex: 'text',
           width: '50%'
         },
         {
-          title: 'FQA数量',
+          title: 'FAQ数量',
           dataIndex: 'faqCount',
           width: '40%'
         },
@@ -359,9 +359,7 @@ export default {
       const _this = this
       console.log(record)
       if (record.leaf === 0 || record.faqCount != 0) { // 0 表示分类下有内容不可删除
-        this.$warning({
-          title: '当前分类下有内容，不可删除'
-        })
+        this.$message.warning('当前分类下有内容，不可删除')
       } else {
         this.$confirm({
           title: '删除后不可恢复，是否确认删除？',

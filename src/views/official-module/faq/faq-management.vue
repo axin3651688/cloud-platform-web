@@ -54,12 +54,12 @@
         :dataSource="dataSource"
         :scroll="{y:'calc(100vh - 331px)' }"
       >
-        <template slot="FQAtitle" slot-scope="text,record">
+        <template slot="FAQtitle" slot-scope="text,record">
           <span style="color: #1C6CE1" @click="clickTitle(record)">{{ text }}</span>
         </template>
         <template slot="noSolveCount" slot-scope="text,record">
           <span v-if="record.noSolveCount==0">无</span>
-          <span v-else style="color: #1C6CE1" @click="clickCount(record)" >{{ text }}</span>
+          <span v-else class="num-color" @click="clickCount(record)" >{{ text }}</span>
         </template>
         <template slot="issue" slot-scope="text,record">
           <div>
@@ -122,13 +122,13 @@ export default {
       current: 1, // 当前页数
       columns: [
         {
-          title: 'FQA标题',
+          title: 'FAQ标题',
           dataIndex: 'title',
           width: '20%',
-          scopedSlots: { customRender: 'FQAtitle' }
+          scopedSlots: { customRender: 'FAQtitle' }
         },
         {
-          title: 'FQA分类',
+          title: 'FAQ分类',
           dataIndex: 'categoryText',
           width: '10%'
         },
@@ -392,5 +392,12 @@ export default {
     display: flex;
     flex-direction: row;
     padding-top: 10px;
+  }
+  .num-color{
+    color:#1C6CE1;
+  }
+  .num-color:hover{
+    color:#4584E0;
+    cursor: pointer;
   }
 </style>

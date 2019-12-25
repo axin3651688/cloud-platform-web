@@ -126,7 +126,7 @@ export default {
           width: '20%'
         },
         {
-          title: 'FQA标题',
+          title: 'FAQ标题',
           dataIndex: 'faqTitle',
           width: '10%'
         },

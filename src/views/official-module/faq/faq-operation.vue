@@ -25,7 +25,7 @@
                     <a-button class="upload-btn">点击上传</a-button>
                   </a-upload>
                   <span class="img-info">
-                    只能上传jpg/png文件，且不超过500kb
+                    只能上传jpg/png/svg文件，且不超过500kb
                   </span>
                 </div>
               </div>
@@ -52,7 +52,7 @@
             <a-form :form="form" style="margin-top: 18px" autocomplete="off">
               <a-row :gutter="24">
                 <a-col :span="10">
-                  <a-form-item label="FQA标题">
+                  <a-form-item label="FAQ标题">
                     <a-input
                       v-if="editFaq"
                       placeholder="请输入"
@@ -190,7 +190,6 @@ export default {
       sortTree: [], // 树形分类结构
       img: null,
       editFaq: null, // 要编辑FAQ
-      // defaultMsg: '',
       type: '', // 当前页面type
       FAQMObj: null
     }
@@ -225,7 +224,8 @@ export default {
       }
     },
     beforeUpload (file) {
-      const fileType = ['image/jpeg', 'image/png', 'image/image/svg+xml']
+      console.log('file======', file.type)
+      const fileType = ['image/jpeg', 'image/png', 'image/svg+xml']
       const isImg = fileType.indexOf(file.type) > -1
       if (!isImg) {
         this.$message.error('只能jpg、png、svg图片！')
@@ -377,7 +377,6 @@ export default {
         }
       })
     },
-    // pattern:/^\+?[0-9]*$/
     validateInputNum (rule, value, callback) {
       const reg = /^\+?[0-9]*$/
       if (typeof value === 'undefined' || value === '') {

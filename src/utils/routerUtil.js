@@ -60,7 +60,6 @@ const constantRouterComponents = {
   FAQHomeManagement: () => import('@/views/official-module/faq-home-management'),
   FaqOperation: () => import('@/views/official-module/faq/faq-operation'),
   Answer: () => import('@/views/official-module/faq/answer'),
-  FaqDetail: () => import('@/views/official-module/faq/faq-detail'),
 
   AccountManagement: () => import('@/views/set-module/account-management'),
   RoleManagement: () => import('@/views/set-module/role-management'),
@@ -183,12 +182,6 @@ const customRoute = [
         icon: 'bb',
         key: 'Answer',
         title: '回复单页'
-      },
-      {
-        component: 'FaqDetail',
-        icon: 'bb',
-        key: 'FaqDetail',
-        title: 'FAQ详情'
       },
       {
         component: 'AccountManagement',
