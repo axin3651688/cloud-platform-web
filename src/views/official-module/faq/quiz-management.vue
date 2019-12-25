@@ -241,6 +241,8 @@ export default {
       const params = {
         page: page,
         size: pageSize,
+        direction: 'desc',
+        sortBy: 'updateTime',
         status,
         title,
         faqId
@@ -320,6 +322,7 @@ export default {
     // 刷新页面
     refreshPage () {
       this.selectVal = 'all'
+      this.titleKeyWord = ''
       this.$emit('update:faqId', null)
       const _this = this
       this.$nextTick(() => { // 等faqId值改变后在执行刷新

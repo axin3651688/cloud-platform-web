@@ -61,7 +61,7 @@
                 placeholder="请输入"
                 v-decorator="[
                   'text',
-                  { rules: [{ required: true, message: '请输入FAQ分类名称且不超过32位！' ,max:32}] },
+                  { rules: [{ required: true, message: '支持中文，字母，数字，下划线，限64个字符'},{ validator: validateInputText}] },
                 ]" />
             </a-form-item>
             <a-form-item label="关键字">
@@ -69,7 +69,7 @@
                 placeholder="请输入"
                 v-decorator="[
                   'keyword',
-                  { rules: [{ required: true, message: '请输入关键字且不超过32位！' ,max:32}] },
+                  { rules: [{ required: true, message: '支持中文，字母，数字，下划线，限64个字符'},{ validator: validateInputText}] },
                 ]" />
             </a-form-item>
             <a-form-item label="FAQ分类位置">
@@ -121,7 +121,7 @@
                 placeholder="请输入"
                 v-decorator="[
                   'text',
-                  { rules: [{ required: true, message: '请输入FAQ分类名称且不超过32位！',max:32 }],initialValue:editFaq.text },
+                  { rules: [{ required: true, message: '支持中文，字母，数字，下划线，限64个字符'},{ validator: validateInputText}],initialValue:editFaq.text },
                 ]" />
             </a-form-item>
             <a-form-item label="关键字">
@@ -129,7 +129,7 @@
                 placeholder="请输入"
                 v-decorator="[
                   'keyword',
-                  { rules: [{ required: true, message: '请输入关键字且不超过32位！',max:32 }],initialValue:editFaq.keyword },
+                  { rules: [{ required: true, message: '支持中文，字母，数字，下划线，限64个字符'},{ validator: validateInputText}],initialValue:editFaq.keyword },
                 ]" />
             </a-form-item>
             <a-form-item label="FAQ分类位置">
@@ -429,8 +429,30 @@ export default {
           console.log('出错了更新FAQ')
         }
       })
+    },
+    validateInputText (rule, value, callback) {
+      const reg = /^[a-zA-Z0-9_\u4e00-\u9fa5]+$/
+      if (typeof value === 'undefined' || value === '') {
+        callback()
+      } else if (!reg.test(value) || this.computedStrLen(value) > 64) {
+        callback('支持中文，字母，数字，下划线，限64个字符')
+      } else {
+        callback()
+      }
+    },
+    computedStrLen: function (str) {
+      let len = 0
+      for (var i = 0; i < str.length; i++) {
+        const c = str.charCodeAt(i)
+        // 单字节加1
+        if ((c >= 0x0001 && c <= 0x007e) || (c >= 0xff60 && c <= 0xff9f)) {
+          len++
+        } else {
+          len += 2
+        }
+      }
+      return len
     }
-
   }
 }
 </script>

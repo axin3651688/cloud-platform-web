@@ -209,7 +209,7 @@ export default {
       this.sortName = value
       this.getDataSource()
     },
-    // 获取表格数据
+    // 获取表格数据  direction 排序方式  sortBy 排序字段
     async getDataSource () {
       const page = this.current
       const pageSize = this.pageSize
@@ -218,6 +218,8 @@ export default {
       const params = {
         page: page,
         size: pageSize,
+        direction: 'desc',
+        sortBy: 'updateTime',
         categoryId,
         title
       }
@@ -356,12 +358,9 @@ export default {
     },
     // 点击标题
     clickTitle (record) {
-      this.$router.push({
-        name: 'FaqDetail',
-        query: {
-          faqId: record.id
-        }
-      })
+      // 打开一个新的窗口
+      // this.$message.warning('暂时测试，具体地址还木有。')
+      window.open('http://cnbi.yunzhinang.net/')
     },
     // 点击数量
     clickCount (record) {

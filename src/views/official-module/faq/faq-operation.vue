@@ -58,7 +58,7 @@
                       placeholder="请输入"
                       v-decorator="[
                         'title',
-                        { rules: [{ required: true, message: '支持输入中文，字母，数字，下划线，限64个字符!' ,max:64}],initialValue: editFaq.title},
+                        { rules: [{ required: true,message:'支持输入中文，字母，数字，下划线，限64个字符'},{ validator: validateInputText}],initialValue: editFaq.title},
                       ]" />
 
                     <a-input
@@ -66,7 +66,7 @@
                       placeholder="请输入"
                       v-decorator="[
                         'title',
-                        { rules: [{ required: true, message: '支持输入中文，字母，数字，下划线，限64个字符' ,max:64}] },
+                        { rules: [{ required: true,message:'支持输入中文，字母，数字，下划线，限64个字符'},{ validator: validateInputText}], },
                       ]" />
                   </a-form-item>
                 </a-col>
@@ -77,7 +77,7 @@
                       placeholder="请输入"
                       v-decorator="[
                         'keyword',
-                        { rules: [{ required: true, message: '支持输入中文，字母，数字，下划线，限64个字符' ,max:64}],initialValue: editFaq.keyword },
+                        { rules: [{ required: true,message:'支持输入中文，字母，数字，下划线，限64个字符'},{ validator: validateInputText}],initialValue: editFaq.keyword },
                       ]" />
 
                     <a-input
@@ -85,7 +85,7 @@
                       placeholder="请输入"
                       v-decorator="[
                         'keyword',
-                        { rules: [{ required: true, message: '支持输入中文，字母，数字，下划线，限64个字符' ,max:64}] },
+                        { rules: [{ required: true,message:'支持输入中文，字母，数字，下划线，限64个字符'},{ validator: validateInputText,},], },
                       ]" />
                   </a-form-item>
                 </a-col>
@@ -98,14 +98,14 @@
                       placeholder="请输入"
                       v-decorator="[
                         'sort',
-                        { rules: [{ required: true, message: '请输入数字!' ,pattern:/^\+?[0-9]*$/}],initialValue: editFaq.sort },
+                        { rules: [{ required: false,message:'请输入正整数且不大于10000'},{ validator: validateInputNum}],initialValue: editFaq.sort },
                       ]" />
                     <a-input
                       v-else
                       placeholder="请输入"
                       v-decorator="[
                         'sort',
-                        { rules: [{ required: true, message: '请输入数字!' ,pattern:/^\+?[0-9]*$/}] },
+                        { rules: [{ required: false,message:'请输入正整数且不大于10000'},{ validator: validateInputNum}] },
                       ]" />
                   </a-form-item>
                 </a-col>
@@ -113,10 +113,10 @@
                   <a-form-item label="所属分类">
                     <a-tree-select
                       v-if="editFaq"
-                      style="width: 300px"
+
                       v-decorator="[
                         'pid',
-                        { rules: [{ required: true, message: '必填项' }],initialValue: editFaq.categoryId },
+                        { rules: [{ required: true, message: '请选择所属分类' }],initialValue: editFaq.categoryId },
                       ]"
                       :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
                       placeholder="请选择分类位置"
@@ -126,10 +126,10 @@
 
                     <a-tree-select
                       v-else
-                      style="width: 300px"
+
                       v-decorator="[
                         'pid',
-                        { rules: [{ required: true, message: '必填项' }] },
+                        { rules: [{ required: true, message: '请选择所属分类' }] },
                       ]"
                       :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
                       placeholder="请选择分类位置"
@@ -299,16 +299,23 @@ export default {
     saveFaq () {
       const _this = this
       const content = _this.$refs.ue.getUEContent()
+      if (content.length == 0) {
+        this.$message.warning('内容不能为空')
+        return
+      }
+      console.log('saveFaq======')
       this.form.validateFields(async (err, values) => {
+        console.log('res======', err)
         if (!err) {
           let titleImg
           if (_this.img) {
             titleImg = _this.img.id
           }
+          const sort = typeof values.sort === 'undefined' ? 0 : values.sort
           const params = {
             title: values.title,
             categoryId: values.pid,
-            sort: values.sort,
+            sort: sort,
             keyword: values.keyword,
             titleImg: titleImg,
             readCount: _this.examineNum,
@@ -321,15 +328,12 @@ export default {
             params.issue = this.editFaq.issue
             params.isComment = this.editFaq.isComment
             res = await this.FAQMObj.coreUpdate(params)
+            if (res.data)_this.$message.success('修改成功')
           } else {
             res = await this.FAQMObj.coreSave(params)
-            _this.resetPage()
+            if (res.data)_this.$message.success('保存成功')
+            _this.goBack()
           }
-          if (res.code == 200) {
-            console.log('111111111111111111111111111111111')
-            this.$message.success('保存成功')
-          }
-          console.log('res=====', res)
         } else {
           console.log('cuowu')
         }
@@ -372,6 +376,41 @@ export default {
           current: current
         }
       })
+    },
+    // pattern:/^\+?[0-9]*$/
+    validateInputNum (rule, value, callback) {
+      const reg = /^\+?[0-9]*$/
+      if (typeof value === 'undefined' || value === '') {
+        callback()
+      } else if (!reg.test(value) || value > 10000) {
+        callback('请输入正整数且不大于10000')
+      } else {
+        callback()
+      }
+    },
+    // 标题关键字验证
+    validateInputText (rule, value, callback) {
+      const reg = /^[a-zA-Z0-9_\u4e00-\u9fa5]+$/
+      if (typeof value === 'undefined' || value === '') {
+        callback()
+      } else if (!reg.test(value) || this.computedStrLen(value) > 64) {
+        callback('支持输入中文，字母，数字，下划线，限64个字符')
+      } else {
+        callback()
+      }
+    },
+    computedStrLen: function (str) {
+      let len = 0
+      for (var i = 0; i < str.length; i++) {
+        const c = str.charCodeAt(i)
+        // 单字节加1
+        if ((c >= 0x0001 && c <= 0x007e) || (c >= 0xff60 && c <= 0xff9f)) {
+          len++
+        } else {
+          len += 2
+        }
+      }
+      return len
     }
   }
 }

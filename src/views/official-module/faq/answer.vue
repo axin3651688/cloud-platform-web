@@ -22,7 +22,7 @@
         <div>
           <div style="width: 348px;overflow: hidden;text-overflow-ellipsis: ellipsis;margin-right:24px;">
             <span style="margin-right: 16px;" v-if="faq">{{ faq.title }}</span>
-            <span style="color:#1665D8;cursor: pointer;">详情</span>
+            <span style="color:#1665D8;cursor: pointer;" @click="clickDetail(faq)">详情</span>
           </div>
         </div>
       </div>
@@ -39,7 +39,7 @@
           FAQ内容:
         </span>
         <div >
-          <u-e v-if="type=='edit' && reply" :config="config" ref="ue" :id="'ue2'" :defaultMsg="reply.content"></u-e>
+          <u-e v-if="type=='edit'" :config="config" ref="ue" :id="'ue2'" :defaultMsg="reply.content"></u-e>
           <u-e v-else :config="config" ref="ue" :id="'ue2'"></u-e>
           <!--<u-e v-else :config="config" ref="ue"></u-e>-->
         </div>
@@ -80,6 +80,9 @@ export default {
   created () {
     this.FAQMObj = new CnbiFAQManagement()
     this.getDetail()
+  },
+  mounted () {
+    // this.getDetail()
   },
   methods: {
     goBack () {
@@ -136,6 +139,9 @@ export default {
     // 清空编辑的内容
     resetContent () {
       this.$refs.ue.clearContent()
+    },
+    clickDetail () {
+      window.open('http://cnbi.yunzhinang.net/')
     }
   }
 }
