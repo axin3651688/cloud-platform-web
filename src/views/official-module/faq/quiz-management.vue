@@ -303,10 +303,22 @@ export default {
     },
     // 删除问题
     async deleteIssue (record) {
-      const id = record.id
-      const res = await this.FAQMObj.questionDelete(id)
-      console.log('删除问题==', res)
-      this.getDataSource()
+      const _this = this
+      this.$confirm({
+        title: '删除后不可恢复，是否确认删除？',
+        onOk () {
+          setTimeout(async () => {
+            const id = record.id
+            const res = await _this.FAQMObj.questionDelete(id)
+            console.log('删除问题==', res)
+            _this.getDataSource()
+          }, 100)
+        },
+        onCancel () {
+
+        },
+        class: 'click-delete'
+      })
     },
     // 撤回提交
     async backSubmit (record) {

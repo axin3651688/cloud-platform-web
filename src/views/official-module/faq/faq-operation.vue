@@ -230,6 +230,7 @@ export default {
       if (!isImg) {
         this.$message.error('只能jpg、png、svg图片！')
       }
+      console.log('图片大小 ======', file)
       const isLt5M = file.size / 1024 < 500
       if (!isLt5M) {
         this.$message.error('图片不能超过500kb！')
