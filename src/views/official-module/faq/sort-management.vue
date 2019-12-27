@@ -77,7 +77,7 @@
                 style="width: 300px"
                 v-decorator="[
                   'pid',
-                  { rules: [{ required: true, message: '必填项' }] },
+                  { rules: [{ required: true, message: '请选择FAQ分类位置' }] },
                 ]"
                 :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
                 placeholder="请选择"

@@ -242,7 +242,8 @@ export default {
         page: page,
         size: pageSize,
         direction: 'desc',
-        sortBy: 'updateTime',
+        sortBy: 'createTime',
+        // sortBy: 'updateTime',
         status,
         title,
         faqId

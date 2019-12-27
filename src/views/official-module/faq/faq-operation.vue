@@ -304,9 +304,7 @@ export default {
         this.$message.warning('内容不能为空')
         return
       }
-      console.log('saveFaq======')
       this.form.validateFields(async (err, values) => {
-        console.log('res======', err)
         if (!err) {
           let titleImg
           if (_this.img) {
@@ -364,19 +362,80 @@ export default {
     },
     // B键回城
     goBack () {
-      // 添加回管理页面，第一页 ；编辑回原页面
-      let current = 1
-      if (this.type == 'edit') {
-        current = this.$route.query.current || 1
-      }
-      // 因为不想让参数在地址栏显示所以用params 没用query
-      this.$router.push({
-        name: 'FAQHomeManagement',
-        params: {
-          tab: '2',
-          current: current
+      const _this = this
+      // 判断页面内容是否有改变
+      const flag = this.isvariation()
+      if (!flag) {
+        this.$confirm({
+          title: '有内容未保存，是否离开？',
+          onOk () {
+            let current = 1
+            if (_this.type == 'edit') {
+              current = _this.$route.query.current || 1
+            }
+            // 因为不想让参数在地址栏显示所以用params 没用query
+            _this.$router.push({
+              name: 'FAQHomeManagement',
+              params: {
+                tab: '2',
+                current: current
+              }
+            })
+          },
+          onCancel () {
+
+          },
+          class: 'click-delete'
+        })
+      } else {
+        let current = 1
+        if (this.type == 'edit') {
+          current = this.$route.query.current || 1
         }
-      })
+        // 因为不想让参数在地址栏显示所以用params 没用query
+        this.$router.push({
+          name: 'FAQHomeManagement',
+          params: {
+            tab: '2',
+            current: current
+          }
+        })
+      }
+      // 添加回管理页面，第一页 ；编辑回原页面
+    },
+    // 判断页面内容是否有改变
+    isvariation () {
+      const form = this.form.getFieldsValue()
+      const content = this.$refs.ue.getUEContent()
+      if (this.type == 'add') {
+        if (form.pid || form.title || form.keyword || form.sort || content || this.img || this.checked || this.examineNum) {
+          // this.$message.warning('老子写字了')
+          return false
+        }
+        return true
+      } else if (this.type == 'edit') {
+        let flagImg = false // 判断图片是否一样
+        if (this.img && this.editFaq) {
+          if (this.img.id == this.editFaq.titleImg) {
+            flagImg = true
+          }
+        } else if (!this.editFaq.titleImg) {
+          flagImg = true
+        }
+        const pidFlag = form.pid == this.editFaq.categoryId
+        const keywordFlag = form.keyword == this.editFaq.keyword
+        const sortFlag = form.sort == this.editFaq.sort
+        const titleFlag = form.title == this.editFaq.title
+        const contentFlag = content == this.editFaq.content
+        const examineNumFlag = this.examineNum == this.editFaq.readCount
+        const istz = this.checked == (this.editFaq.isRecommend != 0)
+        if (!(flagImg && pidFlag && keywordFlag && titleFlag && sortFlag && contentFlag && examineNumFlag && istz)) {
+          // this.$message.warning('老子编辑了')
+          // 有未保存的内容，是否
+          return false
+        }
+        return true
+      }
     },
     validateInputNum (rule, value, callback) {
       const reg = /^\+?[0-9]*$/

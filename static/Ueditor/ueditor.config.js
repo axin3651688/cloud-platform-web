@@ -61,7 +61,7 @@
     // 现有如下皮肤:default
     theme: 'default',
     themePath: URL + 'themes/',
-
+    enableAutoSave: false, // 自动保存
     //, zIndex : 900     //编辑器层级的基数,默认是900
 
     // 针对getAllHtml方法，会在对应的head标签中增加该编码设置。

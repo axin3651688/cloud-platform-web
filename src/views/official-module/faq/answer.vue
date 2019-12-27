@@ -86,14 +86,42 @@ export default {
   },
   methods: {
     goBack () {
-      const current = this.$route.query.current || 1
-      this.$router.push({
-        name: 'FAQHomeManagement',
-        params: {
-          tab: '3',
-          current: current
-        }
-      })
+      const _this = this
+      const content = this.$refs.ue.getUEContent()
+      let flag = true
+      if (this.type == 'edit') {
+        flag = content == this.reply.content
+      } else if (this.type == 'reply') {
+        flag = !content
+      }
+      if (flag) {
+        const current = this.$route.query.current || 1
+        this.$router.push({
+          name: 'FAQHomeManagement',
+          params: {
+            tab: '3',
+            current: current
+          }
+        })
+      } else {
+        this.$confirm({
+          title: '有内容未保存，是否离开？',
+          onOk () {
+            const current = _this.$route.query.current || 1
+            _this.$router.push({
+              name: 'FAQHomeManagement',
+              params: {
+                tab: '3',
+                current: current
+              }
+            })
+          },
+          onCancel () {
+
+          },
+          class: 'click-delete'
+        })
+      }
     },
     // 获取问题详情
     async getDetail () {
