@@ -331,7 +331,7 @@ export default {
           } else {
             res = await this.FAQMObj.coreSave(params)
             if (res.data)_this.$message.success('保存成功')
-            _this.goBack()
+            _this.saveBack()
           }
         } else {
           console.log('cuowu')
@@ -360,8 +360,23 @@ export default {
         class: 'resetContent'
       })
     },
+    // 保存后直接回城
+    saveBack () {
+      let current = 1
+      if (this.type == 'edit') {
+        current = this.$route.query.current || 1
+      }
+      // 因为不想让参数在地址栏显示所以用params 没用query
+      this.$router.push({
+        name: 'FAQHomeManagement',
+        params: {
+          tab: '2',
+          current: current
+        }
+      })
+    },
     // B键回城
-    goBack () {
+    goBack (param) {
       const _this = this
       // 判断页面内容是否有改变
       const flag = this.isvariation()

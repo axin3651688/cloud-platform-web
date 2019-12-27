@@ -85,6 +85,7 @@ export default {
     // this.getDetail()
   },
   methods: {
+    // B键回城
     goBack () {
       const _this = this
       const content = this.$refs.ue.getUEContent()
@@ -123,6 +124,16 @@ export default {
         })
       }
     },
+    saveBack () {
+      const current = this.$route.query.current || 1
+      this.$router.push({
+        name: 'FAQHomeManagement',
+        params: {
+          tab: '3',
+          current: current
+        }
+      })
+    },
     // 获取问题详情
     async getDetail () {
       this.type = this.$route.query.type
@@ -149,7 +160,7 @@ export default {
         res = await this.FAQMObj.replySave(params)
         if (res.data) {
           this.$message.success('回复成功')
-          this.goBack()
+          this.saveBack()
         }
       } else if (this.type == 'edit') {
         params = {
@@ -160,7 +171,7 @@ export default {
         res = await this.FAQMObj.replyUpdateByFiled(params)
         if (res.data) {
           this.$message.success('修改成功')
-          this.goBack()
+          this.saveBack()
         }
       }
     },
