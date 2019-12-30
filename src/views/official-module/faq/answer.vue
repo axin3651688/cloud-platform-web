@@ -39,8 +39,11 @@
           FAQ内容:
         </span>
         <div >
-          <u-e v-if="type=='edit'" :config="config" ref="ue" :id="'ue2'" :defaultMsg="reply.content"></u-e>
-          <u-e v-else :config="config" ref="ue" :id="'ue2'"></u-e>
+          <!--  <u-e v-if="type=='edit'" :config="config" ref="ue" :id="'ue2'" :defaultMsg="reply.content"></u-e>
+          <u-e v-else :config="config" ref="ue" :id="'ue2'"></u-e>-->
+
+          <vue-ueditor v-if="type=='edit'" :config="config" ref="ue" :id="'ue2'" :defaultMsg="reply.content"></vue-ueditor>
+          <vue-ueditor v-else :config="config" ref="ue" :id="'ue2'"></vue-ueditor>
           <!--<u-e v-else :config="config" ref="ue"></u-e>-->
         </div>
       </div>
@@ -59,16 +62,31 @@
 </template>
 
 <script>
+import VueUeditor from '@/components/Editor/vue-ueditor-wrap'
 import CnbiFAQManagement from '@/classes/lib/CnbiFAQManagement'
 import UE from '@/components/Editor/Ueditor'
+const Authorization = localStorage.getItem('pro__Access-Token')
 export default {
   name: 'Answer',
-  components: { UE },
+  components: { UE, VueUeditor },
   data () {
     return {
       config: {
+        // 编辑器不自动被内容撑高
+        autoHeightEnabled: false,
+        // 初始容器高度
         initialFrameHeight: 350,
-        initialFrameWidth: null
+        // 初始容器宽度
+        initialFrameWidth: '100%',
+        // 上传文件接口（这个地址是我为了方便各位体验文件上传功能搭建的临时接口，请勿在生产环境使用！！！）
+        // serverUrl: 'http://35.201.165.105:8000/controller.php',
+        serverUrl: 'http://192.168.2.236/common/ueditor/ueditorConfig',
+        // UEditor 资源文件的存放路径，如果你使用的是 vue-cli 生成的项目，通常不需要设置该选项，vue-ueditor-wrap 会自动处理常见的情况，如果需要特殊配置，参考下方的常见问题2
+        UEDITOR_HOME_URL: '/UEditor/', // 本地 /static/UEditor/   ip地址   /public/UEditor/
+        // 配合最新编译的资源文件，你可以实现添加自定义Request Headers,详情https://github.com/HaoChuan9421/ueditor/commits/dev-1.4.3.3
+        headers: {
+          Authorization: JSON.parse(Authorization).value
+        }
       },
       question: null,
       faq: null,

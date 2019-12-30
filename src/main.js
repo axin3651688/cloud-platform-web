@@ -20,13 +20,6 @@ import './assets/css/global.css'
 import './permission' // permission control
 import './utils/filter'// 导入文件
 
-// 百度编辑器
-// 富文本ue需要的js和css
-import '../static/Ueditor/themes/default/css/ueditor.css'
-import '../static/Ueditor/ueditor.config.js'
-import '../static/Ueditor/ueditor.all.js'
-import '../static/Ueditor/lang/zh-cn/zh-cn.js'
-// import '../static/Ueditor/ueditor.parse.min.js'
 
 Vue.prototype.$moment = moment // global filter
 
