@@ -82,7 +82,7 @@ export default {
         // serverUrl: 'http://35.201.165.105:8000/controller.php',
         serverUrl: 'http://192.168.2.236/common/ueditor/ueditorConfig',
         // UEditor 资源文件的存放路径，如果你使用的是 vue-cli 生成的项目，通常不需要设置该选项，vue-ueditor-wrap 会自动处理常见的情况，如果需要特殊配置，参考下方的常见问题2
-        UEDITOR_HOME_URL: '/UEditor/', // 本地 /static/UEditor/   ip地址   /public/UEditor/
+        UEDITOR_HOME_URL: 'http://192.168.2.230/platform-console/UEditor/', // 本地 /static/UEditor/   ip地址   /public/UEditor/
         // 配合最新编译的资源文件，你可以实现添加自定义Request Headers,详情https://github.com/HaoChuan9421/ueditor/commits/dev-1.4.3.3
         headers: {
           Authorization: JSON.parse(Authorization).value
