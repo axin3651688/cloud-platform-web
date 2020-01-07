@@ -291,7 +291,7 @@ export default {
         item['title'] = item.text
         item['value'] = item.code
         item['key'] = item.code
-        if (item.leaf == 1 && item.children && item.children.length == 0) {
+        if (item.children && item.children.length == 0) {
           delete item.children
         }
         if (item.children && item.children.length > 0) {
@@ -358,7 +358,7 @@ export default {
       this.active = ''
       const _this = this
       console.log(record)
-      if (record.leaf === 0 || record.faqCount != 0) { // 0 表示分类下有内容不可删除
+      if ((record.children && record.children.length > 0) || record.faqCount != 0) { // 0 表示分类下有内容不可删除
         this.$message.warning('当前分类下有内容，不可删除')
       } else {
         this.$confirm({
