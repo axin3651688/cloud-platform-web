@@ -482,4 +482,7 @@ export default {
   .ant-form-item{
     margin-bottom: 0;
   }
+  /deep/.ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title{
+    padding: 2px 12px;
+  }
 </style>
