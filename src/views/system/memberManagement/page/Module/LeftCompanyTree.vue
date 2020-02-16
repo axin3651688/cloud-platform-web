@@ -56,24 +56,29 @@ export default {
         return []
       }
     },
+    // 显示菜单
     showMenu: {
       type: Boolean,
       default: false
     },
+    // 选择的key
     selectKeys: {
       type: Array,
       default: function () {
         return []
       }
     },
+    // 是否显示线
     showLine: {
       type: Boolean,
       default: false
     },
+    // 是否显示图标
     showIcon: {
       type: Boolean,
       default: false
     },
+    // 是否显示tool
     tool: {
       type: Boolean,
       default: false
@@ -85,12 +90,23 @@ export default {
     }
   },
   methods: {
+    /**
+     * 清除选中的节点
+     */
     clearSelectNodes () {
       this.$refs.leftTree.clearSelectNodes()
     },
+    /**
+     * 选中事件
+     * @param selectedKeys
+     */
     onSelect: function (selectedKeys) {
       this.$emit('select', selectedKeys)
     },
+    /**
+     * check事件
+     * @param checkedKeys
+     */
     onCheck: function (checkedKeys) {
       this.$emit('check', checkedKeys)
     }

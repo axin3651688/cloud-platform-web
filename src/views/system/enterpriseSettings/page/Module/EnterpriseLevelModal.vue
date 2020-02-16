@@ -38,22 +38,34 @@ export default {
   name: 'EnterpriseLevelModal',
   data: function () {
     return {
+      // 标题
       title: '企业级别',
+      // 样式
       labelCol: { span: 4 },
+      // 样式
       wrapperCol: { span: 20 },
+      // 表单布局
       formLayout: 'horizontal',
+      // 表单
       form: this.$form.createForm(this),
+      // 是否可见
       visible: false,
       confirmLoading: false,
+      // 树的数据
       treeData: [],
+      // 验证规则
       validatorRules: {
         sort: { rules: [{ required: true, message: '请输入排序' }, { type: 'string', message: '只能填写数字' }] },
         comPid: { rules: [{ required: true, message: '必须填写上级公司' }] }
       },
+      // 表单model
       model: {}
     }
   },
   methods: {
+    /**
+     * 显示莫泰框
+     */
     showModal () {
       this.visible = true
     },
@@ -85,9 +97,17 @@ export default {
         }
       })
     },
+    /**
+     * 取消事件
+     * @param e
+     */
     handleCancel (e) {
       this.visible = false
     },
+    /**
+     * 编辑事件
+     * @param record
+     */
     onEdit: function (record) {
       this.renderCompanyTree(record.id)
       const _this = this
@@ -98,9 +118,17 @@ export default {
         _this.form.setFieldsValue({ 'comPid': record.pid })
       })
     },
+    /**
+     * 关闭莫泰框之后事件
+     */
     afterCloseModal () {
       this.form.resetFields()
     },
+    /**
+     * 树根据Id删除对应Id和child
+     * @param tree    数据
+     * @param id      id
+     */
     delSelfAndChildren (tree, id) {
       const _this = this
       tree.forEach(function (ele, index) {
@@ -112,6 +140,10 @@ export default {
         }
       })
     },
+    /**
+     * 渲染公司树
+     * @param exceptId    排除的Id
+     */
     renderCompanyTree (exceptId) {
       const _this = this
       // 查询公司树，显示除了自己公司和自己子级公司的其他公司

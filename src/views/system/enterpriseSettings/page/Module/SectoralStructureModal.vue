@@ -33,30 +33,50 @@ export default {
   name: 'SectoralStructureModal',
   data: function () {
     return {
+      // 样式
       labelCol: { span: 4 },
+      // 样式
       wrapperCol: { span: 20 },
+      // 表单布局
       formLayout: 'horizontal',
+      // 表单
       form: this.$form.createForm(this),
+      // 是否可见
       visible: false,
       confirmLoading: false,
+      // 莫泰框
       model: {},
+      // 验证规则
       validatorRules: {
         deptPid: { rules: [/* { required: true, message: '' } */] }
       },
+      // 树数据
       treeData: []
     }
   },
   methods: {
+    /**
+     * 显示莫泰框
+     */
     showModal () {
       this.visible = true
     },
+    /**
+     * 取消
+     */
     handleCancel (e) {
       this.visible = false
     },
+    /**
+     * 关闭莫泰框
+     */
     afterCloseModal () {
       this.form.resetFields()
       this.model = {}
     },
+    /**
+     * 编辑莫泰框
+     */
     onEdit (record) {
       const _this = this
       this.renderDeptTree(record.comId, record.id)
@@ -67,7 +87,9 @@ export default {
         _this.form.setFieldsValue({ 'deptPid': record.pid })
       })
     },
-    // 点击保存之后
+    /**
+     * 确定事件
+     */
     handleOk: function () {
       const _this = this
       _this.form.validateFields(async (err, values) => {
@@ -87,6 +109,11 @@ export default {
         }
       })
     },
+    /**
+     * 渲染部门树
+     * @param comId
+     * @param exceptId
+     */
     renderDeptTree (comId, exceptId) {
       const _this = this
       getDeptTreeByComId({ comId: comId }).then(function (treeData) {

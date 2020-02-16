@@ -16,10 +16,12 @@
 export default {
   name: 'SystemCollapse',
   props: {
+    // 标题
     title: {
       type: String,
       default: ''
     },
+    // 副标题
     subtitle: {
       type: String,
       default: ''

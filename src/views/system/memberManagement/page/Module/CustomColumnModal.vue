@@ -48,9 +48,12 @@ export default {
   },
   data: function () {
     return {
+      // 表单初始化
       form: this.$form.createForm(this),
+      // 莫泰框是否可见
       visible: false,
       confirmLoading: false,
+      // 验证
       checkValues: []
     }
   },
@@ -64,12 +67,22 @@ export default {
     }
   },
   methods: {
+    /**
+     * 显示模态框
+     */
     showModal () {
       this.visible = true
     },
+    /**
+     * 取消事件
+     * @param e
+     */
     handleCancel (e) {
       this.visible = false
     },
+    /**
+     * 确认事件
+     */
     handleOk: function () {
       const _this = this
       this.confirmLoading = false
@@ -92,6 +105,7 @@ export default {
     onChange (checkedValues) {
     }
   },
+  // 初始化数据
   created () {
     // 页面初始化选中当前的类
     this.checkValues = this.column.map(function (ele) {

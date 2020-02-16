@@ -112,24 +112,29 @@ export default {
         return []
       }
     },
+    // 显示菜单
     showMenu: {
       type: Boolean,
       default: false
     },
+    // 选中的key
     selectKeys: {
       type: Array,
       default: function () {
         return []
       }
     },
+    // 是否显示连线
     showLine: {
       type: Boolean,
       default: false
     },
+    // 显示Icon
     showIcon: {
       type: Boolean,
       default: false
     },
+    // 显示tool
     tool: {
       type: Boolean,
       default: false
@@ -137,16 +142,25 @@ export default {
   },
   data () {
     return {
+      // 数据列表
       dataList: [],
+      // 搜索的值
       searchValue: '',
+      // 展开的key
       expandedKeys: [],
+      // 是否自动展开Parent
       autoExpandParent: false,
+      // 被check的节点
       checkNodes: [],
+      // 禁用的check节点
       disabledCheckNodes: [],
+      // 选中的节点
       selectNodes: [],
+      // 显示功能菜单
       showFunctionalMenu: false
     }
   },
+  // 初始化数据
   mounted: function () {
     const _this = this
     if (this.tool) {
@@ -182,6 +196,7 @@ export default {
     }
   },
   methods: {
+    // 展开事件
     onExpand (expandedKeys) {
       this.expandedKeys = expandedKeys
       this.autoExpandParent = false
@@ -210,6 +225,12 @@ export default {
         autoExpandParent: true
       })
     },
+    /**
+     * 右键点击事件
+     * @param event
+     * @param node
+     * @return {boolean}
+     */
     onRightClick ({ event, node }) {
       if (!this.tool) {
         return false
@@ -253,6 +274,12 @@ export default {
       })
       return keys
     },
+    /**
+     * 发现所有子
+     * @param treeData
+     * @param pid
+     * @return {Array}
+     */
     findTreeChildIds (treeData, pid) {
       let keys = []
       const _this = this
@@ -274,6 +301,12 @@ export default {
       }
       return keys
     },
+    /**
+     * 发现下一级的子
+     * @param treeData
+     * @param pid
+     * @return {Array}
+     */
     findTreeNextLevelChildIds (treeData, pid) {
       let keys = []
       const _this = this
@@ -288,6 +321,10 @@ export default {
       }
       return keys
     },
+    /**
+     * 刷新被禁用的节点
+     * @return {Array}
+     */
     refreshDisableCheckNodes () {
       const _this = this
       // 清空
@@ -297,6 +334,10 @@ export default {
       // 返回
       return _this.disabledCheckNodes
     },
+    /**
+     * 加入被禁用的节点
+     * @param treeData
+     */
     pushDisableCheckNodes (treeData) {
       const _this = this
       // 递归去找disableCheckbox，找到放入this.disabledCheckNodes中

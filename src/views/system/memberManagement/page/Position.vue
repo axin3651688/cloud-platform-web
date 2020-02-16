@@ -50,6 +50,7 @@ export default {
   mixins: [minxinModal],
   data () {
     return {
+      // 列数据
       columns: [{
         title: '序号',
         customRender: function (text, row, index) {
@@ -69,7 +70,9 @@ export default {
         key: 'action',
         scopedSlots: { customRender: 'action' }
       }],
+      // 请求参数
       queryParam: {},
+      // 加载数据
       loadData: parameter => {
         return findPostByFiledAndPage(parameter).then(res => {
           return res.data
@@ -80,15 +83,30 @@ export default {
     }
   },
   methods: {
+    /**
+     * 刷新事件
+     * @param reload
+     */
     refresh: function (reload = false) {
       this.$refs.table.refresh(reload)
     },
+    /**
+     * 添加事件
+     */
     onAdd: function () {
       this.$refs.postModal.showModal()
     },
+    /**
+     * 编辑事件
+     * @param record
+     */
     onEdit: function (record) {
       this.$refs.postModal.onEdit(record)
     },
+    /**
+     * 删除事件
+     * @param record
+     */
     onDelete: function (record) {
       const _this = this
       this.confirm({

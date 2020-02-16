@@ -77,6 +77,7 @@ export default {
       type: Boolean,
       default: false
     },
+    // 搜索的值
     search: {
       type: Object,
       default: function () {
@@ -89,6 +90,7 @@ export default {
   },
   data () {
     return {
+      // 列
       defaultColumns: [
         /* {
           title: '序号',
@@ -224,12 +226,15 @@ export default {
           scopedSlots: { customRender: 'action' }
         }
       ],
+      // 数据
       data: [],
+      // 职位数据
       postData: () => {
         return findAllPost().then(res => {
           return Array.isArray(res.data) ? res.data : []
         })
       },
+      // 分页数据
       pagination: {
         defaultCurrent: 0,
         defaultPageSize: 10,
@@ -240,10 +245,12 @@ export default {
       // 被选择的
       selectedRowKeys: [],
       loading: false,
+      // 主键
       rowKey: 'id'
     }
   },
   computed: {
+    // 选择的列
     rowSelection () {
       const _this = this
       return {
@@ -255,6 +262,9 @@ export default {
     }
   },
   methods: {
+    /**
+     * 当表格数据改变
+     **/
     handleTableChange (pagination, filters, sorter) {
       const pager = { ...this.pagination }
       pager.current = pagination.current
@@ -267,6 +277,9 @@ export default {
         page: pagination.current - 1
       })
     },
+    /**
+     * 加载数据
+     **/
     async fetch (params = {}) {
       const _this = this
       params.enable = _this.enableParam
@@ -292,6 +305,9 @@ export default {
       pagination.total = userData.totalElements - 0
       _this.pagination = pagination
     },
+    /**
+     * 重新加载
+     */
     reload () {
       this.initPage()
       this.fetch({
@@ -307,9 +323,15 @@ export default {
       this.initPage()
       this.fetch({ comId: comId, page: this.pagination.defaultCurrent, size: this.pagination.defaultPageSize })
     },
+    /**
+     * 初始化page
+     */
     initPage () {
       this.pagination.current = this.pagination.defaultCurrent
     },
+    /**
+     * 用户数据处理
+     * */
     decorateUserData: async function (userData) {
       if (Array.isArray(userData)) {
         const postData = await this.postData()
@@ -325,9 +347,15 @@ export default {
       }
       return userData
     },
+    /**
+     * 是否显示莫泰框
+     */
     showModal () {
       this.$refs.columnModal.showModal()
     },
+    /**
+     * 选择列
+     */
     onChooseColumn (lastColumn) {
       this.columns = lastColumn
     }

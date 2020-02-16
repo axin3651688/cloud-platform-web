@@ -37,14 +37,22 @@ export default {
   name: 'PostModal',
   data: function () {
     return {
+      // 模式，默认保存
       mode: 'save',
+      // 样式
       labelCol: { span: 4 },
+      // 样式
       wrapperCol: { span: 20 },
+      // 表单布局
       formLayout: 'horizontal',
+      // 表单
       form: this.$form.createForm(this),
+      // 是否可见
       visible: false,
       confirmLoading: false,
+      // model
       model: {},
+      // 验证规则
       validatorRules: {
         text: { rules: [{ required: true, message: '职位名称不可为空' }, { max: 500, message: '职位名称不可以超过20位' }] },
         desc: { rules: [{ max: 500, message: '职位描述不可以超过500位' }] }
@@ -52,20 +60,39 @@ export default {
     }
   },
   methods: {
+    /**
+     * modelText
+     * @return {string}
+     */
     modeText: function () {
       return this.mode === 'save' ? '添加' : '更新'
     },
+    /**
+     * 是否显示莫泰框
+     * @return {string}
+     */
     showModal () {
       this.visible = true
     },
+    /**
+     * 取消事件
+     * @param e
+     */
     handleCancel (e) {
       this.visible = false
     },
+    /**
+     * 关闭莫泰框
+     */
     afterCloseModal () {
       this.mode = 'save'
       this.form.resetFields()
       this.model = {}
     },
+    /**
+     * 编辑事件
+     * @param record
+     */
     onEdit (record) {
       const _this = this
       this.mode = 'update'

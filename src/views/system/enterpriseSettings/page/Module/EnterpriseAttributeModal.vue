@@ -47,23 +47,40 @@ export default {
   name: 'EnterpriseAttributeModal',
   data: function () {
     return {
+      // 标题
       title: '企业属性',
+      // 样式
       labelCol: { span: 4 },
+      // 样式
       wrapperCol: { span: 20 },
+      // 表单布局
       formLayout: 'horizontal',
+      // 表单初始化
       form: this.$form.createForm(this),
+      // 是否显示
       visible: false,
       confirmLoading: false,
+      // 行业数据
       options: [],
+      // 规模数据
       pNumberOption: [],
+      // 单位数据
       unitCharacterOption: [],
+      // 表单model
       model: {}
     }
   },
   methods: {
+    /**
+     * 显示modal
+     */
     showModal () {
       this.visible = true
     },
+    /**
+     * 编辑事件
+     * @param record
+     */
     onEdit (record) {
       const _this = this
       this.showModal()
@@ -100,9 +117,16 @@ export default {
         }
       })
     },
+    /**
+     * 取消事件
+     * @param e
+     */
     handleCancel (e) {
       this.visible = false
     },
+    /**
+     * 关闭事件
+     */
     afterCloseModal () {
       this.form.resetFields()
     }

@@ -93,23 +93,36 @@ export default {
     LeftTree },
   data () {
     return {
+      // 公司树数据
       comTreeData: [],
+      // 当前选择的公司
       curSelectComId: undefined,
+      // 标记添加还是编辑
       onAdd: false,
+      // 一些字典数据
       dict: {
+        // 地点
         place: {},
+        // 规模
         scale: {},
+        // 工业
         industries: {},
+        // 角色
         character: {}
       },
+      // 选择的公司
       selectGroupCompany: false,
+      // 自定义字段
       customField: [],
+      // 图片地址
       imgUrl: '',
+      // 是否禁用上传
       disableUpload: false
     }
   },
   mixins: [minxinModal],
   computed: {
+    // 是否显示转让
     showBtn: function () {
       if (this.curSelectComId !== undefined) {
         return true
@@ -118,6 +131,10 @@ export default {
     }
   },
   methods: {
+    /**
+     * 公司选择事件
+     * @param selectKeys
+     */
     onCompanySelect: function (selectKeys) {
       const _this = this
       this.onAdd = false
@@ -140,6 +157,12 @@ export default {
         this.curSelectComId = undefined
       }
     },
+    /**
+     * 得到树节点
+     * @param treeData
+     * @param key
+     * @return {*}
+     */
     getTreeNode: function (treeData, key) {
       for (let i = 0; i < treeData.length; i++) {
         const ele = treeData[i]
@@ -154,6 +177,9 @@ export default {
         }
       }
     },
+    /**
+     * 保存公司
+     */
     saveCompany: function () {
       if (this.curSelectComId !== undefined) {
         this.onAdd = true
@@ -161,26 +187,47 @@ export default {
         this.$message.warn('请先选择父公司')
       }
     },
+    /**
+     * 表单关闭事件
+     */
     onFormClose: function () {
       this.reloadCompany()
       this.refreshField()
       this.onAdd = false
     },
+    /**
+     * 莫泰框关闭事件
+     */
     onModalClose: function () {
       this.reloadCompany()
     },
+    /**
+     * 编辑企业资料
+     */
     onEditCorporateInformation: function () {
       this.$refs.corporateInformationModal.onEdit(this.curSelectComInfo())
     },
+    /**
+     * 编辑企业属性事件
+     */
     onEditEnterpriseAttribute: function () {
       this.$refs.enterpriseAttributeModal.onEdit(this.curSelectComInfo())
     },
+    /**
+     * 编辑企业等级事件
+     */
     onEnterpriseLevel: function () {
       this.$refs.enterpriseLevelModal.onEdit(this.curSelectComInfo())
     },
+    /**
+     * 企业其他资料
+     */
     onEnterpriseOther: function () {
       this.$refs.enterpriseOtherModal.onEdit(this.curSelectComInfo())
     },
+    /**
+     * 删除公司事件
+     */
     onDelete: function () {
       const _this = this
       this.confirm({
@@ -198,6 +245,10 @@ export default {
         }
       })
     },
+    /**
+     * 上传图片
+     * @param data
+     */
     onUploadSuccess: function (data) {
       debugger
       const _this = this
@@ -211,6 +262,9 @@ export default {
         }
       })
     },
+    /**
+     * 删除图片
+     */
     onDelImg: function () {
       const _this = this
       this.confirm({
@@ -229,12 +283,19 @@ export default {
         }
       })
     },
+    /**
+     * 重新加载公司
+     */
     reloadCompany: function () {
       const _this = this
       getAllCompanyTree().then(function (treeData) {
         _this.comTreeData = treeData
       })
     },
+    /**
+     * 当前选择的公司信息
+     * @return {*}
+     */
     curSelectComInfo: function () {
       return this.getTreeNode(this.comTreeData, this.curSelectComId)
     },
@@ -259,6 +320,7 @@ export default {
         }
       ]
     },
+    // 当前企业属性
     curEnterpriseAttribute: function () {
       const comInfo = this.curSelectComInfo()
       if (!typeUtils.isObject(comInfo)) {
@@ -279,6 +341,7 @@ export default {
         }
       ]
     },
+    // 当前企业等级
     curEnterpriseLevel: function () {
       const comInfo = this.curSelectComInfo()
       let pComInfo
@@ -308,6 +371,7 @@ export default {
         }
       ]
     },
+    // 当前企业其他属性
     curEnterpriseOther: function () {
       const comInfo = this.curSelectComInfo()
       if (!typeUtils.isObject(comInfo)) {
@@ -337,6 +401,12 @@ export default {
         ...customField
       ]
     },
+    /**
+     * 字典编码转成文字
+     * @param str
+     * @param dict
+     * @return {string}
+     */
     dictCodeToText: function (str, dict) {
       if (typeUtils.isNotBlank(str)) {
         const arr = str.split(',')
@@ -348,6 +418,10 @@ export default {
       }
       return ''
     },
+    /**
+     * 树数据转成map数据
+     * @param treeData
+     */
     treeToMap: function (treeData) {
       const _this = this
       let obj = {}
@@ -361,6 +435,10 @@ export default {
       }
       return obj
     },
+    /**
+     * 刷新字段
+     * @return {*}
+     */
     refreshField: function () {
       const _this = this
       return queryByField({ code: 'com' }).then(function (res) {
@@ -369,6 +447,9 @@ export default {
         }
       })
     },
+    /**
+     * 关闭或者启用上传
+     */
     disOrEnableUpload: function () {
       const codes = this.$store.getters.resourceCode
       if (codes.indexOf('editCompany') < 0) {
@@ -376,6 +457,7 @@ export default {
       }
     }
   },
+  // 初始化数据
   created () {
     this.reloadCompany()
     const _this = this

@@ -100,19 +100,32 @@ export default {
   components: { AFormItem },
   data () {
     return {
+      // 标题
       title: '添加用户',
+      // 样式
       labelCol: { span: 4 },
+      // 样式
       wrapperCol: { span: 20 },
+      // 表单布局
       formLayout: 'horizontal',
+      // 表单对象
       form: this.$form.createForm(this),
       confirmLoading: false,
+      // 模态框是否显示
       visible: false,
+      // 部门树数据
       deptTreeData: [],
+      // 公司树数据
       comTreeData: [],
+      // 角色数据
       roleData: [],
+      // 当前角色
       curRole: undefined,
+      // 职位数据
       postData: [],
+      // 当前操作的Id
       curOperationId: undefined,
+      // 验证规则
       validatorRules: {
         trueName: { rules: [{ required: true, message: '名称不可为空' }, { max: 20, message: '名称不可以超过20位' }] },
         phone: {
@@ -124,7 +137,9 @@ export default {
         gender: { rules: [{ required: true, message: '性别不可为空!' }] },
         company: { rules: [{ required: true, message: '所属公司不可为空!' }] }
       },
+      // 是否是编辑模式
       editMode: false,
+      // 编辑的id
       editId: undefined
     }
   },
@@ -143,12 +158,23 @@ export default {
       })
       this.visible = true
     },
+    /**
+     * 确认事件
+     * @param e
+     */
     handleOk (e) {
       this.handleSubmit()
     },
+    /**
+     * 取消事件
+     * @param e
+     */
     handleCancel (e) {
       this.visible = false
     },
+    /**
+     * 提交事件
+     */
     handleSubmit () {
       const _this = this
       _this.form.validateFields(async (err, values) => {
@@ -232,6 +258,11 @@ export default {
         }
       })
     },
+    /**
+     * 编辑事件
+     * @param record
+     * @return {Promise<void>}
+     */
     async onEdit (record) {
       const _this = this
       // 编辑用户走这里相同的莫泰框，逻辑不同
@@ -265,9 +296,18 @@ export default {
       _this.form.setFieldsValue({ 'gender': record.gender })
       _this.form.setFieldsValue({ 'presentPost': record.presentPost })
     },
+    /**
+     * 部门改变事件
+     * @param value
+     */
     onDeptChange (value) {
       this.form.setFieldsValue({ 'dept': value })
     },
+    /**
+     * 公司改变事件
+     * @param value
+     * @return {*}
+     */
     onComChange (value) {
       const _this = this
       _this.form.setFieldsValue({ 'company': value })
@@ -277,9 +317,16 @@ export default {
         _this.deptTreeData = treeData
       })
     },
+    /**
+     * 角色改变事件
+     * @param value
+     */
     onRoleChange (value) {
       this.curRole = value
     },
+    /**
+     * 关闭莫泰框事件
+     */
     afterCloseModal () {
       this.form.resetFields()
       this.deptTreeData = []
@@ -287,6 +334,12 @@ export default {
       this.editMode = false
       this.editId = undefined
     },
+    /**
+     * 验证手机号
+     * @param rule
+     * @param value
+     * @param callback
+     */
     validateMobile (rule, value, callback) {
       if (!value || new RegExp(/^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/).test(value)) {
         callback()
@@ -295,6 +348,12 @@ export default {
         callback('您的手机号码格式不正确!')
       }
     },
+    /**
+     * 验证手机号是否存在
+     * @param rule
+     * @param value
+     * @param callback
+     */
     validateMobileExist (rule, value, callback) {
       const _this = this
       findUserByRule({ phone: value }).then(function (res) {

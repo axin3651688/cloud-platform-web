@@ -25,29 +25,50 @@ export default {
   name: 'SectoralSortModal',
   data: function () {
     return {
+      // 样式
       labelCol: { span: 4 },
+      // 样式
       wrapperCol: { span: 20 },
+      // 表单布局
       formLayout: 'horizontal',
+      // 表单
       form: this.$form.createForm(this),
+      // 是否可见
       visible: false,
       confirmLoading: false,
+      // 表单model
       model: {},
+      // 验证规则
       validatorRules: {
         // text: { rules: [{ required: true, message: '部门名称不可为空' }, { max: 500, message: '全称不可以超过200位' }] }
       }
     }
   },
   methods: {
+    /**
+     * 显示莫泰框
+     */
     showModal () {
       this.visible = true
     },
+    /**
+     * 取消事件
+     * @param e
+     */
     handleCancel (e) {
       this.visible = false
     },
+    /**
+     * 关闭莫条款之后
+     */
     afterCloseModal () {
       this.form.resetFields()
       this.model = {}
     },
+    /**
+     * 编辑莫泰框
+     * @param record
+     */
     onEdit (record) {
       const _this = this
       this.showModal()
@@ -56,7 +77,9 @@ export default {
         _this.form.setFieldsValue({ 'sort': record.sort })
       })
     },
-    // 点击保存之后
+    /**
+     * 确定事件
+     */
     handleOk: function () {
       const _this = this
       _this.form.validateFields(async (err, values) => {

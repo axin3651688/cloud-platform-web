@@ -283,6 +283,9 @@ export default {
       this.checkDeptItem = []
       this.$emit('back')
     },
+    /**
+     * 禁用主部门
+     */
     disablePrimaryDept () {
       const _this = this
       findPrimaryDept({ id: _this.currentSelectUserId }).then(function (result) {
@@ -292,14 +295,21 @@ export default {
         }
       })
     },
-
+    /**
+     * 初始化initDeptMap
+     */
     initDeptMap: function (data) {
       this.setMap(this.deptMap, data)
     },
-
+    /**
+     * 得到选中选中的公司
+     */
     getComItem () {
       this.checkComItem = this.getItem(this.checkComKeys, this.companyMap)
     },
+    /**
+     * 得到选中选中的部门
+     */
     getDeptItem () {
       this.checkDeptItem = this.getItem(this.checkDeptKeys, this.deptMap)
     },

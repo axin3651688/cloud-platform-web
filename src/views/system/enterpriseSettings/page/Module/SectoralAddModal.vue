@@ -32,14 +32,23 @@ export default {
   name: 'SectoralAddModal',
   data: function () {
     return {
+      // 默认保存模式
       mode: 'save',
+      // 样式
       labelCol: { span: 4 },
+      // 样式
       wrapperCol: { span: 20 },
+      // 表单布局
       formLayout: 'horizontal',
+      // 表单
       form: this.$form.createForm(this),
+      // 莫泰框是否可见
       visible: false,
+      // confirmLoading
       confirmLoading: false,
+      // 表单的model
       model: {},
+      // 验证规则
       validatorRules: {
         text: { rules: [{ required: true, message: '部门名称不可为空' }, { max: 500, message: '全称不可以超过200位' }] },
         property1: { rules: [{ max: 500, message: '描述不可以超过100位' }] }
@@ -47,13 +56,22 @@ export default {
     }
   },
   methods: {
+    /**
+     * 表单的标题
+     * @return {string}
+     */
     modeText: function () {
       return this.mode === 'save' ? '添加' : '更新'
     },
+    /**
+     * 是否显示莫泰框
+     */
     showModal () {
       this.visible = true
     },
-    // 点击保存之后
+    /**
+     * 保存
+     */
     handleOk: function () {
       const _this = this
       _this.form.validateFields(async (err, values) => {
@@ -82,6 +100,11 @@ export default {
         }
       })
     },
+    /**
+     * 添加事件
+     * @param comId
+     * @param pid
+     */
     onAdd (comId, pid) {
       this.showModal()
       this.model.comId = comId
@@ -89,6 +112,10 @@ export default {
         this.model.pid = pid
       }
     },
+    /**
+     * 编辑事件
+     * @param record  数据
+     */
     onEdit (record) {
       const _this = this
       this.showModal()
@@ -99,9 +126,16 @@ export default {
         _this.form.setFieldsValue({ 'property1': record.property1 })
       })
     },
+    /**
+     * 取消事件
+     * @param e
+     */
     handleCancel (e) {
       this.visible = false
     },
+    /**
+     * 关闭莫泰框之后清理数据
+     */
     afterCloseModal () {
       this.mode = 'save'
       this.form.resetFields()

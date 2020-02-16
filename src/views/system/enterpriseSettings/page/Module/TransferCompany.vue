@@ -34,15 +34,25 @@ export default {
   name: 'TransferCompany',
   data: function () {
     return {
+      // 标题
       title: '转让公司',
+      // 样式
       labelCol: { span: 4 },
+      // 样式
       wrapperCol: { span: 20 },
+      // 表单布局
       formLayout: 'horizontal',
+      // 表单
       form: this.$form.createForm(this),
+      // 是否可见
       visible: false,
+      // 是否可以加载
       confirmLoading: false,
+      // 树数据
       treeData: [],
+      // 转让人
       Assignor: [],
+      // 验证规则
       validatorRules: {
         username: { rules: [{ required: true, message: '必须选择一个用户转让' }] },
         password: { rules: [{ required: true, message: '请填写密码' }] }
@@ -50,10 +60,15 @@ export default {
     }
   },
   methods: {
+    /**
+     * 显示莫泰框
+     */
     showModal () {
       this.visible = true
     },
-    // 点击保存之后
+    /**
+     * 确认事件
+     */
     handleOk: function () {
       const _this = this
       _this.form.validateFields(async (err, values) => {
@@ -61,9 +76,16 @@ export default {
         }
       })
     },
+    /**
+     * 取消事件
+     * @param e
+     */
     handleCancel (e) {
       this.visible = false
     },
+    /**
+     * 关闭模态框之后重置
+     */
     afterCloseModal () {
       this.form.resetFields()
     }

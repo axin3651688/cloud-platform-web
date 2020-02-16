@@ -24,14 +24,17 @@ import { uploadFile } from '@/api/common'
 export default {
   name: 'SystemUpload',
   props: {
+    // url
     url: {
       type: String,
       default: ''
     },
+    // 是否显示删除
     showDel: {
       type: Boolean,
       default: true
     },
+    // 禁用
     disable: {
       type: Boolean,
       default: false
@@ -44,6 +47,10 @@ export default {
     }
   },
   methods: {
+    /**
+     * 自定义图片上传
+     * @param data
+     */
     customRequest (data) {
       const _this = this
       const formData = new FormData()
@@ -60,6 +67,11 @@ export default {
         }
       })
     },
+    /**
+     * 上传之前的检测
+     * @param file
+     * @return {boolean}
+     */
     beforeUpload (file) {
       const fileType = ['image/jpeg', 'image/png', 'image/bmp']
       const isImg = fileType.indexOf(file.type) > -1
@@ -72,11 +84,18 @@ export default {
       }
       return isLt5M && isImg
     },
+    /**
+     * 删除事件
+     */
     onDel () {
       this.$emit('del')
     }
   },
   watch: {
+    /**
+     * 地址变化
+     * @param newVal
+     */
     url: function (newVal) {
       this.imageUrl = newVal
     }

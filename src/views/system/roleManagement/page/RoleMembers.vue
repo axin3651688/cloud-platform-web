@@ -71,19 +71,23 @@ export default {
   components: { AddRoleUserModal, UserTable, ACol, LeftTree, DescHeader, RoleModal },
   data () {
     return {
+      // 角色树数据
       roleTreeData: [],
+      // 角色Map数据
       roleMapData: {},
       // 用数字标示
       curRoleId: undefined
     }
   },
   computed: {
+    // 标题
     title: function () {
       if (this.curRoleId) {
         return this.roleMapData[this.curRoleId].text
       }
       return ' '
     },
+    // 描述
     desc: function () {
       if (this.curRoleId) {
         let desc = this.roleMapData[this.curRoleId].desc
@@ -100,6 +104,10 @@ export default {
   },
   mixins: [minxinModal],
   methods: {
+    /**
+     * 角色的选择
+     * @param selectKeys
+     */
     onRoleSelect (selectKeys) {
       if (selectKeys.length === 0) {
         this.curRoleId = undefined
@@ -107,11 +115,19 @@ export default {
         this.curRoleId = parseInt(selectKeys[0])
       }
     },
+    /**
+     * 角色的编辑
+     * @param record
+     */
     onRoleEdit (record) {
       // alert('修改空方法' + JSON.stringify(row))
       // 打开修改莫泰框，确定事件写莫泰框里面
       this.$refs.roleModal.onEdit(record)
     },
+    /**
+     * 角色的删除
+     * @param record
+     */
     onDelete (record) {
       // onDelete (paramter) {
       const _this = this
@@ -129,7 +145,10 @@ export default {
         }
       })
     },
-    // 移除成员的操作
+    /**
+     * 移除成员的操作
+     * @param record
+     */
     remove (record) {
       const _this = this
       this.confirm({
@@ -146,12 +165,19 @@ export default {
         }
       })
     },
+    /**
+     * 添加事件
+     * @param e
+     */
     onAdd (e) {
       // 1. 打开添加莫泰框
       this.$refs.roleModal.visible = true
       // 2. 重新渲染树
       this.renderTree()
     },
+    /**
+     * 添加角色的用户
+     */
     addRoleUser: function () {
       if (this.curRoleId == undefined) {
         this.$message.warn('请先选择对应的角色')
@@ -159,6 +185,10 @@ export default {
       }
       this.$refs.addRoleUserModal.showModal()
     },
+    /**
+     * 渲染树
+     * @return {*}
+     */
     renderTree () {
       const _this = this
       return findAllRole().then(function (result) {
@@ -174,9 +204,17 @@ export default {
         }
       })
     },
+    /**
+     * 渲染表格
+     */
     renderTable () {
       this.$refs.userTable.reload()
     },
+    /**
+     * 转换角色数据为Map数据
+     * @param list
+     * @return {{}}
+     */
     transformRoleMapData (list) {
       const _this = this
       if (!Array.isArray(list)) {

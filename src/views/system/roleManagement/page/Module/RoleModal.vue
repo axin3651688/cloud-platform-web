@@ -48,31 +48,54 @@ export default {
   components: { AFormItem },
   data () {
     return {
+      // 标题
       title: '添加角色',
+      // 样式
       labelCol: { span: 4 },
+      // 样式
       wrapperCol: { span: 20 },
+      // 表单布局
       formLayout: 'horizontal',
+      // 表单
       form: this.$form.createForm(this),
       confirmLoading: false,
+      // 是否显示
       visible: false,
+      // 验证规则
       validatorRules: {
         text: { rules: [{ required: true, message: '名称不可为空' }, { validator: this.validateTextExist }] },
         sort: { rules: [{ required: true, message: '排序不可为空' }] }
       },
+      // 编辑模式
       editMode: false,
+      // 编辑Id
       editId: undefined
     }
   },
   methods: {
+    /**
+     * 显示莫泰框
+     */
     showModal () {
       this.visible = true
     },
+    /**
+     * 确认事件
+     * @param e
+     */
     handleOk (e) {
       this.handleSubmit()
     },
+    /**
+     * 取消事件
+     * @param e
+     */
     handleCancel (e) {
       this.visible = false
     },
+    /**
+     * 提交事件
+     */
     handleSubmit () {
       const _this = this
       _this.form.validateFields(async (err, values) => {
@@ -97,6 +120,10 @@ export default {
         }
       })
     },
+    /**
+     * 编辑事件
+     * @param record
+     */
     onEdit (record) {
       const _this = this
       _this.title = '修改角色'
@@ -110,12 +137,21 @@ export default {
         _this.form.setFieldsValue({ 'sort': res.data.sort })
       })
     },
+    /**
+     * 关闭莫泰框之后做的事情
+     */
     afterCloseModal () {
       this.form.resetFields()
       this.title = '添加角色'
       this.editMode = false
       this.editId = undefined
     },
+    /**
+     * 验证角色名的方法
+     * @param rule
+     * @param value
+     * @param callback
+     */
     validateTextExist (rule, value, callback) {
       const _this = this
       findRoleByField({ text: value }).then(function (res) {

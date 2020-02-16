@@ -23,6 +23,7 @@ import { getDeptTreeByComId } from '@/api/dept'
 export default {
   name: 'SectoralTable',
   props: {
+    // 公司Id
     comId: {
       type: String,
       default: undefined
@@ -30,6 +31,7 @@ export default {
   },
   data () {
     return {
+      // 表格列
       columns: [{
         title: '部门名称',
         dataIndex: 'text',
@@ -47,6 +49,7 @@ export default {
     }
   },
   methods: {
+    // 加载部门数据
     loadData: function () {
       const _this = this
       return getDeptTreeByComId({ comId: this.comId }).then(function (treeData) {

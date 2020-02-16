@@ -23,22 +23,35 @@ export default {
   name: 'DeleteCustomFieldModal',
   data: function () {
     return {
+      // 标题
       title: '删除自定义字段',
+      // 样式
       labelCol: { span: 4 },
+      // 样式
       wrapperCol: { span: 20 },
+      // form布局
       formLayout: 'vertical',
+      // 表单初始化
       form: this.$form.createForm(this),
+      // 是否可见
       visible: false,
       confirmLoading: false,
+      // 验证规则
       validatorRules: {
         text: { rules: [{ required: true, message: '自定义名称不可为空' }, { max: 30, message: '自定义名称不可超过30位' }] }
       }
     }
   },
   methods: {
+    /**
+     * 显示莫泰框
+     */
     showModal () {
       this.visible = true
     },
+    /**
+     * 确认事件
+     */
     handleOk: function () {
       const _this = this
       _this.form.validateFields(async (err, values) => {
@@ -65,9 +78,16 @@ export default {
         }
       })
     },
+    /**
+     * 取消事件
+     * @param e
+     */
     handleCancel (e) {
       this.visible = false
     },
+    /**
+     * 关闭事件
+     */
     afterCloseModal () {
       this.form.resetFields()
       this.model = {}

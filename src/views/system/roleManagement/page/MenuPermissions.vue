@@ -60,9 +60,13 @@ export default {
   components: { CheckBoxNodes, ACol, LeftTree, ARow, DescHeader },
   data () {
     return {
+      // 角色树数据
       roleTreeData: [],
+      // 角色Map数据
       roleMapData: {},
+      // 当前角色Id
       curRoleId: undefined,
+      // 菜单树数据
       menuTreeData: [],
       // 当前菜单Id
       curMenuId: undefined,
@@ -81,12 +85,20 @@ export default {
     }
   },
   computed: {
+    /**
+     * 标题
+     * @return {string|*}
+     */
     title: function () {
       if (this.curRoleId) {
         return this.roleMapData[this.curRoleId].text
       }
       return ' '
     },
+    /**
+     * 描述
+     * @return {string}
+     */
     desc: function () {
       if (this.curRoleId) {
         let desc = this.roleMapData[this.curRoleId].desc
@@ -102,6 +114,10 @@ export default {
     }
   },
   methods: {
+    /**
+     * 保存事件
+     * @param e
+     */
     onSave: function (e) {
       const _this = this
       // 当前角色所有资源 = 当前角色的菜单资源 + 当前角色的操作资源
@@ -130,6 +146,11 @@ export default {
         }
       })
     },
+    /**
+     * 角色选择事件
+     * @param selectKeys
+     * @return {Promise<void>}
+     */
     onRoleSelect: async function (selectKeys) {
       this.menuSelectedKey = []
       this.clearRole()
@@ -139,6 +160,9 @@ export default {
         this.renderRoleMenu()
       }
     },
+    /**
+     * 清除角色
+     */
     clearRole: function () {
       this.curRoleId = undefined
       this.menuTreeData = []
@@ -146,12 +170,20 @@ export default {
       this.curRoleMenuIds = []
       this.clearMenu()
     },
+    /**
+     * 清除菜单
+     */
     clearMenu: function () {
       this.curMenuId = undefined
       this.curMenuCode = undefined
       this.nodes = []
       this.curRoleMenuActions = []
     },
+    /**
+     * 菜单选择事件
+     * @param selectKeys
+     * @return {Promise<void>}
+     */
     onMenuSelect: async function (selectKeys) {
       this.menuSelectedKey = selectKeys
       this.clearMenu()
@@ -162,16 +194,32 @@ export default {
         this.renderRoleMenuActions()
       }
     },
+    /**
+     * 菜单check事件
+     * @param checkedKeys
+     */
     onMenuCheck: function (checkedKeys) {
       this.curRoleMenuIds = checkedKeys.checked
     },
+    /**
+     * 菜单操作check事件
+     * @param checkedValues
+     */
     onActionCheck: function (checkedValues) {
       this.curRoleMenuActions = checkedValues
     },
+    /**
+     * 角色重新加载
+     * @return {Promise<void>}
+     */
     async reloadRole () {
       await this.renderRoleMenu()
       this.renderRoleMenuActions()
     },
+    /**
+     * 设置当前菜单编码
+     * @param menuTreeData
+     */
     setCurMenuCode (menuTreeData) {
       const _this = this
       for (let i = 0; i < menuTreeData.length; i++) {
@@ -186,6 +234,9 @@ export default {
         }
       }
     },
+    /**
+     * 渲染菜单操作
+     */
     renderMenuActions () {
       const _this = this
 
@@ -196,6 +247,9 @@ export default {
         _this.nodes = data
       })
     },
+    /**
+     * 渲染角色菜单操作
+     */
     renderRoleMenuActions () {
       const _this = this
       _this.curRoleMenuActions = this.curRoleResources.filter(function (ele) {
@@ -204,6 +258,10 @@ export default {
         return ele.id
       })
     },
+    /**
+     * 渲染角色菜单
+     * @return {*}
+     */
     renderRoleMenu () {
       const _this = this
       return findRoleResource({ roleId: this.curRoleId }).then(function (res) {
@@ -218,6 +276,10 @@ export default {
         }
       })
     },
+    /**
+     * 渲染角色
+     * @return {*}
+     */
     renderRole () {
       const _this = this
       return findAllRole().then(function (result) {
@@ -233,15 +295,27 @@ export default {
         }
       })
     },
+    /**
+     * 渲染菜单
+     * @return {*}
+     */
     renderMenu () {
       const _this = this
       return getAllMenuTree().then(function (treeData) {
         _this.menuTreeData = treeData
       })
     },
+    /**
+     * 渲染角色
+     */
     renderTree () {
       this.renderRole()
     },
+    /**
+     * 转换角色为Map
+     * @param list
+     * @return {{}}
+     */
     transformRoleMapData (list) {
       const _this = this
       if (!Array.isArray(list)) {

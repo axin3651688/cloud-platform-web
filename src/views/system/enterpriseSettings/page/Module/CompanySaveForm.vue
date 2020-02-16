@@ -70,22 +70,34 @@ export default {
   },
   data: function () {
     return {
+      // 样式
       labelCol: { span: 2 },
+      // 样式
       wrapperCol: { span: 10 },
+      // 表单布局
       formLayout: 'horizontal',
+      // 表单
       form: this.$form.createForm(this),
+      // 验证规则
       validatorRules: {
         fullName: { rules: [{ required: true, message: '全称不可为空' }, { max: 500, message: '全称不可以超过500位' }] },
         text: { rules: [{ required: true, message: '简称不可为空' }, { max: 500, message: '简称不可以超过200位' }] }
       },
+      // 数据
       options: [],
       loading: false,
+      // 自定义字段
       customField: [],
+      // 图片地址
       imgUrl: '',
+      // 图片Id
       imgId: 0
     }
   },
   methods: {
+    /**
+     * 提交事件
+     */
     handleSubmit: function () {
       const _this = this
       _this.form.validateFields(async (err, values) => {
@@ -112,19 +124,35 @@ export default {
         }
       })
     },
+    /**
+     * 退回事件
+     */
     onBack: function () {
       this.form.resetFields()
       this.$emit('onBack')
     },
+    /**
+     * 添加自定义字段点击事件
+     */
     onClickAddField: function () {
       this.$refs.addCustomFieldModal.showModal()
     },
+    /**
+     * 删除自定义字典点击事件
+     */
     onClickDeleteField: function () {
       this.$refs.delCustomFieldModal.showModal()
     },
+    /**
+     * 取消事件
+     */
     onModalBack: function () {
       this.refreshField()
     },
+    /**
+     * 得到自定义字段
+     * @param formData
+     */
     getCustomFiled (formData) {
       const customField = {}
       if (Array.isArray(this.customField)) {
@@ -135,6 +163,9 @@ export default {
       console.log(customField)
       return customField
     },
+    /**
+     * 更新字段
+     */
     refreshField: function () {
       const _this = this
       queryByField({ code: 'com' }).then(function (res) {
@@ -143,6 +174,10 @@ export default {
         }
       })
     },
+    /**
+     * 上传图片成功事件
+     * @param imgData
+     */
     onUploadSuccess: function (imgData) {
       if (imgData) {
         this.imgUrl = imgData.thumbUrl

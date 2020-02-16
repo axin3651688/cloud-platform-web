@@ -34,15 +34,18 @@ export default {
   name: 'CheckBoxNodes',
   components: { ACol },
   props: {
+    // 标题
     title: {
       type: String,
       required: true
     },
+    // 显示操作
     showAction: {
       type: Boolean,
       default: true,
       required: false
     },
+    // 节点数据
     nodes: {
       type: Array,
       default: function () {
@@ -50,6 +53,7 @@ export default {
       },
       required: true
     },
+    // 被选中的节点数据
     checkedNodes: {
       type: Array,
       default: function () {
@@ -59,14 +63,22 @@ export default {
   },
   data () {
     return {
+      // 选中的数据
       checkValues: [],
       chooseAll
     }
   },
   methods: {
+    /**
+     * 选中改变事件
+     * @param checkedValues
+     */
     onChange (checkedValues) {
       this.$emit('check', checkedValues)
     },
+    /**
+     * 选中所有
+     */
     checkAll () {
       this.checkValues = this.nodes.map(function (ele) {
         return ele.key
@@ -74,6 +86,7 @@ export default {
     }
   },
   watch: {
+    // 选中节点改变监听
     checkedNodes: function (newVal) {
       this.checkValues = newVal
     }

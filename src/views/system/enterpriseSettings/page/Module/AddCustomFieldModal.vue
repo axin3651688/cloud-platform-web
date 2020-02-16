@@ -38,20 +38,30 @@ export default {
   components: { AFormItem },
   data: function () {
     return {
+      // 标题
       title: '添加自定义字段',
+      // 样式设置
       labelCol: { span: 4 },
+      // 样式设置
       wrapperCol: { span: 20 },
+      // 表格的layout
       formLayout: 'vertical',
+      // 初始化form
       form: this.$form.createForm(this),
+      // 是否可见
       visible: false,
+      // 官方属性
       confirmLoading: false,
+      // 验证规则
       validatorRules: {
         text: { rules: [{ required: true, message: '自定义名称不可为空' }, { max: 30, message: '自定义名称不可超过30位' }] },
         fieldType: { rules: [{ required: true, message: '字段类型不可为空' }], initialValue: 1 },
         inputType: { rules: [{ required: true, message: '输入框类型不可为空' }], initialValue: 1 },
         placeholder: { rules: [{ required: true, message: '默认提示文字不可为空' }, { max: 100, message: '默认提示文字不可超过100位' }] }
       },
+      // 数据
       model: {},
+      // 字典数据
       fieldTypeGroup: [
         {
           value: 1,
@@ -66,6 +76,7 @@ export default {
           text: '数值'
         }
       ],
+      // 输入框类型
       inputTypeGroup: [
         {
           value: 1,
@@ -87,9 +98,17 @@ export default {
     }
   },
   methods: {
+    /**
+     * 莫泰框的显示影藏
+     */
     showModal () {
       this.visible = true
     },
+    /**
+     * @author FangQiang
+     * @date 2020/2/16
+     * @Description: 确认事件
+    */
     handleOk: function () {
       const _this = this
       _this.form.validateFields(async (err, values) => {
@@ -120,9 +139,17 @@ export default {
         }
       })
     },
+    /**
+     * 取消事件
+     * @param e
+     */
     handleCancel (e) {
       this.visible = false
     },
+    /**
+     * 编辑事件
+     * @param record
+     */
     onEdit: function (record) {
       const _this = this
       this.showModal()
@@ -134,6 +161,9 @@ export default {
         _this.form.setFieldsValue({ 'placeholder': record.placeholder })
       })
     },
+    /**
+     * 关闭事件
+     */
     afterCloseModal () {
       this.form.resetFields()
       this.model = {}

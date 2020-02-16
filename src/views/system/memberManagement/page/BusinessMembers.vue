@@ -240,6 +240,9 @@ export default {
         }
       })
     },
+    /**
+     * 用户删除事件
+     **/
     onUserDelete (record) {
       const _this = this
       this.confirm({
@@ -257,12 +260,25 @@ export default {
         }
       })
     },
+    /**
+     * 重新加载表格
+     */
     reloadTable () {
       this.$refs.userTable.reload()
     },
+    /**
+     * @author FangQiang
+     * @date 2020/2/16
+     * @Description: 后退事件
+    */
     onBack () {
       this.isOnOrgAuth = false
     },
+    /**
+     * @author FangQiang
+     * @date 2020/2/16
+     * @Description: 批量删除用户
+    */
     batchDeleteUser () {
       const _this = this
       if (_this.selectedRowKeys.length === 0) {
@@ -285,12 +301,27 @@ export default {
         })
       }
     },
+    /**
+     * @author FangQiang
+     * @date 2020/2/16
+     * @Description: 行选择
+    */
     onRowSelect (selectedRowKeys, selectedRows) {
       this.selectedRowKeys = selectedRowKeys
     },
+    /**
+     * @author FangQiang
+     * @date 2020/2/16
+     * @Description: 是否是单体公司
+    */
     isSingleCom (treeData) {
       return treeData.length === 1 && treeData[0].children === undefined
     },
+    /**
+     * @author FangQiang
+     * @date 2020/2/16
+     * @Description: 渲染单体公司
+    */
     renderSingleCom: function (treeData) {
       const _this = this
       const com = treeData[0]
@@ -301,10 +332,20 @@ export default {
         _this.singleComId = com.id
       })
     },
+    /**
+     * @author FangQiang
+     * @date 2020/2/16
+     * @Description: 渲染多公司
+    */
     renderMultiCom: function (treeData) {
       const _this = this
       _this.comTreeData = treeData
     },
+    /**
+     * @author FangQiang
+     * @date 2020/2/16
+     * @Description: 名字的改变事件
+    */
     handleChange (value) {
       this.search.key = value
       console.log(`selected ${value}`)
@@ -316,14 +357,23 @@ export default {
     personCount () {
       return this.$refs.userTable ? this.$refs.userTable.pagination.total : 0
     },
+    /**
+     * @author FangQiang
+     * @date 2020/2/16
+     * @Description: 搜索人的事件
+    */
     onSearchPerson (value) {
       // 触发搜索事件，向子组件传值
       this.search.text = value
     },
+    /**
+     * 添加自定义类别
+     */
     onCustomType () {
       this.$refs.userTable.showModal()
     }
   },
+  // 初始化数据
   created () {
     const _this = this
     getAllCompanyTree().then(function (treeData) {

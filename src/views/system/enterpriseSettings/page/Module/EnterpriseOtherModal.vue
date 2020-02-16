@@ -64,10 +64,16 @@ export default {
     }
   },
   methods: {
+    /**
+     * 显示莫泰框
+     * @return {Promise<void>}
+     */
     async showModal () {
       this.visible = true
     },
-    // 点击保存之后
+    /**
+     * 确认事件
+     */
     handleOk: function () {
       const _this = this
       _this.form.validateFields(async (err, values) => {
@@ -89,9 +95,17 @@ export default {
         }
       })
     },
+    /**
+     * 取消事件
+     * @param e
+     */
     handleCancel (e) {
       this.visible = false
     },
+    /**
+     * 编辑事件
+     * @param record
+     */
     onEdit: function (record) {
       const _this = this
       this.showModal()
@@ -110,9 +124,16 @@ export default {
         })
       })
     },
+    /**
+     * 关闭莫泰框事之后
+     */
     afterCloseModal () {
       this.form.resetFields()
     },
+    /**
+     * 得到自定义字段
+     * @param formData
+     */
     getCustomFiled (formData) {
       const customField = {}
       if (Array.isArray(this.customField)) {
@@ -122,6 +143,10 @@ export default {
       }
       return customField
     },
+    /**
+     * 刷新字段
+     * @return {*}
+     */
     refreshField: function () {
       const _this = this
       return queryByField({ code: 'com' }).then(function (res) {

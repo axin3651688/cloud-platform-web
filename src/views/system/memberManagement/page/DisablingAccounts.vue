@@ -65,11 +65,17 @@ export default {
   components: { LeftCompanyTree, TreeSelect, LeftTree, UserTable },
   data () {
     return {
+      // 公司树数据
       comTreeData: [],
+      // 当前选择的公司
       curSelectCom: '',
+      // 部门树的数据
       deptTreeData: [],
+      // 当前选择的部门
       curSelectDept: undefined,
+      // 是否是单体公司
       isSingle: false,
+      // 单体公司Id
       singleComId: undefined,
       // 搜索的内容
       search: {
@@ -121,9 +127,15 @@ export default {
     cancelChoose: function (selectedKeys) {
       return selectedKeys.length <= 0
     },
+    /**
+     * 选择部门事件
+     **/
     onSelectDept (value) {
       this.curSelectDept = value
     },
+    /**
+     * 渲染部门树
+     **/
     renderDeptTree (comId) {
       const _this = this
       return getCompanyDeptTree({ comId: comId }).then(function (treeData) {
@@ -131,6 +143,11 @@ export default {
         return treeData
       })
     },
+    /**
+     * @author FangQiang
+     * @date 2020/2/16
+     * @Description: 启用用户事件
+    */
     onUserEnable (record) {
       const _this = this
       this.confirm({
@@ -148,12 +165,27 @@ export default {
         }
       })
     },
+    /**
+     * @author FangQiang
+     * @date 2020/2/16
+     * @Description: 重新加载表格事件
+    */
     reloadTable () {
       this.$refs.userTable.reload()
     },
+    /**
+     * @author FangQiang
+     * @date 2020/2/16
+     * @Description: 是否单体公司
+    */
     isSingleCom (treeData) {
       return treeData.length === 1 && treeData[0].children === undefined
     },
+    /**
+     * @author FangQiang
+     * @date 2020/2/16
+     * @Description: 渲染单体公司
+    */
     renderSingleCom: function (treeData) {
       const _this = this
       const com = treeData[0]
@@ -164,10 +196,20 @@ export default {
         _this.singleComId = com.id
       })
     },
+    /**
+     * @author FangQiang
+     * @date 2020/2/16
+     * @Description: 渲染多公司
+    */
     renderMultiCom: function (treeData) {
       const _this = this
       _this.comTreeData = treeData
     },
+    /**
+     * @author FangQiang
+     * @date 2020/2/16
+     * @Description:  搜索
+    */
     handleChange (value) {
       this.search.key = value
       console.log(`selected ${value}`)
@@ -179,11 +221,16 @@ export default {
     personCount () {
       return this.$refs.userTable ? this.$refs.userTable.pagination.total : 0
     },
+    /**
+     * 搜索用户
+     * @param value
+     */
     onSearchPerson (value) {
       // 触发搜索事件，向子组件传值
       this.search.text = value
     }
   },
+  // 初始化数据
   created () {
     const _this = this
     getAllCompanyTree().then(function (treeData) {

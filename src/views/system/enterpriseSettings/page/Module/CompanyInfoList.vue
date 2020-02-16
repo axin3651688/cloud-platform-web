@@ -10,6 +10,7 @@
 export default {
   name: 'CompanyInfoList',
   props: {
+    // 公司信息
     nodes: {
       type: Array,
       default: function () {

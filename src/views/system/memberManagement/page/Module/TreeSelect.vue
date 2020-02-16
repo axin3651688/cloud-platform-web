@@ -14,12 +14,15 @@
 export default {
   name: 'TreeSelect',
   props: {
+    // 树数据
     treeData: {
       default: []
     },
+    // 默认选择
     value: {
       default: undefined
     },
+    // 替换符
     placeholder: {
       default: '请选择'
     }

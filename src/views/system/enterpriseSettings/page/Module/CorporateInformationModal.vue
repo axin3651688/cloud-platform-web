@@ -77,7 +77,9 @@ export default {
     showModal () {
       this.visible = true
     },
-    // 点击保存之后
+    /**
+     * 确认事件
+     */
     handleOk: function () {
       const _this = this
       _this.form.validateFields(async (err, values) => {
@@ -101,9 +103,17 @@ export default {
         }
       })
     },
+    /**
+     * 取消事件
+     * @param e
+     */
     handleCancel (e) {
       this.visible = false
     },
+    /**
+     * 编辑事件
+     * @param record
+     */
     onEdit: function (record) {
       const _this = this
       this.showModal()
@@ -118,9 +128,16 @@ export default {
         _this.form.setFieldsValue({ 'property6': record.property6 })
       })
     },
+    /**
+     * 莫泰框关闭事件
+     */
     afterCloseModal () {
       this.form.resetFields()
     },
+    /**
+     * 加载数据
+     * @param selectedOptions
+     */
     loadData: function (selectedOptions) {
       const targetOption = selectedOptions[selectedOptions.length - 1]
       targetOption.loading = true

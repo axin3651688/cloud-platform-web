@@ -51,21 +51,33 @@ export default {
   },
   data () {
     return {
+      // 公司树数据
       comTreeData: [],
+      // 选择的公司
       selectCom: ''
     }
   },
   mixins: [minxinModal],
   methods: {
+    /**
+     * 公司选择时间
+     * @param selectKeys
+     */
     onCompanySelect: function (selectKeys) {
       this.selectCom = selectKeys[0]
     },
+    /**
+     * 重新加载公司
+     */
     reloadCompany: function () {
       const _this = this
       getAllCompanyTree().then(function (treeData) {
         _this.comTreeData = treeData
       })
     },
+    /**
+     * 添加部门事件
+     */
     add: function () {
       if (!typeUtil.isNotBlank(this.selectCom)) {
         this.$message.warn('请先选择公司')
@@ -73,18 +85,39 @@ export default {
       }
       this.$refs.sectoralAddModal.onAdd(this.selectCom)
     },
+    /**
+     * 添加子部门
+     * @param record
+     */
     addChild: function (record) {
       this.$refs.sectoralAddModal.onAdd(this.selectCom, record.id)
     },
+    /**
+     * 编辑部门
+     * @param record
+     */
     edit: function (record) {
       this.$refs.sectoralAddModal.onEdit(record)
     },
+    /**
+     * 编辑结构
+     * @param record
+     */
     editStructure: function (record) {
       this.$refs.sectoralStructureModal.onEdit(record)
     },
+    /**
+     * 编辑排序
+     * @param record
+     */
     editSort: function (record) {
       this.$refs.sectoralSortModal.onEdit(record)
     },
+    /**
+     * 删除部门
+     * @param record
+     * @return {Promise<void>}
+     */
     delDepart: async function (record) {
       const _this = this
       this.confirm({
@@ -101,6 +134,9 @@ export default {
         }
       })
     },
+    /**
+     * 退回
+     */
     back: function () {
       this.$refs.deptTable.loadData()
     }
