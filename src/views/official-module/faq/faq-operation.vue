@@ -170,7 +170,41 @@
         </a-row>
       </div>
     </div>
+    <a-modal
+      :maskClosable="false"
+      :width="750"
+      title="图片剪裁"
+      v-model="dialogVisible"
+    >
+      <div class="cropper-content">
+        <div class="cropper" style="text-align:center;width:700px;height:400px;">
+          <vue-cropper
+            ref="cropper"
+            :img="option.img"
+            :outputSize="option.size"
+            :outputType="option.outputType"
+            :info="true"
+            :full="option.full"
+            :canMove="option.canMove"
+            :canMoveBox="option.canMoveBox"
+            :original="option.original"
+            :autoCrop="option.autoCrop"
+            :autoCropWidth="option.autoCropWidth"
+            :autoCropHeight="option.autoCropHeight"
+            :fixed="option.fixed"
+            :fixedNumber="option.fixedNumber"
+            :centerBox="option.centerBox"
+            :infoTrue="option.infoTrue"
+            :fixedBox="option.fixedBox"
+          ></vue-cropper>
+        </div>
+      </div>
 
+      <template slot="footer" class="dialog-footer">
+        <a-button @click="dialogVisible = false">取 消</a-button>
+        <a-button type="primary" @click="finish" :loading="loading">确认</a-button>
+      </template>
+    </a-modal>
   </div>
 </template>
 
@@ -180,6 +214,7 @@ import CnbiFAQManagement from '@/classes/lib/CnbiFAQManagement'
 import UE from '@/components/Editor/Ueditor'
 import ARow from 'ant-design-vue/es/grid/Row'
 import VueUeditor from '@/components/Editor/vue-ueditor-wrap'
+
 const Authorization = localStorage.getItem('pro__Access-Token')
 // const ServerUrl = process.env.VUE_APP_SERVER_URL
 // const UeditorHomeUrl = process.env.VUE_APP_UEDITOR_HOME_URL
@@ -214,7 +249,28 @@ export default {
       img: null,
       editFaq: null, // 要编辑FAQ
       type: '', // 当前页面type
-      FAQMObj: null
+      FAQMObj: null,
+      dialogVisible: false, // 图片裁剪
+      loading: false,
+      option: { // 裁剪配置
+        img: '', // 裁剪图片的地址
+        info: false, // 裁剪框的大小信息
+        outputSize: 1, // 裁剪生成图片的质量
+        outputType: 'jpeg', // 裁剪生成图片的格式
+        canScale: false, // 图片是否允许滚轮缩放
+        autoCrop: true, // 是否默认生成截图框
+        // autoCropWidth: 300, // 默认生成截图框宽度           26  // 630
+        // autoCropHeight: 300, // 默认生成截图框高度
+        fixedBox: false, // 固定截图框大小 不允许改变
+        fixed: true, // 是否开启截图框宽高固定比例
+        fixedNumber: [5, 2], // 截图框的宽高比例
+        full: true, // 是否输出原图比例的截图
+        canMoveBox: true, // 截图框能否拖动
+        original: false, // 上传图片按照原始比例渲染
+        centerBox: true, // 截图框是否被限制在图片里面
+        infoTrue: true // true 为展示真实输出图片宽高 false 展示看到的截图框宽高
+      },
+      fileinfo: null
     }
   },
   created () {
@@ -270,12 +326,58 @@ export default {
       uploadFile(formData).then(function (res) {
         if (res.code === 200) {
           console.log('上传图片返回==', res)
-          _this.img = {
-            url: res.data.thumbUrl,
-            name: res.data.fileName,
-            id: res.data.id
-          }
+          // this.option.img = 'https://gss2.bdstatic.com/-fo3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D268%3Bg%3D0/sign=8531abe9d862853592e0d527a8d411fb/8718367adab44aed30126fffbe1c8701a18bfb49.jpg'
+          _this.option.img = res.data.url
+          // this.option.img = file.url
+          _this.dialogVisible = true
+          _this.fileinfo = data.file
         }
+      })
+      // _this.img = {
+      //   url: res.data.thumbUrl,
+      //   name: res.data.fileName,
+      //   id: res.data.id
+      // }
+    },
+
+    // 上传按钮   限制图片大小
+    changeUpload (file, fileList) {
+      const isLt10M = file.size / 1024 / 1024 < 10
+      if (!isLt10M) {
+        this.$message.error('上传文件大小不能超过 10MB!')
+        return false
+      }
+      this.fileinfo = file.raw
+      // 上传成功后将图片地址赋值给裁剪框显示图片
+    },
+    // 点击裁剪，这一步是可以拿到处理后的地址
+    finish () {
+      const _this = this
+      this.$refs.cropper.getCropBlob(async (data) => {
+        debugger
+
+        const fileName = this.fileinfo.name
+        const fd = new FormData()
+        fd.append('file', data, fileName)
+        fd.append('playtime', 0)
+        fd.append('bizId', '1')
+        fd.append('bizCode', '2')
+        fd.append('size', data.size)
+        this.loading = true
+        // 上传阿里云服务器
+        uploadFile(fd).then(function (res) {
+          if (res.code === 200) {
+            console.log('上传图片返回==', res)
+            _this.img = {
+              url: res.data.thumbUrl,
+              name: res.data.fileName,
+              id: res.data.id
+            }
+            _this.dialogVisible = false
+          } else {
+            _this.loading = false
+          }
+        })
       })
     },
     // 清空图片

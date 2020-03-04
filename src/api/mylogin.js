@@ -6,14 +6,14 @@ const api = {
   login: '/uaa/oauth/token',
   refreshToken: 'uaa/oauth/token',
   loginOut: '/uaa/oauth/token',
-  currentUser: '/org/base_service/user/find_current',
-  userResource: '/org/base_service/user_resource/find_user_resource_code',
-  getLicense: '/org/base_service/tenancy/license',
-  getTenancy: '/org/base_service/tenancy/tenancy',
-  findUserCount: '/org/base_service/user/find_user_count',
-  getCurApp: '/org/base_service/tenancy/app',
-  disableApp: '/org/base_service/tenancy/disable_app',
-  getDisableAppId: '/org/base_service/tenancy/disableAppId'
+  currentUser: '/portal/base_service/user/find_current',
+  userResource: '/portal/base_service/user_resource/find_user_resource_code',
+  getLicense: '/portal/base_service/tenancy/license',
+  getTenancy: '/portal/base_service/tenancy/tenancy',
+  findUserCount: '/portal/base_service/user/find_user_count',
+  getCurApp: '/portal/base_service/tenancy/app',
+  disableApp: '/portal/base_service/tenancy/disable_app',
+  getDisableAppId: '/portal/base_service/tenancy/disableAppId'
 }
 
 /**
@@ -87,7 +87,7 @@ export function getUserResource (parameter) {
  */
 export const getUserAllResource = (parameter) => {
   return axios2({
-    url: '/org/base_service/user_resource/find_user_all_resource/' + parameter.id,
+    url: '/portal/base_service/user_resource/find_user_all_resource/' + parameter.id,
     method: 'get'
   })
 }

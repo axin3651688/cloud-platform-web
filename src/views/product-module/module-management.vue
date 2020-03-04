@@ -6,7 +6,7 @@
       <div style="display: flex;flex-direction: row">
         <common-drop-down
           :result="result"
-          :defaultValue="defaultValue"
+          :defaultValue="selectVal"
           @selectCell="selectCell"
           class="com-drop-down">
         </common-drop-down>
@@ -337,7 +337,6 @@ export default {
       version: '模块搜索',
       name1: '添加',
       name2: '删除',
-      defaultValue: 'name',
       result: [
         { name: '名称', key: 'name' },
         // { name: '所属应用', key: 'serviceName' },

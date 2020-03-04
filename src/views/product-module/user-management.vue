@@ -4,11 +4,11 @@
     <div style="display: flex;flex-direction: row;justify-content: space-between;background-color: #fff;padding: 16px 32px 0 32px">
       <div style="display: flex;flex-direction: row">
         <common-drop-down
-        :result="result"
-        :defaultValue="'nickName'"
-        @selectCell="selectCell"
-        class="com-drop-down">
-      </common-drop-down>
+          :result="result"
+          :defaultValue="selectVal"
+          @selectCell="selectCell"
+          class="com-drop-down">
+        </common-drop-down>
         <!--搜索框-->
         <common-search
           :placeholder="version"

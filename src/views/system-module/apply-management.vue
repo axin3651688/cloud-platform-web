@@ -4,7 +4,7 @@
       <div style="display: flex;flex-direction: row;">
         <common-drop-down
           :result="result"
-          :defaultValue="defaultValue"
+          :defaultValue="selectVal"
           @selectCell="selectCell"
           class="com-drop-down">
         </common-drop-down>
@@ -396,6 +396,7 @@ export default {
     },
     // 搜索的第一个下拉框的事件
     selectCell (val1) {
+      console.log('搜索的第一个下拉框的事件===========', val1)
       this.selectVal = val1
     },
     // 点击搜索框的事件

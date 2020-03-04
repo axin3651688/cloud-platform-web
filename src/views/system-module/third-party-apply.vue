@@ -192,6 +192,7 @@
       title="编辑应用"
       :maskClosable="false"
       v-model="showEditApply"
+      :destroyOnClose="true"
       v-if="editApply">
       <a-form
         :form="form1"
@@ -236,7 +237,7 @@
 
                   <a-select
                     style="width: 224px;"
-                    v-decorator="['type',{rules: [{ required: true, message: '请选择类型!' }],initialValue: editApply.type}]">
+                    v-decorator="['type',{rules: [{ required: true, message: '请选择类型!' }],initialValue: editApply.type.toString()}]">
                     <template slot="suffixIcon">
                       <img src="@icons/sort.svg" />
                     </template>

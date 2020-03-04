@@ -5,14 +5,16 @@
       <div style="display: flex;flex-direction: row">
         <common-drop-down
           :result="result"
-          :defaultValue="'trueName'"
+          :defaultValue="selectVal"
           @selectCell="selectCell"
           class="com-drop-down">
         </common-drop-down>
         <!--搜索框-->
         <common-search
           :placeholder="'请输入'"
-          style="width: 220px">
+          style="width: 220px"
+          @inputHandler="inputHandler"
+        >
         </common-search>
       </div>
       <common-button
@@ -212,6 +214,7 @@ export default {
       editId: null, // 点击编辑的时候该行数据对应的id
       name1: '添加',
       name2: '删除',
+      selectVal: 'trueName',
       result: [
         {
           name: '名称',
@@ -327,8 +330,11 @@ export default {
       // console.log(this.roleArr, '花千骨')
       // console.log(data, '小学小学')
     },
-    selectCell () {
-
+    selectCell (val) {
+      this.selectVal = val
+    },
+    inputHandler () {
+      // TODO
     },
     addClick () {
       this.showAddAccount = true

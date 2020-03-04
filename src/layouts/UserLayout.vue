@@ -41,10 +41,10 @@ export default {
     return {}
   },
   mounted () {
-    document.body.classList.add('userLayout')
+    // document.body.classList.add('userLayout')
   },
   beforeDestroy () {
-    document.body.classList.remove('userLayout')
+    // document.body.classList.remove('userLayout')
   }
 }
 </script>

@@ -334,6 +334,7 @@ export default {
     },
     // 刷新页面
     refreshPage () {
+      console.log('刷新页面')
       this.selectVal = 'all'
       this.titleKeyWord = ''
       this.$emit('update:faqId', null)

@@ -7,7 +7,7 @@
           <common-drop-down
             :result="result"
             class="com-drop-down"
-            :defaultValue="'name'"
+            :defaultValue="selectVal"
             @selectCell="selectCell">
           </common-drop-down>
           <!--搜索框-->

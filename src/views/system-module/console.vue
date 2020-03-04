@@ -127,7 +127,7 @@
                   style="display: flex;flex-direction: row;align-items: center">
                   <div style="display: flex;flex-direction: column">
                     <span>CPU占用</span>
-                    <span>23%</span>
+                    <span>65%</span>
                   </div>
                   <div id="myChart3"></div>
                 </a-col>
@@ -136,7 +136,7 @@
                   style="display: flex;flex-direction: row;align-items: center">
                   <div style="display: flex;flex-direction: column">
                     <span>主进程占用</span>
-                    <span>56%</span>
+                    <span>36%</span>
                   </div>
                   <div id="myChart4"></div>
                 </a-col>
@@ -145,7 +145,7 @@
                   style="display: flex;flex-direction: row;align-items: center">
                   <div style="display: flex;flex-direction: column">
                     <span>内存占用</span>
-                    <span>93%</span>
+                    <span>62%</span>
                   </div>
                   <div id="myChart5"></div>
                 </a-col>

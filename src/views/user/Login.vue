@@ -252,6 +252,7 @@ export default {
       })
     },
     async loginSuccess (res) {
+      console.log('this.$router=====', this.$router)
       this.$router.push({ name: 'Console' })
       // await this.checkSysUser(loginParams['mobile'])
       /* setTimeout(() => {

@@ -18,14 +18,14 @@ import bootstrap from './core/bootstrap'
 import './core/use'
 import './assets/css/global.css'
 import './permission' // permission control
-import './utils/filter'// 导入文件
-
+import './utils/filter'
+import VueCropper from 'vue-cropper'// 导入文件
 
 Vue.prototype.$moment = moment // global filter
 
 Vue.config.productionTip = false
 Vue.prototype.$qs = qs
-
+Vue.use(VueCropper)
 // mount axios Vue.$http and this.$http
 Vue.use(VueAxios)
 Vue.use(Antd)
