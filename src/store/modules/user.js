@@ -57,7 +57,7 @@ const user = {
 
   actions: {
     // 登录
-    Login({
+    Login ({
       commit,
       dispatch
     }, userInfo) {
@@ -77,7 +77,7 @@ const user = {
     },
 
     // 获取用户信息
-    GetInfo({
+    GetInfo ({
       commit
     }) {
       return new Promise((resolve, reject) => {
@@ -124,7 +124,7 @@ const user = {
     },
 
     // 登出
-    Logout({
+    Logout ({
       commit,
       state
     }) {
@@ -132,7 +132,7 @@ const user = {
         const tokenInfo = JSON.parse(Vue.ls.get(TOKEN_INFO))
         logout({
           access_token: tokenInfo['access_token'],
-          client_id: 'platform-console'
+          client_id: 'console-platform'
           // client_id: 'browser'
         }).then(() => {
           // commit('SET_TOKEN', {})
@@ -148,7 +148,7 @@ const user = {
       })
     },
 
-    RefreshToken({
+    RefreshToken ({
       dispatch
     }) {
       return new Promise((resolve) => {
@@ -157,7 +157,7 @@ const user = {
           if (res.code == '200') {
             Vue.ls.set(ACCESS_TOKEN, res['token_type'] + ' ' + res['access_token'])
             Vue.ls.set(TOKEN_INFO, JSON.stringify(res))
-            resolve();
+            resolve()
           } else {
             // 刷新失败让其重新登陆
             notification.error({
@@ -171,7 +171,7 @@ const user = {
                 }, 1500)
               })
             }
-            resolve();
+            resolve()
           }
         })
       })
